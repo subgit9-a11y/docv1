@@ -135,9 +135,8 @@ class Data {
     agoraToken = json['agora_token'];
     channelName = json['channel_name'];
     fullImage = json['fullImage'];
-    hospital = json['hospital'] != null
-        ? Hospital.fromJson(json['hospital'])
-        : null;
+    hospital =
+        json['hospital'] != null ? Hospital.fromJson(json['hospital']) : null;
   }
 
   Map<String, dynamic> toJson() {

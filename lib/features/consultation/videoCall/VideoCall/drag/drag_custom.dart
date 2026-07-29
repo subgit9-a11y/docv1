@@ -111,7 +111,7 @@ class Draggable<T> extends StatefulWidget {
     this.onDragUpdate,
     this.onDragCompleted,
     this.ignoringFeedbackSemantics = true,
-  })  : assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0);
+  }) : assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0);
 
   /// The data that will be dropped by this draggable.
   final T? data;

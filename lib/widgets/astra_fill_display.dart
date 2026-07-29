@@ -592,14 +592,14 @@ class AstraFillCompactWidget extends StatelessWidget {
               ],
             ),
             ...[
-            SizedBox(height: 8),
-            Text(
-              "Symptoms: ${symptoms.join(', ')}",
-              style: TextStyle(fontSize: 13, color: AyurezeTheme.textPrimary),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
+              SizedBox(height: 8),
+              Text(
+                "Symptoms: ${symptoms.join(', ')}",
+                style: TextStyle(fontSize: 13, color: AyurezeTheme.textPrimary),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ],
         ),
       ),

@@ -1,4 +1,3 @@
-
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
@@ -197,10 +196,7 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                             ),
                                           ),
                                           Text(
-                                            "${getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .cancel_appointment_length)} ${viewModel.cancelAppointmentReq.length} ",
+                                            "${getTranslated(context, AppString.cancel_appointment_length)} ${viewModel.cancelAppointmentReq.length} ",
                                             style: TextStyle(
                                                 fontSize: 13,
                                                 color: AyurezeTheme.forestDeep),
@@ -334,8 +330,7 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                 Container(
                                     alignment: AlignmentDirectional.topStart,
                                     child: Text(
-                                      "${getTranslated(context,
-                                                  AppString.home_age_data)}:${appointment.age}",
+                                      "${getTranslated(context, AppString.home_age_data)}:${appointment.age}",
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: AyurezeTheme.textSecondary),

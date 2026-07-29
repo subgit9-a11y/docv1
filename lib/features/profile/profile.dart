@@ -428,7 +428,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                   .please_enter_profile_valid_name)
                                                           .toString();
                                                     } else if (value
-                                                            .trim().isEmpty) {
+                                                        .trim()
+                                                        .isEmpty) {
                                                       return getTranslated(
                                                               context,
                                                               AppString
@@ -614,7 +615,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                   .please_enter_description)
                                                           .toString();
                                                     } else if (value
-                                                            .trim().isEmpty) {
+                                                        .trim()
+                                                        .isEmpty) {
                                                       return getTranslated(
                                                               context,
                                                               AppString
@@ -702,7 +704,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                 .please_enter_degree)
                                                         .toString();
                                                   } else if (value
-                                                          .trim().isEmpty) {
+                                                      .trim()
+                                                      .isEmpty) {
                                                     return getTranslated(
                                                             context,
                                                             AppString
@@ -762,7 +765,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                 .please_enter_college)
                                                         .toString();
                                                   } else if (value
-                                                          .trim().isEmpty) {
+                                                      .trim()
+                                                      .isEmpty) {
                                                     return getTranslated(
                                                             context,
                                                             AppString
@@ -942,16 +946,11 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                               callYear =
                                                                   valueYear;
                                                               addDegree =
-                                                                  "${_pDegree.text},${_degree
-                                                                          .text}";
+                                                                  "${_pDegree.text},${_degree.text}";
                                                               addCollege =
-                                                                  "${_pCollege
-                                                                          .text},${_college
-                                                                          .text}";
+                                                                  "${_pCollege.text},${_college.text}";
                                                               addYear =
-                                                                  "${_pCollegeYear
-                                                                          .text},${_completeYear
-                                                                          .text}";
+                                                                  "${_pCollegeYear.text},${_completeYear.text}";
 
                                                               _pDegree.text =
                                                                   addDegree;
@@ -1096,8 +1095,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                               TextInputType.numberWithOptions(
                                                   decimal: true),
                                           inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .allow(RegExp("[0-9]"))
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp("[0-9]"))
                                           ],
                                           style: TextStyle(
                                               fontSize: 14,
@@ -1180,8 +1179,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                           true),
                                                               inputFormatters: [
                                                                 FilteringTextInputFormatter
-                                                                    .allow(
-                                                                    RegExp(
+                                                                    .allow(RegExp(
                                                                         "[0-9]"))
                                                               ],
                                                               decoration: InputDecoration(
@@ -1220,13 +1218,9 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                     certificateYear;
 
                                                                 addCertificate =
-                                                                    "${_pCertificate
-                                                                            .text},${_certificate
-                                                                            .text}";
+                                                                    "${_pCertificate.text},${_certificate.text}";
                                                                 addCertificateYear =
-                                                                    "${_pCertificateYear
-                                                                            .text},${_year
-                                                                            .text}";
+                                                                    "${_pCertificateYear.text},${_year.text}";
                                                                 _pCertificate
                                                                         .text =
                                                                     addCertificate;
@@ -1680,9 +1674,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                 .format(context)
                                                                 .toLowerCase();
                                                       } else {
-                                                        _pStartTime.text = "0${result
-                                                                .format(context)
-                                                                .toLowerCase()}";
+                                                        _pStartTime.text =
+                                                            "0${result.format(context).toLowerCase()}";
                                                       }
                                                     });
                                                   }
@@ -1780,9 +1773,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                             .format(context)
                                                             .toLowerCase();
                                                       } else {
-                                                        _pEndTime.text = "0${result
-                                                                .format(context)
-                                                                .toLowerCase()}";
+                                                        _pEndTime.text =
+                                                            "0${result.format(context).toLowerCase()}";
                                                       }
                                                     });
                                                   }
@@ -1938,8 +1930,7 @@ class _ProfileScreen extends State<ProfileScreen> {
               }
 
               for (int i = 0; i < certificate.length; i++) {
-                EducationCertificate certificateData =
-                    EducationCertificate();
+                EducationCertificate certificateData = EducationCertificate();
                 certificateData.certificate = certificate[i];
                 certificateData.certificateYear = certificateYear[i];
                 certificateList.add(certificateData);
@@ -2351,7 +2342,8 @@ class _ProfileScreen extends State<ProfileScreen> {
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                   foregroundColor: AyurezeTheme.healingGreen100),
-            ), dialogTheme: DialogThemeData(backgroundColor: AyurezeTheme.surface),
+            ),
+            dialogTheme: DialogThemeData(backgroundColor: AyurezeTheme.surface),
           ),
           child: child!,
         );

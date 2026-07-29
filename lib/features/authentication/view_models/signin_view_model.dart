@@ -421,8 +421,7 @@ class SignInViewModel extends ChangeNotifier {
   Future<BaseModel<Setting>> settingRequest() async {
     Setting response;
     try {
-      response =
-          await RestClient(RetroApi2().dioData2()).settingRequest();
+      response = await RestClient(RetroApi2().dioData2()).settingRequest();
 
       if (SharedPreferenceHelper.getBoolean(Preferences.is_logged_in) == true) {
         if (response.data!.stripeSecretKey != null) {

@@ -780,7 +780,8 @@ class _ProfessionalRegistrationScreenState
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                   foregroundColor: AyurezeTheme.caringViolet50),
-            ), dialogTheme: DialogThemeData(backgroundColor: AyurezeTheme.surface),
+            ),
+            dialogTheme: DialogThemeData(backgroundColor: AyurezeTheme.surface),
           ),
           child: child!,
         );

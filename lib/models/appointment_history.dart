@@ -100,9 +100,8 @@ class UpcomingAppointment {
     rate = json['rate'];
     review = json['review'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
-    hospital = json['hospital'] != null
-        ? Hospital.fromJson(json['hospital'])
-        : null;
+    hospital =
+        json['hospital'] != null ? Hospital.fromJson(json['hospital']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -175,9 +174,8 @@ class PastAppointment {
     rate = json['rate'];
     review = json['review'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
-    hospital = json['hospital'] != null
-        ? Hospital.fromJson(json['hospital'])
-        : null;
+    hospital =
+        json['hospital'] != null ? Hospital.fromJson(json['hospital']) : null;
   }
 
   Map<String, dynamic> toJson() {

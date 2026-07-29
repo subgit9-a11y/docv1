@@ -20,8 +20,7 @@ class CommonFunction {
               children: [
                 OslerLoader(),
                 SizedBox(width: 20),
-                Text(
-                    getTranslated(context, AppString.please_wait).toString()),
+                Text(getTranslated(context, AppString.please_wait).toString()),
               ],
             ),
           ),

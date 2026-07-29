@@ -15,8 +15,7 @@ class ModernDrawer extends StatelessWidget {
     final String dName = SharedPreferenceHelper.getString(Preferences.name);
     final String dFullImage =
         SharedPreferenceHelper.getString(Preferences.image);
-    final String phone =
-        SharedPreferenceHelper.getString(Preferences.phone_no);
+    final String phone = SharedPreferenceHelper.getString(Preferences.phone_no);
 
     return Drawer(
       child: Container(

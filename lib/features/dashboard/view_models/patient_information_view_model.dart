@@ -91,9 +91,7 @@ class PatientInformationViewModel extends ChangeNotifier {
       }
 
       // 2. Fallback: If no data or loading by ID failed, try searching by phone in Astra
-      if ((data.isEmpty) &&
-          targetPhone != null &&
-          targetPhone.isNotEmpty) {
+      if ((data.isEmpty) && targetPhone != null && targetPhone.isNotEmpty) {
         // Clean phone number (remove +, spaces, etc. for search)
         String cleanPhone = targetPhone.replaceAll(RegExp(r'\D'), '');
         final searchResults = await _astraService.searchPatients(cleanPhone);

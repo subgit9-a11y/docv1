@@ -1,4 +1,3 @@
-
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:doctro/features/consultation/videoCall/VideoCall/overlay_service.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -130,7 +129,8 @@ class VideoCallViewModel extends ChangeNotifier {
       }
       engine = createAgoraRtcEngine();
       await engine!.initialize(RtcEngineContext(
-          appId: appId ?? SharedPreferenceHelper.getString(Preferences.agoraAppId)));
+          appId: appId ??
+              SharedPreferenceHelper.getString(Preferences.agoraAppId)));
       isEngineInitialized = true;
       await engine!.enableVideo();
       await engine!.setVideoEncoderConfiguration(

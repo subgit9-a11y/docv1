@@ -89,7 +89,8 @@ class LoginHomeViewModel extends ChangeNotifier {
 
       if (response.data?.today != null && response.data!.today!.isNotEmpty) {
         response.data!.today!.sort((a, b) => DateFormat("yyyy-MM-dd h:mm a")
-            .parse("${DateTime.now().toString().split(" ")[0]} ${(a.time ?? "00:00 AM").toUpperCase()}")
+            .parse(
+                "${DateTime.now().toString().split(" ")[0]} ${(a.time ?? "00:00 AM").toUpperCase()}")
             .compareTo(DateFormat("yyyy-MM-dd h:mm a").parse(
                 "${DateTime.now().toString().split(" ")[0]} ${(b.time ?? "00:00 AM").toUpperCase()}")));
         todayAppointments.addAll(response.data!.today!);
@@ -98,7 +99,8 @@ class LoginHomeViewModel extends ChangeNotifier {
       if (response.data?.tomorrow != null &&
           response.data!.tomorrow!.isNotEmpty) {
         response.data!.tomorrow!.sort((a, b) => DateFormat("yyyy-MM-dd h:mm a")
-            .parse("${DateTime.now().toString().split(" ")[0]} ${(a.time ?? "00:00 AM").toUpperCase()}")
+            .parse(
+                "${DateTime.now().toString().split(" ")[0]} ${(a.time ?? "00:00 AM").toUpperCase()}")
             .compareTo(DateFormat("yyyy-MM-dd h:mm a").parse(
                 "${DateTime.now().toString().split(" ")[0]} ${(b.time ?? "00:00 AM").toUpperCase()}")));
         tomorrowAppointments.addAll(response.data!.tomorrow!);
@@ -107,7 +109,8 @@ class LoginHomeViewModel extends ChangeNotifier {
       if (response.data?.upcoming != null &&
           response.data!.upcoming!.isNotEmpty) {
         response.data!.upcoming!.sort((a, b) => DateFormat("yyyy-MM-dd h:mm a")
-            .parse("${DateTime.now().toString().split(" ")[0]} ${(a.time ?? "00:00 AM").toUpperCase()}")
+            .parse(
+                "${DateTime.now().toString().split(" ")[0]} ${(a.time ?? "00:00 AM").toUpperCase()}")
             .compareTo(DateFormat("yyyy-MM-dd h:mm a").parse(
                 "${DateTime.now().toString().split(" ")[0]} ${(b.time ?? "00:00 AM").toUpperCase()}")));
         upcomingAppointments.addAll(response.data!.upcoming!);
