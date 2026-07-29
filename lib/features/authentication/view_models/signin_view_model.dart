@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import 'dart:io' show Platform;
 
-import 'package:doctro/features/consultation/chat/providers/auth_provider.dart' as chat;
+import 'package:doctro/features/consultation/chat/providers/auth_provider.dart'
+    as chat;
 import 'package:doctro/core/constants/common_function.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -31,9 +32,10 @@ class SignInViewModel extends ChangeNotifier {
 
   bool isOtpLoginMode = false;
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController phoneCodeController = TextEditingController(text: "+91");
+  final TextEditingController phoneCodeController =
+      TextEditingController(text: "+91");
   final TextEditingController otpCodeController = TextEditingController();
-  
+
   String? verificationId;
   bool otpSent = false;
   bool isHidden = true;
@@ -80,12 +82,12 @@ class SignInViewModel extends ChangeNotifier {
       if (token != null && token.isNotEmpty) {
         SharedPreferenceHelper.setString(Preferences.messageToken, token);
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   Future<void> sendOtp(BuildContext context) async {
-    final phoneNum = phoneCodeController.text.trim() + phoneController.text.trim();
+    final phoneNum =
+        phoneCodeController.text.trim() + phoneController.text.trim();
     if (phoneController.text.trim().isEmpty) {
       OslerToast.error(context, "Please enter a valid phone number");
       return;
@@ -133,7 +135,7 @@ class SignInViewModel extends ChangeNotifier {
         verificationId: verificationId!,
         smsCode: smsCode,
       );
-      
+
       await authenticateWithCredential(credential, context);
     } catch (e) {
       CommonFunction.hideDialog(context);
@@ -141,38 +143,47 @@ class SignInViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> authenticateWithCredential(PhoneAuthCredential credential, BuildContext context) async {
+  Future<void> authenticateWithCredential(
+      PhoneAuthCredential credential, BuildContext context) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
       User? user = userCredential.user;
       if (user != null) {
         String phoneNum = user.phoneNumber ?? "";
         if (phoneNum.isEmpty) {
-          phoneNum = phoneCodeController.text.trim() + phoneController.text.trim();
+          phoneNum =
+              phoneCodeController.text.trim() + phoneController.text.trim();
         }
-        
+
         String? doctorEmail = user.email;
         if (doctorEmail == null || doctorEmail.isEmpty) {
           try {
             final client = Supabase.instance.client;
-            final res = await client.from('doctors').select('email').eq('phone', phoneNum).maybeSingle();
+            final res = await client
+                .from('doctors')
+                .select('email')
+                .eq('phone', phoneNum)
+                .maybeSingle();
             if (res != null && res['email'] != null) {
               doctorEmail = res['email'];
             }
-          } catch (e) {
-          }
+          } catch (e) {}
         }
-        
+
         if (doctorEmail == null || doctorEmail.isEmpty) {
           try {
             final rawPhone = phoneController.text.trim();
             final client = Supabase.instance.client;
-            final res = await client.from('doctors').select('email').eq('phone', rawPhone).maybeSingle();
+            final res = await client
+                .from('doctors')
+                .select('email')
+                .eq('phone', rawPhone)
+                .maybeSingle();
             if (res != null && res['email'] != null) {
               doctorEmail = res['email'];
             }
-          } catch (e) {
-          }
+          } catch (e) {}
         }
 
         if (doctorEmail != null && doctorEmail.isNotEmpty) {
@@ -198,14 +209,17 @@ class SignInViewModel extends ChangeNotifier {
               saveUserData(response, context);
               SharedPreferenceHelper.setBoolean(Preferences.is_logged_in, true);
               OslerToast.success(context, "Logged in successfully!");
-              Navigator.pushNamedAndRemoveUntil(context, 'loginHome', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'loginHome', (route) => false);
             }
           } catch (e) {
-            OslerToast.error(context, "Astra backend login failed (Missing Endpoint / 404)");
+            OslerToast.error(
+                context, "Astra backend login failed (Missing Endpoint / 404)");
           }
         } else {
           CommonFunction.hideDialog(context);
-          OslerToast.warning(context, "Phone number not registered. Please sign up.");
+          OslerToast.warning(
+              context, "Phone number not registered. Please sign up.");
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -256,7 +270,8 @@ class SignInViewModel extends ChangeNotifier {
           if (response.success == true && response.data != null) {
             saveUserData(response, context);
             SharedPreferenceHelper.setBoolean(Preferences.is_logged_in, true);
-            Navigator.pushNamedAndRemoveUntil(context, 'loginHome', (route) => false);
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'loginHome', (route) => false);
           }
         } catch (e) {
           // If Astra login fails (e.g. 404), maybe user doesn't exist yet on Astra
@@ -279,7 +294,8 @@ class SignInViewModel extends ChangeNotifier {
     } else {
       String errorText = "Google Sign In Failed or Canceled";
       if (authProvider.status == chat.Status.authenticateError) {
-        errorText = "Google Sign In Error: Please ensure:\n1. Internet connection is active\n2. Google Play Services are installed\n3. Your Google account is properly configured";
+        errorText =
+            "Google Sign In Error: Please ensure:\n1. Internet connection is active\n2. Google Play Services are installed\n3. Your Google account is properly configured";
       } else if (authProvider.status == chat.Status.authenticateCanceled) {
         errorText = "Google Sign In was canceled";
       }
@@ -293,27 +309,38 @@ class SignInViewModel extends ChangeNotifier {
   }
 
   void saveUserData(LoginResponse response, BuildContext context) {
-    SharedPreferenceHelper.setString(Preferences.name, response.data!.name ?? '');
-    SharedPreferenceHelper.setString(Preferences.phone_no, response.data!.phone ?? '');
-    SharedPreferenceHelper.setString(Preferences.email, response.data!.email ?? '');
-    SharedPreferenceHelper.setString(Preferences.image, response.data!.image ?? '');
-    SharedPreferenceHelper.setInt(Preferences.is_filled, response.data!.isFilled ?? 0);
+    SharedPreferenceHelper.setString(
+        Preferences.name, response.data!.name ?? '');
+    SharedPreferenceHelper.setString(
+        Preferences.phone_no, response.data!.phone ?? '');
+    SharedPreferenceHelper.setString(
+        Preferences.email, response.data!.email ?? '');
+    SharedPreferenceHelper.setString(
+        Preferences.image, response.data!.image ?? '');
+    SharedPreferenceHelper.setInt(
+        Preferences.is_filled, response.data!.isFilled ?? 0);
 
     if (response.token != null) {
       SharedPreferenceHelper.setString(Preferences.auth_token, response.token!);
     }
     if (response.refreshToken != null) {
-      SharedPreferenceHelper.setString(Preferences.refresh_token, response.refreshToken!);
+      SharedPreferenceHelper.setString(
+          Preferences.refresh_token, response.refreshToken!);
     }
     if (response.expiresIn != null) {
-      SharedPreferenceHelper.setInt(Preferences.expiresIn, int.parse('${response.expiresIn}'));
-      SharedPreferenceHelper.setInt('token_saved_at', DateTime.now().millisecondsSinceEpoch);
+      SharedPreferenceHelper.setInt(
+          Preferences.expiresIn, int.parse('${response.expiresIn}'));
+      SharedPreferenceHelper.setInt(
+          'token_saved_at', DateTime.now().millisecondsSinceEpoch);
     }
     // Removed subscriptionStatus parsing due to model cleanup
     SharedPreferenceHelper.setInt(Preferences.subscription_status, -1);
-    SharedPreferenceHelper.setString(Preferences.chat_profile, response.data!.fullImage ?? '');
-    SharedPreferenceHelper.setString(Preferences.user_name, response.data!.name ?? '');
-    SharedPreferenceHelper.setString(Preferences.doctorId, response.data!.id.toString());
+    SharedPreferenceHelper.setString(
+        Preferences.chat_profile, response.data!.fullImage ?? '');
+    SharedPreferenceHelper.setString(
+        Preferences.user_name, response.data!.name ?? '');
+    SharedPreferenceHelper.setString(
+        Preferences.doctorId, response.data!.id.toString());
 
     Provider.of<chat.AuthProvider>(context, listen: false).handleSignIn();
   }
@@ -342,17 +369,18 @@ class SignInViewModel extends ChangeNotifier {
           } catch (createErr) {
             CommonFunction.hideDialog(context);
             OslerToast.error(context, "Firebase Registration Failed");
-            return BaseModel()..setException(ServerError.withError(error: createErr));
+            return BaseModel()
+              ..setException(ServerError.withError(error: createErr));
           }
         } else {
-           CommonFunction.hideDialog(context);
-           OslerToast.error(context, "Firebase Auth Error: ${e.code}");
-           return BaseModel()..setException(ServerError.withError(error: e));
+          CommonFunction.hideDialog(context);
+          OslerToast.error(context, "Firebase Auth Error: ${e.code}");
+          return BaseModel()..setException(ServerError.withError(error: e));
         }
       } catch (e) {
-          CommonFunction.hideDialog(context);
-          OslerToast.error(context, "Firebase Auth Error");
-          return BaseModel()..setException(ServerError.withError(error: e));
+        CommonFunction.hideDialog(context);
+        OslerToast.error(context, "Firebase Auth Error");
+        return BaseModel()..setException(ServerError.withError(error: e));
       }
 
       // 2. Authenticate with Astra Backend (Automatically uses Firebase Bearer Token)
@@ -386,7 +414,8 @@ class SignInViewModel extends ChangeNotifier {
     } catch (error, stacktrace) {
       CommonFunction.hideDialog(context);
       // Fallback message for Missing Endpoint (404)
-      OslerToast.error(context, "Failed to connect to Astra API (404/Missing Endpoint). Please ensure the backend route exists.");
+      OslerToast.error(context,
+          "Failed to connect to Astra API (404/Missing Endpoint). Please ensure the backend route exists.");
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;
@@ -395,58 +424,76 @@ class SignInViewModel extends ChangeNotifier {
   Future<BaseModel<Setting>> settingRequest() async {
     Setting response;
     try {
-      response = await RestClient(await RetroApi2().dioData2()).settingRequest();
+      response =
+          await RestClient(await RetroApi2().dioData2()).settingRequest();
 
       if (SharedPreferenceHelper.getBoolean(Preferences.is_logged_in) == true) {
         if (response.data!.stripeSecretKey != null) {
-          SharedPreferenceHelper.setString(Preferences.stripeSecretKey, response.data!.stripeSecretKey!);
+          SharedPreferenceHelper.setString(
+              Preferences.stripeSecretKey, response.data!.stripeSecretKey!);
         }
         if (response.data!.stripePublicKey != null) {
-          SharedPreferenceHelper.setString(Preferences.stripPublicKey, response.data!.stripePublicKey!);
+          SharedPreferenceHelper.setString(
+              Preferences.stripPublicKey, response.data!.stripePublicKey!);
         }
         if (response.data!.flutterwaveEncryptionKey != null) {
-          SharedPreferenceHelper.setString(Preferences.flutterWave_encryption_key, response.data!.flutterwaveEncryptionKey!);
+          SharedPreferenceHelper.setString(
+              Preferences.flutterWave_encryption_key,
+              response.data!.flutterwaveEncryptionKey!);
         }
         if (response.data!.flutterwaveKey != null) {
-          SharedPreferenceHelper.setString(Preferences.flutterWave_key, response.data!.flutterwaveKey!);
+          SharedPreferenceHelper.setString(
+              Preferences.flutterWave_key, response.data!.flutterwaveKey!);
         }
         if (response.data!.paystackPublicKey != null) {
-          SharedPreferenceHelper.setString(Preferences.payStack_public_key, response.data!.paystackPublicKey!);
+          SharedPreferenceHelper.setString(Preferences.payStack_public_key,
+              response.data!.paystackPublicKey!);
         }
         if (response.data!.razorKey != null) {
-          SharedPreferenceHelper.setString(Preferences.razor_key, response.data!.razorKey!);
+          SharedPreferenceHelper.setString(
+              Preferences.razor_key, response.data!.razorKey!);
         }
         if (response.data!.paypalProducationKey != null) {
-          SharedPreferenceHelper.setString(Preferences.payPal_production_key, response.data!.paypalProducationKey!);
+          SharedPreferenceHelper.setString(Preferences.payPal_production_key,
+              response.data!.paypalProducationKey!);
         }
         if (response.data!.paypalSandboxKey != null) {
-          SharedPreferenceHelper.setString(Preferences.payPal_sandbox_key, response.data!.paypalSandboxKey!);
+          SharedPreferenceHelper.setString(
+              Preferences.payPal_sandbox_key, response.data!.paypalSandboxKey!);
         }
         if (response.data!.paypalClientId != null) {
-          SharedPreferenceHelper.setString(Preferences.paypal_client_key, response.data!.paypalClientId!);
+          SharedPreferenceHelper.setString(
+              Preferences.paypal_client_key, response.data!.paypalClientId!);
         }
         if (response.data!.paypalSecretKey != null) {
-          SharedPreferenceHelper.setString(Preferences.paypal_secret_key, response.data!.paypalSecretKey!);
+          SharedPreferenceHelper.setString(
+              Preferences.paypal_secret_key, response.data!.paypalSecretKey!);
         }
         if (response.data!.currencySymbol != null) {
-          SharedPreferenceHelper.setString(Preferences.currency_symbol, response.data!.currencySymbol!);
+          SharedPreferenceHelper.setString(
+              Preferences.currency_symbol, response.data!.currencySymbol!);
         }
         if (response.data!.currencyCode != null) {
-          SharedPreferenceHelper.setString(Preferences.currency_code, response.data!.currencyCode!);
+          SharedPreferenceHelper.setString(
+              Preferences.currency_code, response.data!.currencyCode!);
         }
         if (response.data!.doctorAppId != null) {
-          SharedPreferenceHelper.setString(Preferences.doctorAppId, response.data!.doctorAppId!);
+          SharedPreferenceHelper.setString(
+              Preferences.doctorAppId, response.data!.doctorAppId!);
           notifyListeners();
         }
       } else {
         if (response.data!.currencySymbol != null) {
-          SharedPreferenceHelper.setString(Preferences.currency_symbol, response.data!.currencySymbol!);
+          SharedPreferenceHelper.setString(
+              Preferences.currency_symbol, response.data!.currencySymbol!);
         }
         if (response.data!.currencyCode != null) {
-          SharedPreferenceHelper.setString(Preferences.currency_code, response.data!.currencyCode!);
+          SharedPreferenceHelper.setString(
+              Preferences.currency_code, response.data!.currencyCode!);
         }
         if (response.data!.doctorAppId != null) {
-          SharedPreferenceHelper.setString(Preferences.doctorAppId, response.data!.doctorAppId!);
+          SharedPreferenceHelper.setString(
+              Preferences.doctorAppId, response.data!.doctorAppId!);
           notifyListeners();
         }
       }

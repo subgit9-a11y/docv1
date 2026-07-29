@@ -6,7 +6,8 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart' show kDebugMode;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doctro/features/consultation/chat/pages/chat_page.dart' show ChatPage;
+import 'package:doctro/features/consultation/chat/pages/chat_page.dart'
+    show ChatPage;
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/utils/logger.dart';
 import 'package:doctro/utils/notification.dart' show NotificationHandler;
@@ -50,7 +51,8 @@ import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/theme_provider.dart';
 import 'package:doctro/features/consultation/videoCall/VideoCall/overlay_handler.dart';
 import 'package:doctro/features/consultation/chat/pages/home_page.dart';
-import 'package:doctro/features/consultation/chat/providers/auth_provider.dart' as provider;
+import 'package:doctro/features/consultation/chat/providers/auth_provider.dart'
+    as provider;
 import 'package:doctro/features/consultation/chat/providers/chat_provider.dart';
 import 'package:doctro/features/consultation/chat/providers/home_provider.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
@@ -117,12 +119,9 @@ Future<void> main() async {
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
-    ).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () {
-        throw TimeoutException('Firebase init timeout');
-      }
-    );
+    ).timeout(const Duration(seconds: 10), onTimeout: () {
+      throw TimeoutException('Firebase init timeout');
+    });
 
     // Pass all uncaught "fatal" errors from the framework to Crashlytics
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
@@ -137,8 +136,10 @@ Future<void> main() async {
   }
 
   // Initialize Supabase if credentials exist
-  final String supabaseUrl = getEnvSafe('SUPABASE_URL') ?? const String.fromEnvironment('SUPABASE_URL');
-  final String supabaseAnonKey = getEnvSafe('SUPABASE_ANON_KEY') ?? const String.fromEnvironment('SUPABASE_ANON_KEY');
+  final String supabaseUrl = getEnvSafe('SUPABASE_URL') ??
+      const String.fromEnvironment('SUPABASE_URL');
+  final String supabaseAnonKey = getEnvSafe('SUPABASE_ANON_KEY') ??
+      const String.fromEnvironment('SUPABASE_ANON_KEY');
 
   if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty) {
     try {
@@ -158,9 +159,10 @@ Future<void> main() async {
 
   // Subscribe to Firebase topic in background (non-blocking)
   try {
-    FirebaseMessaging.instance.subscribeToTopic("all").timeout(
-      const Duration(seconds: 5)
-    ).catchError((e) {
+    FirebaseMessaging.instance
+        .subscribeToTopic("all")
+        .timeout(const Duration(seconds: 5))
+        .catchError((e) {
       debugPrint("Firebase topic subscription failed: $e");
     });
   } catch (e) {
@@ -174,8 +176,7 @@ Future<void> main() async {
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_importance_channel',
-    'High Importance Notifications',
+    'high_importance_channel', 'High Importance Notifications',
     importance: Importance.max,
     showBadge: true,
     playSound: true,
@@ -233,7 +234,7 @@ class _MyAppState extends State<MyApp> {
     // Implement Screenshot Protection for Enterprise Compliance
     try {
       await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
-    } catch(e) {}
+    } catch (e) {}
   }
 
   Future<void> _initializeNotifications() async {
@@ -261,11 +262,9 @@ class _MyAppState extends State<MyApp> {
       cancelOnError: false,
     );
 
-    FirebaseMessaging.onMessageOpenedApp.listen(
-      (RemoteMessage message) {
-        logger.i("Notification tapped: ${message.data}");
-      }
-    );
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      logger.i("Notification tapped: ${message.data}");
+    });
   }
 
   void _handleForegroundMessage(RemoteMessage message) {
@@ -304,7 +303,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _handleInitialMessage() {
-    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? message) {
       if (message != null) {
         try {
           final Map<String, dynamic> dataValue = message.data;
@@ -317,7 +318,9 @@ class _MyAppState extends State<MyApp> {
             return;
           }
 
-          if (mounted && SharedPreferenceHelper.getBoolean(Preferences.is_logged_in) == true) {
+          if (mounted &&
+              SharedPreferenceHelper.getBoolean(Preferences.is_logged_in) ==
+                  true) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => ChatPage(
                 peerId: msgId,
@@ -359,22 +362,28 @@ class _MyAppState extends State<MyApp> {
   Future<BaseModel<Setting>> settingRequest() async {
     Setting response;
     try {
-      response = await RestClient(await RetroApi2().dioData2()).settingRequest();
+      response =
+          await RestClient(await RetroApi2().dioData2()).settingRequest();
       if (SharedPreferenceHelper.getBoolean(Preferences.is_logged_in) == true) {
         if (response.data!.stripeSecretKey != null) {
-          SharedPreferenceHelper.setString(Preferences.stripeSecretKey, response.data!.stripeSecretKey!);
+          SharedPreferenceHelper.setString(
+              Preferences.stripeSecretKey, response.data!.stripeSecretKey!);
         }
         if (response.data!.stripePublicKey != null) {
-          SharedPreferenceHelper.setString(Preferences.stripPublicKey, response.data!.stripePublicKey!);
+          SharedPreferenceHelper.setString(
+              Preferences.stripPublicKey, response.data!.stripePublicKey!);
         }
         if (response.data!.currencySymbol != null) {
-          SharedPreferenceHelper.setString(Preferences.currency_symbol, response.data!.currencySymbol!);
+          SharedPreferenceHelper.setString(
+              Preferences.currency_symbol, response.data!.currencySymbol!);
         }
         if (response.data!.currencyCode != null) {
-          SharedPreferenceHelper.setString(Preferences.currency_code, response.data!.currencyCode!);
+          SharedPreferenceHelper.setString(
+              Preferences.currency_code, response.data!.currencyCode!);
         }
         if (response.data!.doctorAppId != null) {
-          SharedPreferenceHelper.setString(Preferences.doctorAppId, response.data!.doctorAppId!);
+          SharedPreferenceHelper.setString(
+              Preferences.doctorAppId, response.data!.doctorAppId!);
           if (mounted) setState(() {});
         }
       }
@@ -428,7 +437,8 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               Provider<HomeProvider>(
-                create: (_) => HomeProvider(firebaseFirestore: firebaseFirestore),
+                create: (_) =>
+                    HomeProvider(firebaseFirestore: firebaseFirestore),
               ),
               Provider<ChatProvider>(
                 create: (_) => ChatProvider(
@@ -448,7 +458,8 @@ class _MyAppState extends State<MyApp> {
                   onTimeout: () {
                     SharedPreferenceHelper.clearPref();
                     if (mounted && navigatorKey.currentState != null) {
-                      navigatorKey.currentState!.pushNamedAndRemoveUntil('SignIn', (route) => false);
+                      navigatorKey.currentState!
+                          .pushNamedAndRemoveUntil('SignIn', (route) => false);
                     }
                   },
                   child: MaterialApp(
@@ -472,7 +483,7 @@ class _MyAppState extends State<MyApp> {
                     ],
                     localeResolutionCallback: (deviceLocal, supportedLocales) {
                       for (var local in supportedLocales) {
-                        if (deviceLocal != null && 
+                        if (deviceLocal != null &&
                             local.languageCode == deviceLocal.languageCode &&
                             local.countryCode == deviceLocal.countryCode) {
                           return deviceLocal;
@@ -483,13 +494,18 @@ class _MyAppState extends State<MyApp> {
                     routes: {
                       'SignIn': (context) => SignIn(),
                       'signup': (context) => CreateAccount(),
-                      'ForgotPasswordScreen': (context) => ForgotPasswordScreen(),
-                      'phoneverification': (context) => PhoneVerificationScreen(),
+                      'ForgotPasswordScreen': (context) =>
+                          ForgotPasswordScreen(),
+                      'phoneverification': (context) =>
+                          PhoneVerificationScreen(),
                       'loginHome': (context) => LoginHomeScreen(chat: ""),
                       'patientInformation': (context) => patientDetailsScreen(),
-                      'cancelAppoitmentRoutes': (context) => CancelAppointmentScreen(),
-                      'AppointmentHistoryScreen': (context) => AppointmentHistory(),
-                      'rateAndReviewRoutes': (context) => RateAndReviewRoutesScreen(),
+                      'cancelAppoitmentRoutes': (context) =>
+                          CancelAppointmentScreen(),
+                      'AppointmentHistoryScreen': (context) =>
+                          AppointmentHistory(),
+                      'rateAndReviewRoutes': (context) =>
+                          RateAndReviewRoutesScreen(),
                       'notifications': (context) => NotificationsScreen(),
                       'profile': (context) => ProfileScreen(),
                       'Schedule Timings': (context) => ScheduleTimings(),

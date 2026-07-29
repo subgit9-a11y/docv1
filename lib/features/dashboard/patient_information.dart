@@ -40,7 +40,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class patientDetailsScreen extends StatelessWidget {
   final int? id;
 

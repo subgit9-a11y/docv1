@@ -429,7 +429,6 @@ class _RestClient implements RestClient {
     return _value;
   }
 
-
   @override
   Future<AddPrescription> addPrescriptionRequest(dynamic body) async {
     final _extra = <String, dynamic>{};
