@@ -1,0 +1,55 @@
+import 'dart:io';
+
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+class PdfViewerPage extends StatelessWidget {
+  final File? path;
+
+  const PdfViewerPage({Key? key, this.path}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Scaffold(
+      backgroundColor: AyurezeTheme.canvas,
+      appBar: AppBar(
+        backgroundColor: AyurezeTheme.canvas,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            AppIcons.back,
+            color: AyurezeTheme.healingGreen100,
+            size: 20,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          "PDF Preview",
+          style: textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w800,
+            color: AyurezeTheme.textPrimary,
+          ),
+        ),
+      ),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 900),
+          child: path != null
+              ? SfPdfViewer.file(path!)
+              : Center(
+                  child: Text(
+                    "No PDF document loaded",
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: AyurezeTheme.textSecondary,
+                    ),
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+}

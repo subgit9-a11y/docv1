@@ -1,0 +1,53 @@
+File: lib\core\widgets\astra_fill_display.dart (3 errors)
+  error - lib\core\widgets\astra_fill_display.dart:148:35 - The getter 'AyurezeTheme' isn't defined for the type 'AyurezeTheme'. Try importing the library that defines 'AyurezeTheme', correcting the name to the name of an existing getter, or defining a getter or field named 'AyurezeTheme'. - undefined_getter
+  error - lib\core\widgets\astra_fill_display.dart:163:39 - The getter 'AyurezeTheme' isn't defined for the type 'AyurezeTheme'. Try importing the library that defines 'AyurezeTheme', correcting the name to the name of an existing getter, or defining a getter or field named 'AyurezeTheme'. - undefined_getter
+  error - lib\core\widgets\astra_fill_display.dart:503:27 - The getter 'AyurezeTheme' isn't defined for the type 'AyurezeTheme'. Try importing the library that defines 'AyurezeTheme', correcting the name to the name of an existing getter, or defining a getter or field named 'AyurezeTheme'. - undefined_getter
+--------------------------------------------------
+File: lib\features\appointment\cancel_appointment.dart (1 errors)
+  error - lib\features\appointment\cancel_appointment.dart:374:79 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+--------------------------------------------------
+File: lib\features\chat\pages\chat_page.dart (10 errors)
+  error - lib\features\chat\pages\chat_page.dart:245:50 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\chat_page.dart:267:44 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\chat_page.dart:377:40 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\chat_page.dart:415:50 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\chat_page.dart:498:36 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\chat_page.dart:561:41 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\chat_page.dart:625:26 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\chat_page.dart:653:38 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\chat_page.dart:685:30 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\chat_page.dart:693:24 - Invalid constant value. - invalid_constant
+--------------------------------------------------
+File: lib\features\chat\pages\home_page.dart (5 errors)
+  error - lib\features\chat\pages\home_page.dart:148:38 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\home_page.dart:208:38 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\home_page.dart:215:34 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\home_page.dart:229:40 - Invalid constant value. - invalid_constant
+  error - lib\features\chat\pages\home_page.dart:239:40 - Invalid constant value. - invalid_constant
+--------------------------------------------------
+File: lib\features\profile\profile.dart (27 errors)
+  error - lib\features\profile\profile.dart:411:60 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\profile.dart:421:59 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\profile.dart:583:60 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\profile.dart:593:59 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\profile.dart:668:58 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\profile.dart:677:60 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\profile.dart:722:58 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\profile.dart:731:60 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\profile.dart:784:58 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\profile.dart:793:60 - Undefined name 'passwordVisibility'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  ... and 17 more
+--------------------------------------------------
+File: lib\features\profile\view_models\profile_view_model.dart (526 errors)
+  error - lib\features\profile\view_models\profile_view_model.dart:99:9 - Undefined name '_selectedDate'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\view_models\profile_view_model.dart:100:16 - Undefined name '_selectedDate'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\view_models\profile_view_model.dart:129:85 - Undefined name '_pDob'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\view_models\profile_view_model.dart:131:15 - Undefined name '_pName'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\view_models\profile_view_model.dart:137:17 - Undefined name '_genderSelect'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\view_models\profile_view_model.dart:140:21 - Undefined name '_pExperience'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\view_models\profile_view_model.dart:141:27 - Undefined name '_aAppointmentFees'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\view_models\profile_view_model.dart:142:33 - Undefined name '_vAppointmentFees'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\view_models\profile_view_model.dart:143:21 - Undefined name '_pStartTime'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\profile\view_models\profile_view_model.dart:144:19 - Undefined name '_pEndTime'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  ... and 516 more
+--------------------------------------------------
