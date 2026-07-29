@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -121,7 +122,7 @@ class AyurezeTheme {
       useMaterial3: true,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: lightCanvas,
-      pageTransitionsTheme: const PageTransitionsTheme(
+      pageTransitionsTheme: PageTransitionsTheme(
         builders: {
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
@@ -332,7 +333,7 @@ class AyurezeTheme {
       useMaterial3: true,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: darkCanvas,
-      pageTransitionsTheme: const PageTransitionsTheme(
+      pageTransitionsTheme: PageTransitionsTheme(
         builders: {
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),

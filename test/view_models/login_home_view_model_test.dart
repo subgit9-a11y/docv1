@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:doctro/features/home_page/view_models/login_home_view_model.dart';
+import 'package:doctro/features/dashboard/view_models/login_home_view_model.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +22,7 @@ void main() {
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.todayAppointments, isEmpty);
       expect(viewModel.patientCount, 0);
-      expect(viewModel.totalEarnings, '0');
+      expect(viewModel.totalEarnings, 0);
     });
 
     test('Search functionality filters correctly', () {
