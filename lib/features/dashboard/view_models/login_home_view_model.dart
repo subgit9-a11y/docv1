@@ -9,7 +9,6 @@ import 'package:doctro/models/payment.dart';
 import 'package:doctro/models/review.dart';
 import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/network_api.dart';
-import 'package:doctro/models/setting.dart';
 
 class LoginHomeViewModel extends ChangeNotifier {
   bool isLoading = false;
@@ -90,52 +89,40 @@ class LoginHomeViewModel extends ChangeNotifier {
 
       if (response.data?.today != null && response.data!.today!.isNotEmpty) {
         response.data!.today!.sort((a, b) => DateFormat("yyyy-MM-dd h:mm a")
-            .parse(DateTime.now().toString().split(" ")[0] +
-                " " +
-                (a.time ?? "00:00 AM").toUpperCase())
+            .parse("${DateTime.now().toString().split(" ")[0]} ${(a.time ?? "00:00 AM").toUpperCase()}")
             .compareTo(DateFormat("yyyy-MM-dd h:mm a").parse(
-                DateTime.now().toString().split(" ")[0] +
-                    " " +
-                    (b.time ?? "00:00 AM").toUpperCase())));
+                "${DateTime.now().toString().split(" ")[0]} ${(b.time ?? "00:00 AM").toUpperCase()}")));
         todayAppointments.addAll(response.data!.today!);
       }
 
       if (response.data?.tomorrow != null &&
           response.data!.tomorrow!.isNotEmpty) {
         response.data!.tomorrow!.sort((a, b) => DateFormat("yyyy-MM-dd h:mm a")
-            .parse(DateTime.now().toString().split(" ")[0] +
-                " " +
-                (a.time ?? "00:00 AM").toUpperCase())
+            .parse("${DateTime.now().toString().split(" ")[0]} ${(a.time ?? "00:00 AM").toUpperCase()}")
             .compareTo(DateFormat("yyyy-MM-dd h:mm a").parse(
-                DateTime.now().toString().split(" ")[0] +
-                    " " +
-                    (b.time ?? "00:00 AM").toUpperCase())));
+                "${DateTime.now().toString().split(" ")[0]} ${(b.time ?? "00:00 AM").toUpperCase()}")));
         tomorrowAppointments.addAll(response.data!.tomorrow!);
       }
 
       if (response.data?.upcoming != null &&
           response.data!.upcoming!.isNotEmpty) {
         response.data!.upcoming!.sort((a, b) => DateFormat("yyyy-MM-dd h:mm a")
-            .parse(DateTime.now().toString().split(" ")[0] +
-                " " +
-                (a.time ?? "00:00 AM").toUpperCase())
+            .parse("${DateTime.now().toString().split(" ")[0]} ${(a.time ?? "00:00 AM").toUpperCase()}")
             .compareTo(DateFormat("yyyy-MM-dd h:mm a").parse(
-                DateTime.now().toString().split(" ")[0] +
-                    " " +
-                    (b.time ?? "00:00 AM").toUpperCase())));
+                "${DateTime.now().toString().split(" ")[0]} ${(b.time ?? "00:00 AM").toUpperCase()}")));
         upcomingAppointments.addAll(response.data!.upcoming!);
       }
 
       Set<String> uniquePatients = {};
-      todayAppointments.forEach((a) {
+      for (var a in todayAppointments) {
         if (a.patientName != null) uniquePatients.add(a.patientName!);
-      });
-      tomorrowAppointments.forEach((a) {
+      }
+      for (var a in tomorrowAppointments) {
         if (a.patientName != null) uniquePatients.add(a.patientName!);
-      });
-      upcomingAppointments.forEach((a) {
+      }
+      for (var a in upcomingAppointments) {
         if (a.patientName != null) uniquePatients.add(a.patientName!);
-      });
+      }
       patientCount = uniquePatients.length;
     } catch (error) {
       // error handling
@@ -222,29 +209,29 @@ class LoginHomeViewModel extends ChangeNotifier {
       return;
     }
 
-    todayAppointments.forEach((appointmentData) {
+    for (var appointmentData in todayAppointments) {
       if ((appointmentData.patientName ?? "")
           .toLowerCase()
           .contains(text.toLowerCase())) {
         searchResult.add(appointmentData);
       }
-    });
+    }
 
-    tomorrowAppointments.forEach((tomorrowData) {
+    for (var tomorrowData in tomorrowAppointments) {
       if ((tomorrowData.patientName ?? "")
           .toLowerCase()
           .contains(text.toLowerCase())) {
         tomorrowSearchResult.add(tomorrowData);
       }
-    });
+    }
 
-    upcomingAppointments.forEach((upcomingData) {
+    for (var upcomingData in upcomingAppointments) {
       if ((upcomingData.patientName ?? "")
           .toLowerCase()
           .contains(text.toLowerCase())) {
         upcomingSearchResult.add(upcomingData);
       }
-    });
+    }
 
     notifyListeners();
   }

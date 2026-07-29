@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 enum OslerButtonStyle { primary, secondary, outline, ghost }
 

@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
-import 'package:flutter/foundation.dart' show kDebugMode;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctro/features/consultation/chat/pages/chat_page.dart'
@@ -47,7 +45,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/theme_provider.dart';
 import 'package:doctro/features/consultation/videoCall/VideoCall/overlay_handler.dart';
 import 'package:doctro/features/consultation/chat/pages/home_page.dart';
@@ -65,7 +62,6 @@ import 'package:doctro/features/dashboard/patient_information.dart';
 import 'package:doctro/features/notifications/notifications.dart';
 import 'package:doctro/features/profile/profile.dart' hide Container;
 import 'package:doctro/features/review/rate&review.dart';
-import 'package:doctro/features/consultation/videoCall/video_Call.dart';
 import 'package:doctro/features/cashfree/payment.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -94,9 +90,9 @@ Future<void> main() async {
   }
 
   // Initialize SharedPreferences with timeout to prevent blocking
-  SharedPreferences? _prefs;
+  SharedPreferences? prefs;
   try {
-    _prefs = await SharedPreferences.getInstance().timeout(
+    prefs = await SharedPreferences.getInstance().timeout(
       const Duration(seconds: 5),
       onTimeout: () {
         throw TimeoutException('SharedPreferences init timeout');
@@ -170,7 +166,7 @@ Future<void> main() async {
   }
 
   // Finally, run the app with guaranteed non-null prefs
-  runApp(MyApp(prefs: _prefs ?? await SharedPreferences.getInstance()));
+  runApp(MyApp(prefs: prefs ?? await SharedPreferences.getInstance()));
 }
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -184,7 +180,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 
 class MyApp extends StatefulWidget {
   final SharedPreferences prefs;
-  const MyApp({Key? key, required this.prefs}) : super(key: key);
+  const MyApp({super.key, required this.prefs});
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -363,7 +359,7 @@ class _MyAppState extends State<MyApp> {
     Setting response;
     try {
       response =
-          await RestClient(await RetroApi2().dioData2()).settingRequest();
+          await RestClient(RetroApi2().dioData2()).settingRequest();
       if (SharedPreferenceHelper.getBoolean(Preferences.is_logged_in) == true) {
         if (response.data!.stripeSecretKey != null) {
           SharedPreferenceHelper.setString(
@@ -399,6 +395,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  @override
   void didChangeDependencies() {
     getLocale().then((local) => {
           if (mounted)

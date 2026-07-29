@@ -6,12 +6,12 @@ class AppointmentHistory {
 
   AppointmentHistory.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -29,26 +29,26 @@ class Data {
     if (json['upcoming_appointment'] != null) {
       upcomingAppointment = <UpcomingAppointment>[];
       json['upcoming_appointment'].forEach((v) {
-        upcomingAppointment!.add(new UpcomingAppointment.fromJson(v));
+        upcomingAppointment!.add(UpcomingAppointment.fromJson(v));
       });
     }
     if (json['past_appointment'] != null) {
       pastAppointment = <PastAppointment>[];
       json['past_appointment'].forEach((v) {
-        pastAppointment!.add(new PastAppointment.fromJson(v));
+        pastAppointment!.add(PastAppointment.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.upcomingAppointment != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (upcomingAppointment != null) {
       data['upcoming_appointment'] =
-          this.upcomingAppointment!.map((v) => v.toJson()).toList();
+          upcomingAppointment!.map((v) => v.toJson()).toList();
     }
-    if (this.pastAppointment != null) {
+    if (pastAppointment != null) {
       data['past_appointment'] =
-          this.pastAppointment!.map((v) => v.toJson()).toList();
+          pastAppointment!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -99,31 +99,31 @@ class UpcomingAppointment {
     doctorName = json['doctor_name'];
     rate = json['rate'];
     review = json['review'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     hospital = json['hospital'] != null
-        ? new Hospital.fromJson(json['hospital'])
+        ? Hospital.fromJson(json['hospital'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['date'] = this.date;
-    data['time'] = this.time;
-    data['user_id'] = this.userId;
-    data['hospital_id'] = this.hospitalId;
-    data['patient_address'] = this.patientAddress;
-    data['patient_name'] = this.patientName;
-    data['appointment_status'] = this.appointmentStatus;
-    data['treatment'] = this.treatment;
-    data['doctor_name'] = this.doctorName;
-    data['rate'] = this.rate;
-    data['review'] = this.review;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['date'] = date;
+    data['time'] = time;
+    data['user_id'] = userId;
+    data['hospital_id'] = hospitalId;
+    data['patient_address'] = patientAddress;
+    data['patient_name'] = patientName;
+    data['appointment_status'] = appointmentStatus;
+    data['treatment'] = treatment;
+    data['doctor_name'] = doctorName;
+    data['rate'] = rate;
+    data['review'] = review;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.hospital != null) {
-      data['hospital'] = this.hospital!.toJson();
+    if (hospital != null) {
+      data['hospital'] = hospital!.toJson();
     }
     return data;
   }
@@ -174,31 +174,31 @@ class PastAppointment {
     doctorName = json['doctor_name'];
     rate = json['rate'];
     review = json['review'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     hospital = json['hospital'] != null
-        ? new Hospital.fromJson(json['hospital'])
+        ? Hospital.fromJson(json['hospital'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['date'] = this.date;
-    data['time'] = this.time;
-    data['user_id'] = this.userId;
-    data['hospital_id'] = this.hospitalId;
-    data['patient_address'] = this.patientAddress;
-    data['patient_name'] = this.patientName;
-    data['appointment_status'] = this.appointmentStatus;
-    data['treatment'] = this.treatment;
-    data['doctor_name'] = this.doctorName;
-    data['rate'] = this.rate;
-    data['review'] = this.review;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['date'] = date;
+    data['time'] = time;
+    data['user_id'] = userId;
+    data['hospital_id'] = hospitalId;
+    data['patient_address'] = patientAddress;
+    data['patient_name'] = patientName;
+    data['appointment_status'] = appointmentStatus;
+    data['treatment'] = treatment;
+    data['doctor_name'] = doctorName;
+    data['rate'] = rate;
+    data['review'] = review;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.hospital != null) {
-      data['hospital'] = this.hospital!.toJson();
+    if (hospital != null) {
+      data['hospital'] = hospital!.toJson();
     }
     return data;
   }
@@ -218,10 +218,10 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['image'] = this.image;
-    data['fullImage'] = this.fullImage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['image'] = image;
+    data['fullImage'] = fullImage;
     return data;
   }
 }
@@ -240,10 +240,10 @@ class Hospital {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['address'] = this.address;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['address'] = address;
     return data;
   }
 }

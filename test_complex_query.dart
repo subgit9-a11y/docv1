@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
 
 void main() async {
@@ -38,7 +37,7 @@ void main() async {
 
     print('\nResponse Preview:');
     print(text != null
-        ? (text.length > 500 ? text.substring(0, 500) + '...' : text)
+        ? (text.length > 500 ? '${text.substring(0, 500)}...' : text)
         : 'No text found in expected keys');
   } on DioException catch (e) {
     if (e.type == DioExceptionType.receiveTimeout) {

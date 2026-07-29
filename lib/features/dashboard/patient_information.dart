@@ -1,5 +1,3 @@
-import 'dart:collection';
-import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,17 +6,7 @@ import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
-import 'package:doctro/features/consultation/videoCall/video_Call.dart';
-import 'package:doctro/models/AllMedicines.dart';
-import 'package:doctro/models/DoctorStatusChange.dart';
-import 'package:doctro/models/appointment_details.dart';
-import 'package:doctro/models/today_appointment.dart';
-import 'package:doctro/network/api_header.dart';
-import 'package:doctro/network/base_model.dart';
-import 'package:doctro/network/network_api.dart';
-import 'package:doctro/network/server_error.dart';
 
-import 'package:doctro/services/astra_service.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/astra_fill_display.dart';
 import 'package:doctro/widgets/osler_button.dart';
@@ -33,17 +21,15 @@ import 'package:doctro/features/consultation/chat/providers/home_provider.dart';
 import 'package:doctro/features/dashboard/view_models/patient_information_view_model.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class patientDetailsScreen extends StatelessWidget {
   final int? id;
 
-  const patientDetailsScreen({Key? key, this.id}) : super(key: key);
+  const patientDetailsScreen({super.key, this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +41,7 @@ class patientDetailsScreen extends StatelessWidget {
 }
 
 class _PatientDetailsScreenBody extends StatefulWidget {
-  const _PatientDetailsScreenBody({Key? key}) : super(key: key);
+  const _PatientDetailsScreenBody();
 
   @override
   _PatientDetailsScreenBodyState createState() =>

@@ -14,13 +14,13 @@ class CancelAppointmentViewModel extends ChangeNotifier {
   String? phone;
   int? subscription;
 
-  List<AppointmentCancel> _cancelAppointmentReq = [];
+  final List<AppointmentCancel> _cancelAppointmentReq = [];
   List<AppointmentCancel> get cancelAppointmentReq => _cancelAppointmentReq;
 
-  List<AppointmentCancel> _searchResult = [];
+  final List<AppointmentCancel> _searchResult = [];
   List<AppointmentCancel> get searchResult => _searchResult;
 
-  List<AppointmentCancel> _userCancel = [];
+  final List<AppointmentCancel> _userCancel = [];
 
   TextEditingController searchController = TextEditingController();
 

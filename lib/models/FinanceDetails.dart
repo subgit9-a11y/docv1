@@ -9,14 +9,14 @@ class FinanceDetails {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data!.add(new PurchaseDetails.fromJson(v));
+        data!.add(PurchaseDetails.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -58,20 +58,20 @@ class PurchaseDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['doctor_id'] = this.doctorId;
-    data['duration'] = this.duration;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    data['payment_type'] = this.paymentType;
-    data['amount'] = this.amount;
-    data['payment_token'] = this.paymentToken;
-    data['payment_status'] = this.paymentStatus;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['doctor_name'] = this.doctorName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['doctor_id'] = doctorId;
+    data['duration'] = duration;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
+    data['payment_type'] = paymentType;
+    data['amount'] = amount;
+    data['payment_token'] = paymentToken;
+    data['payment_status'] = paymentStatus;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['doctor_name'] = doctorName;
     return data;
   }
 }

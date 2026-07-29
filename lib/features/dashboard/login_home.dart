@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -10,13 +9,12 @@ import 'package:doctro/widgets/osler_skeleton.dart';
 import 'package:doctro/features/dashboard/patient_information.dart';
 import 'package:doctro/features/dashboard/view_models/login_home_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class LoginHomeScreen extends StatelessWidget {
   final String? chat;
 
-  const LoginHomeScreen({Key? key, this.chat}) : super(key: key);
+  const LoginHomeScreen({super.key, this.chat});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class LoginHomeScreen extends StatelessWidget {
 }
 
 class _LoginHomeView extends StatefulWidget {
-  const _LoginHomeView({Key? key}) : super(key: key);
+  const _LoginHomeView();
 
   @override
   State<_LoginHomeView> createState() => _LoginHomeViewState();

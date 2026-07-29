@@ -1,7 +1,7 @@
 /// Astra AI Healthcare Models
 ///
 /// Export all Astra-related models for easy importing
-library astra_models;
+library;
 
 export 'patient_model.dart';
 export 'prescription_model.dart';

@@ -11,13 +11,13 @@ class RegistrationSuccessScreen extends StatefulWidget {
   final VoidCallback? onContinue;
 
   const RegistrationSuccessScreen({
-    Key? key,
+    super.key,
     required this.doctorName,
     required this.doctorId,
     required this.email,
     this.subtitle,
     this.onContinue,
-  }) : super(key: key);
+  });
 
   @override
   _RegistrationSuccessScreenState createState() =>

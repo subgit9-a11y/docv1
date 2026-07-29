@@ -30,7 +30,6 @@ import 'package:doctro/models/video_call_history_show_model.dart';
 import 'package:doctro/models/working_hours.dart';
 import 'package:doctro/network/apis.dart';
 import 'package:doctro/features/consultation/videoCall/model/doctorAgoraTokenGenerateModel.dart';
-import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'network_api.g.dart';

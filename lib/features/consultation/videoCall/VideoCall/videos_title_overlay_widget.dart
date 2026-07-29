@@ -8,7 +8,7 @@ class VideoTitleOverlayWidget extends StatefulWidget {
   final Function onClear;
   final Widget widget;
 
-  VideoTitleOverlayWidget({required this.onClear, required this.widget});
+  const VideoTitleOverlayWidget({super.key, required this.onClear, required this.widget});
 
   @override
   _VideoTitleOverlayWidgetState createState() =>
@@ -61,10 +61,11 @@ class _VideoTitleOverlayWidgetState extends State<VideoTitleOverlayWidget> {
         builder: (context, overlayProvider, _) {
       if (overlayProvider.inPipMode != isInPipMode) {
         isInPipMode = overlayProvider.inPipMode;
-        if (isInPipMode)
+        if (isInPipMode) {
           _onPipMode();
-        else
+        } else {
           _onExitPipMode();
+        }
       }
       return AnimatedPositioned(
         duration: Duration(milliseconds: 150),
@@ -75,8 +76,8 @@ class _VideoTitleOverlayWidgetState extends State<VideoTitleOverlayWidget> {
           child: AnimatedContainer(
             height: height,
             width: width,
-            child: widget.widget,
             duration: Duration(milliseconds: 250),
+            child: widget.widget,
           ),
         ),
       );

@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:dio/dio.dart';
-import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/network/apis.dart';
-import 'package:doctro/models/astra/astra_models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http_parser/http_parser.dart';
 

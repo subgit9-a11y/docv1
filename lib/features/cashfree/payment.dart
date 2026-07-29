@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/common_function.dart';
@@ -13,16 +12,16 @@ import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:doctro/features/authentication/SignIn.dart';
-import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:doctro/services/astra_api_service.dart';
-import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PaymentScreen extends StatefulWidget {
+  const PaymentScreen({super.key});
+
   @override
   _PaymentScreen createState() => _PaymentScreen();
 }
@@ -470,7 +469,7 @@ class _PaymentScreen extends State<PaymentScreen> {
           sum += double.parse(paymentsRequest[i].amount!);
         }
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;
@@ -492,7 +491,7 @@ class _PaymentScreen extends State<PaymentScreen> {
           sum += double.parse(paymentsRequest[i].amount!);
         }
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;
@@ -543,13 +542,13 @@ class _PaymentScreen extends State<PaymentScreen> {
       return;
     }
 
-    _userPayment.forEach((payment) {
+    for (var payment in _userPayment) {
       if ((payment.user?.name ?? "")
           .toLowerCase()
           .contains(text.toLowerCase())) {
         _searchResult.add(payment);
       }
-    });
+    }
     setState(() {});
   }
 

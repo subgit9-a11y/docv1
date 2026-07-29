@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show Supabase;
 import 'package:provider/provider.dart';
-import 'package:dio/dio.dart';
 import 'dart:io' show Platform;
 
 import 'package:doctro/features/consultation/chat/providers/auth_provider.dart'
@@ -12,7 +11,6 @@ import 'package:doctro/core/constants/common_function.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/models/login.dart';
-import 'package:doctro/models/otp_verify.dart';
 import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
@@ -22,7 +20,6 @@ import 'package:doctro/models/setting.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/features/authentication/signup.dart';
-import 'package:doctro/features/authentication/phoneverification.dart';
 
 class SignInViewModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -411,7 +408,7 @@ class SignInViewModel extends ChangeNotifier {
       } else {
         OslerToast.error(context, "Backend Login Failed");
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       CommonFunction.hideDialog(context);
       // Fallback message for Missing Endpoint (404)
       OslerToast.error(context,
@@ -425,7 +422,7 @@ class SignInViewModel extends ChangeNotifier {
     Setting response;
     try {
       response =
-          await RestClient(await RetroApi2().dioData2()).settingRequest();
+          await RestClient(RetroApi2().dioData2()).settingRequest();
 
       if (SharedPreferenceHelper.getBoolean(Preferences.is_logged_in) == true) {
         if (response.data!.stripeSecretKey != null) {

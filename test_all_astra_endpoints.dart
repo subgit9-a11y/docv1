@@ -104,7 +104,7 @@ void main() async {
         // Print snippet of response
         String snippet = responseBody;
         if (snippet.length > 200) {
-          snippet = snippet.substring(0, 200) + "...";
+          snippet = "${snippet.substring(0, 200)}...";
         }
         print('Response Snippet: $snippet\n');
         successCount++;

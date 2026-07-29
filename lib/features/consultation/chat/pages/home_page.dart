@@ -22,7 +22,7 @@ import '../widgets/widgets.dart';
 import 'pages.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State createState() => HomePageState();
@@ -39,7 +39,7 @@ class HomePageState extends State<HomePage> {
   var lastMessage;
 
   int _limit = 20;
-  int _limitIncrement = 20;
+  final int _limitIncrement = 20;
 
   bool isLoading = false;
 
@@ -171,10 +171,40 @@ class HomePageState extends State<HomePage> {
         return const SizedBox.shrink();
       } else {
         return Container(
+          margin: const EdgeInsets.only(bottom: 10, left: 5, right: 5),
           child: TextButton(
+            onPressed: () {
+              if (Utilities.isKeyboardShowing()) {
+                Utilities.closeKeyboard(context);
+              }
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    peerId: userChat.id,
+                    peerAvatar: userChat.photoUrl,
+                    peerNickname: userChat.nickname,
+                    token: userChat.token,
+                    isNavigate: 'chatHome',
+                  ),
+                ),
+              );
+            },
+            style: ButtonStyle(
+              backgroundColor:
+                  WidgetStateProperty.all<Color>(ColorConstants.greyColor2),
+              shape: WidgetStateProperty.all<OutlinedBorder>(
+                const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
             child: Row(
               children: <Widget>[
                 Material(
+                  borderRadius: const BorderRadius.all(Radius.circular(25)),
+                  clipBehavior: Clip.hardEdge,
                   child: userChat.photoUrl.isNotEmpty
                       ? Image.network(
                           userChat.photoUrl,
@@ -214,69 +244,39 @@ class HomePageState extends State<HomePage> {
                           size: 50,
                           color: ColorConstants.greyColor,
                         ),
-                  borderRadius: const BorderRadius.all(Radius.circular(25)),
-                  clipBehavior: Clip.hardEdge,
                 ),
                 Flexible(
                   child: Container(
+                    margin: const EdgeInsets.only(left: 20),
                     child: Column(
                       children: <Widget>[
                         Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.fromLTRB(10, 0, 0, 5),
                           child: Text(
                             userChat.nickname,
                             maxLines: 1,
                             style:
                                 TextStyle(color: ColorConstants.primaryColor),
                           ),
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.fromLTRB(10, 0, 0, 5),
                         ),
                         Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                           child: Text(
                             userChat.content,
                             maxLines: 1,
                             style:
                                 TextStyle(color: ColorConstants.primaryColor),
                           ),
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                         )
                       ],
                     ),
-                    margin: const EdgeInsets.only(left: 20),
                   ),
                 ),
               ],
             ),
-            onPressed: () {
-              if (Utilities.isKeyboardShowing()) {
-                Utilities.closeKeyboard(context);
-              }
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatPage(
-                    peerId: userChat.id,
-                    peerAvatar: userChat.photoUrl,
-                    peerNickname: userChat.nickname,
-                    token: userChat.token,
-                    isNavigate: 'chatHome',
-                  ),
-                ),
-              );
-            },
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(ColorConstants.greyColor2),
-              shape: MaterialStateProperty.all<OutlinedBorder>(
-                const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-              ),
-            ),
           ),
-          margin: const EdgeInsets.only(bottom: 10, left: 5, right: 5),
         );
       }
     } else {

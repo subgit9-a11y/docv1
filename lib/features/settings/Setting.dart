@@ -14,6 +14,8 @@ import 'changeLanguage.dart';
 import 'view_models/settings_view_model.dart';
 
 class SettingScreen extends StatefulWidget {
+  const SettingScreen({super.key});
+
   @override
   _SettingScreenState createState() => _SettingScreenState();
 }

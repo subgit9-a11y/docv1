@@ -7,17 +7,17 @@ class DoctorProfile {
 
   DoctorProfile.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     msg = json['msg'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['msg'] = this.msg;
+    data['msg'] = msg;
     return data;
   }
 }
@@ -136,49 +136,49 @@ class Data {
     channelName = json['channel_name'];
     fullImage = json['fullImage'];
     hospital = json['hospital'] != null
-        ? new Hospital.fromJson(json['hospital'])
+        ? Hospital.fromJson(json['hospital'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['treatment_id'] = this.treatmentId;
-    data['category_id'] = this.categoryId;
-    data['expertise_id'] = this.expertiseId;
-    data['hospital_id'] = this.hospitalId;
-    data['user_id'] = this.userId;
-    data['image'] = this.image;
-    data['desc'] = this.desc;
-    data['education'] = this.education;
-    data['certificate'] = this.certificate;
-    data['appointment_fees'] = this.appointmentFees;
-    data['video_appointment_fees'] = this.videoAppointmentFees;
-    data['experience'] = this.experience;
-    data['timeslot'] = this.timeslot;
-    data['name'] = this.name;
-    data['dob'] = this.dob;
-    data['gender'] = this.gender;
-    data['start_time'] = this.startTime;
-    data['end_time'] = this.endTime;
-    data['since'] = this.since;
-    data['status'] = this.status;
-    data['based_on'] = this.basedOn;
-    data['is_popular'] = this.isPopular;
-    data['commission_amount'] = this.commissionAmount;
-    data['custom_timeslot'] = this.customTimeslot;
-    data['is_filled'] = this.isFilled;
-    data['patient_vcall '] = this.patientVCall;
-    data['language'] = this.language;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['agora_token'] = this.agoraToken;
-    data['channel_name'] = this.channelName;
-    data['fullImage'] = this.fullImage;
-    if (this.hospital != null) {
-      data['hospital'] = this.hospital!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['treatment_id'] = treatmentId;
+    data['category_id'] = categoryId;
+    data['expertise_id'] = expertiseId;
+    data['hospital_id'] = hospitalId;
+    data['user_id'] = userId;
+    data['image'] = image;
+    data['desc'] = desc;
+    data['education'] = education;
+    data['certificate'] = certificate;
+    data['appointment_fees'] = appointmentFees;
+    data['video_appointment_fees'] = videoAppointmentFees;
+    data['experience'] = experience;
+    data['timeslot'] = timeslot;
+    data['name'] = name;
+    data['dob'] = dob;
+    data['gender'] = gender;
+    data['start_time'] = startTime;
+    data['end_time'] = endTime;
+    data['since'] = since;
+    data['status'] = status;
+    data['based_on'] = basedOn;
+    data['is_popular'] = isPopular;
+    data['commission_amount'] = commissionAmount;
+    data['custom_timeslot'] = customTimeslot;
+    data['is_filled'] = isFilled;
+    data['patient_vcall '] = patientVCall;
+    data['language'] = language;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['agora_token'] = agoraToken;
+    data['channel_name'] = channelName;
+    data['fullImage'] = fullImage;
+    if (hospital != null) {
+      data['hospital'] = hospital!.toJson();
     }
     return data;
   }
@@ -198,10 +198,10 @@ class Hospital {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['address'] = this.address;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['address'] = address;
     return data;
   }
 }

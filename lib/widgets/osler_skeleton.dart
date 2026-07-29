@@ -8,11 +8,11 @@ class OslerSkeleton extends StatelessWidget {
   final double borderRadius;
 
   const OslerSkeleton({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     this.borderRadius = 8.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class OslerSkeleton extends StatelessWidget {
 }
 
 class OslerCardSkeleton extends StatelessWidget {
-  const OslerCardSkeleton({Key? key}) : super(key: key);
+  const OslerCardSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {

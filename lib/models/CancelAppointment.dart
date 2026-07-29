@@ -9,14 +9,14 @@ class CancelAppointment {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data!.add(new AppointmentCancel.fromJson(v));
+        data!.add(AppointmentCancel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -55,21 +55,21 @@ class AppointmentCancel {
     patientName = json['patient_name'];
     age = json['age'];
     amount = json['amount'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['date'] = this.date;
-    data['time'] = this.time;
-    data['user_id'] = this.userId;
-    data['patient_address'] = this.patientAddress;
-    data['patient_name'] = this.patientName;
-    data['age'] = this.age;
-    data['amount'] = this.amount;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['date'] = date;
+    data['time'] = time;
+    data['user_id'] = userId;
+    data['patient_address'] = patientAddress;
+    data['patient_name'] = patientName;
+    data['age'] = age;
+    data['amount'] = amount;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }
@@ -89,10 +89,10 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['image'] = this.image;
-    data['fullImage'] = this.fullImage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['image'] = image;
+    data['fullImage'] = fullImage;
     return data;
   }
 }

@@ -16,7 +16,7 @@ class LoginResponse {
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     msg = json['msg'];
     token = json['token'];
     refreshToken = json['refresh_token'];
@@ -24,21 +24,21 @@ class LoginResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    if (this.token != null) {
-      data['token'] = this.token;
+    if (token != null) {
+      data['token'] = token;
     }
-    if (this.refreshToken != null) {
-      data['refresh_token'] = this.refreshToken;
+    if (refreshToken != null) {
+      data['refresh_token'] = refreshToken;
     }
-    if (this.expiresIn != null) {
-      data['expires_in'] = this.expiresIn;
+    if (expiresIn != null) {
+      data['expires_in'] = expiresIn;
     }
-    data['msg'] = this.msg;
+    data['msg'] = msg;
     return data;
   }
 }
@@ -98,30 +98,30 @@ class Data {
     if (json['roles'] != null) {
       roles = [];
       json['roles'].forEach((v) {
-        roles!.add(new Roles.fromJson(v));
+        roles!.add(Roles.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['phone_code'] = this.phoneCode;
-    data['verify'] = this.verify;
-    data['otp'] = this.otp;
-    data['image'] = this.image;
-    data['device_token'] = this.deviceToken;
-    data['language'] = this.language;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['is_filled'] = this.isFilled;
-    data['token'] = this.token;
-    data['fullImage'] = this.fullImage;
-    if (this.roles != null) {
-      data['roles'] = this.roles!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['phone_code'] = phoneCode;
+    data['verify'] = verify;
+    data['otp'] = otp;
+    data['image'] = image;
+    data['device_token'] = deviceToken;
+    data['language'] = language;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['is_filled'] = isFilled;
+    data['token'] = token;
+    data['fullImage'] = fullImage;
+    if (roles != null) {
+      data['roles'] = roles!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -149,18 +149,18 @@ class Roles {
     guardName = json['guard_name'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
+    pivot = json['pivot'] != null ? Pivot.fromJson(json['pivot']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['guard_name'] = this.guardName;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.pivot != null) {
-      data['pivot'] = this.pivot!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['guard_name'] = guardName;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (pivot != null) {
+      data['pivot'] = pivot!.toJson();
     }
     return data;
   }
@@ -180,10 +180,10 @@ class Pivot {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['model_id'] = this.modelId;
-    data['role_id'] = this.roleId;
-    data['model_type'] = this.modelType;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['model_id'] = modelId;
+    data['role_id'] = roleId;
+    data['model_type'] = modelType;
     return data;
   }
 }

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'view_models/change_password_view_model.dart';
 
 class ChangePassword extends StatefulWidget {
-  const ChangePassword({Key? key}) : super(key: key);
+  const ChangePassword({super.key});
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();

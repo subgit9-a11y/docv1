@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 
 class LoadingView extends StatefulWidget {
-  const LoadingView({Key? key}) : super(key: key);
+  const LoadingView({super.key});
 
   @override
   _LoadingViewState createState() => _LoadingViewState();

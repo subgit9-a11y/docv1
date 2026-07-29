@@ -8,7 +8,7 @@ class VideoOverlayWidget extends StatefulWidget {
   final Function? onClear;
   final Widget widget;
 
-  VideoOverlayWidget({this.onClear, required this.widget});
+  const VideoOverlayWidget({super.key, this.onClear, required this.widget});
 
   @override
   _VideoOverlayWidgetState createState() => _VideoOverlayWidgetState();
@@ -66,10 +66,11 @@ class _VideoOverlayWidgetState extends State<VideoOverlayWidget> {
         builder: (context, overlayProvider, _) {
       if (overlayProvider.inPipMode != isInPipMode) {
         isInPipMode = overlayProvider.inPipMode;
-        if (isInPipMode)
+        if (isInPipMode) {
           _onPipMode();
-        else
+        } else {
           _onExitPipMode();
+        }
       }
       return AnimatedPositioned(
         duration: Duration(milliseconds: 150),
@@ -100,8 +101,8 @@ class _VideoOverlayWidgetState extends State<VideoOverlayWidget> {
           child: AnimatedContainer(
             height: height,
             width: width,
-            child: widget.widget,
             duration: Duration(milliseconds: 250),
+            child: widget.widget,
           ),
         ),
       );

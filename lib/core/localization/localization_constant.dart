@@ -21,30 +21,30 @@ Future<Locale> setLocale(String languageCode) async {
 }
 
 Locale _locale(String languageCode) {
-  Locale _temp;
+  Locale temp;
   switch (languageCode) {
     case ENGLISH:
-      _temp = Locale(languageCode, 'US');
+      temp = Locale(languageCode, 'US');
       break;
     case TAMIL:
-      _temp = Locale(languageCode, 'IN');
+      temp = Locale(languageCode, 'IN');
       break;
     case HINDI:
-      _temp = Locale(languageCode, 'IN');
+      temp = Locale(languageCode, 'IN');
       break;
     case MALAYALAM:
-      _temp = Locale(languageCode, 'IN');
+      temp = Locale(languageCode, 'IN');
       break;
     case TELUGU:
-      _temp = Locale(languageCode, 'IN');
+      temp = Locale(languageCode, 'IN');
       break;
     case KANNADA:
-      _temp = Locale(languageCode, 'IN');
+      temp = Locale(languageCode, 'IN');
       break;
     default:
-      _temp = Locale(ENGLISH, 'US');
+      temp = Locale(ENGLISH, 'US');
   }
-  return _temp;
+  return temp;
 }
 
 Future<Locale> getLocale() async {

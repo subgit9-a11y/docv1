@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:doctro/features/consultation/videoCall/VideoCall/overlay_service.dart';
@@ -85,7 +84,7 @@ class VideoCallViewModel extends ChangeNotifier {
         await initAgora(context, callEnd, id, flag);
       }
       notifyListeners();
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;
@@ -111,7 +110,7 @@ class VideoCallViewModel extends ChangeNotifier {
             context, "Failed to call the patient! Unable to connect!");
         if (context.mounted) Navigator.pop(context);
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       OslerToast.error(
           context, "Failed to call the patient! Unable to connect!");
       if (context.mounted) Navigator.pop(context);
@@ -129,11 +128,9 @@ class VideoCallViewModel extends ChangeNotifier {
           statuses[Permission.microphone] != PermissionStatus.granted) {
         throw Exception('Camera or Microphone permission not granted');
       }
-      engine = await createAgoraRtcEngine();
+      engine = createAgoraRtcEngine();
       await engine!.initialize(RtcEngineContext(
-          appId: appId != null
-              ? appId
-              : SharedPreferenceHelper.getString(Preferences.agoraAppId)));
+          appId: appId ?? SharedPreferenceHelper.getString(Preferences.agoraAppId)));
       isEngineInitialized = true;
       await engine!.enableVideo();
       await engine!.setVideoEncoderConfiguration(
@@ -228,7 +225,7 @@ class VideoCallViewModel extends ChangeNotifier {
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .videoCallHistoryAddRequest(body);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;

@@ -3,7 +3,7 @@ import 'package:dio/dio.dart' hide Headers;
 
 class ServerError implements Exception {
   int? _errorCode;
-  String _errorMessage = "";
+  final String _errorMessage = "";
 
   ServerError.withError({error}) {
     _handleError(error);
@@ -32,16 +32,16 @@ class ServerError implements Exception {
       if (error.response?.data['msg'] != null) {
         // print(error.response!.data['msg'].toString());
         return CommonFunction.toastMessage(
-            '${error.response!.data['msg'].toString()}');
+            error.response!.data['msg'].toString());
       } else if (error.response?.data['message'] != null) {
         // print(error.response!.data['message'].toString());
         return CommonFunction.toastMessage(
-            '${error.response!.data['message'].toString()}');
+            error.response!.data['message'].toString());
       }
     } else if (error.type == DioExceptionType.unknown) {
       // print(error.response!.data['msg'].toString());
       return CommonFunction.toastMessage(
-          '${error.response!.data['msg'].toString()}');
+          error.response!.data['msg'].toString());
     } else if (error.type == DioExceptionType.cancel) {
       // print(error.response!.data['msg'].toString());
       return CommonFunction.toastMessage('Request was cancelled');

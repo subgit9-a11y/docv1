@@ -44,7 +44,7 @@ class _LanguageLocalizationDelegate
 
   @override
   Future<LanguageLocalization> load(Locale locale) async {
-    LanguageLocalization localization = new LanguageLocalization(locale);
+    LanguageLocalization localization = LanguageLocalization(locale);
     await localization.load();
     return localization;
   }

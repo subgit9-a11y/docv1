@@ -91,7 +91,7 @@ class PatientInformationViewModel extends ChangeNotifier {
       }
 
       // 2. Fallback: If no data or loading by ID failed, try searching by phone in Astra
-      if ((data == null || data.isEmpty) &&
+      if ((data.isEmpty) &&
           targetPhone != null &&
           targetPhone.isNotEmpty) {
         // Clean phone number (remove +, spaces, etc. for search)
@@ -140,7 +140,7 @@ class PatientInformationViewModel extends ChangeNotifier {
       notifyListeners();
 
       return BaseModel()..data = response;
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
   }
@@ -160,7 +160,7 @@ class PatientInformationViewModel extends ChangeNotifier {
       notifyListeners();
 
       return BaseModel()..data = response;
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
   }
@@ -203,7 +203,7 @@ class PatientInformationViewModel extends ChangeNotifier {
 
       // After loading appointment details, refresh Astra Fill data with resolved IDs
       loadAstraFillData(patientId: userId.toString(), searchPhone: phoneNo);
-    } catch (error, stacktrace) {
+    } catch (error) {
       isLoading = false;
       notifyListeners();
     }

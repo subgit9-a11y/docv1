@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'view_models/videocallhistory_view_model.dart';
 
 class VideoCallHistory extends StatefulWidget {
-  const VideoCallHistory({Key? key}) : super(key: key);
+  const VideoCallHistory({super.key});
 
   @override
   _VideoCallHistoryState createState() => _VideoCallHistoryState();
@@ -70,7 +70,7 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
                               final callData = viewModel.callHistory[index];
                               final now = Duration(
                                   seconds: int.parse(callData.duration ?? '0'));
-                              String _printDuration(Duration duration) {
+                              String printDuration(Duration duration) {
                                 String twoDigits(int n) =>
                                     n.toString().padLeft(2, "0");
                                 String twoDigitMinutes =
@@ -81,7 +81,7 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
                               }
 
                               String duration = "";
-                              String str = _printDuration(now);
+                              String str = printDuration(now);
                               List<String> parts = str.split(":");
                               String hourPart = parts[0].trim();
                               String minuteType = parts[1].trim();

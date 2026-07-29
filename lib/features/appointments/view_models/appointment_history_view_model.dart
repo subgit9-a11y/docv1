@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:doctro/models/appointment_history.dart';
 import 'package:doctro/network/api_header.dart';
-import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:flutter/material.dart';

@@ -16,9 +16,9 @@ class EducationCertificate {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['certificate'] = this.certificate;
-    data['certificate_year'] = this._certificateYear;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['certificate'] = certificate;
+    data['certificate_year'] = _certificateYear;
     return data;
   }
 }

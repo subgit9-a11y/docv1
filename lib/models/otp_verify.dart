@@ -7,17 +7,17 @@ class OtpVerify {
 
   OtpVerify.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? new OtpData.fromJson(json['data']) : null;
+    data = json['data'] != null ? OtpData.fromJson(json['data']) : null;
     msg = json['msg'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['msg'] = this.msg;
+    data['msg'] = msg;
     return data;
   }
 }
@@ -88,26 +88,26 @@ class OtpData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['phone'] = this.phone;
-    data['phone_code'] = this.phoneCode;
-    data['verify'] = this.verify;
-    data['otp'] = this.otp;
-    data['dob'] = this.dob;
-    data['gender'] = this.gender;
-    data['image'] = this.image;
-    data['status'] = this.status;
-    data['doctor_id'] = this.doctorId;
-    data['device_token'] = this.deviceToken;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['token'] = this.token;
-    data['fullImage'] = this.fullImage;
-    data['is_filled'] = this.isFilled;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['phone'] = phone;
+    data['phone_code'] = phoneCode;
+    data['verify'] = verify;
+    data['otp'] = otp;
+    data['dob'] = dob;
+    data['gender'] = gender;
+    data['image'] = image;
+    data['status'] = status;
+    data['doctor_id'] = doctorId;
+    data['device_token'] = deviceToken;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['token'] = token;
+    data['fullImage'] = fullImage;
+    data['is_filled'] = isFilled;
     return data;
   }
 }

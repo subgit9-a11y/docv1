@@ -7,17 +7,17 @@ class AppointmentDetails {
 
   AppointmentDetails.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     msg = json['msg'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['msg'] = this.msg;
+    data['msg'] = msg;
     return data;
   }
 }
@@ -105,42 +105,42 @@ class Data {
     pdf = json['pdf'];
     rate = json['rate'];
     review = json['review'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     isInsured = json['is_insured'];
     policyInsurerName = json['policy_insurer_name'];
     policyNumber = json['policy_number'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['appointment_id'] = this.appointmentId;
-    data['user_id'] = this.userId;
-    data['doctor_id'] = this.doctorId;
-    data['amount'] = this.amount;
-    data['payment_type'] = this.paymentType;
-    data['appointment_for'] = this.appointmentFor;
-    data['appointment_type'] = this.appointmentType;
-    data['patient_name'] = this.patientName;
-    data['age'] = this.age;
-    data['report_image'] = this.reportImage;
-    data['drug_effect'] = this.drugEffect;
-    data['patient_address'] = this.patientAddress;
-    data['phone_no'] = this.phoneNo;
-    data['date'] = this.date;
-    data['time'] = this.time;
-    data['payment_status'] = this.paymentStatus;
-    data['appointment_status'] = this.appointmentStatus;
-    data['illness_information'] = this.illnessInformation;
-    data['note'] = this.note;
-    data['pdf'] = this.pdf;
-    data['rate'] = this.rate;
-    data['review'] = this.review;
-    data['is_insured'] = this.isInsured;
-    data['policy_insurer_name'] = this.policyInsurerName;
-    data['policy_number'] = this.policyNumber;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['appointment_id'] = appointmentId;
+    data['user_id'] = userId;
+    data['doctor_id'] = doctorId;
+    data['amount'] = amount;
+    data['payment_type'] = paymentType;
+    data['appointment_for'] = appointmentFor;
+    data['appointment_type'] = appointmentType;
+    data['patient_name'] = patientName;
+    data['age'] = age;
+    data['report_image'] = reportImage;
+    data['drug_effect'] = drugEffect;
+    data['patient_address'] = patientAddress;
+    data['phone_no'] = phoneNo;
+    data['date'] = date;
+    data['time'] = time;
+    data['payment_status'] = paymentStatus;
+    data['appointment_status'] = appointmentStatus;
+    data['illness_information'] = illnessInformation;
+    data['note'] = note;
+    data['pdf'] = pdf;
+    data['rate'] = rate;
+    data['review'] = review;
+    data['is_insured'] = isInsured;
+    data['policy_insurer_name'] = policyInsurerName;
+    data['policy_number'] = policyNumber;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }
@@ -160,10 +160,10 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['image'] = this.image;
-    data['fullImage'] = this.fullImage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['image'] = image;
+    data['fullImage'] = fullImage;
     return data;
   }
 }

@@ -15,12 +15,12 @@ class CommonFunction {
         return Dialog(
           child: Container(
             padding: EdgeInsets.all(20),
-            child: new Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                new OslerLoader(),
+                OslerLoader(),
                 SizedBox(width: 20),
-                new Text(
+                Text(
                     getTranslated(context, AppString.please_wait).toString()),
               ],
             ),

@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ScheduleTimings extends StatefulWidget {
-  const ScheduleTimings({Key? key}) : super(key: key);
+  const ScheduleTimings({super.key});
 
   @override
   _ScheduleTimingsState createState() => _ScheduleTimingsState();
@@ -735,7 +735,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
       setState(() {
         workingReq.addAll(response.data!);
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;
@@ -763,7 +763,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
           .updateTimingRequest(body);
       doctorWorkingHoursFunction();
       OslerToast.success(context, response.msg!);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;
@@ -772,7 +772,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
 
 class SwitchScreen extends StatefulWidget {
   final int? checkStatus;
-  const SwitchScreen(this.checkStatus, {Key? key}) : super(key: key);
+  const SwitchScreen(this.checkStatus, {super.key});
 
   @override
   _SwitchScreenState createState() => _SwitchScreenState();
@@ -817,7 +817,7 @@ class _SwitchScreenState extends State<SwitchScreen> {
           child: Switch(
             onChanged: toggleSwitch,
             value: isSwitched,
-            activeColor: Colors.white,
+            activeThumbColor: Colors.white,
             activeTrackColor: AyurezeTheme.healingGreen50,
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: AyurezeTheme.remoteRed50,

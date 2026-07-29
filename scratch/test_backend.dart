@@ -31,7 +31,7 @@ Future<void> main() async {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         print("Result: ✅ SUCCESS");
         print(
-            "Data: ${responseBody.length > 200 ? responseBody.substring(0, 200) + '...' : responseBody}");
+            "Data: ${responseBody.length > 200 ? '${responseBody.substring(0, 200)}...' : responseBody}");
       } else {
         print("Result: ⚠️ FAILED (Expected with missing Doctor Auth Token)");
         print("Data: $responseBody");

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -62,7 +61,7 @@ class AuthProvider extends ChangeNotifier {
           .where(FirestoreConstants.id, isEqualTo: user.uid)
           .get();
       final List<DocumentSnapshot> documents = result.docs;
-      if (documents.length == 0) {
+      if (documents.isEmpty) {
         firebaseFirestore
             .collection(FirestoreConstants.pathUserCollection)
             .doc(user.uid)
@@ -96,7 +95,7 @@ class AuthProvider extends ChangeNotifier {
       _status = Status.authenticated;
       notifyListeners();
       return check = true;
-    } on FirebaseAuthException catch (signUpError) {
+    } on FirebaseAuthException {
       _status = Status.authenticateError;
       notifyListeners();
       return check = false;
@@ -138,7 +137,7 @@ class AuthProvider extends ChangeNotifier {
               .where(FirestoreConstants.id, isEqualTo: user.uid)
               .get();
           final List<DocumentSnapshot> documents = result.docs;
-          if (documents.length == 0) {
+          if (documents.isEmpty) {
             firebaseFirestore
                 .collection(FirestoreConstants.pathUserCollection)
                 .doc(user.uid)

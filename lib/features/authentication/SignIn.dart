@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:doctro/features/authentication/view_models/signin_view_model.dart';
 
 class SignIn extends StatelessWidget {
-  const SignIn({Key? key}) : super(key: key);
+  const SignIn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class SignIn extends StatelessWidget {
 }
 
 class SignInView extends StatefulWidget {
-  const SignInView({Key? key}) : super(key: key);
+  const SignInView({super.key});
 
   @override
   _SignInViewState createState() => _SignInViewState();
@@ -388,10 +388,12 @@ class _SignInViewState extends State<SignInView>
                                                   color: AyurezeTheme
                                                       .healingGreen100),
                                               validator: (String? value) {
-                                                if (value!.isEmpty)
+                                                if (value!.isEmpty) {
                                                   return "Please enter phone number";
-                                                if (value.length < 8)
+                                                }
+                                                if (value.length < 8) {
                                                   return "Please enter a valid phone number";
+                                                }
                                                 return null;
                                               },
                                             ),
@@ -411,10 +413,12 @@ class _SignInViewState extends State<SignInView>
                                               color:
                                                   AyurezeTheme.healingGreen100),
                                           validator: (String? value) {
-                                            if (value!.isEmpty)
+                                            if (value!.isEmpty) {
                                               return "Please enter OTP code";
-                                            if (value.length != 6)
+                                            }
+                                            if (value.length != 6) {
                                               return "OTP must be 6 digits";
+                                            }
                                             return null;
                                           },
                                         ),

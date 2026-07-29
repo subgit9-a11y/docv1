@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/services/astra_api_service.dart';
-import 'package:doctro/theme/ayureze_theme.dart';
 
 /// Widget to display Astra Fill health intake records submitted by patient
 /// This shows symptoms, vitals, medical history that patient filled in their app
@@ -10,10 +9,10 @@ class AstraFillDisplayWidget extends StatefulWidget {
   final Map<String, dynamic>? preloadedData;
 
   const AstraFillDisplayWidget({
-    Key? key,
+    super.key,
     required this.patientId,
     this.preloadedData,
-  }) : super(key: key);
+  });
 
   @override
   _AstraFillDisplayWidgetState createState() => _AstraFillDisplayWidgetState();
@@ -540,8 +539,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
 class AstraFillCompactWidget extends StatelessWidget {
   final Map<String, dynamic>? astraFillData;
 
-  const AstraFillCompactWidget({Key? key, this.astraFillData})
-      : super(key: key);
+  const AstraFillCompactWidget({super.key, this.astraFillData});
 
   @override
   Widget build(BuildContext context) {
@@ -593,15 +591,15 @@ class AstraFillCompactWidget extends StatelessWidget {
                   ),
               ],
             ),
-            if (symptoms != null) ...[
-              SizedBox(height: 8),
-              Text(
-                "Symptoms: ${symptoms is List ? symptoms.join(', ') : symptoms.toString()}",
-                style: TextStyle(fontSize: 13, color: AyurezeTheme.textPrimary),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+            ...[
+            SizedBox(height: 8),
+            Text(
+              "Symptoms: ${symptoms.join(', ')}",
+              style: TextStyle(fontSize: 13, color: AyurezeTheme.textPrimary),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
           ],
         ),
       ),

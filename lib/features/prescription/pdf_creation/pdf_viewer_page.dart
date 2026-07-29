@@ -8,7 +8,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 class PdfViewerPage extends StatelessWidget {
   final File? path;
 
-  const PdfViewerPage({Key? key, this.path}) : super(key: key);
+  const PdfViewerPage({super.key, this.path});
 
   @override
   Widget build(BuildContext context) {

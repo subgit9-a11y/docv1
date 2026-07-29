@@ -2,12 +2,9 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:country_picker/country_picker.dart';
-import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/common_function.dart';
-import 'package:doctro/core/constants/prefConstatnt.dart';
-import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/register.dart';
 import 'package:doctro/models/otp_verify.dart';
@@ -15,17 +12,13 @@ import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
-import 'package:doctro/features/authentication/SignIn.dart';
 import 'package:doctro/features/authentication/phoneverification.dart';
-import 'package:doctro/features/authentication/forgotpassword.dart';
 import 'package:doctro/features/authentication/professional_registration_screen.dart';
 import 'package:doctro/features/authentication/registration_success_screen.dart';
 import 'package:doctro/services/supabase_service.dart';
-import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_input.dart';
 import 'package:doctro/widgets/osler_dropdown.dart';
-import 'package:doctro/widgets/osler_alert.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +26,7 @@ import 'package:intl/intl.dart';
 
 class CreateAccount extends StatefulWidget {
   final Map<String, dynamic>? prefillData;
-  CreateAccount({this.prefillData});
+  const CreateAccount({super.key, this.prefillData});
   @override
   _CreateAccountState createState() => _CreateAccountState();
 }
@@ -79,14 +72,14 @@ class _CreateAccountState extends State<CreateAccount> {
 
   final _formkey = GlobalKey<FormState>();
 
-  TextEditingController _name = TextEditingController();
-  TextEditingController _email = TextEditingController();
-  TextEditingController _dob = TextEditingController();
-  TextEditingController _phone = TextEditingController();
-  TextEditingController _password = TextEditingController();
-  TextEditingController _phoneCode = TextEditingController(text: "+91");
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _dob = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _phoneCode = TextEditingController(text: "+91");
 
-  bool _isFaceVerified = false;
+  final bool _isFaceVerified = false;
   String? _capturedImagePath;
   final SupabaseService _supabaseService = SupabaseService();
 
@@ -226,14 +219,16 @@ class _CreateAccountState extends State<CreateAccount> {
                                   size: 20,
                                   color: AyurezeTheme.healingGreen100),
                               validator: (String? value) {
-                                if (value!.isEmpty)
+                                if (value!.isEmpty) {
                                   return getTranslated(context,
                                           AppString.please_enter_phone_no)
                                       .toString();
-                                if (value.length != 10)
+                                }
+                                if (value.length != 10) {
                                   return getTranslated(context,
                                           AppString.please_enter_valid_number)
                                       .toString();
+                                }
                                 return null;
                               },
                             ),
@@ -252,10 +247,11 @@ class _CreateAccountState extends State<CreateAccount> {
                         prefixIcon: Icon(Icons.calendar_month_rounded,
                             size: 20, color: AyurezeTheme.healingGreen100),
                         validator: (String? value) {
-                          if (value!.isEmpty)
+                          if (value!.isEmpty) {
                             return getTranslated(
                                     context, AppString.please_select_birth_date)
                                 .toString();
+                          }
                           return null;
                         },
                       ),
@@ -297,10 +293,11 @@ class _CreateAccountState extends State<CreateAccount> {
                               setState(() => _isHidden = !_isHidden),
                         ),
                         validator: (String? value) {
-                          if (value!.isEmpty)
+                          if (value!.isEmpty) {
                             return getTranslated(
                                     context, AppString.please_enter_password)
                                 .toString();
+                          }
                           return null;
                         },
                       ),
@@ -450,7 +447,7 @@ class _CreateAccountState extends State<CreateAccount> {
           ),
         ),
       );
-    } catch (error, stacktrace) {
+    } catch (error) {
       CommonFunction.hideDialog(context);
       return BaseModel()..setException(ServerError.withError(error: error));
     }
@@ -475,11 +472,10 @@ class _CreateAccountState extends State<CreateAccount> {
               surface: Colors.white,
               onSurface: AyurezeTheme.actionButtonPrimary,
             ),
-            dialogBackgroundColor: Colors.white,
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                   foregroundColor: AyurezeTheme.actionButtonPrimary),
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: Colors.white),
           ),
           child: child!,
         );

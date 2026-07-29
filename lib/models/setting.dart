@@ -7,17 +7,17 @@ class Setting {
 
   Setting.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     msg = json['msg'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['msg'] = this.msg;
+    data['msg'] = msg;
     return data;
   }
 }
@@ -234,75 +234,75 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['business_name'] = this.businessName;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['company_white_logo'] = this.companyWhiteLogo;
-    data['company_logo'] = this.companyLogo;
-    data['company_favicon'] = this.companyFavicon;
-    data['currency_symbol'] = this.currencySymbol;
-    data['currency_symbol'] = this.currencyCode;
-    data['color'] = this.color;
-    data['website_color'] = this.websiteColor;
-    data['cod'] = this.cod;
-    data['stripe'] = this.stripe;
-    data['paypal'] = this.paypal;
-    data['razor'] = this.razor;
-    data['flutterwave'] = this.flutterwave;
-    data['paystack'] = this.paystack;
-    data['stripe_public_key'] = this.stripePublicKey;
-    data['stripe_secret_key'] = this.stripeSecretKey;
-    data['paypal_sandbox_key'] = this.paypalSandboxKey;
-    data['paypal_producation_key'] = this.paypalProducationKey;
-    data['razor_key'] = this.razorKey;
-    data['flutterwave_key'] = this.flutterwaveKey;
-    data['flutterwave_encryption_key'] = this.flutterwaveEncryptionKey;
-    data['paystack_public_key'] = this.paystackPublicKey;
-    data['timezone'] = this.timezone;
-    data['default_commission'] = this.defaultCommission;
-    data['pharamacy_commission'] = this.pharamacyCommission;
-    data['default_base_on'] = this.defaultBaseOn;
-    data['map_key'] = this.mapKey;
-    data['verification'] = this.verification;
-    data['using_mail'] = this.usingMail;
-    data['using_msg'] = this.usingMsg;
-    data['twilio_auth_token'] = this.twilioAuthToken;
-    data['twilio_acc_id'] = this.twilioAccId;
-    data['twilio_phone_no'] = this.twilioPhoneNo;
-    data['mail_mailer'] = this.mailMailer;
-    data['mail_host'] = this.mailHost;
-    data['mail_port'] = this.mailPort;
-    data['mail_username'] = this.mailUsername;
-    data['mail_password'] = this.mailPassword;
-    data['mail_encryption'] = this.mailEncryption;
-    data['mail_from_address'] = this.mailFromAddress;
-    data['mail_from_name'] = this.mailFromName;
-    data['cancel_reason'] = this.cancelReason;
-    data['radius'] = this.radius;
-    data['clinic_content'] = this.clinicContent;
-    data['doctor_content'] = this.doctorContent;
-    data['footer_content'] = this.footerContent;
-    data['doctor_mail'] = this.doctorMail;
-    data['patient_mail'] = this.patientMail;
-    data['patient_notification'] = this.patientNotification;
-    data['doctor_notification'] = this.doctorNotification;
-    data['patient_app_id'] = this.patientAppId;
-    data['patient_auth_key'] = this.patientAuthKey;
-    data['patient_api_key'] = this.patientApiKey;
-    data['doctor_app_id'] = this.doctorAppId;
-    data['license_code'] = this.licenseCode;
-    data['client_name'] = this.clientName;
-    data['license_verify'] = this.licenseVerify;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['agora_app_id'] = this.agoraAppId;
-    data['companyWhite'] = this.companyWhite;
-    data['logo'] = this.logo;
-    data['favicon'] = this.favicon;
-    data['paypal_client_id'] = this.paypalClientId;
-    data['paypal_secret_key'] = this.paypalSecretKey;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['business_name'] = businessName;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['company_white_logo'] = companyWhiteLogo;
+    data['company_logo'] = companyLogo;
+    data['company_favicon'] = companyFavicon;
+    data['currency_symbol'] = currencySymbol;
+    data['currency_symbol'] = currencyCode;
+    data['color'] = color;
+    data['website_color'] = websiteColor;
+    data['cod'] = cod;
+    data['stripe'] = stripe;
+    data['paypal'] = paypal;
+    data['razor'] = razor;
+    data['flutterwave'] = flutterwave;
+    data['paystack'] = paystack;
+    data['stripe_public_key'] = stripePublicKey;
+    data['stripe_secret_key'] = stripeSecretKey;
+    data['paypal_sandbox_key'] = paypalSandboxKey;
+    data['paypal_producation_key'] = paypalProducationKey;
+    data['razor_key'] = razorKey;
+    data['flutterwave_key'] = flutterwaveKey;
+    data['flutterwave_encryption_key'] = flutterwaveEncryptionKey;
+    data['paystack_public_key'] = paystackPublicKey;
+    data['timezone'] = timezone;
+    data['default_commission'] = defaultCommission;
+    data['pharamacy_commission'] = pharamacyCommission;
+    data['default_base_on'] = defaultBaseOn;
+    data['map_key'] = mapKey;
+    data['verification'] = verification;
+    data['using_mail'] = usingMail;
+    data['using_msg'] = usingMsg;
+    data['twilio_auth_token'] = twilioAuthToken;
+    data['twilio_acc_id'] = twilioAccId;
+    data['twilio_phone_no'] = twilioPhoneNo;
+    data['mail_mailer'] = mailMailer;
+    data['mail_host'] = mailHost;
+    data['mail_port'] = mailPort;
+    data['mail_username'] = mailUsername;
+    data['mail_password'] = mailPassword;
+    data['mail_encryption'] = mailEncryption;
+    data['mail_from_address'] = mailFromAddress;
+    data['mail_from_name'] = mailFromName;
+    data['cancel_reason'] = cancelReason;
+    data['radius'] = radius;
+    data['clinic_content'] = clinicContent;
+    data['doctor_content'] = doctorContent;
+    data['footer_content'] = footerContent;
+    data['doctor_mail'] = doctorMail;
+    data['patient_mail'] = patientMail;
+    data['patient_notification'] = patientNotification;
+    data['doctor_notification'] = doctorNotification;
+    data['patient_app_id'] = patientAppId;
+    data['patient_auth_key'] = patientAuthKey;
+    data['patient_api_key'] = patientApiKey;
+    data['doctor_app_id'] = doctorAppId;
+    data['license_code'] = licenseCode;
+    data['client_name'] = clientName;
+    data['license_verify'] = licenseVerify;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['agora_app_id'] = agoraAppId;
+    data['companyWhite'] = companyWhite;
+    data['logo'] = logo;
+    data['favicon'] = favicon;
+    data['paypal_client_id'] = paypalClientId;
+    data['paypal_secret_key'] = paypalSecretKey;
     return data;
   }
 }

@@ -22,13 +22,8 @@ import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
-import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
-import 'package:doctro/widgets/osler_card.dart';
-import 'package:doctro/widgets/osler_input.dart';
 import 'package:doctro/widgets/osler_dropdown.dart';
-import 'package:doctro/widgets/osler_checkbox.dart';
-import 'package:doctro/widgets/osler_modal.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +32,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   _ProfileScreen createState() => _ProfileScreen();
@@ -60,11 +55,11 @@ class _ProfileScreen extends State<ProfileScreen> {
   bool oldPassword = false;
 
   //alertdialog
-  TextEditingController _degree = TextEditingController();
-  TextEditingController _college = TextEditingController();
-  TextEditingController _completeYear = TextEditingController();
-  TextEditingController _certificate = TextEditingController();
-  TextEditingController _year = TextEditingController();
+  final TextEditingController _degree = TextEditingController();
+  final TextEditingController _college = TextEditingController();
+  final TextEditingController _completeYear = TextEditingController();
+  final TextEditingController _certificate = TextEditingController();
+  final TextEditingController _year = TextEditingController();
 
   String callDegree = '';
   String callCollege = '';
@@ -89,21 +84,21 @@ class _ProfileScreen extends State<ProfileScreen> {
   StepperType stepperType = StepperType.horizontal;
 
   //Doctor Profile Controller
-  TextEditingController _pDegree = TextEditingController();
-  TextEditingController _pExperience = TextEditingController();
-  TextEditingController _pStartTime = TextEditingController();
-  TextEditingController _pEndTime = TextEditingController();
-  TextEditingController _pTimeSlot = TextEditingController();
-  TextEditingController _vAppointmentFees = TextEditingController();
-  TextEditingController _aAppointmentFees = TextEditingController();
-  TextEditingController _pName = TextEditingController();
-  TextEditingController _pDob = TextEditingController();
-  TextEditingController _pDesc = TextEditingController();
-  TextEditingController _pCollege = TextEditingController();
-  TextEditingController _pCollegeYear = TextEditingController();
-  TextEditingController _pCertificate = TextEditingController();
-  TextEditingController _pCertificateYear = TextEditingController();
-  TextEditingController _pBasedOn = TextEditingController();
+  final TextEditingController _pDegree = TextEditingController();
+  final TextEditingController _pExperience = TextEditingController();
+  final TextEditingController _pStartTime = TextEditingController();
+  final TextEditingController _pEndTime = TextEditingController();
+  final TextEditingController _pTimeSlot = TextEditingController();
+  final TextEditingController _vAppointmentFees = TextEditingController();
+  final TextEditingController _aAppointmentFees = TextEditingController();
+  final TextEditingController _pName = TextEditingController();
+  final TextEditingController _pDob = TextEditingController();
+  final TextEditingController _pDesc = TextEditingController();
+  final TextEditingController _pCollege = TextEditingController();
+  final TextEditingController _pCollegeYear = TextEditingController();
+  final TextEditingController _pCertificate = TextEditingController();
+  final TextEditingController _pCertificateYear = TextEditingController();
+  final TextEditingController _pBasedOn = TextEditingController();
 
   //Set Open Drawer
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
@@ -362,7 +357,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           steps: <Step>[
                             // Step 1 //
                             Step(
-                              title: new Text(
+                              title: Text(
                                 getTranslated(context,
                                         AppString.profile_personal_information)
                                     .toString(),
@@ -371,7 +366,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               content: GestureDetector(
                                 onTap: () {
                                   FocusScope.of(context)
-                                      .requestFocus(new FocusNode());
+                                      .requestFocus(FocusNode());
                                 },
                                 child: Form(
                                   key: _step1,
@@ -433,9 +428,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                   .please_enter_profile_valid_name)
                                                           .toString();
                                                     } else if (value
-                                                            .trim()
-                                                            .length <
-                                                        1) {
+                                                            .trim().isEmpty) {
                                                       return getTranslated(
                                                               context,
                                                               AppString
@@ -621,9 +614,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                   .please_enter_description)
                                                           .toString();
                                                     } else if (value
-                                                            .trim()
-                                                            .length <
-                                                        1) {
+                                                            .trim().isEmpty) {
                                                       return getTranslated(
                                                               context,
                                                               AppString
@@ -650,7 +641,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                             ),
                             // Step 2 //
                             Step(
-                              title: new Text(
+                              title: Text(
                                 getTranslated(context,
                                         AppString.profile_education_information)
                                     .toString(),
@@ -711,9 +702,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                 .please_enter_degree)
                                                         .toString();
                                                   } else if (value
-                                                          .trim()
-                                                          .length <
-                                                      1) {
+                                                          .trim().isEmpty) {
                                                     return getTranslated(
                                                             context,
                                                             AppString
@@ -773,9 +762,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                 .please_enter_college)
                                                         .toString();
                                                   } else if (value
-                                                          .trim()
-                                                          .length <
-                                                      1) {
+                                                          .trim().isEmpty) {
                                                     return getTranslated(
                                                             context,
                                                             AppString
@@ -814,7 +801,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                     .numberWithOptions(
                                                         decimal: true),
                                                 inputFormatters: [
-                                                  new FilteringTextInputFormatter
+                                                  FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]"))
                                                 ],
                                                 style: TextStyle(
@@ -860,7 +847,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                             AppString
                                                                 .profile_education_certificate)
                                                         .toString()),
-                                                    content: Container(
+                                                    content: SizedBox(
                                                       height: height * 0.3,
                                                       width: width! * 1.0,
                                                       child: Column(
@@ -911,7 +898,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                         decimal:
                                                                             true),
                                                             inputFormatters: [
-                                                              new FilteringTextInputFormatter
+                                                              FilteringTextInputFormatter
                                                                   .allow(RegExp(
                                                                       "[0-9]"))
                                                             ],
@@ -955,22 +942,16 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                               callYear =
                                                                   valueYear;
                                                               addDegree =
-                                                                  _pDegree.text +
-                                                                      "," +
-                                                                      _degree
-                                                                          .text;
+                                                                  "${_pDegree.text},${_degree
+                                                                          .text}";
                                                               addCollege =
-                                                                  _pCollege
-                                                                          .text +
-                                                                      "," +
-                                                                      _college
-                                                                          .text;
+                                                                  "${_pCollege
+                                                                          .text},${_college
+                                                                          .text}";
                                                               addYear =
-                                                                  _pCollegeYear
-                                                                          .text +
-                                                                      "," +
-                                                                      _completeYear
-                                                                          .text;
+                                                                  "${_pCollegeYear
+                                                                          .text},${_completeYear
+                                                                          .text}";
 
                                                               _pDegree.text =
                                                                   addDegree;
@@ -1078,8 +1059,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                       AppString
                                                           .dialog_please_enter_certificate)
                                                   .toString();
-                                            } else if (value.trim().length <
-                                                1) {
+                                            } else if (value.trim().isEmpty) {
                                               return getTranslated(
                                                       context,
                                                       AppString
@@ -1116,7 +1096,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                               TextInputType.numberWithOptions(
                                                   decimal: true),
                                           inputFormatters: [
-                                            new FilteringTextInputFormatter
+                                            FilteringTextInputFormatter
                                                 .allow(RegExp("[0-9]"))
                                           ],
                                           style: TextStyle(
@@ -1163,7 +1143,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                               AppString
                                                                   .profile_dialog_certificate)
                                                           .toString()),
-                                                      content: Container(
+                                                      content: SizedBox(
                                                         height: height * 0.2,
                                                         width: width! * 1.0,
                                                         child: Column(
@@ -1199,7 +1179,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                       decimal:
                                                                           true),
                                                               inputFormatters: [
-                                                                new FilteringTextInputFormatter
+                                                                FilteringTextInputFormatter
                                                                     .allow(
                                                                     RegExp(
                                                                         "[0-9]"))
@@ -1240,17 +1220,13 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                                     certificateYear;
 
                                                                 addCertificate =
-                                                                    _pCertificate
-                                                                            .text +
-                                                                        "," +
-                                                                        _certificate
-                                                                            .text;
+                                                                    "${_pCertificate
+                                                                            .text},${_certificate
+                                                                            .text}";
                                                                 addCertificateYear =
-                                                                    _pCertificateYear
-                                                                            .text +
-                                                                        "," +
-                                                                        _year
-                                                                            .text;
+                                                                    "${_pCertificateYear
+                                                                            .text},${_year
+                                                                            .text}";
                                                                 _pCertificate
                                                                         .text =
                                                                     addCertificate;
@@ -1319,7 +1295,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                             ),
                             // Step 3 //
                             Step(
-                              title: new Text(
+                              title: Text(
                                 getTranslated(context,
                                         AppString.profile_other_information)
                                     .toString(),
@@ -1358,7 +1334,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                     .numberWithOptions(
                                                         decimal: true),
                                                 inputFormatters: [
-                                                  new FilteringTextInputFormatter
+                                                  FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]")),
                                                 ],
                                                 style: TextStyle(
@@ -1414,7 +1390,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                     .numberWithOptions(
                                                         decimal: true),
                                                 inputFormatters: [
-                                                  new FilteringTextInputFormatter
+                                                  FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]")),
                                                 ],
                                                 style: TextStyle(
@@ -1470,7 +1446,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                     .numberWithOptions(
                                                         decimal: true),
                                                 inputFormatters: [
-                                                  new FilteringTextInputFormatter
+                                                  FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]")),
                                                 ],
                                                 style: TextStyle(
@@ -1530,7 +1506,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                     .numberWithOptions(
                                                         decimal: true),
                                                 inputFormatters: [
-                                                  new FilteringTextInputFormatter
+                                                  FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]")),
                                                 ],
                                                 style: TextStyle(
@@ -1581,7 +1557,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                         .textSecondary),
                                               ),
                                               DropdownButtonFormField<String>(
-                                                value: [
+                                                initialValue: [
                                                   "Commission"
                                                 ].contains(_pBasedOn.text)
                                                     ? _pBasedOn.text
@@ -1688,7 +1664,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                           .format(context)
                                                           .toLowerCase();
                                                       String str;
-                                                      var parts;
+                                                      List<String> parts;
                                                       String? startPart;
 
                                                       int checkData;
@@ -1697,17 +1673,16 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                       startPart =
                                                           parts[0].trim();
                                                       checkData =
-                                                          int.parse(startPart!);
+                                                          int.parse(startPart);
                                                       if (checkData > 9) {
                                                         _pStartTime.text =
                                                             result
                                                                 .format(context)
                                                                 .toLowerCase();
                                                       } else {
-                                                        _pStartTime.text = "0" +
-                                                            result
+                                                        _pStartTime.text = "0${result
                                                                 .format(context)
-                                                                .toLowerCase();
+                                                                .toLowerCase()}";
                                                       }
                                                     });
                                                   }
@@ -1790,7 +1765,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                           .format(context)
                                                           .toLowerCase();
                                                       String str;
-                                                      var parts;
+                                                      List<String> parts;
                                                       String? startPart;
 
                                                       int checkData;
@@ -1799,16 +1774,15 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                       startPart =
                                                           parts[0].trim();
                                                       checkData =
-                                                          int.parse(startPart!);
+                                                          int.parse(startPart);
                                                       if (checkData > 9) {
                                                         _pEndTime.text = result
                                                             .format(context)
                                                             .toLowerCase();
                                                       } else {
-                                                        _pEndTime.text = "0" +
-                                                            result
+                                                        _pEndTime.text = "0${result
                                                                 .format(context)
-                                                                .toLowerCase();
+                                                                .toLowerCase()}";
                                                       }
                                                     });
                                                   }
@@ -1873,8 +1847,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                 },
                                                 items: popular.map((popular) {
                                                   return DropdownMenuItem(
-                                                    child: new Text(popular),
                                                     value: popular,
+                                                    child: Text(popular),
                                                   );
                                                 }).toList(),
                                               ),
@@ -1956,7 +1930,7 @@ class _ProfileScreen extends State<ProfileScreen> {
               certificateList.clear();
 
               for (int i = 0; i < degree.length; i++) {
-                EducationModel education = new EducationModel();
+                EducationModel education = EducationModel();
                 education.degree = degree[i];
                 education.college = college[i];
                 education.year = year[i];
@@ -1965,7 +1939,7 @@ class _ProfileScreen extends State<ProfileScreen> {
 
               for (int i = 0; i < certificate.length; i++) {
                 EducationCertificate certificateData =
-                    new EducationCertificate();
+                    EducationCertificate();
                 certificateData.certificate = certificate[i];
                 certificateData.certificateYear = certificateYear[i];
                 certificateList.add(certificateData);
@@ -2009,13 +1983,13 @@ class _ProfileScreen extends State<ProfileScreen> {
       if (data.length <= 1) {
         hospitalIds = data[j];
       } else {
-        hospitalIds += data[j] + ',';
+        hospitalIds += '${data[j]},';
       }
     }
 
     if (data.length > 1) {
       String result = hospitalIds.substring(0, hospitalIds.length - 1);
-      hospitalIds = result + " ";
+      hospitalIds = "$result ";
     }
 
     newDateApiPass = DateFormat('yyyy-MM-dd')
@@ -2050,7 +2024,7 @@ class _ProfileScreen extends State<ProfileScreen> {
       Navigator.pushNamed(context, "loginHome");
       SharedPreferenceHelper.setInt(Preferences.is_filled, 1);
       OslerToast.success(context, response.msg!);
-    } catch (error, stacktrace) {
+    } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));
     }
@@ -2080,41 +2054,40 @@ class _ProfileScreen extends State<ProfileScreen> {
 
       if (convertDegree != null) {
         for (int i = 0; i < convertDegree.length; i++) {
-          if (_pDegree.text.length == 0) {
+          if (_pDegree.text.isEmpty) {
             _pDegree.text = _pDegree.text + convertDegree[i]['degree'];
           } else {
-            _pDegree.text = _pDegree.text + ',' + convertDegree[i]['degree'];
+            _pDegree.text = '${_pDegree.text},' + convertDegree[i]['degree'];
           }
-          if (_pCollege.text.length == 0) {
+          if (_pCollege.text.isEmpty) {
             _pCollege.text = _pCollege.text + convertDegree[i]['college'];
           } else {
-            _pCollege.text = _pCollege.text + ',' + convertDegree[i]['college'];
+            _pCollege.text = '${_pCollege.text},' + convertDegree[i]['college'];
           }
-          if (_pCollegeYear.text.length == 0) {
+          if (_pCollegeYear.text.isEmpty) {
             _pCollegeYear.text = _pCollegeYear.text + convertDegree[i]['year'];
           } else {
             _pCollegeYear.text =
-                _pCollegeYear.text + ',' + convertDegree[i]['year'];
+                '${_pCollegeYear.text},' + convertDegree[i]['year'];
           }
         }
       }
 
       if (eduCertificate != null) {
         for (int i = 0; i < eduCertificate.length; i++) {
-          if (_pCertificate.text.length == 0) {
+          if (_pCertificate.text.isEmpty) {
             _pCertificate.text =
                 _pCertificate.text + eduCertificate[i]['certificate'];
           } else {
             _pCertificate.text =
-                _pCertificate.text + ',' + eduCertificate[i]['certificate'];
+                '${_pCertificate.text},' + eduCertificate[i]['certificate'];
           }
 
-          if (_pCertificateYear.text.length == 0) {
+          if (_pCertificateYear.text.isEmpty) {
             _pCertificateYear.text =
                 _pCertificateYear.text + eduCertificate[i]['certificate_year'];
           } else {
-            _pCertificateYear.text = _pCertificateYear.text +
-                ',' +
+            _pCertificateYear.text = '${_pCertificateYear.text},' +
                 eduCertificate[i]['certificate_year'];
           }
         }
@@ -2177,7 +2150,7 @@ class _ProfileScreen extends State<ProfileScreen> {
       // Removed treatment settings as it is removed from UI
 
       setState(() {});
-    } catch (error, stacktrace) {
+    } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));
     }
@@ -2196,7 +2169,7 @@ class _ProfileScreen extends State<ProfileScreen> {
         }
         doctorProfile();
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));
     }
@@ -2215,7 +2188,7 @@ class _ProfileScreen extends State<ProfileScreen> {
         msg = response.data;
         SharedPreferenceHelper.setString(Preferences.image, response.data!);
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));
     }
@@ -2258,11 +2231,11 @@ class _ProfileScreen extends State<ProfileScreen> {
       builder: (BuildContext bc) {
         return SafeArea(
           child: Container(
-            child: new Wrap(
+            child: Wrap(
               children: <Widget>[
-                new ListTile(
-                    leading: new Icon(AppIcons.photo),
-                    title: new Text(
+                ListTile(
+                    leading: Icon(AppIcons.photo),
+                    title: Text(
                       getTranslated(context, AppString.choose_image_gallery)
                           .toString(),
                     ),
@@ -2270,9 +2243,9 @@ class _ProfileScreen extends State<ProfileScreen> {
                       proImageFromGallery();
                       Navigator.of(context).pop();
                     }),
-                new ListTile(
-                  leading: new Icon(AppIcons.camera),
-                  title: new Text(
+                ListTile(
+                  leading: Icon(AppIcons.camera),
+                  title: Text(
                     getTranslated(context, AppString.choose_image_camera)
                         .toString(),
                   ),
@@ -2299,7 +2272,7 @@ class _ProfileScreen extends State<ProfileScreen> {
           treatmentReq.add(response.data![i]);
         }
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));
     }
@@ -2317,7 +2290,7 @@ class _ProfileScreen extends State<ProfileScreen> {
           categoryReq.add(response.categoriesData![i]);
         }
 
-        if (categoryReq.length != 0) {
+        if (categoryReq.isNotEmpty) {
           for (int i = 0; i < categoryReq.length; i++) {
             if (categoryId == categoryReq[i].id) {
               _valueCategories = categoryReq[i];
@@ -2326,7 +2299,7 @@ class _ProfileScreen extends State<ProfileScreen> {
           }
         }
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));
     }
@@ -2342,7 +2315,7 @@ class _ProfileScreen extends State<ProfileScreen> {
         for (int i = 0; i < response.expertiseData!.length; i++) {
           expertReq.add(response.expertiseData![i]);
         }
-        if (expertReq.length != 0) {
+        if (expertReq.isNotEmpty) {
           for (int i = 0; i < expertReq.length; i++) {
             if (expertiseId == expertReq[i].id) {
               _valueExpertise = expertReq[i];
@@ -2350,7 +2323,7 @@ class _ProfileScreen extends State<ProfileScreen> {
           }
         }
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));
     }
@@ -2375,11 +2348,10 @@ class _ProfileScreen extends State<ProfileScreen> {
               surface: AyurezeTheme.surface,
               onSurface: AyurezeTheme.textPrimary,
             ),
-            dialogBackgroundColor: AyurezeTheme.surface,
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                   foregroundColor: AyurezeTheme.healingGreen100),
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: AyurezeTheme.surface),
           ),
           child: child!,
         );

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
-import 'package:doctro/core/constants/common_function.dart';
 import 'package:doctro/core/constants/date_util.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -15,14 +14,12 @@ import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
-import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 
 class ChangeLanguage extends StatefulWidget {
-  const ChangeLanguage({Key? key}) : super(key: key);
+  const ChangeLanguage({super.key});
 
   @override
   _ChangeLanguageState createState() => _ChangeLanguageState();
@@ -269,28 +266,27 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
 
         if (convertDegree != null) {
           for (int i = 0; i < convertDegree.length; i++) {
-            _pDegree.text = _pDegree.text.length == 0
+            _pDegree.text = _pDegree.text.isEmpty
                 ? _pDegree.text + convertDegree[i]['degree']
-                : _pDegree.text + ',' + convertDegree[i]['degree'];
-            _pCollege.text = _pCollege.text.length == 0
+                : '${_pDegree.text},' + convertDegree[i]['degree'];
+            _pCollege.text = _pCollege.text.isEmpty
                 ? _pCollege.text + convertDegree[i]['college']
-                : _pCollege.text + ',' + convertDegree[i]['college'];
-            _pCollegeYear.text = _pCollegeYear.text.length == 0
+                : '${_pCollege.text},' + convertDegree[i]['college'];
+            _pCollegeYear.text = _pCollegeYear.text.isEmpty
                 ? _pCollegeYear.text + convertDegree[i]['year']
-                : _pCollegeYear.text + ',' + convertDegree[i]['year'];
+                : '${_pCollegeYear.text},' + convertDegree[i]['year'];
           }
         }
 
         if (eduCertificate != null) {
           for (int i = 0; i < eduCertificate.length; i++) {
-            _pCertificate.text = _pCertificate.text.length == 0
+            _pCertificate.text = _pCertificate.text.isEmpty
                 ? _pCertificate.text + eduCertificate[i]['certificate']
-                : _pCertificate.text + ',' + eduCertificate[i]['certificate'];
+                : '${_pCertificate.text},' + eduCertificate[i]['certificate'];
 
-            _pCertificateYear.text = _pCertificateYear.text.length == 0
+            _pCertificateYear.text = _pCertificateYear.text.isEmpty
                 ? _pCertificateYear.text + eduCertificate[i]['certificate_year']
-                : _pCertificateYear.text +
-                    ',' +
+                : '${_pCertificateYear.text},' +
                     eduCertificate[i]['certificate_year'];
           }
         }
@@ -311,7 +307,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
         hospitalId = response.data!.hospitalId;
         videoAppointmentFees = response.data!.videoAppointmentFees;
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;
@@ -346,7 +342,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
       response = await RestClient(await RetroApi().dioData(context))
           .updateProfile(body);
       OslerToast.success(context, response.msg!);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;

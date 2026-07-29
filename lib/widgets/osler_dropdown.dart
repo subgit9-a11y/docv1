@@ -32,7 +32,7 @@ class OslerDropdown extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           hint: Text(hint, style: TextStyle(color: AyurezeTheme.textSecondary)),
           decoration: InputDecoration(
             filled: true,

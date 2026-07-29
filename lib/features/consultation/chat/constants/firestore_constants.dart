@@ -1,4 +1,3 @@
-import 'package:doctro/theme/ayureze_theme.dart';
 
 class FirestoreConstants {
   static const pathUserCollection = "users";

@@ -1,4 +1,3 @@
-import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:flutter/material.dart';
 
 class SessionTimeoutHandler extends StatefulWidget {
@@ -7,11 +6,11 @@ class SessionTimeoutHandler extends StatefulWidget {
   final VoidCallback onTimeout;
 
   const SessionTimeoutHandler({
-    Key? key,
+    super.key,
     required this.child,
     this.timeout = const Duration(minutes: 30),
     required this.onTimeout,
-  }) : super(key: key);
+  });
 
   @override
   State<SessionTimeoutHandler> createState() => _SessionTimeoutHandlerState();

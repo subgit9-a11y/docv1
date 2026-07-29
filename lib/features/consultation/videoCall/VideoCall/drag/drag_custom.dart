@@ -95,7 +95,7 @@ class Draggable<T> extends StatefulWidget {
   /// The [child] and [feedback] arguments must not be null. If
   /// [maxSimultaneousDrags] is non-null, it must be non-negative.
   const Draggable({
-    Key? key,
+    super.key,
     required this.child,
     required this.feedback,
     this.data,
@@ -111,8 +111,7 @@ class Draggable<T> extends StatefulWidget {
     this.onDragUpdate,
     this.onDragCompleted,
     this.ignoringFeedbackSemantics = true,
-  })  : assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
-        super(key: key);
+  })  : assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0);
 
   /// The data that will be dropped by this draggable.
   final T? data;
@@ -274,37 +273,22 @@ class LongPressDraggable<T> extends Draggable<T> {
   /// The [child] and [feedback] arguments must not be null. If
   /// [maxSimultaneousDrags] is non-null, it must be non-negative.
   const LongPressDraggable({
-    Key? key,
-    required Widget child,
-    required Widget feedback,
-    T? data,
-    Axis? axis,
-    Widget? childWhenDragging,
-    Offset feedbackOffset = Offset.zero,
-    DragAnchor dragAnchor = DragAnchor.child,
-    int? maxSimultaneousDrags,
-    VoidCallback? onDragStarted,
-    DraggableCanceledCallback? onDraggableCanceled,
-    DragEndCallback? onDragEnd,
-    VoidCallback? onDragCompleted,
+    super.key,
+    required super.child,
+    required super.feedback,
+    super.data,
+    super.axis,
+    super.childWhenDragging,
+    super.feedbackOffset,
+    super.dragAnchor,
+    super.maxSimultaneousDrags,
+    super.onDragStarted,
+    super.onDraggableCanceled,
+    super.onDragEnd,
+    super.onDragCompleted,
     this.hapticFeedbackOnStart = true,
-    bool ignoringFeedbackSemantics = true,
-  }) : super(
-          key: key,
-          child: child,
-          feedback: feedback,
-          data: data,
-          axis: axis,
-          childWhenDragging: childWhenDragging,
-          feedbackOffset: feedbackOffset,
-          dragAnchor: dragAnchor,
-          maxSimultaneousDrags: maxSimultaneousDrags,
-          onDragStarted: onDragStarted,
-          onDraggableCanceled: onDraggableCanceled,
-          onDragEnd: onDragEnd,
-          onDragCompleted: onDragCompleted,
-          ignoringFeedbackSemantics: ignoringFeedbackSemantics,
-        );
+    super.ignoringFeedbackSemantics,
+  });
 
   /// Whether haptic feedback should be triggered on drag start.
   final bool hapticFeedbackOnStart;
@@ -315,8 +299,9 @@ class LongPressDraggable<T> extends Draggable<T> {
     return DelayedMultiDragGestureRecognizer()
       ..onStart = (Offset position) {
         final Drag? result = onStart(position);
-        if (result != null && hapticFeedbackOnStart)
+        if (result != null && hapticFeedbackOnStart) {
           HapticFeedback.selectionClick();
+        }
         return result;
       };
   }
@@ -343,7 +328,7 @@ class _DraggableState<T> extends State<Draggable<T>> {
   // We achieve that by keeping count of the number of active drags and only
   // disposing the gesture recognizer after (a) this state object has been
   // disposed and (b) there are no more active drags.
-  int _activeCount = 0;
+  final int _activeCount = 0;
 
   void _disposeRecognizerIfInactive() {
     if (_activeCount > 0) return;
@@ -351,7 +336,9 @@ class _DraggableState<T> extends State<Draggable<T>> {
 
   void _routePointer(PointerDownEvent event) {
     if (widget.maxSimultaneousDrags != null &&
-        _activeCount >= widget.maxSimultaneousDrags!) return;
+        _activeCount >= widget.maxSimultaneousDrags!) {
+      return;
+    }
     // _recognizer
   }
 
@@ -414,12 +401,12 @@ class DragTarget<T> extends StatefulWidget {
   ///
   /// The [builder] argument must not be null.
   const DragTarget({
-    Key? key,
+    super.key,
     required this.builder,
     this.onWillAccept,
     this.onAccept,
     this.onLeave,
-  }) : super(key: key);
+  });
 
   /// Called to build the contents of this widget.
   ///
@@ -619,8 +606,9 @@ class _DragAvatar<T> extends Drag {
   }
 
   void _leaveAllEntered() {
-    for (int i = 0; i < _enteredTargets.length; i += 1)
+    for (int i = 0; i < _enteredTargets.length; i += 1) {
       _enteredTargets[i].didLeave(this);
+    }
     _enteredTargets.clear();
   }
 
@@ -636,8 +624,9 @@ class _DragAvatar<T> extends Drag {
     _entry!.remove();
     _entry = null;
     // TODO(Oanh): consider passing _entry as well so the client can perform an animation.
-    if (onDragEnd != null)
+    if (onDragEnd != null) {
       onDragEnd!(velocity ?? Velocity.zero, _lastOffset, wasAccepted);
+    }
   }
 
   Widget _build(BuildContext context) {
@@ -647,8 +636,8 @@ class _DragAvatar<T> extends Drag {
       left: _lastOffset!.dx - overlayTopLeft.dx,
       top: _lastOffset!.dy - overlayTopLeft.dy,
       child: IgnorePointer(
-        child: feedback,
         ignoring: ignoringFeedbackSemantics,
+        child: feedback,
       ),
     );
   }

@@ -40,7 +40,7 @@ Future<void> main() async {
 
       print("Status Code: ${response.statusCode} $statusEmoji");
       print(
-          "Data Snippet: ${responseBody.length > 100 ? responseBody.substring(0, 100) + '...' : responseBody}\n");
+          "Data Snippet: ${responseBody.length > 100 ? '${responseBody.substring(0, 100)}...' : responseBody}\n");
     } catch (e) {
       print("Result: ❌ ERROR - $e\n");
     }

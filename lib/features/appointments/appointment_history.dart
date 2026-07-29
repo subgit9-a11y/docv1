@@ -1,6 +1,5 @@
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
-import 'package:doctro/core/constants/date_util.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
@@ -10,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AppointmentHistory extends StatelessWidget {
+  const AppointmentHistory({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

@@ -15,7 +15,7 @@ class VideoCall extends StatefulWidget {
   final int? id;
   final String? flag;
 
-  VideoCall({
+  const VideoCall({super.key, 
     required this.callEnd,
     this.id,
     this.flag,

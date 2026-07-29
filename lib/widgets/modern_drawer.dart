@@ -6,17 +6,16 @@ import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/features/authentication/professional_registration_screen.dart';
-import 'package:doctro/theme/ayureze_theme.dart';
 
 class ModernDrawer extends StatelessWidget {
-  const ModernDrawer({Key? key}) : super(key: key);
+  const ModernDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final String? dName = SharedPreferenceHelper.getString(Preferences.name);
-    final String? dFullImage =
+    final String dName = SharedPreferenceHelper.getString(Preferences.name);
+    final String dFullImage =
         SharedPreferenceHelper.getString(Preferences.image);
-    final String? phone =
+    final String phone =
         SharedPreferenceHelper.getString(Preferences.phone_no);
 
     return Drawer(
@@ -60,8 +59,8 @@ class ModernDrawer extends StatelessWidget {
                       border: Border.all(
                           color: AyurezeTheme.healingGreen50, width: 2),
                       image: DecorationImage(
-                        image: (dFullImage != null && dFullImage!.isNotEmpty)
-                            ? NetworkImage(dFullImage!)
+                        image: (dFullImage.isNotEmpty)
+                            ? NetworkImage(dFullImage)
                             : const AssetImage("assets/images/no_image.jpg")
                                 as ImageProvider,
                         fit: BoxFit.cover,

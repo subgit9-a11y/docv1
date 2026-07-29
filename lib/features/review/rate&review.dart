@@ -18,7 +18,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 
 class RateAndReviewRoutesScreen extends StatefulWidget {
-  const RateAndReviewRoutesScreen({Key? key}) : super(key: key);
+  const RateAndReviewRoutesScreen({super.key});
 
   @override
   _RateAndReviewRoutesScreenState createState() =>
@@ -365,7 +365,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
         reviewData.addAll(response.data!);
         _userReview.addAll(response.data!);
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;

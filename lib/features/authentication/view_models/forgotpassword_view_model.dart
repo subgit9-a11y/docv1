@@ -16,7 +16,7 @@ class ForgotPasswordViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  String _msg = "";
+  final String _msg = "";
   String get msg => _msg;
 
   void setLoading(bool loading) {
@@ -51,7 +51,7 @@ class ForgotPasswordViewModel extends ChangeNotifier {
         }
       }
       return BaseModel()..data = response;
-    } catch (error, stacktrace) {
+    } catch (error) {
       _isLoading = false;
       notifyListeners();
       return BaseModel()..setException(ServerError.withError(error: error));

@@ -1,7 +1,6 @@
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/date_util.dart';
-import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/Notification.dart';
 import 'package:doctro/network/api_header.dart';
@@ -12,6 +11,8 @@ import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:flutter/material.dart';
 
 class ViewAllNotification extends StatefulWidget {
+  const ViewAllNotification({super.key});
+
   @override
   _ViewAllAppointmentState createState() => _ViewAllAppointmentState();
 }
@@ -241,7 +242,7 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
       setState(() {
         patientNotification.addAll(response.data!);
       });
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;

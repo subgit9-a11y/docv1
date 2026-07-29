@@ -9,16 +9,16 @@ class Payment {
     if (json['data'] != null) {
       paymentData = [];
       json['data'].forEach((v) {
-        paymentData!.add(new Payments.fromJson(v));
+        paymentData!.add(Payments.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    if (this.paymentData != null) {
-      data['data'] = this.paymentData!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    if (paymentData != null) {
+      data['data'] = paymentData!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -36,16 +36,16 @@ class Payments {
     id = json['id'];
     userId = json['user_id'];
     amount = json['amount'].toString();
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['amount'] = this.amount;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['amount'] = amount;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }
@@ -65,10 +65,10 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['fullImage'] = this.fullImage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['fullImage'] = fullImage;
     return data;
   }
 }

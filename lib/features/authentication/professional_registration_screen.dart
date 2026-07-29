@@ -19,8 +19,7 @@ import 'package:intl/intl.dart';
 class ProfessionalRegistrationScreen extends StatefulWidget {
   final Map<String, dynamic>? personalData;
 
-  const ProfessionalRegistrationScreen({Key? key, this.personalData})
-      : super(key: key);
+  const ProfessionalRegistrationScreen({super.key, this.personalData});
 
   @override
   _ProfessionalRegistrationScreenState createState() =>
@@ -169,7 +168,6 @@ class _ProfessionalRegistrationScreenState
           _fetchCategories(_selectedTreatmentId!);
         }
       }
-    } catch (e) {
     } finally {
       setState(() => _isLoading = false);
     }
@@ -245,10 +243,12 @@ class _ProfessionalRegistrationScreenState
       "id_proof": _existingIdProofUrl ?? "",
     });
 
-    if (_certificateImage != null)
+    if (_certificateImage != null) {
       combinedData["certificate_path"] = _certificateImage!.path;
-    if (_idProofImage != null)
+    }
+    if (_idProofImage != null) {
       combinedData["id_proof_path"] = _idProofImage!.path;
+    }
 
     if (widget.personalData != null) {
       _finalizeRegistration(combinedData);
@@ -315,7 +315,7 @@ class _ProfessionalRegistrationScreenState
       } else {
         OslerToast.error(context, response.msg ?? "Registration failed");
       }
-    } catch (e, stack) {
+    } catch (e) {
       if (e is DioException) {
         String errorMsg = "Registration failed";
         if (e.response?.data is Map) {
@@ -386,7 +386,7 @@ class _ProfessionalRegistrationScreenState
       } else {
         OslerToast.error(context, response.msg ?? "Update failed");
       }
-    } catch (e, stack) {
+    } catch (e) {
       if (e is DioException) {
         String errorMsg = "Profile update failed";
         if (e.response?.data is Map) {
@@ -777,11 +777,10 @@ class _ProfessionalRegistrationScreenState
               surface: AyurezeTheme.surface,
               onSurface: AyurezeTheme.textPrimary,
             ),
-            dialogBackgroundColor: AyurezeTheme.surface,
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                   foregroundColor: AyurezeTheme.caringViolet50),
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: AyurezeTheme.surface),
           ),
           child: child!,
         );

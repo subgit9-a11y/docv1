@@ -1,27 +1,20 @@
-import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
-import 'package:doctro/core/constants/common_function.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/CancelAppointment.dart';
-import 'package:doctro/network/api_header.dart';
-import 'package:doctro/network/base_model.dart';
-import 'package:doctro/network/network_api.dart';
-import 'package:doctro/network/server_error.dart';
-import 'package:doctro/features/authentication/SignIn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
-import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:doctro/features/appointments/view_models/cancel_appointment_view_model.dart';
 
 class CancelAppointmentScreen extends StatefulWidget {
+  const CancelAppointmentScreen({super.key});
+
   @override
   _CancelAppointmentScreen createState() => _CancelAppointmentScreen();
 }
@@ -127,7 +120,7 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       // height: height * 0.06,
                                       width: width * 0.7,
                                       child: TextField(
@@ -164,14 +157,14 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                   : GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
-                        FocusScope.of(context).requestFocus(new FocusNode());
+                        FocusScope.of(context).requestFocus(FocusNode());
                       },
                       child: SingleChildScrollView(
                         physics: AlwaysScrollableScrollPhysics(),
                         child: Center(
                           child: Column(
                             children: [
-                              viewModel.cancelAppointmentReq.length == 0
+                              viewModel.cancelAppointmentReq.isEmpty
                                   ? Container(
                                       margin:
                                           EdgeInsets.only(top: height * 0.2),
@@ -204,12 +197,10 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                             ),
                                           ),
                                           Text(
-                                            getTranslated(
+                                            "${getTranslated(
                                                         context,
                                                         AppString
-                                                            .cancel_appointment_length)
-                                                    .toString() +
-                                                " ${viewModel.cancelAppointmentReq.length} ",
+                                                            .cancel_appointment_length)} ${viewModel.cancelAppointmentReq.length} ",
                                             style: TextStyle(
                                                 fontSize: 13,
                                                 color: AyurezeTheme.forestDeep),
@@ -218,7 +209,7 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                       ),
                                     ),
                               viewModel.searchController.text.isNotEmpty
-                                  ? viewModel.searchResult.length > 0
+                                  ? viewModel.searchResult.isNotEmpty
                                       ? ListView.builder(
                                           scrollDirection: Axis.vertical,
                                           shrinkWrap: true,
@@ -231,7 +222,7 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                                 viewModel.searchResult[i]);
                                           },
                                         )
-                                      : Container(
+                                      : SizedBox(
                                           height: height / 1.5,
                                           child: Center(
                                               child: Container(
@@ -310,8 +301,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Container(
-                                    decoration: new BoxDecoration(
-                                        image: new DecorationImage(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
                                             fit: BoxFit.fitHeight,
                                             image: NetworkImage(appointment
                                                 .user!.fullImage!)))),
@@ -343,11 +334,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                 Container(
                                     alignment: AlignmentDirectional.topStart,
                                     child: Text(
-                                      getTranslated(context,
-                                                  AppString.home_age_data)
-                                              .toString() +
-                                          ":" +
-                                          appointment.age.toString(),
+                                      "${getTranslated(context,
+                                                  AppString.home_age_data)}:${appointment.age}",
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: AyurezeTheme.textSecondary),

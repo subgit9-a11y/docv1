@@ -22,10 +22,10 @@ class EducationModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['degree'] = this.degree;
-    data['college'] = this.college;
-    data['year'] = this.year;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['degree'] = degree;
+    data['college'] = college;
+    data['year'] = year;
     return data;
   }
 }

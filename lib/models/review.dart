@@ -10,19 +10,19 @@ class Review {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data!.add(new ReviewData.fromJson(v));
+        data!.add(ReviewData.fromJson(v));
       });
     }
     msg = json['msg'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['msg'] = this.msg;
+    data['msg'] = msg;
     return data;
   }
 }
@@ -55,20 +55,20 @@ class ReviewData {
     doctorId = json['doctor_id'];
     userId = json['user_id'];
     createdAt = json['created_at'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['review'] = this.review;
-    data['rate'] = this.rate;
-    data['appointment_id'] = this.appointmentId;
-    data['doctor_id'] = this.doctorId;
-    data['user_id'] = this.userId;
-    data['created_at'] = this.createdAt;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['review'] = review;
+    data['rate'] = rate;
+    data['appointment_id'] = appointmentId;
+    data['doctor_id'] = doctorId;
+    data['user_id'] = userId;
+    data['created_at'] = createdAt;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }
@@ -90,11 +90,11 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['image'] = this.image;
-    data['fullImage'] = this.fullImage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['image'] = image;
+    data['fullImage'] = fullImage;
     return data;
   }
 }

@@ -21,13 +21,13 @@ class PrescriptionScreen extends StatefulWidget {
   final Map<String, dynamic>? astraFillData;
 
   const PrescriptionScreen({
-    Key? key,
+    super.key,
     required this.patientId,
     required this.patientName,
     this.patientPhone,
     this.doctorId,
     this.astraFillData,
-  }) : super(key: key);
+  });
 
   @override
   _PrescriptionScreenState createState() => _PrescriptionScreenState();
@@ -38,7 +38,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
   final _diagnosisController = TextEditingController();
   final AstraApiService _astraApiService = AstraApiService();
 
-  List<Map<String, dynamic>> _medicines = [];
+  final List<Map<String, dynamic>> _medicines = [];
   bool _isLoading = false;
   Map<String, dynamic>? _patientData;
   Uint8List? _signatureBytes;
@@ -519,7 +519,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                               ),
                             ),
                           );
-                        }).toList(),
+                        }),
                         const SizedBox(height: 16),
                         ElevatedButton.icon(
                           onPressed: _showSearchSheet,
@@ -594,8 +594,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
 
 class SearchMedicineSheet extends StatefulWidget {
   final Function(Map<String, dynamic>) onSelect;
-  const SearchMedicineSheet({Key? key, required this.onSelect})
-      : super(key: key);
+  const SearchMedicineSheet({super.key, required this.onSelect});
 
   @override
   _SearchMedicineSheetState createState() => _SearchMedicineSheetState();
@@ -655,9 +654,10 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
             const SnackBar(content: Text("Shopify Sync Complete")));
       }
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Sync failed")));
+      }
     } finally {
       if (mounted) setState(() => _isSyncing = false);
     }
@@ -682,9 +682,10 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
         setState(() => _results = results);
       }
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Search failed")));
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -774,8 +775,7 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
 
 class DoctorSignaturePad extends StatefulWidget {
   final Function(Uint8List) onChanged;
-  const DoctorSignaturePad({Key? key, required this.onChanged})
-      : super(key: key);
+  const DoctorSignaturePad({super.key, required this.onChanged});
 
   @override
   _DoctorSignaturePadState createState() => _DoctorSignaturePadState();

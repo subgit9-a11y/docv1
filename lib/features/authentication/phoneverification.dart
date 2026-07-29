@@ -20,7 +20,7 @@ import 'package:doctro/core/constants/preferences.dart';
 class PhoneVerificationScreen extends StatefulWidget {
   final OtpData? data;
 
-  const PhoneVerificationScreen({Key? key, this.data}) : super(key: key);
+  const PhoneVerificationScreen({super.key, this.data});
 
   @override
   _PhoneVerificationScreenState createState() =>
@@ -252,7 +252,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       } else {
         OslerToast.error(context, response.msg!);
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;
@@ -266,7 +266,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
 
       Navigator.pushNamed(context, 'SignIn');
       OslerToast.success(context, response.msg!);
-    } catch (error, stacktrace) {
+    } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;
