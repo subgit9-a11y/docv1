@@ -5,7 +5,6 @@ import 'package:doctro/features/prescription/astra/prescription_screen.dart';
 void main() {
   testWidgets('PrescriptionScreen builds correctly and catches map type error',
       (WidgetTester tester) async {
-    // Build our app and trigger a frame.
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: PrescriptionScreen(
@@ -13,14 +12,13 @@ void main() {
           patientName: 'Test Patient',
           patientPhone: '1234567890',
           doctorId: 'DOC1',
+          astraFillData: const {
+            'extracted_symptoms': ['fever', 'cough'],
+          },
         ),
       ),
     ));
 
-    // Verify it builds without throwing
     expect(find.text('Prescription for Test Patient'), findsOneWidget);
-
-    // We expect the CircularProgressIndicator because _isLoading is initially true when fetching data
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
 }

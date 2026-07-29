@@ -12,7 +12,7 @@ void main() {
 
   group('SignInViewModel Tests', () {
     test('Initial State is correct', () {
-      final viewModel = SignInViewModel();
+      final viewModel = SignInViewModel(autoInitialize: false);
       expect(viewModel.isOtpLoginMode, isFalse);
       expect(viewModel.isHidden, isTrue);
       expect(viewModel.otpSent, isFalse);
@@ -20,7 +20,7 @@ void main() {
     });
 
     test('Toggles OTP mode correctly', () {
-      final viewModel = SignInViewModel();
+      final viewModel = SignInViewModel(autoInitialize: false);
 
       viewModel.toggleOtpLoginMode(true);
       expect(viewModel.isOtpLoginMode, isTrue);
@@ -30,7 +30,7 @@ void main() {
     });
 
     test('Toggles Password Visibility correctly', () {
-      final viewModel = SignInViewModel();
+      final viewModel = SignInViewModel(autoInitialize: false);
 
       expect(viewModel.isHidden, isTrue);
 

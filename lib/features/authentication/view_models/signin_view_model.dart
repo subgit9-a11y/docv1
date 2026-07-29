@@ -40,7 +40,10 @@ class SignInViewModel extends ChangeNotifier {
   String? deviceToken;
   int? verify;
 
-  SignInViewModel() {
+  SignInViewModel({bool autoInitialize = true}) {
+    if (!autoInitialize) {
+      return;
+    }
     if (Platform.isAndroid) {
       SharedPreferenceHelper.setString(Preferences.device_platform, "Android");
     }
