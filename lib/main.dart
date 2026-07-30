@@ -30,7 +30,6 @@ import 'package:doctro/features/authentication/phoneverification.dart';
 import 'package:doctro/features/appointments/cancel_appointment.dart';
 import 'package:doctro/features/appointments/appointment_history.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:doctro/widgets/session_timeout_handler.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -63,6 +62,8 @@ import 'package:doctro/features/notifications/notifications.dart';
 import 'package:doctro/features/profile/profile.dart' hide Container;
 import 'package:doctro/features/review/rate&review.dart';
 import 'package:doctro/features/cashfree/payment.dart';
+
+const MethodChannel _secureWindowChannel = MethodChannel('doctro/secure_window');
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -229,7 +230,9 @@ class _MyAppState extends State<MyApp> {
 
     // Implement Screenshot Protection for Enterprise Compliance
     try {
-      await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+      if (Platform.isAndroid) {
+        await _secureWindowChannel.invokeMethod('enableFlagSecure');
+      }
     } catch (e) {}
   }
 
