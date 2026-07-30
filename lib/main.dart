@@ -63,7 +63,8 @@ import 'package:doctro/features/profile/profile.dart' hide Container;
 import 'package:doctro/features/review/rate&review.dart';
 import 'package:doctro/features/cashfree/payment.dart';
 
-const MethodChannel _secureWindowChannel = MethodChannel('doctro/secure_window');
+const MethodChannel _secureWindowChannel =
+    MethodChannel('doctro/secure_window');
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
