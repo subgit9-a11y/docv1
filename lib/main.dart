@@ -100,9 +100,15 @@ Future<void> main() async {
         throw TimeoutException('SharedPreferences init timeout');
       },
     );
-    await SharedPreferenceHelper.init();
   } catch (e) {
     debugPrint("Prefs init failed: $e");
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  try {
+    await SharedPreferenceHelper.init();
+  } catch (e) {
+    debugPrint("SharedPreferenceHelper init failed: $e");
   }
 
   // Initialize Hive for offline-first capabilities
