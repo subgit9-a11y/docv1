@@ -35,24 +35,27 @@ class SharedPreferenceHelper {
   static Future<SharedPreferences?> initWithPreferences(
       SharedPreferences preferences) async {
     _preferences = preferences;
-    try {
-      _secureCache = await _secureStorage.readAll();
-    } catch (e) {
-      // Handle potential platform exception on first run or corrupt keystore
-      _secureCache = {};
-    }
+    Future<void>(() async {
+      try {
+        _secureCache = await _secureStorage.readAll();
 
-    // Migrate sensitive data from SharedPreferences to SecureStorage if it exists
-    for (String key in _sensitiveKeys) {
-      if (_preferences!.containsKey(key) && !_secureCache.containsKey(key)) {
-        String? val = _preferences!.getString(key);
-        if (val != null) {
-          await _secureStorage.write(key: key, value: val);
-          _secureCache[key] = val;
-          await _preferences!.remove(key);
+        // Migrate sensitive data from SharedPreferences to SecureStorage if it exists.
+        for (String key in _sensitiveKeys) {
+          if (_preferences!.containsKey(key) &&
+              !_secureCache.containsKey(key)) {
+            String? val = _preferences!.getString(key);
+            if (val != null) {
+              await _secureStorage.write(key: key, value: val);
+              _secureCache[key] = val;
+              await _preferences!.remove(key);
+            }
+          }
         }
+      } catch (e) {
+        // Handle potential platform exception on first run or corrupt keystore.
+        _secureCache = {};
       }
-    }
+    });
     return _preferences;
   }
 
