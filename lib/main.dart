@@ -86,11 +86,6 @@ Future<void> main() async {
     }
   }
 
-  // Platform-specific early initialization
-  if (Platform.isAndroid) {
-    SharedPreferenceHelper.setString(Preferences.device_platform, "Android");
-  }
-
   // Initialize SharedPreferences with timeout to prevent blocking
   SharedPreferences? prefs;
   try {
@@ -109,6 +104,11 @@ Future<void> main() async {
     await SharedPreferenceHelper.init();
   } catch (e) {
     debugPrint("SharedPreferenceHelper init failed: $e");
+  }
+
+  if (Platform.isAndroid) {
+    await SharedPreferenceHelper.setString(
+        Preferences.device_platform, "Android");
   }
 
   // Initialize Hive for offline-first capabilities
