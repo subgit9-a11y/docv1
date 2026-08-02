@@ -6,6 +6,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctro/features/consultation/chat/pages/chat_page.dart'
     show ChatPage;
+import 'package:doctro/core/navigator_key.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/utils/logger.dart';
 import 'package:doctro/utils/notification.dart' show NotificationHandler;
@@ -65,8 +66,6 @@ import 'package:doctro/features/cashfree/payment.dart';
 
 const MethodChannel _secureWindowChannel =
     MethodChannel('doctro/secure_window');
-
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   // CRITICAL: Ensure Flutter binding is initialized FIRST and ONLY ONCE

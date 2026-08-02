@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
+import 'package:doctro/core/navigator_key.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/features/authentication/SignIn.dart';
 import 'package:doctro/features/dashboard/login_home.dart';
@@ -63,6 +64,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _checkNavigation() {
+    debugPrint('SplashScreen: _checkNavigation called, mounted=$mounted');
     if (!mounted || _hasNavigated) return;
     _hasNavigated = true;
 
@@ -70,20 +72,29 @@ class _SplashScreenState extends State<SplashScreen>
     try {
       isLoggedIn = SharedPreferenceHelper.getBoolean(Preferences.is_logged_in);
     } catch (e) {
-      // SharedPreferences not initialized yet, default to not logged in
+      debugPrint(
+          'SplashScreen: SharedPreferences error, defaulting to not logged in: $e');
       isLoggedIn = false;
     }
 
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            isLoggedIn ? LoginHomeScreen(chat: "") : SignIn(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-        transitionDuration: const Duration(milliseconds: 800),
-      ),
-    );
+    debugPrint(
+        'SplashScreen: navigating to ${isLoggedIn ? "LoginHomeScreen" : "SignIn"}');
+    try {
+      navigatorKey.currentState!.pushReplacement(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              isLoggedIn ? LoginHomeScreen(chat: "") : SignIn(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          transitionDuration: const Duration(milliseconds: 800),
+        ),
+      );
+      debugPrint('SplashScreen: navigation successful');
+    } catch (e, stack) {
+      debugPrint('SplashScreen: navigation failed: $e\n$stack');
+      _hasNavigated = false;
+    }
   }
 
   @override
