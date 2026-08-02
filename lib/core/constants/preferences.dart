@@ -29,6 +29,12 @@ class SharedPreferenceHelper {
   // call this method from iniState() function of mainApp().
   static Future<SharedPreferences?> init() async {
     _preferences = await _instance;
+    return initWithPreferences(_preferences!);
+  }
+
+  static Future<SharedPreferences?> initWithPreferences(
+      SharedPreferences preferences) async {
+    _preferences = preferences;
     try {
       _secureCache = await _secureStorage.readAll();
     } catch (e) {

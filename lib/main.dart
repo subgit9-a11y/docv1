@@ -101,7 +101,7 @@ Future<void> main() async {
   }
 
   try {
-    await SharedPreferenceHelper.init();
+    await SharedPreferenceHelper.initWithPreferences(prefs);
   } catch (e) {
     debugPrint("SharedPreferenceHelper init failed: $e");
   }
