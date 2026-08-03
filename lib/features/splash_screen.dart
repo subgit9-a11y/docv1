@@ -20,6 +20,9 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _fadeAnimation;
   late Animation<double> _rotateAnimation;
   bool _hasNavigated = false;
+  bool _navError = false;
+  int _retryCount = 0;
+  static const int _maxRetries = 5;
 
   @override
   void initState() {
@@ -85,21 +88,72 @@ class _SplashScreenState extends State<SplashScreen>
         );
         debugPrint('SplashScreen: navigation successful');
       } else {
-        debugPrint('SplashScreen: navigatorKey.currentState is null, retrying');
-        _hasNavigated = false;
-        Timer(const Duration(milliseconds: 500), _checkNavigation);
+        debugPrint('SplashScreen: navigatorKey.currentState is null');
+        _handleNavFailure();
       }
     } catch (e, stack) {
       debugPrint('SplashScreen: navigation failed: $e\n$stack');
-      _hasNavigated = false;
-      Timer(const Duration(milliseconds: 500), _checkNavigation);
+      _handleNavFailure();
     }
+  }
+
+  void _handleNavFailure() {
+    _hasNavigated = false;
+    _retryCount++;
+    if (_retryCount >= _maxRetries) {
+      debugPrint('SplashScreen: max retries reached, showing error');
+      if (mounted) {
+        setState(() {
+          _navError = true;
+        });
+      }
+      return;
+    }
+    debugPrint('SplashScreen: retrying navigation (attempt $_retryCount)');
+    Timer(const Duration(milliseconds: 500), _checkNavigation);
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
+    if (_navError) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "AYUREZE",
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 4.0,
+                      color: AyurezeTheme.canvas,
+                    ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Failed to start. Please try again.",
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _navError = false;
+                    _retryCount = 0;
+                    _hasNavigated = false;
+                  });
+                  Timer(const Duration(seconds: 1), _checkNavigation);
+                },
+                child: const Text("Retry"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       body: Stack(
