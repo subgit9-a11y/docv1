@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AyurezeTheme {
   // Osler UI Kit Colors
@@ -131,9 +130,7 @@ class AyurezeTheme {
       cardColor: lightSurface,
       dividerColor: lightBorder,
       shadowColor: const Color(0x16000000),
-      textTheme: GoogleFonts.nunitoTextTheme(
-        ThemeData.light().textTheme,
-      ).copyWith(
+      textTheme: ThemeData.light().textTheme.copyWith(
         headlineLarge: const TextStyle(
           fontSize: 32,
           height: 1.05,
@@ -342,9 +339,7 @@ class AyurezeTheme {
       cardColor: darkSurface,
       dividerColor: darkBorder,
       shadowColor: const Color(0x40000000),
-      textTheme: GoogleFonts.nunitoTextTheme(
-        ThemeData.dark().textTheme,
-      ).copyWith(
+      textTheme: ThemeData.dark().textTheme.copyWith(
         headlineLarge: const TextStyle(
           fontSize: 32,
           height: 1.05,
