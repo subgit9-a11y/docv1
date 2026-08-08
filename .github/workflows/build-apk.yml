@@ -2,7 +2,9 @@ name: Build Android APK
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "astra-ai-integration"]
+  pull_request:
+    branches: ["main", "astra-ai-integration"]
   workflow_dispatch:
 
 jobs:
