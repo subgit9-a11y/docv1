@@ -119,7 +119,7 @@ dependencies:
   flutter_animate: ^4.5.2
   shimmer: ^3.0.0
   minio: ^3.0.2
-  google_fonts: ^6.4.0
+  google_fonts: ^5.1.0
 
   
 
