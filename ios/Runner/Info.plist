@@ -61,6 +61,18 @@
 					<string>com.googleusercontent.apps.298839588168-up4rcmclffgne2hnlemg7n4e29qtovn2</string>
 				</array>
 			</dict>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>ayureze</string>
+				</array>
+			</dict>
+		</array>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>ayureze</string>
 		</array>
 	</dict>
 </plist>
