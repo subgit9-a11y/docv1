@@ -1,0 +1,576 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:doctro/core/astra/astra_core.dart';
+import 'package:doctro/core/astra/widgets/widgets.dart';
+import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/osler_loader.dart';
+
+/// Astra AI Chat Page
+///
+/// A dedicated chat interface for interacting with Astra AI Brain.
+/// This page is separate from the existing patient-to-doctor chat
+/// and provides AI-powered assistance.
+class AstraChatPage extends StatefulWidget {
+  /// Optional patient ID for context
+  final String? patientId;
+  
+  /// Optional patient name for display
+  final String? patientName;
+  
+  /// Optional appointment ID for context
+  final String? appointmentId;
+
+  const AstraChatPage({
+    super.key,
+    this.patientId,
+    this.patientName,
+    this.appointmentId,
+  });
+
+  @override
+  State<AstraChatPage> createState() => _AstraChatPageState();
+}
+
+class _AstraChatPageState extends State<AstraChatPage> {
+  late AstraController _controller;
+  final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AstraController();
+    _initializeController();
+  }
+
+  Future<void> _initializeController() async {
+    await _controller.initialize(
+      patientId: widget.patientId,
+      patientName: widget.patientName,
+      appointmentId: widget.appointmentId,
+    );
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    _scrollController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  Future<void> _sendMessage() async {
+    final text = _textController.text.trim();
+    if (text.isEmpty) return;
+
+    _textController.clear();
+    await _controller.sendMessage(text);
+    
+    // Scroll to bottom after sending
+    await Future.delayed(const Duration(milliseconds: 100));
+    _scrollToBottom();
+  }
+
+  Future<void> _sendMessageStreaming() async {
+    final text = _textController.text.trim();
+    if (text.isEmpty) return;
+
+    _textController.clear();
+    await _controller.sendMessageStreaming(text);
+    
+    await Future.delayed(const Duration(milliseconds: 100));
+    _scrollToBottom();
+  }
+
+  void _onActionTap(String actionType, Map<String, dynamic>? params) {
+    final action = AstraNavigationAction(
+      type: AstraActionType.values.firstWhere(
+        (t) => t.name == actionType,
+        orElse: () => AstraActionType.unknown,
+      ),
+      params: params,
+    );
+    _controller.executeAction(action);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider.value(
+      value: _controller,
+      child: Scaffold(
+        backgroundColor: AyurezeTheme.canvas,
+        appBar: _buildAppBar(),
+        body: Column(
+          children: [
+            // Brain status indicator
+            _buildStatusBar(),
+            
+            // Messages list
+            Expanded(
+              child: _buildMessagesList(),
+            ),
+            
+            // Pending actions
+            _buildPendingActions(),
+            
+            // Input area
+            _buildInputArea(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: AyurezeTheme.canvas,
+      elevation: 0,
+      scrolledUnderElevation: 1,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios_new_rounded,
+          color: AyurezeTheme.forestDeep,
+        ),
+        onPressed: () => Navigator.pop(context),
+      ),
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Astra Brain icon
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: AyurezeTheme.healingGreen50.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.psychology,
+              color: AyurezeTheme.healingGreen50,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Astra AI',
+                style: TextStyle(
+                  color: AyurezeTheme.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (widget.patientName != null)
+                Text(
+                  widget.patientName!,
+                  style: TextStyle(
+                    color: AyurezeTheme.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
+      centerTitle: true,
+      actions: [
+        // More options
+        PopupMenuButton<String>(
+          icon: Icon(Icons.more_vert, color: AyurezeTheme.forestDeep),
+          onSelected: (value) => _handleMenuAction(value),
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: 'clear',
+              child: Row(
+                children: [
+                  Icon(Icons.delete_outline, size: 20),
+                  SizedBox(width: 8),
+                  Text('Clear Chat'),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'health',
+              child: Row(
+                children: [
+                  Icon(Icons.favorite_outline, size: 20),
+                  SizedBox(width: 8),
+                  Text('Check Health'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusBar() {
+    return Consumer<AstraController>(
+      builder: (context, controller, _) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          color: controller.isBrainHealthy
+              ? AyurezeTheme.healingGreen50.withOpacity(0.1)
+              : Colors.orange.withOpacity(0.1),
+          child: Row(
+            children: [
+              Icon(
+                controller.isBrainHealthy
+                    ? Icons.check_circle
+                    : Icons.warning_amber,
+                size: 16,
+                color: controller.isBrainHealthy
+                    ? AyurezeTheme.healingGreen50
+                    : Colors.orange,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                controller.isBrainHealthy
+                    ? 'Astra Brain is online'
+                    : 'Astra Brain is offline',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: controller.isBrainHealthy
+                      ? AyurezeTheme.healingGreen50
+                      : Colors.orange,
+                ),
+              ),
+              const Spacer(),
+              if (controller.errorMessage != null)
+                GestureDetector(
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(controller.errorMessage!),
+                        backgroundColor: Colors.orange,
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.info_outline,
+                    size: 16,
+                    color: Colors.orange,
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMessagesList() {
+    return Consumer<AstraController>(
+      builder: (context, controller, _) {
+        if (!controller.isInitialized) {
+          return const Center(child: OslerLoader());
+        }
+
+        if (controller.messages.isEmpty) {
+          return _buildEmptyState();
+        }
+
+        return ListView.builder(
+          controller: _scrollController,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          itemCount: controller.messages.length,
+          itemBuilder: (context, index) {
+            final message = controller.messages[index];
+            return AstraChatBubble(
+              message: message,
+              isUser: message.role == MessageRole.user,
+              onActionTap: _onActionTap,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: AyurezeTheme.healingGreen50.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.psychology,
+                size: 64,
+                color: AyurezeTheme.healingGreen50,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Chat with Astra AI',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AyurezeTheme.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Ask questions about patients, prescriptions, or get AI-powered assistance for your consultations.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: AyurezeTheme.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 24),
+            // Quick action chips
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              alignment: WrapAlignment.center,
+              children: [
+                _buildQuickAction('Summarize patient'),
+                _buildQuickAction('Check medications'),
+                _buildQuickAction('Generate prescription'),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickAction(String text) {
+    return ActionChip(
+      label: Text(text),
+      backgroundColor: AyurezeTheme.surface,
+      side: BorderSide(color: AyurezeTheme.border),
+      onPressed: () {
+        _textController.text = text;
+        _sendMessage();
+      },
+    );
+  }
+
+  Widget _buildPendingActions() {
+    return Consumer<AstraController>(
+      builder: (context, controller, _) {
+        if (controller.pendingActions.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AyurezeTheme.surface,
+            border: Border(
+              top: BorderSide(color: AyurezeTheme.border),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Suggested Actions',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AyurezeTheme.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 8),
+              AstraActionChipList(
+                actions: controller.pendingActions,
+                onActionTap: (action) {
+                  controller.executeAction(action);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildInputArea() {
+    return Consumer<AstraController>(
+      builder: (context, controller, _) {
+        return Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, -2),
+              ),
+            ],
+          ),
+          child: SafeArea(
+            child: Row(
+              children: [
+                // Stream toggle
+                IconButton(
+                  icon: Icon(
+                    controller.isStreaming ? Icons.stop : Icons.auto_awesome,
+                    color: controller.isStreaming
+                        ? Colors.red
+                        : AyurezeTheme.healingGreen50,
+                  ),
+                  onPressed: controller.isLoading
+                      ? null
+                      : () {
+                          if (controller.isStreaming) {
+                            controller.cancelStream();
+                          }
+                          // Toggle streaming mode
+                        },
+                  tooltip: controller.isStreaming
+                      ? 'Stop streaming'
+                      : 'Enable streaming',
+                ),
+                
+                // Text input
+                Expanded(
+                  child: TextField(
+                    controller: _textController,
+                    focusNode: _focusNode,
+                    enabled: !controller.isLoading && !controller.isStreaming,
+                    decoration: InputDecoration(
+                      hintText: 'Ask Astra AI...',
+                      hintStyle: TextStyle(color: AyurezeTheme.textSecondary),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24),
+                        borderSide: BorderSide(color: AyurezeTheme.border),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24),
+                        borderSide: BorderSide(color: AyurezeTheme.border),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24),
+                        borderSide: BorderSide(
+                          color: AyurezeTheme.healingGreen50,
+                          width: 2,
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                    ),
+                    textInputAction: TextInputAction.send,
+                    onSubmitted: (_) => _sendMessage(),
+                    maxLines: null,
+                  ),
+                ),
+                
+                const SizedBox(width: 8),
+                
+                // Send button
+                Container(
+                  decoration: BoxDecoration(
+                    color: controller.isLoading || controller.isStreaming
+                        ? Colors.grey
+                        : AyurezeTheme.healingGreen50,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: controller.isLoading || controller.isStreaming
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Icon(Icons.send, color: Colors.white),
+                    onPressed: controller.isLoading || controller.isStreaming
+                        ? null
+                        : _sendMessage,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _handleMenuAction(String action) {
+    switch (action) {
+      case 'clear':
+        _showClearConfirmation();
+        break;
+      case 'health':
+        _checkBrainHealth();
+        break;
+    }
+  }
+
+  void _showClearConfirmation() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Clear Chat'),
+        content: const Text(
+          'Are you sure you want to clear the conversation history?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              _controller.clearConversation();
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Clear',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _checkBrainHealth() async {
+    await _controller.refreshBrainHealth();
+    
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            _controller.isBrainHealthy
+                ? '✅ Astra Brain is healthy and ready!'
+                : '⚠️ Astra Brain is currently unavailable',
+          ),
+          backgroundColor: _controller.isBrainHealthy
+              ? Colors.green
+              : Colors.orange,
+        ),
+      );
+    }
+  }
+}
