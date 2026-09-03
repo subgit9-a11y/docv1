@@ -8,10 +8,14 @@ import 'package:doctro/models/today_appointment.dart';
 import 'package:doctro/models/payment.dart';
 import 'package:doctro/models/review.dart';
 import 'package:doctro/network/api_header.dart';
+import 'package:doctro/network/server_error.dart';
+import 'package:doctro/utils/logger.dart';
 import 'package:doctro/network/network_api.dart';
 
 class LoginHomeViewModel extends ChangeNotifier {
   bool isLoading = false;
+  bool hasError = false;
+  String errorMessage = "";
 
   String? dName;
   String? dFullImage;
@@ -53,6 +57,8 @@ class LoginHomeViewModel extends ChangeNotifier {
 
   Future<void> fetchAppointments(BuildContext context) async {
     isLoading = true;
+    hasError = false;
+    errorMessage = "";
     notifyListeners();
 
     try {
@@ -63,19 +69,18 @@ class LoginHomeViewModel extends ChangeNotifier {
 
       final client = RestClient(await RetroApi().dioData(context));
 
-      final futures = await Future.wait([
+      // Fetch appointments + auxiliary data in parallel. Payments/reviews are
+      // best-effort: a failure there should not blank out the whole screen.
+      final results = await Future.wait<dynamic>([
         client.todayAppointments(),
-        client
-            .paymentRequest()
-            .catchError((_) => Payment(success: false, paymentData: [])),
-        client
-            .reviewRequest()
-            .catchError((_) => Review(success: false, data: [])),
+        client.paymentRequest().catchError(
+            (_) => Payment(success: false, paymentData: [])),
+        client.reviewRequest().catchError((_) => Review(success: false, data: [])),
       ]);
 
-      final response = futures[0] as TodayAppointment;
-      final payments = futures[1] as Payment;
-      final reviews = futures[2] as Review;
+      final TodayAppointment response = results[0] as TodayAppointment;
+      final Payment payments = results[1] as Payment;
+      final Review reviews = results[2] as Review;
 
       if (payments.paymentData != null) {
         for (var p in payments.paymentData!) {
@@ -128,7 +133,12 @@ class LoginHomeViewModel extends ChangeNotifier {
       }
       patientCount = uniquePatients.length;
     } catch (error) {
-      // error handling
+      hasError = true;
+      errorMessage = ServerError.withError(error: error).getErrorMessage();
+      if (errorMessage.isEmpty) {
+        errorMessage = "Failed to load appointments. Please try again.";
+      }
+      logger.e("fetchAppointments failed: $error");
     } finally {
       isLoading = false;
       notifyListeners();

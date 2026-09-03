@@ -598,6 +598,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     }
 
     if (items == null || items.isEmpty) {
+      final showError = vm.hasError && !isSearching;
       return SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
@@ -607,13 +608,17 @@ class _LoginHomeViewState extends State<_LoginHomeView>
             child: Column(
               children: [
                 Icon(
-                  Icons.event_available_rounded,
+                  showError
+                      ? Icons.cloud_off_rounded
+                      : Icons.event_available_rounded,
                   size: 48,
-                  color: AyurezeTheme.forestDeep.withOpacity(0.5),
+                  color: showError
+                      ? AyurezeTheme.remoteRed50
+                      : AyurezeTheme.forestDeep.withOpacity(0.5),
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  "No Appointments Found",
+                  showError ? "Couldn't Load Appointments" : "No Appointments Found",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AyurezeTheme.textPrimary,
                         fontWeight: FontWeight.bold,
@@ -621,9 +626,11 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  isSearching
-                      ? "No patient matching '${_searchController.text}'"
-                      : "There are no appointments scheduled for this section.",
+                  showError
+                      ? vm.errorMessage
+                      : isSearching
+                          ? "No patient matching '${_searchController.text}'"
+                          : "There are no appointments scheduled for this section.",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AyurezeTheme.textSecondary,

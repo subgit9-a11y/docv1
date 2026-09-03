@@ -451,7 +451,7 @@ class AstraApiService {
     }
   }
 
-  /// Check workflow AyurezeTheme.healingGreen50
+  /// Check workflow status
   Future<Map<String, dynamic>> checkWorkflowStatus(
       String prescriptionId) async {
     try {
@@ -478,11 +478,11 @@ class AstraApiService {
     }
   }
 
-  /// Check Shopify sync AyurezeTheme.healingGreen50
+  /// Check Shopify sync status
   Future<Map<String, dynamic>> getShopifyStatus() async {
     try {
       final response =
-          await _dio.get('/api/v1/shopify/AyurezeTheme.healingGreen50');
+          await _dio.get('/api/v1/shopify/status');
       return response.data;
     } catch (e) {
       return {'error': e.toString(), 'connected': false};
@@ -589,7 +589,7 @@ class AstraApiService {
     }
   }
 
-  /// Get draft order AyurezeTheme.healingGreen50
+  /// Get draft order status
   Future<Map<String, dynamic>> getDraftOrderStatus(String draftOrderId) async {
     try {
       final response =
@@ -870,12 +870,12 @@ class AstraApiService {
     }
   }
 
-  /// Update order AyurezeTheme.healingGreen50
+  /// Update order status
   Future<Map<String, dynamic>> updateOrderStatus(
       Map<String, dynamic> data) async {
     try {
       final response = await _dio.patch(
-          '/api/v1/orders/prescription/AyurezeTheme.healingGreen50',
+          '/api/v1/orders/prescription/status',
           data: data);
       return response.data;
     } catch (e) {
@@ -944,14 +944,14 @@ class AstraApiService {
     }
   }
 
-  /// Get notification service AyurezeTheme.healingGreen50
+  /// Get notification service status
   Future<Map<String, dynamic>> getNotificationServiceStatus() async {
     try {
       final response = await _dio
-          .get('/api/v1/notifications/service-AyurezeTheme.healingGreen50');
+          .get('/api/v1/notifications/service-status');
       return response.data;
     } catch (e) {
-      return {'AyurezeTheme.healingGreen50': 'unknown'};
+      return {'status': 'unknown'};
     }
   }
 
@@ -1053,14 +1053,14 @@ class AstraApiService {
     }
   }
 
-  /// Get AI Agent AyurezeTheme.healingGreen50
+  /// Get AI Agent status
   Future<Map<String, dynamic>> getAiAgentStatus() async {
     try {
       final response =
-          await _dio.get('/api/v1/api/ai-agent/AyurezeTheme.healingGreen50');
+          await _dio.get('/api/v1/api/ai-agent/status');
       return response.data;
     } catch (e) {
-      return {'AyurezeTheme.healingGreen50': 'offline'};
+      return {'status': 'offline'};
     }
   }
 
@@ -1094,7 +1094,7 @@ class AstraApiService {
       final response = await _getWithDnsFallback('/api/v1/brain/health');
       return response.data;
     } catch (e) {
-      return {'AyurezeTheme.healingGreen50': 'offline'};
+      return {'status': 'offline'};
     }
   }
 
