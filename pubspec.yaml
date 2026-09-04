@@ -182,6 +182,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/sounds/
+    - lib/core/localization/language/
     
   # assets:
   #   - images/a_dot_burr.jpeg

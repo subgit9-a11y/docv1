@@ -16,16 +16,22 @@ class LanguageLocalization {
   late Map<String, String> _localizationValue;
 
   Future load() async {
-    String jsonStringValue = await rootBundle.loadString(
-        'lib/localization/language/${locale.languageCode.toString()}.json');
+    try {
+      String jsonStringValue = await rootBundle.loadString(
+          'lib/core/localization/language/${locale.languageCode.toString()}.json');
 
-    Map<String, dynamic> mappedJson = json.decode(jsonStringValue);
+      Map<String, dynamic> mappedJson = json.decode(jsonStringValue);
 
-    _localizationValue = mappedJson.map((key, value) => MapEntry(key, value));
+      _localizationValue = mappedJson.map((key, value) => MapEntry(key, value));
+    } catch (e) {
+      // Fall back to an empty translation map if the asset is missing or
+      // malformed, so the app still renders (keys will pass through).
+      _localizationValue = {};
+    }
   }
 
   String? getTranslateValue(String key) {
-    return _localizationValue[key];
+    return _localizationValue[key] ?? key;
   }
 
   static const LocalizationsDelegate<LanguageLocalization> delegate =
