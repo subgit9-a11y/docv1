@@ -534,7 +534,7 @@ class AstraService {
       final response = await _dio.get('/api/v1/brain/health');
       return response.data;
     } catch (e) {
-      return {'AyurezeTheme.healingGreen50': 'offline'};
+      return {'status': 'offline'};
     }
   }
 }

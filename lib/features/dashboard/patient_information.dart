@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
@@ -47,15 +46,10 @@ class _PatientDetailsScreenBody extends StatefulWidget {
       _PatientDetailsScreenBodyState();
 }
 
-List medicineData = [];
-List<Map<String, dynamic>> listOfMedicine = [];
-List<String> medicineReq = [];
-
 class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late HomeProvider homeProvider;
-  Map<String, String> body = {};
 
   late AnimationController _animController;
   late Animation<double> _fadeAnim;
@@ -65,7 +59,6 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    listOfMedicine.clear();
 
     _animController = AnimationController(
       vsync: this,
@@ -94,8 +87,13 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     homeProvider = Provider.of<HomeProvider>(context, listen: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
@@ -252,34 +250,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
 
                                             // Message dialler button
                                             IconButton(
-                                              onPressed: () {
-                                                if (body['peerId'] != null) {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChatPage(
-                                                        peerId: body['peerId']
-                                                            .toString(),
-                                                        peerAvatar:
-                                                            body['peerAvatar']
-                                                                .toString(),
-                                                        peerNickname:
-                                                            body['nickName']
-                                                                .toString(),
-                                                        token: body['token']
-                                                            .toString(),
-                                                        isNavigate: 'chatHome',
-                                                      ),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  OslerToast.info(
-                                                    context,
-                                                    "Chat is loading...",
-                                                  );
-                                                }
-                                              },
+                                              onPressed: () =>
+                                                  _openChat(context, userId),
                                               icon: Container(
                                                 padding:
                                                     const EdgeInsets.all(10),
@@ -384,31 +356,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                   ),
 
                                   // Firestore stream for Chat User details
-                                  StreamBuilder<QuerySnapshot>(
-                                    stream: homeProvider
-                                        .getStreamFireStoreSpecificUser(
-                                      FirestoreConstants.pathUserCollection,
-                                      1,
-                                      userId.toString(),
-                                    ),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData &&
-                                          (snapshot.data?.docs.length ?? 0) >
-                                              0) {
-                                        UserChat userChat =
-                                            UserChat.fromDocument(
-                                          snapshot.data!.docs[0],
-                                        );
-                                        body = {
-                                          "peerId": userChat.id,
-                                          "nickName": userChat.nickname,
-                                          "peerAvatar": userChat.photoUrl,
-                                          "token": userChat.token
-                                        };
-                                      }
-                                      return const SizedBox.shrink();
-                                    },
-                                  ),
+                                  // (resolved lazily on chat-button tap to
+                                  // avoid mutating state during build)
                                 ],
                               ),
                             ),
@@ -1064,5 +1013,43 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
   void _addVideoOverlay(BuildContext context) {
     final vm = Provider.of<PatientInformationViewModel>(context, listen: false);
     OslerToast.warning(context, "Video Call feature is currently unavailable.");
+  }
+
+  /// Resolve the patient's Firestore chat user lazily and open the chat.
+  /// Avoids mutating widget state during build.
+  Future<void> _openChat(BuildContext context, int? userId) async {
+    if (userId == null) {
+      OslerToast.info(context, "Chat is loading...");
+      return;
+    }
+    OslerToast.info(context, "Opening chat...");
+    try {
+      final doc = await homeProvider.getFirestoreUserOnce(
+        FirestoreConstants.pathUserCollection,
+        userId.toString(),
+      );
+      if (!context.mounted) return;
+      if (doc == null || !doc.exists) {
+        OslerToast.info(context, "Chat is loading...");
+        return;
+      }
+      final userChat = UserChat.fromDocument(doc);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatPage(
+            peerId: userChat.id.toString(),
+            peerAvatar: userChat.photoUrl.toString(),
+            peerNickname: userChat.nickname.toString(),
+            token: userChat.token.toString(),
+            isNavigate: 'chatHome',
+          ),
+        ),
+      );
+    } catch (e) {
+      if (context.mounted) {
+        OslerToast.info(context, "Chat is loading...");
+      }
+    }
   }
 }

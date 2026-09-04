@@ -156,8 +156,11 @@ class _SplashScreenState extends State<SplashScreen>
     }
 
     return Scaffold(
+      backgroundColor: const Color(0xFFE9EEE4),
       body: Stack(
         children: [
+          // Solid background matching native splash to prevent black flicker
+          const ColoredBox(color: Color(0xFFE9EEE4)),
           // Elegant animated background gradient
           AnimatedContainer(
             duration: const Duration(seconds: 3),

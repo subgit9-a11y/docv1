@@ -61,12 +61,16 @@ class HomePageState extends State<HomePage> {
     if (authProvider.getUserFirebaseId()?.isNotEmpty == true) {
       currentUserId = authProvider.getUserFirebaseId()!;
     }
+
+    listScrollController.addListener(scrollListener);
   }
 
   @override
   void dispose() {
-    super.dispose();
+    listScrollController.removeListener(scrollListener);
+    listScrollController.dispose();
     btnClearController.close();
+    super.dispose();
   }
 
   void scrollListener() {

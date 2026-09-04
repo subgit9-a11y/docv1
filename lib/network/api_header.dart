@@ -1,10 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
+import 'package:doctro/core/navigator_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../utils/logger.dart';
+
+/// Force-navigate to the SignIn route using the app-wide navigator key.
+/// Safe to call after `await` (does not rely on a widget BuildContext that
+/// may have been disposed while the request was in flight).
+void _forceLogoutToSignIn() {
+  final navigator = navigatorKey.currentState;
+  if (navigator == null) return;
+  navigator.pushNamedAndRemoveUntil('SignIn', (route) => false);
+}
 
 class RetroApi {
   Future<Dio> dioData(BuildContext context) async {
@@ -54,11 +64,7 @@ class RetroApi {
 
               if (refreshToken == 'N_A' || refreshToken.isEmpty) {
                 await SharedPreferenceHelper.clearPref();
-                final navigator = Navigator.of(context);
-                final current = ModalRoute.of(context)?.settings.name;
-                if (navigator.canPop() && current != 'SignIn') {
-                  navigator.pushNamedAndRemoveUntil('SignIn', (route) => false);
-                }
+                _forceLogoutToSignIn();
                 return handler.reject(e);
               }
 
@@ -82,22 +88,13 @@ class RetroApi {
               } else {
                 // Refresh failed, force logout
                 await SharedPreferenceHelper.clearPref();
-
-                final navigator = Navigator.of(context);
-                final current = ModalRoute.of(context)?.settings.name;
-                if (navigator.canPop() && current != 'SignIn') {
-                  navigator.pushNamedAndRemoveUntil('SignIn', (route) => false);
-                }
+                _forceLogoutToSignIn();
                 return handler.reject(e);
               }
             } catch (err) {
               logger.w('Token refresh error: $err');
               await SharedPreferenceHelper.clearPref();
-              final navigator = Navigator.of(context);
-              final current = ModalRoute.of(context)?.settings.name;
-              if (navigator.canPop() && current != 'SignIn') {
-                navigator.pushNamedAndRemoveUntil('SignIn', (route) => false);
-              }
+              _forceLogoutToSignIn();
               return handler.reject(e);
             }
           }

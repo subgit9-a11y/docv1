@@ -118,6 +118,16 @@ class ChatPageState extends State<ChatPage> {
     }
   }
 
+  @override
+  void dispose() {
+    focusNode.removeListener(onFocusChange);
+    listScrollController.removeListener(_scrollListener);
+    focusNode.dispose();
+    listScrollController.dispose();
+    textEditingController.dispose();
+    super.dispose();
+  }
+
   void readLocal() {
     currentUserId = FA.FirebaseAuth.instance.currentUser?.uid ?? "";
     if (authProvider.getUserFirebaseId()?.isNotEmpty == true) {
@@ -738,11 +748,13 @@ class ChatPageState extends State<ChatPage> {
     try {
       TaskSnapshot snapshot = await uploadTask;
       imageUrlGallery = await snapshot.ref.getDownloadURL();
+      if (!mounted) return;
       setState(() {
         isLoading = false;
         onSendMessage(imageUrlGallery, TypeMessage.image);
       });
     } on FirebaseException catch (e) {
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
@@ -756,11 +768,13 @@ class ChatPageState extends State<ChatPage> {
     try {
       TaskSnapshot snapshot = await uploadTask;
       imageUrlCamera = await snapshot.ref.getDownloadURL();
+      if (!mounted) return;
       setState(() {
         isLoading = false;
         onSendMessage(imageUrlCamera, TypeMessage.image);
       });
     } on FirebaseException catch (e) {
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });

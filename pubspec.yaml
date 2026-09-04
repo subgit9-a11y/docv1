@@ -67,7 +67,7 @@ dependencies:
   #  syncfusion_flutter_pdfviewer: ^20.4.38
   syncfusion_flutter_pdfviewer: ^28.1.33
   syncfusion_flutter_core: ^28.1.33
-  intl: ^0.19.0
+  intl: ^0.20.2
   http_auth: ^1.0.1
   #  flutter_pdfview: ^1.3.1
   # connectivity: ^3.0.6
@@ -119,7 +119,6 @@ dependencies:
   flutter_animate: ^4.5.2
   shimmer: ^3.0.0
   minio: ^3.0.2
-  google_fonts: ^6.2.1
 
   
 
@@ -183,6 +182,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/sounds/
+    - lib/core/localization/language/
     
   # assets:
   #   - images/a_dot_burr.jpeg

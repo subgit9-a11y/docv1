@@ -18,20 +18,15 @@ class VideoCallHistory extends StatefulWidget {
 
 class _VideoCallHistoryState extends State<VideoCallHistory> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<VideoCallHistoryViewModel>(context, listen: false)
-          .fetchVideoCallHistory(context);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
+    return ChangeNotifierProvider<VideoCallHistoryViewModel>(
+      create: (context) =>
+          VideoCallHistoryViewModel()..fetchVideoCallHistory(context),
+      child: Builder(
+        builder: (context) => Scaffold(
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -261,6 +256,8 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
           );
         },
       ),
+          ),
+    ),
     );
   }
 }

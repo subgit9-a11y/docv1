@@ -50,6 +50,14 @@ class VideoCallViewModel extends ChangeNotifier {
     await settingRequest(context, callEnd, id, flag);
   }
 
+  /// Notify listeners only while the view model is still alive.
+  /// Agora callbacks fire on background threads, so guard against
+  /// notifications after dispose().
+  void _safeNotify() {
+    if (isDisposed) return;
+    notifyListeners();
+  }
+
   Future<BaseModel<Setting>> settingRequest(
       BuildContext context, bool callEnd, int? id, String? flag) async {
     Setting response;
@@ -146,7 +154,7 @@ class VideoCallViewModel extends ChangeNotifier {
         RtcEngineEventHandler(
           onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
             localUserJoined = true;
-            notifyListeners();
+            _safeNotify();
           },
           onUserJoined:
               (RtcConnection connection, int remoteUidParam, int elapsed) {
@@ -154,16 +162,19 @@ class VideoCallViewModel extends ChangeNotifier {
             callTime = DateFormat('h:mm a').format(now);
             callDate = DateFormat('yyyy-MM-dd').format(now);
             remoteUid = remoteUidParam;
-            notifyListeners();
+            _safeNotify();
           },
           onUserOffline: (RtcConnection connection, int remoteUidParam,
               UserOfflineReasonType reason) {
             remoteUid = null;
             engine?.leaveChannel();
-            OslerToast.info(context, "Call Ended");
-            notifyListeners();
+            if (!isDisposed && context.mounted) {
+              OslerToast.info(context, "Call Ended");
+            }
+            _safeNotify();
           },
           onLeaveChannel: (RtcConnection connection, RtcStats details) {
+            if (isDisposed) return;
             if (flag == "OutGoing") {
               callDuration = details.duration;
               OverlayService().removeVideosOverlay(
@@ -191,7 +202,7 @@ class VideoCallViewModel extends ChangeNotifier {
                 }
               }
             }
-            notifyListeners();
+            _safeNotify();
           },
         ),
       );
@@ -261,11 +272,11 @@ class VideoCallViewModel extends ChangeNotifier {
       if (isEngineInitialized) {
         engine?.leaveChannel();
       }
-      notifyListeners();
+      _safeNotify();
     } catch (e) {
       logger.e(e);
     }
-    if (context.mounted) Navigator.pop(context);
+    if (!isDisposed && context.mounted) Navigator.pop(context);
   }
 
   @override

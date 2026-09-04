@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show Supabase;
@@ -44,7 +45,7 @@ class SignInViewModel extends ChangeNotifier {
     if (!autoInitialize) {
       return;
     }
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       SharedPreferenceHelper.setString(Preferences.device_platform, "Android");
     }
     getToken();
