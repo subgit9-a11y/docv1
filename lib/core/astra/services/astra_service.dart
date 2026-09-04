@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -72,7 +73,7 @@ class AstraService {
   // ============================================================
 
   Future<void> _onRequest(
-    Options options,
+    RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
     final startTime = DateTime.now();
@@ -140,11 +141,6 @@ class AstraService {
   // ============================================================
 
   Future<void> _onError(DioException error, ErrorInterceptorHandler handler) async {
-    final startTime = error.requestOptions.extra['_startTime'] as DateTime?;
-    final duration = startTime != null
-        ? DateTime.now().difference(startTime)
-        : null;
-
     AstraLogger.logApiError(
       '${error.requestOptions.baseUrl}${error.requestOptions.path}',
       error,
@@ -344,8 +340,7 @@ class AstraService {
         patientId,
       );
       final response = await _getWithRetry(url);
-      final data = _parseResponse(response);
-      return data is List ? data : [];
+      return _parseList(response);
     } catch (e) {
       throw _handleError(e);
     }
@@ -375,8 +370,7 @@ class AstraService {
     try {
       final url = AstraConfig.patientSearch.replaceAll('{term}', searchTerm);
       final response = await _getWithRetry(url);
-      final data = _parseResponse(response);
-      return data is List ? data : [];
+      return _parseList(response);
     } catch (e) {
       throw _handleError(e);
     }
@@ -591,6 +585,25 @@ class AstraService {
       return response.data;
     }
     return {};
+  }
+
+  /// Parse a response that is expected to be a JSON list.
+  /// Accepts a raw list, a [Response] whose data is a list, or a map that
+  /// wraps the list under common keys (data/results/items).
+  List<dynamic> _parseList(dynamic response) {
+    dynamic data = response;
+    if (response is Response) {
+      data = response.data;
+    }
+    if (data is List) return List<dynamic>.from(data);
+    if (data is Map) {
+      for (final key in ['data', 'results', 'items', 'prescriptions']) {
+        if (data[key] is List) {
+          return List<dynamic>.from(data[key]);
+        }
+      }
+    }
+    return [];
   }
 
   AstraException _handleError(dynamic error) {

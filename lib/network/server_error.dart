@@ -3,7 +3,7 @@ import 'package:dio/dio.dart' hide Headers;
 
 class ServerError implements Exception {
   int? _errorCode;
-  final String _errorMessage = "";
+  String _errorMessage = "";
 
   ServerError.withError({error}) {
     _handleError(error);
@@ -17,83 +17,64 @@ class ServerError implements Exception {
     return _errorMessage;
   }
 
-  _handleError(DioException error) {
+  void _handleError(DioException error) {
+    final data = error.response?.data;
+    String message = "";
+
     if (error.response?.statusCode == 401) {
-      String msg = error.response?.data['msg']?.toString() ??
-          error.response?.data['message']?.toString() ??
+      message = data?['msg']?.toString() ??
+          data?['message']?.toString() ??
           "Unauthorized";
-      if (msg.toLowerCase().contains("unauthorized")) {
-        msg = "Session expired. Please log in again.";
+      if (message.toLowerCase().contains("unauthorized")) {
+        message = "Session expired. Please log in again.";
       }
-      return CommonFunction.toastMessage(msg);
-    } else if (error.response?.data['error'] != null) {
-      return CommonFunction.toastMessage('${error.response!.data['error']}');
+    } else if (data?['error'] != null) {
+      message = '${data['error']}';
     } else if (error.type == DioExceptionType.badResponse) {
-      if (error.response?.data['msg'] != null) {
-        // print(error.response!.data['msg'].toString());
-        return CommonFunction.toastMessage(
-            error.response!.data['msg'].toString());
-      } else if (error.response?.data['message'] != null) {
-        // print(error.response!.data['message'].toString());
-        return CommonFunction.toastMessage(
-            error.response!.data['message'].toString());
+      if (data?['msg'] != null) {
+        message = data['msg'].toString();
+      } else if (data?['message'] != null) {
+        message = data['message'].toString();
       }
     } else if (error.type == DioExceptionType.unknown) {
-      // print(error.response!.data['msg'].toString());
-      return CommonFunction.toastMessage(
-          error.response!.data['msg'].toString());
+      message = data?['msg']?.toString() ?? "Unexpected error occurred";
     } else if (error.type == DioExceptionType.cancel) {
-      // print(error.response!.data['msg'].toString());
-      return CommonFunction.toastMessage('Request was cancelled');
+      message = 'Request was cancelled';
     } else if (error.type == DioExceptionType.connectionError) {
-      // print(error.response!.data['msg'].toString());
-      return CommonFunction.toastMessage(
-          'Connection failed. Please check internet connection');
+      message = 'Connection failed. Please check internet connection';
     } else if (error.type == DioExceptionType.connectionTimeout) {
-      // print(error.response!.data['msg'].toString());
-      return CommonFunction.toastMessage('Connection timeout');
+      message = 'Connection timeout';
     } else if (error.type == DioExceptionType.badCertificate) {
-      // print(error.response!.data['msg'].toString());
-      return CommonFunction.toastMessage('${error.response!.data['msg']}');
+      message = data?['msg']?.toString() ?? 'Bad certificate';
     } else if (error.type == DioExceptionType.receiveTimeout) {
-      // print(error.response!.data['msg'].toString());
-      return CommonFunction.toastMessage('Receive timeout in connection');
+      message = 'Receive timeout in connection';
     } else if (error.type == DioExceptionType.sendTimeout) {
-      // print(error.response!.data['msg'].toString());
-      return CommonFunction.toastMessage('Receive timeout in send request');
-    } else if (error.response?.data['errors']?['name'] != null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['name'][0]);
-    } else if (error.response?.data['errors']?['phone'] != null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['phone'][0]);
-    } else if (error.response?.data['errors']?['phone_code'] != null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['phone_code'][0]);
-    } else if (error.response?.data['errors']?['password'] != null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['password'][0]);
-    } else if (error.response?.data['errors']?['email'] != null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['email'][0]);
-    } else if (error.response?.data['errors']?['description'] != null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['description'][0]);
-    } else if (error.response?.data['errors']?['old_password'] != null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['old_password'][0]);
-    } else if (error.response?.data['errors']?['password'] != null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['password'][0]);
-    } else if (error.response?.data['errors']?['password_confirmation'] !=
-        null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['password_confirmation'][0]);
-    } else if (error.response?.data['errors']?['password_confirmation'] !=
-        null) {
-      return CommonFunction.toastMessage(
-          error.response!.data['errors']['password_confirmation'][0]);
+      message = 'Receive timeout in send request';
+    } else if (data?['errors'] is Map) {
+      final errors = data!['errors'] as Map;
+      for (final field in [
+        'name',
+        'phone',
+        'phone_code',
+        'password',
+        'email',
+        'description',
+        'old_password',
+        'password_confirmation',
+      ]) {
+        if (errors[field] != null) {
+          message = errors[field][0].toString();
+          break;
+        }
+      }
     }
-    return _errorMessage;
+
+    if (message.isEmpty) {
+      message = error.message?.toString() ?? "Something went wrong. Please try again.";
+    }
+
+    _errorCode = error.response?.statusCode;
+    _errorMessage = message;
+    CommonFunction.toastMessage(message);
   }
 }

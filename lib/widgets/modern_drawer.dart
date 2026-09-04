@@ -6,6 +6,8 @@ import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/features/authentication/professional_registration_screen.dart';
+import 'package:doctro/features/consultation/chat/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class ModernDrawer extends StatelessWidget {
   const ModernDrawer({super.key});
@@ -291,7 +293,10 @@ class ModernDrawer extends StatelessWidget {
                   getTranslated(context, AppString.cancel_button).toString())),
           TextButton(
             onPressed: () async {
-              await SharedPreferenceHelper.clearPref();
+              Navigator.pop(context); // dismiss dialog
+              // Full logout: clears prefs + signs out Firebase/Google.
+              await context.read<AuthProvider>().handleSignOut();
+              if (!context.mounted) return;
               Navigator.pushNamedAndRemoveUntil(
                   context, 'SignIn', (route) => false);
             },

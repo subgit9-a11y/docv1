@@ -205,7 +205,26 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> handleSignOut() async {
     _status = Status.uninitialized;
-    await firebaseAuth.signOut();
-    await GoogleSignIn().disconnect();
+    notifyListeners();
+
+    // Clear all locally cached session state so the app doesn't
+    // auto-login again on next launch.
+    try {
+      await SharedPreferenceHelper.clearPref();
+    } catch (e) {
+      // Best-effort: continue to sign out of Firebase/Google regardless.
+    }
+
+    try {
+      await firebaseAuth.signOut();
+    } catch (e) {
+      // Ignore sign-out failures; prefs are already cleared.
+    }
+
+    try {
+      await GoogleSignIn().disconnect();
+    } catch (e) {
+      // disconnect() throws when there was no signed-in Google account.
+    }
   }
 }
