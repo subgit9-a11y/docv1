@@ -6,6 +6,7 @@ import 'package:doctro/features/consultation/chat/models/user_chat.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -108,7 +109,7 @@ class AuthProvider extends ChangeNotifier {
 
     try {
       GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId: Platform.isIOS
+        clientId: (!kIsWeb && Platform.isIOS)
             ? '298839588168-up4rcmclffgne2hnlemg7n4e29qtovn2.apps.googleusercontent.com'
             : '298839588168-6ut75u7g4rqc8grmujtcl4m7obnq3oml.apps.googleusercontent.com',
         serverClientId:

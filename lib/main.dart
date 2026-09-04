@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctro/features/consultation/chat/pages/chat_page.dart'
@@ -105,7 +106,7 @@ Future<void> main() async {
     debugPrint("SharedPreferenceHelper init failed: $e");
   }
 
-  if (Platform.isAndroid) {
+  if (!kIsWeb && Platform.isAndroid) {
     await SharedPreferenceHelper.setString(
         Preferences.device_platform, "Android");
   }
@@ -227,7 +228,7 @@ class _MyAppState extends State<MyApp> {
     _setupFirebaseMessagingListeners();
 
     // Request notification permissions
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       await Permission.notification.request();
     }
 
@@ -236,7 +237,7 @@ class _MyAppState extends State<MyApp> {
 
     // Implement Screenshot Protection for Enterprise Compliance
     try {
-      if (Platform.isAndroid) {
+      if (!kIsWeb && Platform.isAndroid) {
         await _secureWindowChannel.invokeMethod('enableFlagSecure');
       }
     } catch (e) {}
