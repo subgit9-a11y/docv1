@@ -29,6 +29,13 @@
 # Build artifacts
 /build/
 
+# Generated plugin registrants. These are rewritten by `flutter pub get` and
+# `flutter build`, so tracking them produces spurious diffs on every run and
+# they are regenerated on demand. Already ignored for iOS above.
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugin_registrant.h
+windows/flutter/generated_plugins.cmake
+
 # Dart
 .dart_tool/
 

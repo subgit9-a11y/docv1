@@ -114,7 +114,8 @@ void main() {
         'Open Patient',
       );
       expect(
-        AstraNavigationAction(type: AstraActionType.openPrescription).displayName,
+        AstraNavigationAction(type: AstraActionType.openPrescription)
+            .displayName,
         'Open Prescription',
       );
       expect(
@@ -127,10 +128,13 @@ void main() {
   group('AstraActionType', () {
     test('should have all expected action types', () {
       expect(AstraActionType.values.length, 16);
-      expect(AstraActionType.values.contains(AstraActionType.openPatient), true);
-      expect(AstraActionType.values.contains(AstraActionType.openPrescription), true);
+      expect(
+          AstraActionType.values.contains(AstraActionType.openPatient), true);
+      expect(AstraActionType.values.contains(AstraActionType.openPrescription),
+          true);
       expect(AstraActionType.values.contains(AstraActionType.openCart), true);
-      expect(AstraActionType.values.contains(AstraActionType.openPayment), true);
+      expect(
+          AstraActionType.values.contains(AstraActionType.openPayment), true);
       expect(AstraActionType.values.contains(AstraActionType.goBack), true);
       expect(AstraActionType.values.contains(AstraActionType.unknown), true);
     });

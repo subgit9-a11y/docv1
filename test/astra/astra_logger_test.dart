@@ -16,12 +16,12 @@ void main() {
     test('should allow setting log level', () {
       // Set to error only
       AstraLogger.setLevel(AstraLogger.levelError);
-      
+
       // In debug mode, verbose and debug logs should still work
       // In release mode, only error logs would show
       // This is a no-op test that verifies the setLevel method exists
       expect(AstraLogger.levelError, 4);
-      
+
       // Reset to default
       AstraLogger.setLevel(AstraLogger.levelDebug);
     });

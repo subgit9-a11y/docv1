@@ -41,14 +41,22 @@ jobs:
       - name: Flutter Pub Get
         run: flutter pub get
 
+      # These three steps previously ended in `|| true`, so a red analyzer, a
+      # failing test, or unformatted code could not fail the build. That is how
+      # 10 analyzer errors went unnoticed on this branch.
+      #
+      # `--no-fatal-infos` is a deliberate policy, not a suppression: the
+      # remaining ~726 infos are style nits (constant_identifier_names,
+      # avoid_print in CLI scripts). They are still printed in the log, but
+      # only errors and warnings fail the build.
       - name: Verify Formatting
-        run: dart format --output=none --set-exit-if-changed . || true
-        
+        run: dart format --output=none --set-exit-if-changed lib test
+
       - name: Analyze Code
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings || true
+        run: flutter analyze --no-fatal-infos
 
       - name: Run Tests
-        run: flutter test || true
+        run: flutter test
 
       - name: Build Release APK
         run: flutter build apk --release --no-tree-shake-icons
