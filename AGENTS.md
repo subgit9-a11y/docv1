@@ -7,14 +7,36 @@ Flutter telehealth app for doctors. Branch: `astra-ai-integration`.
 ```bash
 export PATH="/home/openhands/flutter/bin:$PATH"   # Flutter 3.47.4 stable
 flutter analyze                                   # expect 0 errors, 0 warnings
-flutter test                                      # 119 tests
+flutter test                                      # 125 tests
 flutter build web --release
-dart format lib/
+dart format lib test
 ```
 
 `flutter analyze` must stay at **0 errors / 0 warnings**. The remaining
 ~726 `info`s are mostly style noise (`constant_identifier_names`,
 `avoid_print` in CLI scripts), not app bugs.
+
+## CI
+
+`build-apk.yml` runs three enforcing verification steps. Do not add
+`|| true` back onto them, and do not broaden the format target back to
+`.`:
+
+| Step | Command | Fails build on |
+|---|---|---|
+| Verify Formatting | `dart format --output=none --set-exit-if-changed lib test` | any unformatted file in `lib`/`test` |
+| Analyze Code | `flutter analyze --no-fatal-infos` | errors, warnings |
+| Run Tests | `flutter test` | any failing test |
+
+`--no-fatal-infos` is a deliberate policy, not a suppression: infos are
+printed but do not fail. Everything with a real severity does. These
+steps were previously suffixed with `|| true`, which is how 10 analyzer
+errors went unnoticed; each gate has since been verified to fail when
+handed a real error, a failing assertion, and an unformatted file.
+
+Formatting is scoped to `lib test` on purpose. Running it over `.` also
+sweeps untracked scratch and CLI scripts, which would fail the build for
+files nobody committed.
 
 ## Architecture
 
@@ -29,9 +51,13 @@ dart format lib/
 
 ## Conventions
 
-- Use `AyurezeTheme` tokens, never `Colors.white` / `Color(0xFF...)`
-  literal. Hardcoded white is the usual cause of white-on-white text in
-  dark mode; there were real bugs of this kind in chat.
+- Use `AyurezeTheme` tokens rather than `Color(0xFF...)` literals.
+  Hardcoded `Colors.white` is *not* automatically a dark-mode bug here:
+  most screens open with white text on an `AyurezeTheme.heroDecoration()`
+  gradient, which is correct in both themes. It is only a bug when used
+  as a **surface** (card, tray, avatar background). Judging these by
+  count rather than by role led to an overstated bug list once already -
+  see the Dark mode section for the test that actually decides it.
 - The theme defines text styles (`headlineLarge` … `labelLarge`). Prefer
   `Theme.of(context).textTheme.*` over a literal `fontSize:` — there are
   still ~108 hardcoded `fontSize` values.
