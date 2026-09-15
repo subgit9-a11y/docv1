@@ -809,7 +809,9 @@ class _ProfessionalRegistrationScreenState
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AyurezeTheme.healingGreen10,
+        // Dark-aware: healingGreen10 is a light-only constant, so it left a
+        // pale card behind dark-mode text.
+        color: AyurezeTheme.surfaceMuted,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
             color: AyurezeTheme.healingGreen50.withValues(alpha: 0.35)),

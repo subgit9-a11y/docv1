@@ -94,13 +94,15 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: AyurezeTheme.healingGreen10,
+                          // Dark-aware: the pale-mint constant made the
+                          // forestDeep icon 2.36:1 in dark mode.
+                          color: AyurezeTheme.surfaceMuted,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           Icons.mark_email_read_outlined,
                           size: 48,
-                          color: AyurezeTheme.forestDeep,
+                          color: AyurezeTheme.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 24),

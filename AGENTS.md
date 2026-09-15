@@ -43,6 +43,40 @@ dart format lib/
 - Empty `catch` blocks should keep a comment explaining why swallowing is
   correct, otherwise it reads as a bug.
 
+## Dark mode
+
+`AyurezeTheme` mixes two kinds of token, and picking the wrong one is the
+main source of dark-mode bugs:
+
+- **Dark-aware getters** — `surface`, `surfaceMuted`, `canvas`, `border`,
+  `textPrimary`, `textSecondary`, `iconPrimary`. These read
+  `_isDark` and are the correct choice for any background, border, or
+  body text. `updateThemeMode()` is driven by `ThemeProvider`.
+- **Light-only constants** — `lightSurface`, `healingGreen10`,
+  `oslerGray10`, `lightGreenSoft`, `forestDeep`, `healingGreen100`, etc.
+  These keep their light value in dark mode. They are fine as *brand
+  accents* (a badge, an icon on a pale chip) but wrong as a page or card
+  background, where they strand pale fills behind themed text.
+
+Where such a fill already carries the accent 100 shade as foreground
+(`healingGreen100` on `healingGreen10` is 14:1), the pairing is
+intentional and readable in both modes — leave it alone. It only breaks
+when the foreground is a *dark-aware* text token, because then the
+foreground flips and the background does not.
+
+`Colors.white` as a foreground is usually correct here: most feature
+screens open with white text on an `AyurezeTheme.heroDecoration()`
+gradient. Only treat it as a bug when it is a **surface** colour (a card,
+tray, or avatar background), where it produces white-on-white in dark
+mode.
+
+Body text must clear WCAG AA (4.5:1) on its surface.
+`test/theme/theme_contrast_test.dart` enforces this for the theme's text
+and surface tokens using a self-contained contrast-ratio helper; add a
+case there when introducing a new text/surface pair. `darkTextSecondary`
+is `#B4B4B4` rather than `#A0A0A0` because the latter scored only 4.15:1
+on `darkSurfaceMuted`.
+
 ## Testing notes
 
 - Widgets that depend on wall-clock time take an injectable clock rather

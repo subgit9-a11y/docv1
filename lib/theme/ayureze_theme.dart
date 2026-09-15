@@ -48,7 +48,9 @@ class AyurezeTheme {
   static const Color darkSurfaceMuted = Color(0xFF3D3D3D);
   static const Color darkBorder = Color(0xFF4D4D4D);
   static const Color darkTextPrimary = Color(0xFFE0E0E0);
-  static const Color darkTextSecondary = Color(0xFFA0A0A0);
+  // 4.15:1 against darkSurfaceMuted (#3D3D3D) failed WCAG AA (needs 4.5).
+  // #B4B4B4 gives 5.24:1 on darkSurfaceMuted and 6.64:1 on darkSurface.
+  static const Color darkTextSecondary = Color(0xFFB4B4B4);
 
   // Dynamic Getters
   static Color get canvas => _isDark ? darkCanvas : lightCanvas;

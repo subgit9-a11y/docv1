@@ -202,13 +202,15 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: AyurezeTheme.healingGreen10,
+              // Dark-aware surface, and a matching icon weight: the previous
+              // pale-mint circle with a healingGreen50 icon was 2.36:1.
+              color: AyurezeTheme.surfaceMuted,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.calendar_today_outlined,
               size: 36,
-              color: AyurezeTheme.healingGreen50,
+              color: AyurezeTheme.textSecondary,
             ),
           ),
           const SizedBox(height: 20),
