@@ -416,7 +416,9 @@ class _AstraChatPageState extends State<AstraChatPage> {
         return Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.white,
+            // Input tray must follow the theme: a hardcoded white here left
+            // white-on-white text in dark mode.
+            color: AyurezeTheme.surface,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.05),
