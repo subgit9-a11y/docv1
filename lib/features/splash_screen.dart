@@ -169,9 +169,9 @@ class _SplashScreenState extends State<SplashScreen>
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AyurezeTheme.forestDeep.withOpacity(0.9),
+                  AyurezeTheme.forestDeep.withValues(alpha: 0.9),
                   AyurezeTheme.canvas,
-                  AyurezeTheme.healingGreen50.withOpacity(0.4),
+                  AyurezeTheme.healingGreen50.withValues(alpha: 0.4),
                 ],
               ),
             ),
@@ -180,14 +180,14 @@ class _SplashScreenState extends State<SplashScreen>
           Positioned(
             top: -height * 0.1,
             right: -width * 0.2,
-            child: _buildBlurCircle(
-                width * 0.7, AyurezeTheme.healingGreen50.withOpacity(0.18)),
+            child: _buildBlurCircle(width * 0.7,
+                AyurezeTheme.healingGreen50.withValues(alpha: 0.18)),
           ),
           Positioned(
             bottom: -height * 0.1,
             left: -width * 0.2,
             child: _buildBlurCircle(
-                width * 0.8, AyurezeTheme.forestDeep.withOpacity(0.15)),
+                width * 0.8, AyurezeTheme.forestDeep.withValues(alpha: 0.15)),
           ),
           // Brand Presentation
           Center(
@@ -201,13 +201,14 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Container(
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: AyurezeTheme.canvas.withOpacity(0.08),
+                        color: AyurezeTheme.canvas.withValues(alpha: 0.08),
                         shape: BoxShape.circle,
                         border: Border.all(
-                            color: AyurezeTheme.canvas.withOpacity(0.15)),
+                            color: AyurezeTheme.canvas.withValues(alpha: 0.15)),
                         boxShadow: [
                           BoxShadow(
-                            color: AyurezeTheme.forestDeep.withOpacity(0.15),
+                            color:
+                                AyurezeTheme.forestDeep.withValues(alpha: 0.15),
                             blurRadius: 30,
                             spreadRadius: 5,
                           )
@@ -246,13 +247,16 @@ class _SplashScreenState extends State<SplashScreen>
                       const SizedBox(height: 8),
                       Text(
                         "DOCTOR WORKSPACE",
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 2.0,
-                                  color: AyurezeTheme.canvas.withOpacity(0.65),
-                                ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 2.0,
+                              color:
+                                  AyurezeTheme.canvas.withValues(alpha: 0.65),
+                            ),
                       ),
                     ],
                   ),
@@ -267,7 +271,7 @@ class _SplashScreenState extends State<SplashScreen>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AyurezeTheme.canvas.withOpacity(0.1),
+                        color: AyurezeTheme.canvas.withValues(alpha: 0.1),
                         width: 3,
                       ),
                     ),

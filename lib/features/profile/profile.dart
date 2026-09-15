@@ -110,7 +110,6 @@ class _ProfileScreen extends State<ProfileScreen> {
 
   //Set List Data Treatment
   List<TreatmentData> treatmentReq = [];
-  TreatmentData? _valueTreatment;
 
   //Set List Data Category
   List<CategoriesData> categoryReq = [];
@@ -118,7 +117,6 @@ class _ProfileScreen extends State<ProfileScreen> {
 
   //Set List Data Expertise
   List<Expert> expertReq = [];
-  Expert? _valueExpertise;
 
   //update user image
   File? proImage;
@@ -204,7 +202,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.14),
+                          color: Colors.white.withValues(alpha: 0.14),
                           borderRadius: BorderRadius.circular(999),
                         ),
                         child: const Text(
@@ -314,7 +312,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               "$name",
                               style: TextStyle(
                                 fontSize: width! * 0.047,
-                                color: Colors.white.withOpacity(0.88),
+                                color: Colors.white.withValues(alpha: 0.88),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -2111,7 +2109,9 @@ class _ProfileScreen extends State<ProfileScreen> {
             _pDob.text = rawDob;
             try {
               _selectedDate = DateFormat('dd-MM-yyyy').parse(rawDob);
-            } catch (e) {}
+            } catch (_) {
+              // Legacy date format: fall back to the raw text if it cannot be parsed.
+            }
           }
         } catch (e) {
           _pDob.text = rawDob;
@@ -2305,13 +2305,6 @@ class _ProfileScreen extends State<ProfileScreen> {
       setState(() {
         for (int i = 0; i < response.expertiseData!.length; i++) {
           expertReq.add(response.expertiseData![i]);
-        }
-        if (expertReq.isNotEmpty) {
-          for (int i = 0; i < expertReq.length; i++) {
-            if (expertiseId == expertReq[i].id) {
-              _valueExpertise = expertReq[i];
-            }
-          }
         }
       });
     } catch (error) {

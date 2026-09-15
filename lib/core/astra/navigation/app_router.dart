@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:doctro/core/navigator_key.dart';
+import 'package:doctro/core/navigator_key.dart' as core;
 import 'package:doctro/core/astra/actions/action_models.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
 
@@ -13,7 +13,7 @@ class AppRouter {
   static final AppRouter instance = AppRouter._();
 
   /// Navigator key for accessing navigator
-  GlobalKey<NavigatorState> get navigatorKey => navigatorKey;
+  GlobalKey<NavigatorState> get navigatorKey => core.navigatorKey;
 
   // ============================================================
   // NAVIGATION METHODS
@@ -381,21 +381,21 @@ class AppRouter {
 
       switch (path) {
         case 'patient':
-          return openPatient(patientId: id ?? '');
+          return await openPatient(patientId: id ?? '');
         case 'prescription':
-          return openPrescription(prescriptionId: id);
+          return await openPrescription(prescriptionId: id);
         case 'cart':
-          return openCart();
+          return await openCart();
         case 'appointment':
-          return openAppointment(appointmentId: id);
+          return await openAppointment(appointmentId: id);
         case 'notification':
-          return openNotifications();
+          return await openNotifications();
         case 'report':
-          return openReport(reportId: id ?? '');
+          return await openReport(reportId: id ?? '');
         case 'payment':
-          return openPayment();
+          return await openPayment();
         case 'chat':
-          return openChat();
+          return await openChat();
         default:
           return ActionResult.failure('Unknown deep link path: $path');
       }
@@ -429,7 +429,7 @@ Widget _buildPatientDetailsScreen(String patientId) {
   // Late import to avoid circular dependencies
   // In actual implementation, import the actual screen
   // return PatientDetailsScreen(id: int.tryParse(patientId));
-  
+
   // For now, return a placeholder - the actual import happens at runtime
   // This is a workaround for Dart's lack of circular import handling
   throw UnimplementedError('Use direct navigation to patientDetailsScreen');
@@ -484,7 +484,9 @@ class _AstraFallbackChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Astra AI${patientName != null ? ' - $patientName' : ''}')),
+      appBar: AppBar(
+          title:
+              Text('Astra AI${patientName != null ? ' - $patientName' : ''}')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -493,7 +495,9 @@ class _AstraFallbackChatPage extends StatelessWidget {
             SizedBox(height: 16),
             Text('Astra AI Assistant'),
             SizedBox(height: 8),
-            Text(patientId != null ? 'Patient ID: $patientId' : 'No patient context'),
+            Text(patientId != null
+                ? 'Patient ID: $patientId'
+                : 'No patient context'),
           ],
         ),
       ),
@@ -511,7 +515,6 @@ class _AstraChatPageBuilder {
     // Dynamic import - the actual implementation
     // In production, this would import from features/consultation/astra_chat
     throw UnimplementedError(
-      'Please import AstraChatPage directly from features/consultation/astra_chat/astra_chat_page.dart'
-    );
+        'Please import AstraChatPage directly from features/consultation/astra_chat/astra_chat_page.dart');
   }
 }

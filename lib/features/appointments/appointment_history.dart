@@ -161,7 +161,7 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
+              color: Colors.white.withValues(alpha: 0.14),
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(
@@ -185,7 +185,7 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
           Text(
             "Track all your scheduled and completed appointments at a glance.",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withOpacity(0.78),
+                  color: Colors.white.withValues(alpha: 0.78),
                 ),
           ),
         ],

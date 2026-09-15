@@ -481,8 +481,7 @@ class AstraApiService {
   /// Check Shopify sync status
   Future<Map<String, dynamic>> getShopifyStatus() async {
     try {
-      final response =
-          await _dio.get('/api/v1/shopify/status');
+      final response = await _dio.get('/api/v1/shopify/status');
       return response.data;
     } catch (e) {
       return {'error': e.toString(), 'connected': false};
@@ -874,9 +873,8 @@ class AstraApiService {
   Future<Map<String, dynamic>> updateOrderStatus(
       Map<String, dynamic> data) async {
     try {
-      final response = await _dio.patch(
-          '/api/v1/orders/prescription/status',
-          data: data);
+      final response =
+          await _dio.patch('/api/v1/orders/prescription/status', data: data);
       return response.data;
     } catch (e) {
       throw _handleError(e);
@@ -947,8 +945,7 @@ class AstraApiService {
   /// Get notification service status
   Future<Map<String, dynamic>> getNotificationServiceStatus() async {
     try {
-      final response = await _dio
-          .get('/api/v1/notifications/service-status');
+      final response = await _dio.get('/api/v1/notifications/service-status');
       return response.data;
     } catch (e) {
       return {'status': 'unknown'};
@@ -1056,8 +1053,7 @@ class AstraApiService {
   /// Get AI Agent status
   Future<Map<String, dynamic>> getAiAgentStatus() async {
     try {
-      final response =
-          await _dio.get('/api/v1/api/ai-agent/status');
+      final response = await _dio.get('/api/v1/api/ai-agent/status');
       return response.data;
     } catch (e) {
       return {'status': 'offline'};

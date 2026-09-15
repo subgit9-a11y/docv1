@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:doctro/core/astra/models/conversation_model.dart';
-import 'package:doctro/core/astra/actions/action_models.dart';
 
 void main() {
   group('AstraMessage', () {

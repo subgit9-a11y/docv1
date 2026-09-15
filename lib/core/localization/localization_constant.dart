@@ -14,6 +14,18 @@ const String MALAYALAM = "ml";
 const String TELUGU = "te";
 const String KANNADA = "kn";
 
+/// Locales the app declares to Flutter. Must stay in sync with
+/// [LanguageLocalization.delegate]'s `isSupported` and the JSON files in
+/// `lib/core/localization/language/`.
+const List<Locale> supportedLocales = [
+  Locale(ENGLISH, 'US'),
+  Locale(TAMIL, 'IN'),
+  Locale(HINDI, 'IN'),
+  Locale(MALAYALAM, 'IN'),
+  Locale(TELUGU, 'IN'),
+  Locale(KANNADA, 'IN'),
+];
+
 Future<Locale> setLocale(String languageCode) async {
   SharedPreferenceHelper.setString(
       Preferences.current_language_code, languageCode);

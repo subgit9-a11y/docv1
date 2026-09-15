@@ -1,3 +1,4 @@
+import 'package:doctro/widgets/osler_hero.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
@@ -90,49 +91,11 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   Widget _buildHero() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: AyurezeTheme.heroDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Text(
-              "Security update",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          const Text(
-            "Keep your doctor workspace protected.",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Update your password with a calmer Ayureze-style form that keeps the task focused and clear.",
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
-              fontSize: 14,
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
+    return const OslerHero(
+      eyebrow: 'Security update',
+      title: 'Keep your doctor workspace protected.',
+      subtitle:
+          'Update your password with a calmer Ayureze-style form that keeps the task focused and clear.',
     );
   }
 

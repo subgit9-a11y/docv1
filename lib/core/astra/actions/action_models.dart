@@ -1,54 +1,55 @@
 /// Astra Action Models
 ///
 /// Defines all actions that Astra Brain can return and how they should be handled.
+library;
 
 /// Supported navigation actions
 enum AstraActionType {
   /// Open patient details screen
   openPatient,
-  
+
   /// Open prescription screen
   openPrescription,
-  
+
   /// Open shopping cart
   openCart,
-  
+
   /// Open product details
   openProduct,
-  
+
   /// Open report/view documents
   openReport,
-  
+
   /// Open storage/documents
   openStorage,
-  
+
   /// Open reminders screen
   openReminders,
-  
+
   /// Open notifications
   openNotifications,
-  
+
   /// Open doctor booking
   openDoctorBooking,
-  
+
   /// Open chat screen
   openChat,
-  
+
   /// Open payment screen
   openPayment,
-  
+
   /// Open video call
   openVideoCall,
-  
+
   /// Open appointment details
   openAppointment,
-  
+
   /// Open profile screen
   openProfile,
-  
+
   /// Navigate back
   goBack,
-  
+
   /// Unknown action (fallback)
   unknown,
 }
@@ -65,19 +66,19 @@ enum ActionPriority {
 class AstraNavigationAction {
   /// Action type
   final AstraActionType type;
-  
+
   /// Human-readable description
   final String? description;
-  
+
   /// Action parameters
   final Map<String, dynamic>? params;
-  
+
   /// Priority level
   final ActionPriority priority;
-  
+
   /// Whether to show confirmation before executing
   final bool requiresConfirmation;
-  
+
   /// Action confidence score (0.0 to 1.0)
   final double? confidence;
 
@@ -91,14 +92,15 @@ class AstraNavigationAction {
   });
 
   /// Get target ID from params (commonly used)
-  String? get targetId => params?['id']?.toString() ?? params?['target_id']?.toString();
-  
+  String? get targetId =>
+      params?['id']?.toString() ?? params?['target_id']?.toString();
+
   /// Get patient ID from params
   String? get patientId => params?['patient_id']?.toString();
-  
+
   /// Get prescription ID from params
   String? get prescriptionId => params?['prescription_id']?.toString();
-  
+
   /// Get order ID from params
   String? get orderId => params?['order_id']?.toString();
 
@@ -118,11 +120,12 @@ class AstraNavigationAction {
   factory AstraNavigationAction.fromJson(Map<String, dynamic> json) {
     final typeStr = json['type']?.toString().toLowerCase() ?? '';
     final type = _parseActionType(typeStr);
-    
+
     return AstraNavigationAction(
       type: type,
       description: json['description'] as String?,
-      params: json['params'] as Map<String, dynamic>? ?? json['parameters'] as Map<String, dynamic>?,
+      params: json['params'] as Map<String, dynamic>? ??
+          json['parameters'] as Map<String, dynamic>?,
       priority: _parsePriority(json['priority']),
       requiresConfirmation: json['requires_confirmation'] as bool? ?? false,
       confidence: (json['confidence'] as num?)?.toDouble(),
@@ -138,17 +141,15 @@ class AstraNavigationAction {
   /// Parse action type from string
   static AstraActionType _parseActionType(String typeStr) {
     // Handle various formats
-    final normalized = typeStr
-        .replaceAll('_', '')
-        .replaceAll('-', '')
-        .toLowerCase();
-    
+    final normalized =
+        typeStr.replaceAll('_', '').replaceAll('-', '').toLowerCase();
+
     for (final type in AstraActionType.values) {
       if (type.name.replaceAll('_', '').toLowerCase() == normalized) {
         return type;
       }
     }
-    
+
     // Check for common aliases
     final aliases = {
       'openpatient': AstraActionType.openPatient,
@@ -193,16 +194,16 @@ class AstraNavigationAction {
       'booking': AstraActionType.openDoctorBooking,
       'schedule': AstraActionType.openDoctorBooking,
     };
-    
+
     return aliases[normalized] ?? AstraActionType.unknown;
   }
 
   /// Parse priority from string
   static ActionPriority _parsePriority(dynamic priority) {
     if (priority == null) return ActionPriority.normal;
-    
+
     final str = priority.toString().toLowerCase();
-    
+
     if (str == 'high' || str == 'urgent' || str == 'critical') {
       return ActionPriority.high;
     }
@@ -212,7 +213,7 @@ class AstraNavigationAction {
     if (str == 'critical' || str == 'emergency') {
       return ActionPriority.critical;
     }
-    
+
     return ActionPriority.normal;
   }
 
@@ -265,10 +266,10 @@ class AstraNavigationAction {
 class ActionResult {
   /// Whether the action was successful
   final bool success;
-  
+
   /// Error message if failed
   final String? errorMessage;
-  
+
   /// Result data
   final dynamic data;
 

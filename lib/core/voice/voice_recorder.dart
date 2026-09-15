@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
@@ -14,22 +13,22 @@ import 'package:doctro/theme/ayureze_theme.dart';
 class VoiceRecorder extends StatefulWidget {
   /// Callback when recording completes with audio file
   final void Function(File audioFile)? onRecordingComplete;
-  
+
   /// Callback when transcription is ready
   final void Function(VoiceResult result)? onTranscriptionComplete;
-  
+
   /// Callback on error
   final void Function(String error)? onError;
-  
+
   /// Whether to auto-transcribe after recording
   final bool autoTranscribe;
-  
+
   /// Recording language (Sarvam language code)
   final String language;
-  
+
   /// Button size
   final double size;
-  
+
   /// Button color
   final Color? color;
 
@@ -52,13 +51,15 @@ class _VoiceRecorderState extends State<VoiceRecorder>
     with SingleTickerProviderStateMixin {
   final AudioRecorder _recorder = AudioRecorder();
   final VoiceService _voiceService = VoiceService();
-  
+
   late AnimationController _animationController;
-  
+
   bool _isRecording = false;
   bool _isTranscribing = false;
   bool _hasPermission = false;
-  
+
+  /// Path of the most recent recording, or null when none is available.
+  String? get recordingPath => _recordingPath;
   String? _recordingPath;
   Duration _recordingDuration = Duration.zero;
   Timer? _durationTimer;
@@ -101,7 +102,8 @@ class _VoiceRecorderState extends State<VoiceRecorder>
 
     try {
       final directory = await getTemporaryDirectory();
-      final path = '${directory.path}/recording_${DateTime.now().millisecondsSinceEpoch}.wav';
+      final path =
+          '${directory.path}/recording_${DateTime.now().millisecondsSinceEpoch}.wav';
 
       await _recorder.start(
         const RecordConfig(
@@ -166,7 +168,7 @@ class _VoiceRecorderState extends State<VoiceRecorder>
         audioFile: audioFile,
         language: widget.language,
       );
-      
+
       widget.onTranscriptionComplete?.call(result);
     } catch (e) {
       widget.onError?.call('Transcription failed: $e');
@@ -187,8 +189,8 @@ class _VoiceRecorderState extends State<VoiceRecorder>
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: _isRecording 
-          ? 'Recording audio. Tap to stop' 
+      label: _isRecording
+          ? 'Recording audio. Tap to stop'
           : 'Record audio. Tap to start',
       button: true,
       child: Column(
@@ -204,14 +206,13 @@ class _VoiceRecorderState extends State<VoiceRecorder>
 
   Widget _buildRecordButton() {
     final color = widget.color ?? AyurezeTheme.healingGreen50;
-    
+
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
-        final scale = _isRecording 
-            ? 1.0 + (_animationController.value * 0.2) 
-            : 1.0;
-        
+        final scale =
+            _isRecording ? 1.0 + (_animationController.value * 0.2) : 1.0;
+
         return Transform.scale(
           scale: scale,
           child: child,
@@ -227,7 +228,8 @@ class _VoiceRecorderState extends State<VoiceRecorder>
             color: _isRecording ? Colors.red : color,
             boxShadow: [
               BoxShadow(
-                color: (_isRecording ? Colors.red : color).withOpacity(0.3),
+                color:
+                    (_isRecording ? Colors.red : color).withValues(alpha: 0.3),
                 blurRadius: _isRecording ? 20 : 10,
                 spreadRadius: _isRecording ? 5 : 2,
               ),
@@ -246,7 +248,7 @@ class _VoiceRecorderState extends State<VoiceRecorder>
   Widget _buildDurationIndicator() {
     final minutes = _recordingDuration.inMinutes;
     final seconds = _recordingDuration.inSeconds % 60;
-    
+
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Row(
@@ -321,9 +323,9 @@ class VoiceInputButton extends StatelessWidget {
       label: isListening ? 'Stop listening' : 'Start voice input',
       button: true,
       child: Material(
-        color: isListening 
-            ? Colors.red 
-            : AyurezeTheme.healingGreen50.withOpacity(0.1),
+        color: isListening
+            ? Colors.red
+            : AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
         shape: const CircleBorder(),
         child: InkWell(
           onTap: onTap,

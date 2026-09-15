@@ -1011,7 +1011,6 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
   }
 
   void _addVideoOverlay(BuildContext context) {
-    final vm = Provider.of<PatientInformationViewModel>(context, listen: false);
     OslerToast.warning(context, "Video Call feature is currently unavailable.");
   }
 

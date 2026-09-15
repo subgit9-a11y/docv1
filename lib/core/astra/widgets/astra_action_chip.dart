@@ -22,7 +22,9 @@ class AstraActionChip extends StatelessWidget {
     final description = action.description ?? _getDefaultDescription();
     final priority = action.priority == ActionPriority.high
         ? ', High priority'
-        : (action.priority == ActionPriority.critical ? ', Critical priority' : '');
+        : (action.priority == ActionPriority.critical
+            ? ', Critical priority'
+            : '');
     return '$description$priority${isSelected ? ', Selected' : ''}';
   }
 
@@ -80,7 +82,8 @@ class AstraActionChip extends StatelessWidget {
                 ],
                 if (!isLoading) ...[
                   const SizedBox(width: 4),
-                  Icon(Icons.chevron_right, size: 18, color: _getTextColor().withOpacity(0.6)),
+                  Icon(Icons.chevron_right,
+                      size: 18, color: _getTextColor().withValues(alpha: 0.6)),
                 ],
               ],
             ),
@@ -119,7 +122,7 @@ class AstraActionChip extends StatelessWidget {
   }
 
   Color _getBackgroundColor() {
-    if (isSelected) return _getAccentColor().withOpacity(0.1);
+    if (isSelected) return _getAccentColor().withValues(alpha: 0.1);
     switch (action.priority) {
       case ActionPriority.critical:
         return Colors.red.shade50;

@@ -493,7 +493,9 @@ class AstraService {
         'user_id': userId,
         'user_type': 'doctor',
       });
-    } catch (e) {}
+    } catch (_) {
+      // Registration mirror is best-effort; the caller handles missing profile data.
+    }
   }
 
   // ============================================================

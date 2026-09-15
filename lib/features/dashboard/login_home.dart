@@ -231,7 +231,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.18),
+                                        color: Colors.white
+                                            .withValues(alpha: 0.18),
                                         borderRadius:
                                             BorderRadius.circular(999),
                                       ),
@@ -246,7 +247,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                     const Spacer(),
                                     Icon(
                                       Icons.health_and_safety_rounded,
-                                      color: Colors.white.withOpacity(0.9),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.9),
                                       size: 24,
                                     ),
                                   ],
@@ -266,7 +268,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                 Text(
                                   "Manage your consultations & patient health records seamlessly.",
                                   style: textTheme.bodyMedium?.copyWith(
-                                    color: Colors.white.withOpacity(0.85),
+                                    color: Colors.white.withValues(alpha: 0.85),
                                   ),
                                 ),
                               ],
@@ -487,7 +489,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.14),
+                  color: color.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, size: 18, color: color),
@@ -614,11 +616,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                   size: 48,
                   color: showError
                       ? AyurezeTheme.remoteRed50
-                      : AyurezeTheme.forestDeep.withOpacity(0.5),
+                      : AyurezeTheme.forestDeep.withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  showError ? "Couldn't Load Appointments" : "No Appointments Found",
+                  showError
+                      ? "Couldn't Load Appointments"
+                      : "No Appointments Found",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AyurezeTheme.textPrimary,
                         fontWeight: FontWeight.bold,

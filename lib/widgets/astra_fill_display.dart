@@ -137,12 +137,9 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
     final hasBp = _astraFillData?['history_of_blood_pressure'] == true;
 
     // Legacy support handles
-    final rawSymptoms =
-        _astraFillData?['extracted_symptoms'] ?? _astraFillData?['symptoms'];
-    final List<String> symptoms = rawSymptoms is List
-        ? List<String>.from(rawSymptoms)
-        : (rawSymptoms != null ? [rawSymptoms.toString()] : []);
     final currentMedications = _astraFillData?['current_medications'] ?? [];
+    final vitals = _astraFillData?['vitals'];
+    final medicalHistory = _astraFillData?['medical_history'];
     final timestamp =
         _astraFillData?['created_at'] ?? _astraFillData?['timestamp'] ?? '';
     final severityScore = _astraFillData?['severity_score'];
@@ -155,7 +152,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           gradient: LinearGradient(
-            colors: [AyurezeTheme.purple.withOpacity(0.05), Colors.white],
+            colors: [AyurezeTheme.purple.withValues(alpha: 0.05), Colors.white],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -170,7 +167,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
               child: Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AyurezeTheme.purple.withOpacity(0.1),
+                  color: AyurezeTheme.purple.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                 ),
                 child: Row(
@@ -324,6 +321,15 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         chipColor: AyurezeTheme.healingGreen10,
                         textColor: AyurezeTheme.healingGreen100,
                       ),
+
+                    // Vitals
+                    if (vitals is Map && vitals.isNotEmpty)
+                      _buildVitalsSection(vitals.cast<String, dynamic>()),
+
+                    // Structured medical history
+                    if (medicalHistory is Map && medicalHistory.isNotEmpty)
+                      _buildMedicalHistorySection(
+                          medicalHistory.cast<String, dynamic>()),
                   ],
                 ),
               ),
@@ -347,7 +353,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
           Container(
             padding: EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: iconColor.withOpacity(0.1),
+              color: iconColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Icon(icon, color: iconColor, size: 18),
@@ -408,7 +414,8 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                       decoration: BoxDecoration(
                         color: chipColor,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: textColor.withOpacity(0.3)),
+                        border:
+                            Border.all(color: textColor.withValues(alpha: 0.3)),
                       ),
                       child: Text(
                         item,
@@ -555,7 +562,7 @@ class AstraFillCompactWidget extends StatelessWidget {
     final severityScore = astraFillData?['severity_score'];
 
     return Card(
-      color: AyurezeTheme.purple.withOpacity(0.08),
+      color: AyurezeTheme.purple.withValues(alpha: 0.08),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: EdgeInsets.all(12),

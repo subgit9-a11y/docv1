@@ -47,6 +47,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:doctro/theme/theme_provider.dart';
+import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/features/consultation/videoCall/VideoCall/overlay_handler.dart';
 import 'package:doctro/features/consultation/chat/pages/home_page.dart';
 import 'package:doctro/features/consultation/chat/providers/auth_provider.dart'
@@ -61,7 +62,6 @@ import 'package:doctro/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:doctro/features/dashboard/patient_information.dart';
 import 'package:doctro/features/notifications/notifications.dart';
-import 'package:doctro/features/profile/profile.dart' hide Container;
 import 'package:doctro/features/review/rate&review.dart';
 import 'package:doctro/features/cashfree/payment.dart';
 
@@ -174,7 +174,7 @@ Future<void> main() async {
   }
 
   // Finally, run the app with guaranteed non-null prefs
-  runApp(MyApp(prefs: prefs ?? await SharedPreferences.getInstance()));
+  runApp(MyApp(prefs: prefs));
 }
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -240,7 +240,9 @@ class _MyAppState extends State<MyApp> {
       if (!kIsWeb && Platform.isAndroid) {
         await _secureWindowChannel.invokeMethod('enableFlagSecure');
       }
-    } catch (e) {}
+    } catch (_) {
+      // Secure-window flag is Android-only polish; failure must not block startup.
+    }
   }
 
   Future<void> _initializeNotifications() async {
@@ -469,18 +471,19 @@ class _MyAppState extends State<MyApp> {
                     }
                   },
                   child: MaterialApp(
-                    themeMode: ThemeMode.system,
+                    themeMode: themeProvider.isDarkMode
+                        ? ThemeMode.dark
+                        : ThemeMode.light,
                     navigatorKey: navigatorKey,
                     title: "Ayureze",
                     debugShowCheckedModeBanner: false,
-                    theme: themeProvider.theme,
+                    theme: AyurezeTheme.lightTheme(),
+                    darkTheme: AyurezeTheme.darkTheme(),
                     themeAnimationDuration: const Duration(milliseconds: 300),
                     themeAnimationCurve: Curves.easeInOut,
                     home: const SplashScreen(),
                     locale: _locale,
-                    supportedLocales: const [
-                      Locale(ENGLISH, 'US'),
-                    ],
+                    supportedLocales: supportedLocales,
                     localizationsDelegates: const [
                       LanguageLocalization.delegate,
                       GlobalMaterialLocalizations.delegate,

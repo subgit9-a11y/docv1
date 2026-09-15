@@ -97,6 +97,15 @@ class SharedPreferenceHelper {
     return _preferences?.getString(key) ?? 'N_A';
   }
 
+  /// Like [getString] but returns null when the key was never written,
+  /// instead of the legacy 'N_A' sentinel. Prefer this wherever "absent"
+  /// is meaningful, so callers don't have to compare against a magic string.
+  static String? getStringOrNull(String key) {
+    final value = getString(key);
+    if (value.isEmpty || value == 'N_A') return null;
+    return value;
+  }
+
   static List<String> getStringList(String key) =>
       _preferences!.getStringList(key) ?? [];
 

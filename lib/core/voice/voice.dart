@@ -2,6 +2,7 @@
 ///
 /// Sarvam AI voice integration for speech-to-text and text-to-speech.
 /// This module provides voice input/output for Astra AI conversations.
+library;
 
 export 'voice_service.dart';
 export 'voice_setup.dart';

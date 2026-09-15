@@ -65,6 +65,7 @@ class VideoCallViewModel extends ChangeNotifier {
       response =
           await RestClient(await RetroApi().dioData(context)).settingRequest();
       appId = response.data?.agoraAppId;
+      if (!context.mounted) return BaseModel()..data = response;
       if (flag != "OutGoing") {
         await doctorProfile(context, callEnd, id, flag);
       } else {
@@ -88,6 +89,7 @@ class VideoCallViewModel extends ChangeNotifier {
         token = response.data?.agoraToken;
         channelName = response.data?.channelName;
         doctorId = response.data?.id;
+        if (!context.mounted) return BaseModel()..data = response;
         await initAgora(context, callEnd, id, flag);
       }
       notifyListeners();
@@ -113,14 +115,16 @@ class VideoCallViewModel extends ChangeNotifier {
         await initAgora(context, callEnd, id, flag);
         notifyListeners();
       } else {
+        if (!context.mounted) return;
         OslerToast.error(
             context, "Failed to call the patient! Unable to connect!");
-        if (context.mounted) Navigator.pop(context);
+        Navigator.pop(context);
       }
     } catch (error) {
+      if (!context.mounted) return;
       OslerToast.error(
           context, "Failed to call the patient! Unable to connect!");
-      if (context.mounted) Navigator.pop(context);
+      Navigator.pop(context);
     }
   }
 

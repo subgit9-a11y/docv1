@@ -78,7 +78,8 @@ class AstraLogger {
   // ============================================================
 
   /// Log error messages
-  static void e(String message, {String? tag, Object? error, StackTrace? stackTrace}) {
+  static void e(String message,
+      {String? tag, Object? error, StackTrace? stackTrace}) {
     if (_currentLevel <= levelError) {
       _log('E', tag ?? _tag, message, error: error, stackTrace: stackTrace);
     }
@@ -89,16 +90,17 @@ class AstraLogger {
   // ============================================================
 
   /// Log API request
-  static void logRequest(String method, String url, {Map<String, dynamic>? headers, Object? body}) {
+  static void logRequest(String method, String url,
+      {Map<String, dynamic>? headers, Object? body}) {
     if (_currentLevel > levelDebug) return;
-    
+
     final buffer = StringBuffer();
     buffer.writeln('📤 REQUEST: $method $url');
-    
+
     if (headers != null && headers.isNotEmpty) {
       buffer.writeln('   Headers: ${_maskSensitiveData(headers)}');
     }
-    
+
     if (body != null) {
       if (body is Map<String, dynamic>) {
         buffer.writeln('   Body: ${_maskSensitiveData(body)}');
@@ -106,25 +108,26 @@ class AstraLogger {
         buffer.writeln('   Body: $body');
       }
     }
-    
+
     debugPrint(buffer.toString());
   }
 
   /// Log API response
-  static void logResponse(String url, int statusCode, {Duration? duration, Object? data}) {
+  static void logResponse(String url, int statusCode,
+      {Duration? duration, Object? data}) {
     if (_currentLevel > levelDebug) return;
-    
+
     final buffer = StringBuffer();
     buffer.writeln('📥 RESPONSE: $statusCode from $url');
-    
+
     if (duration != null) {
       buffer.writeln('   Duration: ${duration.inMilliseconds}ms');
     }
-    
+
     if (data != null) {
       buffer.writeln('   Data: ${_truncateData(data)}');
     }
-    
+
     debugPrint(buffer.toString());
   }
 
@@ -132,63 +135,64 @@ class AstraLogger {
   static void logApiError(String url, Object error, {int? statusCode}) {
     final buffer = StringBuffer();
     buffer.writeln('❌ API ERROR: $url');
-    
+
     if (statusCode != null) {
       buffer.writeln('   Status: $statusCode');
     }
-    
+
     buffer.writeln('   Error: $error');
-    
+
     if (kDebugMode && error is Error) {
       buffer.writeln('   StackTrace: ${error.stackTrace}');
     }
-    
+
     debugPrint(buffer.toString());
   }
 
   /// Log navigation action
   static void logNavigation(String action, Map<String, dynamic>? params) {
     if (_currentLevel > levelInfo) return;
-    
+
     final buffer = StringBuffer();
     buffer.writeln('🧭 NAVIGATION: $action');
-    
+
     if (params != null && params.isNotEmpty) {
       buffer.writeln('   Params: $params');
     }
-    
+
     debugPrint(buffer.toString());
   }
 
   /// Log brain action
-  static void logBrainAction(String action, String? target, {Map<String, dynamic>? metadata}) {
+  static void logBrainAction(String action, String? target,
+      {Map<String, dynamic>? metadata}) {
     if (_currentLevel > levelInfo) return;
-    
+
     final buffer = StringBuffer();
     buffer.writeln('🧠 BRAIN ACTION: $action');
-    
+
     if (target != null) {
       buffer.writeln('   Target: $target');
     }
-    
+
     if (metadata != null && metadata.isNotEmpty) {
       buffer.writeln('   Metadata: $metadata');
     }
-    
+
     debugPrint(buffer.toString());
   }
 
   /// Log streaming event
   static void logStreamEvent(String event, {Object? data}) {
     if (_currentLevel > levelDebug) return;
-    
+
     final buffer = StringBuffer();
     buffer.writeln('📡 STREAM: $event');
-    
+
     if (data != null) {
       buffer.writeln('   Data: ${_truncateData(data)}');
     }
-    
+
     debugPrint(buffer.toString());
   }
 
@@ -206,27 +210,35 @@ class AstraLogger {
   }) {
     final timestamp = DateTime.now().toIso8601String().substring(11, 23);
     final buffer = StringBuffer();
-    
+
     buffer.write('$_prefix[$timestamp] [$level][$tag] $message');
-    
+
     if (data != null) {
       buffer.write('\n   Data: $data');
     }
-    
+
     if (error != null) {
       buffer.write('\n   Error: $error');
     }
-    
+
     if (stackTrace != null && kDebugMode) {
-      buffer.write('\n   Stack: ${stackTrace.toString().split('\n').take(3).join('\n   ')}');
+      buffer.write(
+          '\n   Stack: ${stackTrace.toString().split('\n').take(3).join('\n   ')}');
     }
-    
+
     debugPrint(buffer.toString());
   }
 
   static Map<String, dynamic> _maskSensitiveData(Map<String, dynamic> data) {
-    const sensitiveKeys = ['password', 'token', 'secret', 'authorization', 'auth', 'key'];
-    
+    const sensitiveKeys = [
+      'password',
+      'token',
+      'secret',
+      'authorization',
+      'auth',
+      'key'
+    ];
+
     return Map.fromEntries(
       data.entries.map((e) {
         if (sensitiveKeys.any((key) => e.key.toLowerCase().contains(key))) {

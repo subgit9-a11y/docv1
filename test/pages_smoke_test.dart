@@ -15,7 +15,6 @@ void main() {
   // build (flutter build web) and the existing view-model unit tests.
 
   testWidgets('PrescriptionScreen renders header', (tester) async {
-    final prefs = await SharedPreferences.getInstance();
     await tester.pumpWidget(MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeProvider>(

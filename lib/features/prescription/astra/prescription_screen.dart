@@ -534,7 +534,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                               borderRadius: BorderRadius.circular(14),
                               side: BorderSide(
                                   color: AyurezeTheme.healingGreen50
-                                      .withOpacity(0.3)),
+                                      .withValues(alpha: 0.3)),
                             ),
                           ),
                         ),

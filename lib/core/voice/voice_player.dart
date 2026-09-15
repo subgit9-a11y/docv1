@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:doctro/core/voice/voice_service.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 
 /// Voice Player Widget
@@ -11,16 +9,16 @@ import 'package:doctro/theme/ayureze_theme.dart';
 class VoicePlayer extends StatefulWidget {
   /// Audio file to play
   final File audioFile;
-  
+
   /// Callback when playback completes
   final VoidCallback? onComplete;
-  
+
   /// Callback on error
   final void Function(String error)? onError;
-  
+
   /// Whether to auto-play on load
   final bool autoPlay;
-  
+
   /// Visual style
   final VoicePlayerStyle style;
 
@@ -39,7 +37,7 @@ class VoicePlayer extends StatefulWidget {
 
 class _VoicePlayerState extends State<VoicePlayer> {
   final AudioPlayer _player = AudioPlayer();
-  
+
   bool _isPlaying = false;
   bool _isLoaded = false;
   Duration _duration = Duration.zero;
@@ -120,7 +118,8 @@ class _VoicePlayerState extends State<VoicePlayer> {
   }
 
   void _seekTo(double value) {
-    final position = Duration(milliseconds: (value * _duration.inMilliseconds).round());
+    final position =
+        Duration(milliseconds: (value * _duration.inMilliseconds).round());
     _player.seek(position);
   }
 
@@ -142,7 +141,7 @@ class _VoicePlayerState extends State<VoicePlayer> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: AyurezeTheme.healingGreen50.withOpacity(0.1),
+          color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -201,7 +200,14 @@ class _VoicePlayerState extends State<VoicePlayer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildDurationText(),
-                  _buildPlayButton(iconSize: 32),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildPlayButton(iconSize: 32),
+                      const SizedBox(width: 8),
+                      _buildStopButton(),
+                    ],
+                  ),
                 ],
               ),
             ],
@@ -222,7 +228,7 @@ class _VoicePlayerState extends State<VoicePlayer> {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: AyurezeTheme.healingGreen50.withOpacity(0.1),
+            color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
           child: Icon(
@@ -259,11 +265,31 @@ class _VoicePlayerState extends State<VoicePlayer> {
     );
   }
 
+  Widget _buildStopButton() {
+    return Semantics(
+      label: 'Stop',
+      button: true,
+      child: InkWell(
+        onTap: _stop,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: AyurezeTheme.border,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(Icons.stop, color: AyurezeTheme.textPrimary, size: 20),
+        ),
+      ),
+    );
+  }
+
   Widget _buildProgressIndicator() {
     if (_duration.inMilliseconds == 0) return const SizedBox.shrink();
-    
+
     final progress = _position.inMilliseconds / _duration.inMilliseconds;
-    
+
     return SizedBox(
       width: 60,
       height: 4,
@@ -277,15 +303,15 @@ class _VoicePlayerState extends State<VoicePlayer> {
 
   Widget _buildProgressBar() {
     if (_duration.inMilliseconds == 0) return const SizedBox.shrink();
-    
+
     final progress = _position.inMilliseconds / _duration.inMilliseconds;
-    
+
     return SliderTheme(
       data: SliderThemeData(
         activeTrackColor: AyurezeTheme.healingGreen50,
         inactiveTrackColor: Colors.grey.shade300,
         thumbColor: AyurezeTheme.healingGreen50,
-        overlayColor: AyurezeTheme.healingGreen50.withOpacity(0.2),
+        overlayColor: AyurezeTheme.healingGreen50.withValues(alpha: 0.2),
         trackHeight: 4,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
       ),
@@ -309,7 +335,7 @@ class _VoicePlayerState extends State<VoicePlayer> {
 
   Widget _buildSpeedSelector() {
     final speeds = [0.75, 1.0, 1.25, 1.5];
-    
+
     return PopupMenuButton<double>(
       initialValue: _playbackSpeed,
       onSelected: _setSpeed,
@@ -378,11 +404,11 @@ class VoiceWaveform extends StatelessWidget {
             duration: Duration(milliseconds: 200 + (index * 100)),
             margin: const EdgeInsets.symmetric(horizontal: 2),
             width: 3,
-            height: isActive ? (height * (0.5 + (index % 3) * 0.25)) : height * 0.4,
+            height:
+                isActive ? (height * (0.5 + (index % 3) * 0.25)) : height * 0.4,
             decoration: BoxDecoration(
-              color: isActive 
-                  ? AyurezeTheme.healingGreen50 
-                  : Colors.grey.shade400,
+              color:
+                  isActive ? AyurezeTheme.healingGreen50 : Colors.grey.shade400,
               borderRadius: BorderRadius.circular(2),
             ),
           );

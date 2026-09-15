@@ -1,3 +1,4 @@
+import 'package:doctro/widgets/osler_hero.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/date_util.dart';
@@ -77,7 +78,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             icon: SvgPicture.asset(
               "assets/icons/dMenuBar.svg",
               height: 16,
-              color: AyurezeTheme.forestDeep,
+              colorFilter:
+                  ColorFilter.mode(AyurezeTheme.forestDeep, BlendMode.srcIn),
             ),
           ),
         ],
@@ -134,49 +136,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Widget _buildHero() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: AyurezeTheme.heroDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Text(
-              "Inbox",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          const Text(
-            "Keep patient alerts visible and calm.",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Recent appointment and patient notifications stay grouped here in the same Ayureze desk language.",
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
-              fontSize: 14,
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
+    return const OslerHero(
+      eyebrow: 'Inbox',
+      title: 'Keep patient alerts visible and calm.',
+      subtitle:
+          'Recent appointment and patient notifications stay grouped here in the same Ayureze desk language.',
     );
   }
 
@@ -298,7 +262,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             SvgPicture.asset(
               'assets/icons/longArrow.svg',
               height: 12,
-              color: AyurezeTheme.forestDeep,
+              colorFilter:
+                  ColorFilter.mode(AyurezeTheme.forestDeep, BlendMode.srcIn),
             ),
             const SizedBox(width: 10),
             Text(

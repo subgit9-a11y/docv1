@@ -49,10 +49,13 @@ class _CreateAccountState extends State<CreateAccount> {
     }
 
     Future.delayed(Duration.zero, () {
-      gender = [
-        getTranslated(context, AppString.gender_male).toString(),
-        getTranslated(context, AppString.gender_female).toString(),
-      ];
+      if (!mounted) return;
+      setState(() {
+        gender = [
+          getTranslated(context, AppString.gender_male).toString(),
+          getTranslated(context, AppString.gender_female).toString(),
+        ];
+      });
     });
   }
 
@@ -127,7 +130,8 @@ class _CreateAccountState extends State<CreateAccount> {
                       Text(
                         "Join the world's most advanced Ayurveda platform",
                         style: TextStyle(
-                            fontSize: 14, color: Colors.white.withOpacity(0.8)),
+                            fontSize: 14,
+                            color: Colors.white.withValues(alpha: 0.8)),
                       ),
                     ],
                   ),
@@ -425,6 +429,7 @@ class _CreateAccountState extends State<CreateAccount> {
       response = await RestClient(await RetroApi().dioData(context))
           .registerRequest(body);
 
+      if (!mounted) return BaseModel()..data = response;
       CommonFunction.hideDialog(context);
       final data = OtpData(otp: response.data!.otp, id: response.data!.id);
 
@@ -448,7 +453,7 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       );
     } catch (error) {
-      CommonFunction.hideDialog(context);
+      if (mounted) CommonFunction.hideDialog(context);
       return BaseModel()..setException(ServerError.withError(error: error));
     }
     return BaseModel()..data = response;

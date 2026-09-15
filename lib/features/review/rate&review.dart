@@ -186,7 +186,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(
@@ -210,7 +210,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
           Text(
             "Read patient reviews, ratings and consultation feedback.",
             style: textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withOpacity(0.85),
+              color: Colors.white.withValues(alpha: 0.85),
               height: 1.4,
             ),
           ),

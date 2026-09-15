@@ -7,34 +7,34 @@ import 'package:flutter/material.dart';
 class PrescriptionWorkflow {
   /// Unique workflow identifier
   final String id;
-  
+
   /// Prescription ID
   final String prescriptionId;
-  
+
   /// Patient ID
   final String patientId;
-  
+
   /// Doctor ID
   final String doctorId;
-  
+
   /// Current workflow status
   final WorkflowStatus status;
-  
+
   /// Individual task statuses
   final List<WorkflowTask> tasks;
-  
+
   /// Progress percentage (0-100)
   final int progress;
-  
+
   /// Creation timestamp
   final DateTime createdAt;
-  
+
   /// Completion timestamp
   final DateTime? completedAt;
-  
+
   /// Error message if failed
   final String? error;
-  
+
   /// URLs and references generated during workflow
   final WorkflowResult? result;
 
@@ -61,8 +61,9 @@ class PrescriptionWorkflow {
       doctorId: json['doctor_id']?.toString() ?? '',
       status: WorkflowStatus.fromString(json['status']),
       tasks: (json['tasks'] as List?)
-          ?.map((t) => WorkflowTask.fromJson(t))
-          .toList() ?? [],
+              ?.map((t) => WorkflowTask.fromJson(t))
+              .toList() ??
+          [],
       progress: json['progress'] as int? ?? 0,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'])
@@ -101,16 +102,15 @@ class PrescriptionWorkflow {
   bool get isFailed => status == WorkflowStatus.failed;
 
   /// Check if workflow is in progress
-  bool get isInProgress => 
-      status == WorkflowStatus.pending ||
-      status == WorkflowStatus.inProgress;
+  bool get isInProgress =>
+      status == WorkflowStatus.pending || status == WorkflowStatus.inProgress;
 
   /// Get next pending task
-  WorkflowTask? get nextPendingTask => 
+  WorkflowTask? get nextPendingTask =>
       tasks.where((t) => t.status == WorkflowTaskStatus.pending).firstOrNull;
 
   /// Get failed task if any
-  WorkflowTask? get failedTask => 
+  WorkflowTask? get failedTask =>
       tasks.where((t) => t.status == WorkflowTaskStatus.failed).firstOrNull;
 }
 
@@ -180,22 +180,22 @@ enum WorkflowStatus {
 class WorkflowTask {
   /// Task identifier
   final String id;
-  
+
   /// Task type
   final TaskType type;
-  
+
   /// Display name
   final String name;
-  
+
   /// Task status
   final WorkflowTaskStatus status;
-  
+
   /// Progress message
   final String? message;
-  
+
   /// Error if failed
   final String? error;
-  
+
   /// Task data/result
   final Map<String, dynamic>? data;
 
@@ -340,25 +340,25 @@ enum WorkflowTaskStatus {
 class WorkflowResult {
   /// PDF URL
   final String? pdfUrl;
-  
+
   /// Storage URL
   final String? storageUrl;
-  
+
   /// Reminder ID
   final String? reminderId;
-  
+
   /// Notification ID
   final String? notificationId;
-  
+
   /// WhatsApp message ID
   final String? whatsappMessageId;
-  
+
   /// Shopify cart URL
   final String? shopifyCartUrl;
-  
+
   /// Shopify cart ID
   final String? shopifyCartId;
-  
+
   /// Additional data
   final Map<String, dynamic>? additionalData;
 

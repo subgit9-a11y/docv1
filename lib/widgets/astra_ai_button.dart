@@ -9,13 +9,13 @@ import 'package:doctro/features/consultation/astra_chat/astra_chat_page.dart';
 class AstraAIFloatingButton extends StatelessWidget {
   /// Patient ID for context
   final String? patientId;
-  
+
   /// Patient name for display
   final String? patientName;
-  
+
   /// Custom position
   final Alignment alignment;
-  
+
   /// Custom size
   final double size;
 
@@ -58,7 +58,7 @@ class AstraAIFloatingButton extends StatelessWidget {
                 children: [
                   // Pulsing effect
                   _PulsingEffect(size: size),
-                  
+
                   // Icon
                   Icon(
                     Icons.psychology,
@@ -109,7 +109,7 @@ class _PulsingEffectState extends State<_PulsingEffect>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     )..repeat();
-    
+
     _animation = Tween<double>(begin: 1.0, end: 1.3).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
@@ -131,8 +131,8 @@ class _PulsingEffectState extends State<_PulsingEffect>
           height: widget.size * _animation.value,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AyurezeTheme.healingGreen50.withOpacity(
-              1.0 - (_animation.value - 1.0) / 0.3,
+            color: AyurezeTheme.healingGreen50.withValues(
+              alpha: 1.0 - (_animation.value - 1.0) / 0.3,
             ),
           ),
         );
@@ -147,10 +147,10 @@ class _PulsingEffectState extends State<_PulsingEffect>
 class AstraAIInlineButton extends StatelessWidget {
   /// Button label
   final String label;
-  
+
   /// Callback when pressed
   final VoidCallback? onPressed;
-  
+
   /// Icon to display
   final IconData icon;
 
@@ -164,7 +164,7 @@ class AstraAIInlineButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AyurezeTheme.healingGreen50.withOpacity(0.1),
+      color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onPressed,
@@ -202,7 +202,7 @@ class AstraAIInlineButton extends StatelessWidget {
 class AstraAIStatusIndicator extends StatefulWidget {
   /// Show label
   final bool showLabel;
-  
+
   /// Compact mode
   final bool compact;
 
@@ -228,9 +228,9 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
 
   Future<void> _checkHealth() async {
     if (_isChecking) return;
-    
+
     setState(() => _isChecking = true);
-    
+
     try {
       // Import and use AstraController to check health
       // For simplicity, we'll use a basic check
@@ -258,8 +258,8 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: _isHealthy
-              ? AyurezeTheme.healingGreen50.withOpacity(0.2)
-              : Colors.orange.withOpacity(0.2),
+              ? AyurezeTheme.healingGreen50.withValues(alpha: 0.2)
+              : Colors.orange.withValues(alpha: 0.2),
           shape: BoxShape.circle,
         ),
         child: Icon(
@@ -278,8 +278,8 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: _isHealthy
-              ? AyurezeTheme.healingGreen50.withOpacity(0.1)
-              : Colors.orange.withOpacity(0.1),
+              ? AyurezeTheme.healingGreen50.withValues(alpha: 0.1)
+              : Colors.orange.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -291,18 +291,15 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
                 height: 12,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: _isHealthy
-                      ? AyurezeTheme.healingGreen50
-                      : Colors.orange,
+                  color:
+                      _isHealthy ? AyurezeTheme.healingGreen50 : Colors.orange,
                 ),
               )
             else
               Icon(
                 _isHealthy ? Icons.check_circle : Icons.warning_amber,
                 size: 14,
-                color: _isHealthy
-                    ? AyurezeTheme.healingGreen50
-                    : Colors.orange,
+                color: _isHealthy ? AyurezeTheme.healingGreen50 : Colors.orange,
               ),
             if (widget.showLabel) ...[
               const SizedBox(width: 6),
@@ -310,9 +307,8 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
                 _isHealthy ? 'Astra AI' : 'Offline',
                 style: TextStyle(
                   fontSize: 12,
-                  color: _isHealthy
-                      ? AyurezeTheme.healingGreen50
-                      : Colors.orange,
+                  color:
+                      _isHealthy ? AyurezeTheme.healingGreen50 : Colors.orange,
                   fontWeight: FontWeight.w500,
                 ),
               ),

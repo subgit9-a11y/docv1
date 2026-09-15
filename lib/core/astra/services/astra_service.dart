@@ -19,7 +19,7 @@ import 'package:doctro/network/apis.dart';
 class AstraService {
   static final AstraService _instance = AstraService._internal();
   late Dio _dio;
-  
+
   /// Base URL for Astra API
   final String baseUrl = Apis.astraBaseUrl;
 
@@ -59,7 +59,8 @@ class AstraService {
       final adapter = _dio.httpClientAdapter as IOHttpClientAdapter;
       adapter.createHttpClient = () {
         final client = HttpClient();
-        client.connectionTimeout = Duration(seconds: AstraConfig.connectTimeoutSeconds);
+        client.connectionTimeout =
+            Duration(seconds: AstraConfig.connectTimeoutSeconds);
         client.badCertificateCallback = (cert, host, port) {
           return AstraConfig.isTrustedHost(host);
         };
@@ -123,9 +124,8 @@ class AstraService {
 
   void _onResponse(Response response, ResponseInterceptorHandler handler) {
     final startTime = response.requestOptions.extra['_startTime'] as DateTime?;
-    final duration = startTime != null
-        ? DateTime.now().difference(startTime)
-        : null;
+    final duration =
+        startTime != null ? DateTime.now().difference(startTime) : null;
 
     AstraLogger.logResponse(
       '${response.requestOptions.baseUrl}${response.requestOptions.path}',
@@ -140,7 +140,8 @@ class AstraService {
   // ERROR INTERCEPTOR
   // ============================================================
 
-  Future<void> _onError(DioException error, ErrorInterceptorHandler handler) async {
+  Future<void> _onError(
+      DioException error, ErrorInterceptorHandler handler) async {
     AstraLogger.logApiError(
       '${error.requestOptions.baseUrl}${error.requestOptions.path}',
       error,
@@ -181,16 +182,16 @@ class AstraService {
     try {
       final Uri uri = Uri.parse('${options.baseUrl}${options.path}');
       final String host = uri.host;
-      
+
       final addresses = await InternetAddress.lookup(
         host,
         type: InternetAddressType.IPv4,
       );
-      
+
       if (addresses.isEmpty) return null;
 
       final String ipBaseUrl = '${uri.scheme}://${addresses.first.address}';
-      
+
       final fallbackDio = Dio(BaseOptions(
         baseUrl: ipBaseUrl,
         connectTimeout: Duration(seconds: AstraConfig.connectTimeoutSeconds),
@@ -200,7 +201,8 @@ class AstraService {
 
       // Copy over the auth headers
       if (options.headers['Authorization'] != null) {
-        fallbackDio.options.headers['Authorization'] = options.headers['Authorization'];
+        fallbackDio.options.headers['Authorization'] =
+            options.headers['Authorization'];
       }
       fallbackDio.options.headers['X-Role'] = AstraConfig.roleDoctor;
       fallbackDio.options.headers['Content-Type'] = 'application/json';
@@ -210,7 +212,8 @@ class AstraService {
         final adapter = fallbackDio.httpClientAdapter as IOHttpClientAdapter;
         adapter.createHttpClient = () {
           final client = HttpClient();
-          client.connectionTimeout = Duration(seconds: AstraConfig.connectTimeoutSeconds);
+          client.connectionTimeout =
+              Duration(seconds: AstraConfig.connectTimeoutSeconds);
           client.badCertificateCallback = (_, __, ___) => true;
           return client;
         };
@@ -269,14 +272,14 @@ class AstraService {
 
       await for (final chunk in stream) {
         buffer += utf8.decode(chunk);
-        
+
         // Process complete events
         final lines = buffer.split('\n');
         buffer = lines.removeLast(); // Keep incomplete line in buffer
 
         for (final line in lines) {
           if (line.trim().isEmpty) continue;
-          
+
           // Try to parse as JSON
           try {
             final json = jsonDecode(line);
@@ -292,7 +295,7 @@ class AstraService {
           }
         }
       }
-      
+
       yield ChatStreamEvent.done();
     } on DioException catch (e) {
       yield ChatStreamEvent.error(_formatError(e));
@@ -324,7 +327,8 @@ class AstraService {
   /// Get prescription by ID
   Future<Map<String, dynamic>> getPrescription(String prescriptionId) async {
     try {
-      final url = AstraConfig.prescriptionGet.replaceAll('{id}', prescriptionId);
+      final url =
+          AstraConfig.prescriptionGet.replaceAll('{id}', prescriptionId);
       final response = await _getWithRetry(url);
       return _parseResponse(response);
     } catch (e) {
@@ -612,7 +616,7 @@ class AstraService {
 
       if (error.response != null) {
         final data = error.response?.data;
-        
+
         // Try to extract error message from response
         if (data is Map && data.containsKey('detail')) {
           message = data['detail'].toString();

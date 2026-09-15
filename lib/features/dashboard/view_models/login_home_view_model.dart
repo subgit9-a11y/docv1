@@ -73,9 +73,12 @@ class LoginHomeViewModel extends ChangeNotifier {
       // best-effort: a failure there should not blank out the whole screen.
       final results = await Future.wait<dynamic>([
         client.todayAppointments(),
-        client.paymentRequest().catchError(
-            (_) => Payment(success: false, paymentData: [])),
-        client.reviewRequest().catchError((_) => Review(success: false, data: [])),
+        client
+            .paymentRequest()
+            .catchError((_) => Payment(success: false, paymentData: [])),
+        client
+            .reviewRequest()
+            .catchError((_) => Review(success: false, data: [])),
       ]);
 
       final TodayAppointment response = results[0] as TodayAppointment;

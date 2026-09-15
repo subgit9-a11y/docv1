@@ -8,16 +8,16 @@ import 'package:doctro/core/astra/utils/astra_logger.dart';
 class RetryHandler {
   /// Maximum number of retry attempts
   final int maxRetries;
-  
+
   /// Initial delay between retries
   final Duration initialDelay;
-  
+
   /// Maximum delay between retries
   final Duration maxDelay;
-  
+
   /// Multiplier for exponential backoff
   final double backoffMultiplier;
-  
+
   /// Whether to jitter the delay
   final bool useJitter;
 
@@ -36,64 +36,65 @@ class RetryHandler {
     bool Function(Exception)? shouldRetry,
   }) async {
     Exception? lastException;
-    
+
     for (int attempt = 0; attempt <= maxRetries; attempt++) {
       try {
         return await fn();
       } catch (e) {
         lastException = e is Exception ? e : Exception(e.toString());
-        
+
         // Check if we should retry
         if (attempt == maxRetries) break;
-        
+
         // Check custom retry condition
         if (shouldRetry != null && !shouldRetry(lastException)) break;
-        
+
         // Calculate delay
         final delay = _calculateDelay(attempt);
-        
+
         AstraLogger.w(
           'Retry attempt ${attempt + 1}/$maxRetries after ${delay.inSeconds}s',
           tag: 'RetryHandler',
           data: {'operation': operationName, 'error': lastException.toString()},
         );
-        
+
         await Future.delayed(delay);
       }
     }
-    
+
     AstraLogger.e(
       'All retries exhausted',
       error: lastException,
       tag: 'RetryHandler',
     );
-    
+
     throw lastException ?? Exception('Unknown error after retries');
   }
 
   Duration _calculateDelay(int attempt) {
     // Exponential backoff
     final exponentialDelay = Duration(
-      milliseconds: (initialDelay.inMilliseconds * 
-          (attempt > 0 ? (backoffMultiplier * (attempt - 1)) : 1)).round(),
+      milliseconds: (initialDelay.inMilliseconds *
+              (attempt > 0 ? (backoffMultiplier * (attempt - 1)) : 1))
+          .round(),
     );
-    
+
     // Cap at max delay
     var delay = exponentialDelay;
     if (delay > maxDelay) delay = maxDelay;
-    
+
     // Add jitter to prevent thundering herd
     if (useJitter) {
       final jitterMs = (delay.inMilliseconds * 0.2).round();
-      final jitter = jitterMs > 0 
-          ? Duration(milliseconds: jitterMs)
-          : Duration.zero;
+      final jitter =
+          jitterMs > 0 ? Duration(milliseconds: jitterMs) : Duration.zero;
       delay += Duration(
-        milliseconds: DateTime.now().millisecondsSinceEpoch % (jitter.inMilliseconds * 2) 
-            - jitter.inMilliseconds,
+        milliseconds: DateTime.now().millisecondsSinceEpoch %
+                (jitter.inMilliseconds * 2) -
+            jitter.inMilliseconds,
       );
     }
-    
+
     return delay;
   }
 }
@@ -118,28 +119,28 @@ Future<T> withRetry<T>(
 /// Check if an exception is retryable
 bool isRetryableException(Exception e) {
   final message = e.toString().toLowerCase();
-  
+
   // Network errors
-  if (message.contains('timeout') || 
+  if (message.contains('timeout') ||
       message.contains('network') ||
       message.contains('connection') ||
       message.contains('socket')) {
     return true;
   }
-  
+
   // Server errors (5xx)
-  if (message.contains('500') || 
-      message.contains('502') || 
+  if (message.contains('500') ||
+      message.contains('502') ||
       message.contains('503') ||
       message.contains('504')) {
     return true;
   }
-  
+
   // Rate limiting
   if (message.contains('429') || message.contains('rate limit')) {
     return true;
   }
-  
+
   return false;
 }
 
@@ -158,11 +159,11 @@ class RetryConfig {
   });
 
   RetryHandler toHandler() => RetryHandler(
-    maxRetries: maxRetries,
-    initialDelay: initialDelay,
-    maxDelay: maxDelay,
-    useJitter: useJitter,
-  );
+        maxRetries: maxRetries,
+        initialDelay: initialDelay,
+        maxDelay: maxDelay,
+        useJitter: useJitter,
+      );
 
   static const network = RetryConfig(
     maxRetries: 3,

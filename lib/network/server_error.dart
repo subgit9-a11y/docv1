@@ -70,7 +70,8 @@ class ServerError implements Exception {
     }
 
     if (message.isEmpty) {
-      message = error.message?.toString() ?? "Something went wrong. Please try again.";
+      message = error.message?.toString() ??
+          "Something went wrong. Please try again.";
     }
 
     _errorCode = error.response?.statusCode;

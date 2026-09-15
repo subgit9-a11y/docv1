@@ -692,7 +692,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(
@@ -716,7 +716,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
           Text(
             "Define the time slots for each day of the week to let patients know when you're available.",
             style: textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withOpacity(0.85),
+              color: Colors.white.withValues(alpha: 0.85),
               height: 1.4,
             ),
           ),

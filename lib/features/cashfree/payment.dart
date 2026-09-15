@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:doctro/widgets/osler_hero.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/common_function.dart';
@@ -105,7 +106,8 @@ class _PaymentScreen extends State<PaymentScreen> {
                 icon: SvgPicture.asset(
                   "assets/icons/dMenuBar.svg",
                   height: 16,
-                  color: AyurezeTheme.forestDeep,
+                  colorFilter: ColorFilter.mode(
+                      AyurezeTheme.forestDeep, BlendMode.srcIn),
                 ),
               ),
             ],
@@ -165,49 +167,11 @@ class _PaymentScreen extends State<PaymentScreen> {
   }
 
   Widget _buildHero() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: AyurezeTheme.heroDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Text(
-              "Billing overview",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          const Text(
-            "Track patient payments in one calm ledger.",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Search the ledger, review incoming totals, and keep the financial side of the clinic tidy.",
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
-              fontSize: 14,
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
+    return const OslerHero(
+      eyebrow: 'Billing overview',
+      title: 'Track patient payments in one calm ledger.',
+      subtitle:
+          'Search the ledger, review incoming totals, and keep the financial side of the clinic tidy.',
     );
   }
 
@@ -233,7 +197,8 @@ class _PaymentScreen extends State<PaymentScreen> {
           SvgPicture.asset(
             'assets/icons/dSearch.svg',
             height: 20,
-            color: AyurezeTheme.forestDeep,
+            colorFilter:
+                ColorFilter.mode(AyurezeTheme.forestDeep, BlendMode.srcIn),
           ),
         ],
       ),
@@ -375,7 +340,8 @@ class _PaymentScreen extends State<PaymentScreen> {
             SvgPicture.asset(
               'assets/icons/longArrow.svg',
               height: 12,
-              color: AyurezeTheme.forestDeep,
+              colorFilter:
+                  ColorFilter.mode(AyurezeTheme.forestDeep, BlendMode.srcIn),
             ),
             const SizedBox(width: 10),
             Text(
@@ -565,7 +531,9 @@ class _PaymentScreen extends State<PaymentScreen> {
               double.tryParse(stats['withdrawn_amount'].toString()) ?? 0.0;
         });
       }
-    } catch (e) {}
+    } catch (_) {
+      // Stats are supplementary; a parse failure must not block the payout screen.
+    }
   }
 
   Widget _buildWalletCard() {

@@ -241,7 +241,7 @@ class _SettingScreenState extends State<SettingScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
+              color: Colors.white.withValues(alpha: 0.14),
               borderRadius: BorderRadius.circular(999),
             ),
             child: const Text(
@@ -267,7 +267,7 @@ class _SettingScreenState extends State<SettingScreen> {
           Text(
             "Appearance, patient call controls, account security, and support live here.",
             style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
+              color: Colors.white.withValues(alpha: 0.78),
               fontSize: 14,
               height: 1.4,
             ),
@@ -355,7 +355,7 @@ class _SettingScreenState extends State<SettingScreen> {
           : null,
       trailing: Switch.adaptive(
         value: value,
-        activeColor: AyurezeTheme.forestDeep,
+        activeThumbColor: AyurezeTheme.forestDeep,
         activeTrackColor: AyurezeTheme.healingGreen50,
         onChanged: onChanged,
       ),
@@ -396,7 +396,7 @@ class _SettingScreenState extends State<SettingScreen> {
       width: 42,
       height: 42,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.16),
+        color: color.withValues(alpha: 0.16),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Icon(icon, color: color, size: 22),

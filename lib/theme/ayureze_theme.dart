@@ -131,44 +131,44 @@ class AyurezeTheme {
       dividerColor: lightBorder,
       shadowColor: const Color(0x16000000),
       textTheme: ThemeData.light().textTheme.copyWith(
-        headlineLarge: const TextStyle(
-          fontSize: 32,
-          height: 1.05,
-          fontWeight: FontWeight.w800,
-          color: lightTextPrimary,
-        ),
-        headlineMedium: const TextStyle(
-          fontSize: 24,
-          height: 1.15,
-          fontWeight: FontWeight.w800,
-          color: lightTextPrimary,
-        ),
-        titleLarge: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: lightTextPrimary,
-        ),
-        titleMedium: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-          color: lightTextPrimary,
-        ),
-        bodyLarge: const TextStyle(
-          fontSize: 15,
-          height: 1.4,
-          color: lightTextPrimary,
-        ),
-        bodyMedium: const TextStyle(
-          fontSize: 14,
-          height: 1.35,
-          color: lightTextSecondary,
-        ),
-        labelLarge: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 0.2,
-        ),
-      ),
+            headlineLarge: const TextStyle(
+              fontSize: 32,
+              height: 1.05,
+              fontWeight: FontWeight.w800,
+              color: lightTextPrimary,
+            ),
+            headlineMedium: const TextStyle(
+              fontSize: 24,
+              height: 1.15,
+              fontWeight: FontWeight.w800,
+              color: lightTextPrimary,
+            ),
+            titleLarge: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: lightTextPrimary,
+            ),
+            titleMedium: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: lightTextPrimary,
+            ),
+            bodyLarge: const TextStyle(
+              fontSize: 15,
+              height: 1.4,
+              color: lightTextPrimary,
+            ),
+            bodyMedium: const TextStyle(
+              fontSize: 14,
+              height: 1.35,
+              color: lightTextSecondary,
+            ),
+            labelLarge: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.2,
+            ),
+          ),
       appBarTheme: const AppBarTheme(
         backgroundColor: lightCanvas,
         surfaceTintColor: Colors.transparent,
@@ -340,44 +340,44 @@ class AyurezeTheme {
       dividerColor: darkBorder,
       shadowColor: const Color(0x40000000),
       textTheme: ThemeData.dark().textTheme.copyWith(
-        headlineLarge: const TextStyle(
-          fontSize: 32,
-          height: 1.05,
-          fontWeight: FontWeight.w800,
-          color: darkTextPrimary,
-        ),
-        headlineMedium: const TextStyle(
-          fontSize: 24,
-          height: 1.15,
-          fontWeight: FontWeight.w800,
-          color: darkTextPrimary,
-        ),
-        titleLarge: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: darkTextPrimary,
-        ),
-        titleMedium: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-          color: darkTextPrimary,
-        ),
-        bodyLarge: const TextStyle(
-          fontSize: 15,
-          height: 1.4,
-          color: darkTextPrimary,
-        ),
-        bodyMedium: const TextStyle(
-          fontSize: 14,
-          height: 1.35,
-          color: darkTextSecondary,
-        ),
-        labelLarge: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          color: darkTextPrimary,
-        ),
-      ),
+            headlineLarge: const TextStyle(
+              fontSize: 32,
+              height: 1.05,
+              fontWeight: FontWeight.w800,
+              color: darkTextPrimary,
+            ),
+            headlineMedium: const TextStyle(
+              fontSize: 24,
+              height: 1.15,
+              fontWeight: FontWeight.w800,
+              color: darkTextPrimary,
+            ),
+            titleLarge: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: darkTextPrimary,
+            ),
+            titleMedium: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: darkTextPrimary,
+            ),
+            bodyLarge: const TextStyle(
+              fontSize: 15,
+              height: 1.4,
+              color: darkTextPrimary,
+            ),
+            bodyMedium: const TextStyle(
+              fontSize: 14,
+              height: 1.35,
+              color: darkTextSecondary,
+            ),
+            labelLarge: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: darkTextPrimary,
+            ),
+          ),
       appBarTheme: const AppBarTheme(
         backgroundColor: darkSurface,
         foregroundColor: darkTextPrimary,
@@ -496,7 +496,8 @@ class AyurezeTheme {
       filled: true,
       fillColor: surface,
       labelStyle: TextStyle(color: textSecondary, fontSize: 14),
-      hintStyle: TextStyle(color: textSecondary.withOpacity(0.6), fontSize: 14),
+      hintStyle:
+          TextStyle(color: textSecondary.withValues(alpha: 0.6), fontSize: 14),
     );
   }
 }

@@ -13,10 +13,10 @@ import 'package:doctro/widgets/osler_loader.dart';
 class AstraChatPage extends StatefulWidget {
   /// Optional patient ID for context
   final String? patientId;
-  
+
   /// Optional patient name for display
   final String? patientName;
-  
+
   /// Optional appointment ID for context
   final String? appointmentId;
 
@@ -36,6 +36,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
+  bool _useStreaming = false;
 
   @override
   void initState() {
@@ -72,12 +73,13 @@ class _AstraChatPageState extends State<AstraChatPage> {
   }
 
   Future<void> _sendMessage() async {
+    if (_useStreaming) return _sendMessageStreaming();
     final text = _textController.text.trim();
     if (text.isEmpty) return;
 
     _textController.clear();
     await _controller.sendMessage(text);
-    
+
     // Scroll to bottom after sending
     await Future.delayed(const Duration(milliseconds: 100));
     _scrollToBottom();
@@ -89,7 +91,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
 
     _textController.clear();
     await _controller.sendMessageStreaming(text);
-    
+
     await Future.delayed(const Duration(milliseconds: 100));
     _scrollToBottom();
   }
@@ -116,15 +118,15 @@ class _AstraChatPageState extends State<AstraChatPage> {
           children: [
             // Brain status indicator
             _buildStatusBar(),
-            
+
             // Messages list
             Expanded(
               child: _buildMessagesList(),
             ),
-            
+
             // Pending actions
             _buildPendingActions(),
-            
+
             // Input area
             _buildInputArea(),
           ],
@@ -152,7 +154,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: AyurezeTheme.healingGreen50.withOpacity(0.2),
+              color: AyurezeTheme.healingGreen50.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -224,8 +226,8 @@ class _AstraChatPageState extends State<AstraChatPage> {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           color: controller.isBrainHealthy
-              ? AyurezeTheme.healingGreen50.withOpacity(0.1)
-              : Colors.orange.withOpacity(0.1),
+              ? AyurezeTheme.healingGreen50.withValues(alpha: 0.1)
+              : Colors.orange.withValues(alpha: 0.1),
           child: Row(
             children: [
               Icon(
@@ -311,7 +313,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AyurezeTheme.healingGreen50.withOpacity(0.1),
+                color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -417,7 +419,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, -2),
               ),
@@ -429,24 +431,33 @@ class _AstraChatPageState extends State<AstraChatPage> {
                 // Stream toggle
                 IconButton(
                   icon: Icon(
-                    controller.isStreaming ? Icons.stop : Icons.auto_awesome,
+                    controller.isStreaming
+                        ? Icons.stop
+                        : (_useStreaming
+                            ? Icons.auto_awesome
+                            : Icons.auto_awesome_outlined),
                     color: controller.isStreaming
                         ? Colors.red
-                        : AyurezeTheme.healingGreen50,
+                        : (_useStreaming
+                            ? AyurezeTheme.healingGreen50
+                            : AyurezeTheme.textSecondary),
                   ),
                   onPressed: controller.isLoading
                       ? null
                       : () {
                           if (controller.isStreaming) {
                             controller.cancelStream();
+                            return;
                           }
-                          // Toggle streaming mode
+                          setState(() => _useStreaming = !_useStreaming);
                         },
                   tooltip: controller.isStreaming
                       ? 'Stop streaming'
-                      : 'Enable streaming',
+                      : (_useStreaming
+                          ? 'Streaming on - tap to disable'
+                          : 'Enable streaming'),
                 ),
-                
+
                 // Text input
                 Expanded(
                   child: TextField(
@@ -481,9 +492,9 @@ class _AstraChatPageState extends State<AstraChatPage> {
                     maxLines: null,
                   ),
                 ),
-                
+
                 const SizedBox(width: 8),
-                
+
                 // Send button
                 Container(
                   decoration: BoxDecoration(
@@ -557,7 +568,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
 
   void _checkBrainHealth() async {
     await _controller.refreshBrainHealth();
-    
+
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -566,9 +577,8 @@ class _AstraChatPageState extends State<AstraChatPage> {
                 ? '✅ Astra Brain is healthy and ready!'
                 : '⚠️ Astra Brain is currently unavailable',
           ),
-          backgroundColor: _controller.isBrainHealthy
-              ? Colors.green
-              : Colors.orange,
+          backgroundColor:
+              _controller.isBrainHealthy ? Colors.green : Colors.orange,
         ),
       );
     }

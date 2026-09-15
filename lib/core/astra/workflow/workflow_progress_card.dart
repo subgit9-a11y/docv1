@@ -10,22 +10,22 @@ import 'package:doctro/theme/ayureze_theme.dart';
 class PrescriptionWorkflowProgress extends StatefulWidget {
   /// Initial workflow data
   final PrescriptionWorkflow workflow;
-  
+
   /// Callback when workflow completes
   final void Function(PrescriptionWorkflow)? onComplete;
-  
+
   /// Callback when workflow fails
   final void Function(String error)? onError;
-  
+
   /// Whether to auto-poll status updates
   final bool autoPoll;
-  
+
   /// Poll interval for status updates
   final Duration pollInterval;
-  
+
   /// Callback to open PDF (if generated)
   final VoidCallback? onOpenPdf;
-  
+
   /// Callback to open Shopify cart (if created)
   final VoidCallback? onOpenCart;
 
@@ -41,14 +41,14 @@ class PrescriptionWorkflowProgress extends StatefulWidget {
   });
 
   @override
-  State<PrescriptionWorkflowProgress> createState() => 
+  State<PrescriptionWorkflowProgress> createState() =>
       _PrescriptionWorkflowProgressState();
 }
 
-class _PrescriptionWorkflowProgressState 
+class _PrescriptionWorkflowProgressState
     extends State<PrescriptionWorkflowProgress> {
   final WorkflowService _service = WorkflowService();
-  
+
   late PrescriptionWorkflow _workflow;
   bool _isPolling = false;
 
@@ -56,7 +56,7 @@ class _PrescriptionWorkflowProgressState
   void initState() {
     super.initState();
     _workflow = widget.workflow;
-    
+
     if (widget.autoPoll && _workflow.isInProgress) {
       _startPolling();
     }
@@ -87,10 +87,10 @@ class _PrescriptionWorkflowProgressState
 
     try {
       final updated = await _service.getWorkflowStatus(_workflow.id);
-      
+
       if (mounted) {
         setState(() => _workflow = updated);
-        
+
         if (updated.isComplete) {
           _isPolling = false;
           widget.onComplete?.call(updated);
@@ -136,7 +136,7 @@ class _PrescriptionWorkflowProgressState
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: _workflow.status.color.withOpacity(0.1),
+        color: _workflow.status.color.withValues(alpha: 0.1),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -189,12 +189,12 @@ class _PrescriptionWorkflowProgressState
         ),
       );
     }
-    
+
     return Container(
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: _workflow.status.color.withOpacity(0.2),
+        color: _workflow.status.color.withValues(alpha: 0.2),
         shape: BoxShape.circle,
       ),
       child: Icon(
@@ -209,7 +209,7 @@ class _PrescriptionWorkflowProgressState
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
+        color: Colors.blue.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -352,12 +352,12 @@ class _PrescriptionWorkflowProgressState
         ),
       );
     }
-    
+
     return Container(
       width: 24,
       height: 24,
       decoration: BoxDecoration(
-        color: task.color.withOpacity(0.2),
+        color: task.color.withValues(alpha: 0.2),
         shape: BoxShape.circle,
       ),
       child: Icon(
@@ -380,7 +380,7 @@ class _PrescriptionWorkflowProgressState
       WorkflowTaskStatus.failed: 'Failed',
       WorkflowTaskStatus.skipped: 'Skipped',
     };
-    
+
     return Text(
       labels[task.status] ?? '',
       style: TextStyle(
@@ -393,14 +393,14 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildResults() {
     final result = _workflow.result!;
-    
+
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.1),
+        color: Colors.green.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.green.withOpacity(0.3)),
+        border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -499,7 +499,7 @@ class _PrescriptionWorkflowProgressState
   Future<void> _retryWorkflow() async {
     final failedTask = _workflow.failedTask;
     if (failedTask == null) return;
-    
+
     try {
       final updated = await _service.retryTask(_workflow.id, failedTask.id);
       if (mounted) {
@@ -534,7 +534,7 @@ class WorkflowStatusBadge extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: status.color.withOpacity(0.1),
+          color: status.color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(

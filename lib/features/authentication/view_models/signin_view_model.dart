@@ -83,7 +83,9 @@ class SignInViewModel extends ChangeNotifier {
       if (token != null && token.isNotEmpty) {
         SharedPreferenceHelper.setString(Preferences.messageToken, token);
       }
-    } catch (e) {}
+    } catch (_) {
+      // FCM token is optional; login must proceed without it.
+    }
   }
 
   Future<void> sendOtp(BuildContext context) async {
@@ -99,14 +101,17 @@ class SignInViewModel extends ChangeNotifier {
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phoneNum,
         verificationCompleted: (PhoneAuthCredential credential) async {
+          if (!context.mounted) return;
           CommonFunction.hideDialog(context);
           await authenticateWithCredential(credential, context);
         },
         verificationFailed: (FirebaseAuthException e) {
+          if (!context.mounted) return;
           CommonFunction.hideDialog(context);
           OslerToast.error(context, "Verification failed: ${e.message}");
         },
         codeSent: (String vId, int? resendToken) {
+          if (!context.mounted) return;
           CommonFunction.hideDialog(context);
           verificationId = vId;
           otpSent = true;
@@ -118,6 +123,7 @@ class SignInViewModel extends ChangeNotifier {
         },
       );
     } catch (e) {
+      if (!context.mounted) return;
       CommonFunction.hideDialog(context);
       OslerToast.error(context, "Error: $e");
     }
@@ -139,6 +145,7 @@ class SignInViewModel extends ChangeNotifier {
 
       await authenticateWithCredential(credential, context);
     } catch (e) {
+      if (!context.mounted) return;
       CommonFunction.hideDialog(context);
       OslerToast.error(context, "Invalid OTP Code: $e");
     }
@@ -169,7 +176,9 @@ class SignInViewModel extends ChangeNotifier {
             if (res != null && res['email'] != null) {
               doctorEmail = res['email'];
             }
-          } catch (e) {}
+          } catch (_) {
+            // Supabase email lookup is an optional enrichment; Firebase may still resolve it.
+          }
         }
 
         if (doctorEmail == null || doctorEmail.isEmpty) {
@@ -184,7 +193,9 @@ class SignInViewModel extends ChangeNotifier {
             if (res != null && res['email'] != null) {
               doctorEmail = res['email'];
             }
-          } catch (e) {}
+          } catch (_) {
+            // Supabase email lookup is an optional enrichment; Firebase may still resolve it.
+          }
         }
 
         if (doctorEmail != null && doctorEmail.isNotEmpty) {
@@ -204,6 +215,7 @@ class SignInViewModel extends ChangeNotifier {
                 "is_filled": astraData['data']?['is_filled'] ?? 1,
               }
             });
+            if (!context.mounted) return;
             CommonFunction.hideDialog(context);
 
             if (response.success == true && response.data != null) {
@@ -214,10 +226,12 @@ class SignInViewModel extends ChangeNotifier {
                   context, 'loginHome', (route) => false);
             }
           } catch (e) {
+            if (!context.mounted) return;
             OslerToast.error(
                 context, "Astra backend login failed (Missing Endpoint / 404)");
           }
         } else {
+          if (!context.mounted) return;
           CommonFunction.hideDialog(context);
           OslerToast.warning(
               context, "Phone number not registered. Please sign up.");
@@ -234,10 +248,12 @@ class SignInViewModel extends ChangeNotifier {
           );
         }
       } else {
+        if (!context.mounted) return;
         CommonFunction.hideDialog(context);
         OslerToast.error(context, "Firebase authentication failed");
       }
     } catch (e) {
+      if (!context.mounted) return;
       CommonFunction.hideDialog(context);
       OslerToast.error(context, "Authentication failed: $e");
     }
@@ -246,6 +262,7 @@ class SignInViewModel extends ChangeNotifier {
   Future<void> handleGoogleSignIn(BuildContext context) async {
     final authProvider = Provider.of<chat.AuthProvider>(context, listen: false);
     User? user = await authProvider.signInWithGoogle();
+    if (!context.mounted) return;
     if (user != null) {
       try {
         CommonFunction.onLoading(context);
@@ -266,6 +283,7 @@ class SignInViewModel extends ChangeNotifier {
             }
           });
 
+          if (!context.mounted) return;
           CommonFunction.hideDialog(context);
 
           if (response.success == true && response.data != null) {
@@ -275,6 +293,7 @@ class SignInViewModel extends ChangeNotifier {
                 context, 'loginHome', (route) => false);
           }
         } catch (e) {
+          if (!context.mounted) return;
           // If Astra login fails (e.g. 404), maybe user doesn't exist yet on Astra
           Navigator.push(
             context,
@@ -289,6 +308,7 @@ class SignInViewModel extends ChangeNotifier {
           );
         }
       } catch (outerE) {
+        if (!context.mounted) return;
         CommonFunction.hideDialog(context);
         OslerToast.error(context, outerE.toString());
       }
@@ -368,17 +388,27 @@ class SignInViewModel extends ChangeNotifier {
               password: password.text.trim(),
             );
           } catch (createErr) {
+            if (!context.mounted) {
+              return BaseModel()
+                ..setException(ServerError.withError(error: createErr));
+            }
             CommonFunction.hideDialog(context);
             OslerToast.error(context, "Firebase Registration Failed");
             return BaseModel()
               ..setException(ServerError.withError(error: createErr));
           }
         } else {
+          if (!context.mounted) {
+            return BaseModel()..setException(ServerError.withError(error: e));
+          }
           CommonFunction.hideDialog(context);
           OslerToast.error(context, "Firebase Auth Error: ${e.code}");
           return BaseModel()..setException(ServerError.withError(error: e));
         }
       } catch (e) {
+        if (!context.mounted) {
+          return BaseModel()..setException(ServerError.withError(error: e));
+        }
         CommonFunction.hideDialog(context);
         OslerToast.error(context, "Firebase Auth Error");
         return BaseModel()..setException(ServerError.withError(error: e));
@@ -386,6 +416,10 @@ class SignInViewModel extends ChangeNotifier {
 
       // 2. Authenticate with Astra Backend (Automatically uses Firebase Bearer Token)
       final astraData = await AstraApiService().login();
+      if (!context.mounted) {
+        return BaseModel()
+          ..setException(ServerError.withError(error: 'unmounted'));
+      }
       CommonFunction.hideDialog(context);
 
       response = LoginResponse.fromJson({
@@ -413,6 +447,9 @@ class SignInViewModel extends ChangeNotifier {
         OslerToast.error(context, "Backend Login Failed");
       }
     } catch (error) {
+      if (!context.mounted) {
+        return BaseModel()..setException(ServerError.withError(error: error));
+      }
       CommonFunction.hideDialog(context);
       // Fallback message for Missing Endpoint (404)
       OslerToast.error(context,

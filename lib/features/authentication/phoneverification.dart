@@ -140,8 +140,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                             borderRadius: BorderRadius.circular(12),
                             color: AyurezeTheme.forestDeep,
                             border: Border.all(
-                              color:
-                                  AyurezeTheme.healingGreen50.withOpacity(.3),
+                              color: AyurezeTheme.healingGreen50
+                                  .withValues(alpha: .3),
                             ),
                           ),
                         ),
@@ -224,6 +224,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .otpVerifyRequest(body);
+      if (!mounted) return BaseModel()..data = response;
       if (response.success == true) {
         _saveUserData(response);
 
@@ -264,6 +265,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       response = await RestClient(await RetroApi().dioData(context))
           .resentOtpRequest(id);
 
+      if (!mounted) return BaseModel()..data = response;
       Navigator.pushNamed(context, 'SignIn');
       OslerToast.success(context, response.msg!);
     } catch (error) {
@@ -293,6 +295,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     try {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       authProvider.handleSignIn();
-    } catch (e) {}
+    } catch (_) {
+      // Sign-in state sync is best-effort; navigator already moved on.
+    }
   }
 }

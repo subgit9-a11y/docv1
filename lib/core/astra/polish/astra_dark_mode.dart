@@ -14,56 +14,52 @@ class AstraDarkMode {
 
   /// Get Astra green color for dark mode
   static Color healingGreen50Dark(BuildContext context) {
-    return isDarkMode(context) 
-        ? const Color(0xFF81C784)  // Lighter green for dark bg
+    return isDarkMode(context)
+        ? const Color(0xFF81C784) // Lighter green for dark bg
         : const Color(0xFF4CAF50);
   }
 
   /// Get text color for dark mode
   static Color textPrimaryDark(BuildContext context) {
-    return isDarkMode(context) 
-        ? Colors.white.withOpacity(0.95)
+    return isDarkMode(context)
+        ? Colors.white.withValues(alpha: 0.95)
         : const Color(0xFF212121);
   }
 
   /// Get secondary text color for dark mode
   static Color textSecondaryDark(BuildContext context) {
-    return isDarkMode(context) 
-        ? Colors.white.withOpacity(0.7)
+    return isDarkMode(context)
+        ? Colors.white.withValues(alpha: 0.7)
         : const Color(0xFF757575);
   }
 
   /// Get surface color for dark mode
   static Color surfaceDark(BuildContext context) {
-    return isDarkMode(context) 
-        ? const Color(0xFF1E1E1E)
-        : Colors.white;
+    return isDarkMode(context) ? const Color(0xFF1E1E1E) : Colors.white;
   }
 
   /// Get background color for dark mode
   static Color backgroundDark(BuildContext context) {
-    return isDarkMode(context) 
+    return isDarkMode(context)
         ? const Color(0xFF121212)
         : const Color(0xFFF5F5F5);
   }
 
   /// Get card color for dark mode
   static Color cardDark(BuildContext context) {
-    return isDarkMode(context) 
-        ? const Color(0xFF2D2D2D)
-        : Colors.white;
+    return isDarkMode(context) ? const Color(0xFF2D2D2D) : Colors.white;
   }
 
   /// Get border color for dark mode
   static Color borderDark(BuildContext context) {
-    return isDarkMode(context) 
-        ? Colors.white.withOpacity(0.12)
+    return isDarkMode(context)
+        ? Colors.white.withValues(alpha: 0.12)
         : const Color(0xFFE0E0E0);
   }
 
   /// Get error color
   static Color errorDark(BuildContext context) {
-    return isDarkMode(context) 
+    return isDarkMode(context)
         ? const Color(0xFFEF5350)
         : const Color(0xFFD32F2F);
   }
@@ -104,9 +100,7 @@ class AstraDarkModeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = AstraDarkMode.isDarkMode(context) 
-        ? darkStyle 
-        : lightStyle;
+    final style = AstraDarkMode.isDarkMode(context) ? darkStyle : lightStyle;
     return Text(text, style: style);
   }
 }
@@ -168,7 +162,7 @@ class AstraDarkModeCard extends StatelessWidget {
             ? null
             : [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),

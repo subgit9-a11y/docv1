@@ -3,12 +3,10 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doctro/features/consultation/chat/constants/colors.dart';
 import 'package:doctro/features/consultation/chat/constants/firestore_constants.dart';
 import 'package:doctro/features/consultation/chat/models/message_chat.dart';
 import 'package:doctro/features/consultation/chat/providers/auth_provider.dart';
 import 'package:doctro/features/consultation/chat/providers/chat_provider.dart';
-import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
@@ -164,7 +162,8 @@ class ChatPageState extends State<ChatPage> {
             height: 150,
             width: 200,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), color: Colors.white),
+                borderRadius: BorderRadius.circular(20),
+                color: AyurezeTheme.surface),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
               child: Column(
@@ -178,7 +177,7 @@ class ChatPageState extends State<ChatPage> {
                     },
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.06,
-                      color: Colors.white,
+                      color: AyurezeTheme.surface,
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                         child: Align(
@@ -201,7 +200,7 @@ class ChatPageState extends State<ChatPage> {
                     },
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.06,
-                      color: Colors.white,
+                      color: AyurezeTheme.surface,
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                         child: Align(
@@ -238,7 +237,7 @@ class ChatPageState extends State<ChatPage> {
     } else {
       Fluttertoast.showToast(
           msg: getTranslated(context, AppString.nothing_send).toString(),
-          backgroundColor: ColorConstants.greyColor);
+          backgroundColor: AyurezeTheme.textSecondary);
     }
   }
 
@@ -254,13 +253,13 @@ class ChatPageState extends State<ChatPage> {
                     padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                     width: 200,
                     decoration: BoxDecoration(
-                        color: ColorConstants.greyColor2,
+                        color: AyurezeTheme.border,
                         borderRadius: BorderRadius.circular(8)),
                     margin: EdgeInsets.only(
                         bottom: isLastMessageRight(index) ? 20 : 10, right: 10),
                     child: Text(
                       messageChat.content,
-                      style: TextStyle(color: ColorConstants.primaryColor),
+                      style: TextStyle(color: AyurezeTheme.forestDeep),
                     ),
                   )
                 : messageChat.type == TypeMessage.image
@@ -294,7 +293,7 @@ class ChatPageState extends State<ChatPage> {
                                 if (loadingProgress == null) return child;
                                 return Container(
                                   decoration: BoxDecoration(
-                                    color: ColorConstants.greyColor2,
+                                    color: AyurezeTheme.border,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(8),
                                     ),
@@ -303,7 +302,7 @@ class ChatPageState extends State<ChatPage> {
                                   height: 200,
                                   child: Center(
                                     child: CircularProgressIndicator(
-                                      color: ColorConstants.themeColor,
+                                      color: AyurezeTheme.healingGreen50,
                                       value:
                                           loadingProgress.expectedTotalBytes !=
                                                       null &&
@@ -375,7 +374,7 @@ class ChatPageState extends State<ChatPage> {
                               if (loadingProgress == null) return child;
                               return Center(
                                 child: CircularProgressIndicator(
-                                  color: ColorConstants.themeColor,
+                                  color: AyurezeTheme.healingGreen50,
                                   value: loadingProgress.expectedTotalBytes !=
                                               null &&
                                           loadingProgress.expectedTotalBytes !=
@@ -390,7 +389,7 @@ class ChatPageState extends State<ChatPage> {
                               return Icon(
                                 Icons.account_circle,
                                 size: 35,
-                                color: ColorConstants.greyColor,
+                                color: AyurezeTheme.textSecondary,
                               );
                             },
                             width: 35,
@@ -404,7 +403,7 @@ class ChatPageState extends State<ChatPage> {
                           padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                           width: 200,
                           decoration: BoxDecoration(
-                              color: ColorConstants.primaryColor,
+                              color: AyurezeTheme.forestDeep,
                               borderRadius: BorderRadius.circular(8)),
                           margin: const EdgeInsets.only(left: 10),
                           child: Text(
@@ -438,7 +437,7 @@ class ChatPageState extends State<ChatPage> {
                                       if (loadingProgress == null) return child;
                                       return Container(
                                         decoration: BoxDecoration(
-                                          color: ColorConstants.greyColor2,
+                                          color: AyurezeTheme.border,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(8),
                                           ),
@@ -447,7 +446,7 @@ class ChatPageState extends State<ChatPage> {
                                         height: 200,
                                         child: Center(
                                           child: CircularProgressIndicator(
-                                            color: ColorConstants.themeColor,
+                                            color: AyurezeTheme.healingGreen50,
                                             value: loadingProgress
                                                             .expectedTotalBytes !=
                                                         null &&
@@ -509,7 +508,7 @@ class ChatPageState extends State<ChatPage> {
                             DateTime.fromMillisecondsSinceEpoch(
                                 int.parse(messageChat.timestamp))),
                         style: TextStyle(
-                            color: ColorConstants.greyColor,
+                            color: AyurezeTheme.textSecondary,
                             fontSize: 12,
                             fontStyle: FontStyle.italic),
                       ),
@@ -565,10 +564,10 @@ class ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: ColorConstants.greyColor2,
+        backgroundColor: AyurezeTheme.border,
         title: Text(
-          peerNickname ?? '',
-          style: TextStyle(color: ColorConstants.primaryColor),
+          peerNickname,
+          style: TextStyle(color: AyurezeTheme.forestDeep),
         ),
         centerTitle: true,
         leading: InkWell(
@@ -584,7 +583,7 @@ class ChatPageState extends State<ChatPage> {
             },
             child: Icon(
               Icons.arrow_back_ios,
-              color: ColorConstants.black,
+              color: AyurezeTheme.textPrimary,
             )),
       ),
       body: PopScope(
@@ -616,19 +615,19 @@ class ChatPageState extends State<ChatPage> {
       width: double.infinity,
       height: 50,
       decoration: BoxDecoration(
-          border: Border(
-              top: BorderSide(color: ColorConstants.greyColor2, width: 0.5)),
-          color: Colors.white),
+          border:
+              Border(top: BorderSide(color: AyurezeTheme.border, width: 0.5)),
+          color: AyurezeTheme.surface),
       child: Row(
         children: <Widget>[
           Material(
-            color: Colors.white,
+            color: AyurezeTheme.surface,
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 1),
               child: IconButton(
                 icon: Icon(Icons.image),
                 onPressed: _modalBottomSheetMenu,
-                color: ColorConstants.primaryColor,
+                color: AyurezeTheme.forestDeep,
               ),
             ),
           ),
@@ -637,26 +636,25 @@ class ChatPageState extends State<ChatPage> {
               onSubmitted: (value) {
                 onSendMessage(textEditingController.text, TypeMessage.text);
               },
-              style:
-                  TextStyle(color: ColorConstants.primaryColor, fontSize: 15),
+              style: TextStyle(color: AyurezeTheme.forestDeep, fontSize: 15),
               controller: textEditingController,
               decoration: InputDecoration.collapsed(
                 hintText:
                     getTranslated(context, AppString.type_message).toString(),
-                hintStyle: TextStyle(color: ColorConstants.greyColor),
+                hintStyle: TextStyle(color: AyurezeTheme.textSecondary),
               ),
               focusNode: focusNode,
             ),
           ),
           Material(
-            color: Colors.white,
+            color: AyurezeTheme.surface,
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 8),
               child: IconButton(
                 icon: Icon(Icons.send),
                 onPressed: () =>
                     onSendMessage(textEditingController.text, TypeMessage.text),
-                color: ColorConstants.primaryColor,
+                color: AyurezeTheme.forestDeep,
               ),
             ),
           ),
@@ -692,7 +690,7 @@ class ChatPageState extends State<ChatPage> {
                 } else {
                   return Center(
                     child: CircularProgressIndicator(
-                      color: ColorConstants.themeColor,
+                      color: AyurezeTheme.healingGreen50,
                     ),
                   );
                 }
@@ -700,7 +698,7 @@ class ChatPageState extends State<ChatPage> {
             )
           : Center(
               child: CircularProgressIndicator(
-                color: ColorConstants.themeColor,
+                color: AyurezeTheme.healingGreen50,
               ),
             ),
     );
