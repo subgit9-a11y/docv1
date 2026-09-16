@@ -4,6 +4,7 @@ import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/date_util.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
+import 'package:doctro/core/utils/safe_parse.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -64,8 +65,7 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
                                 itemBuilder: (context, index) {
                                   final callData = viewModel.callHistory[index];
                                   final now = Duration(
-                                      seconds:
-                                          int.parse(callData.duration ?? '0'));
+                                      seconds: safeInt(callData.duration));
                                   String printDuration(Duration duration) {
                                     String twoDigits(int n) =>
                                         n.toString().padLeft(2, "0");

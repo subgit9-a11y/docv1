@@ -10,6 +10,7 @@ import 'package:doctro/features/consultation/chat/providers/chat_provider.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
+import 'package:doctro/core/utils/safe_parse.dart';
 import 'package:doctro/features/dashboard/login_home.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FA;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -499,14 +500,15 @@ class ChatPageState extends State<ChatPage> {
                             ),
                 ],
               ),
-              isLastMessageLeft(index)
+              isLastMessageLeft(index) &&
+                      safeIntOrNull(messageChat.timestamp) != null
                   ? Container(
                       margin:
                           const EdgeInsets.only(left: 50, top: 5, bottom: 5),
                       child: Text(
                         DateFormat('dd MMM kk:mm').format(
                             DateTime.fromMillisecondsSinceEpoch(
-                                int.parse(messageChat.timestamp))),
+                                safeIntOrNull(messageChat.timestamp)!)),
                         style: TextStyle(
                             color: AyurezeTheme.textSecondary,
                             fontSize: 12,

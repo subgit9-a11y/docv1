@@ -209,7 +209,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () => _showDeleteAccountDialog(viewModel),
+                      onPressed: () => _showDeleteAccountDialog(),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AyurezeTheme.danger,
                         side: BorderSide(color: AyurezeTheme.danger),
@@ -403,20 +403,19 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  void _showDeleteAccountDialog(SettingsViewModel viewModel) {
+  void _showDeleteAccountDialog() {
+    // Self-service deletion has no backend endpoint yet, so this dialog must
+    // not claim the account has been deleted or that removal is in progress.
+    // Telling the user their data was erased when nothing happened is a
+    // correctness problem, not just a copy problem - health data is involved.
     OslerModal.show(
       context: context,
-      title: "Delete Account?",
+      title: "Delete Account",
       message:
-          "This action is permanent and cannot be undone. All your data will be removed from our servers.",
-      primaryText: "Cancel",
-      secondaryText: "Delete",
+          "Account deletion isn't available in the app yet. To request permanent "
+          "deletion of your account and data, please contact our support team.",
+      primaryText: "Close",
       primaryAction: () => Navigator.pop(context),
-      secondaryAction: () {
-        viewModel.deleteAccount(context);
-        Navigator.pop(context);
-        OslerToast.success(context, "Request submitted to admin");
-      },
       isDanger: true,
     );
   }
