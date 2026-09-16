@@ -51,6 +51,36 @@ files nobody committed.
 - `lib/core/astra/` — the AI "Astra" integration (actions, controllers,
   services, widgets). Each folder has a barrel file.
 
+## Layout tokens
+
+`AyurezeTheme` has a named radius scale (`radiusXs` 6, `radiusSm` 8,
+`radiusMd` 12, `radiusLg` 16, `radiusXl` 24, `radius2xl` 28, `radiusPill`
+999) and a 4pt spacing scale (`spaceXs`..`space3xl`). Use these instead of
+literal `BorderRadius.circular(16)` or ad-hoc `EdgeInsets`.
+
+Before the scale existed the UI used 14 different radii with no shared
+vocabulary, so two surfaces meant to match could be 12, 16 or 24
+depending on who wrote them. The Osler kit was migrated to the tokens;
+feature screens still largely hardcode, so expect mixed usage and
+converge on the tokens when you touch a file.
+
+## Screen layout: the kit is under-used
+
+28 screens have a `Scaffold`. Ten of them use **zero** Osler widgets,
+including `login_home` (the dashboard), `chat_page` and
+`cancel_appointment` - the highest-traffic surfaces in the app. New work
+on those screens should move them onto the kit rather than adding more
+hand-rolled Flutter.
+
+`profile.dart` is 2,395 lines - by far the largest file, with 52
+hardcoded font sizes and 26 raw insets. Treat edits there carefully and
+prefer extracting a section over growing it.
+
+Repo-wide drift, measured: 147 hardcoded `fontSize:`, 200 raw
+`EdgeInsets`, 74 `BorderRadius.circular` across 14 distinct values, 56
+`Colors.white`, and only 14 literal `Color(0x..)` (low, which is the
+healthy signal that the token system is followed).
+
 ## Conventions
 
 - Use `AyurezeTheme` tokens rather than `Color(0xFF...)` literals.
