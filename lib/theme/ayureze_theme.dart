@@ -7,12 +7,24 @@ class AyurezeTheme {
   static const Color oslerGray50 = Color(0xFF849087);
   static const Color oslerGray10 = Color(0xFFF5F5F5);
 
+  // NOTE: these are mode-independent constants, not dark-aware tokens.
+  // They intentionally keep their value in dark mode, which makes them safe
+  // as accents and foregrounds but unsafe as page/card backgrounds. For
+  // backgrounds, borders and body text use the getters below (surface,
+  // surfaceMuted, canvas, border, textPrimary, textSecondary).
   static const Color healingGreen100 =
       Color(0xFF0F2916); // Deep Botanical Forest Green
   static const Color healingGreen50 =
       Color(0xFF10B981); // Premium Healing Emerald Green
   static const Color healingGreen10 =
       Color(0xFFE6F7F0); // Soft Sage Mint Accent
+
+  // Fill for filled controls that carry a white glyph or label (FAB,
+  // checkbox, circular play/AI buttons). healingGreen50 is the brand
+  // emerald but only reaches 2.54:1 against white, which fails both WCAG AA
+  // for text (4.5:1) and the UI-component threshold (3:1). This darker
+  // shade keeps the same hue at 5.48:1, so white content is legible.
+  static const Color healingGreenFill = Color(0xFF047857);
 
   static const Color remoteRed100 = Color(0xFF4C050B);
   static const Color remoteRed50 = Color(0xFFF43F5E);
@@ -453,7 +465,7 @@ class AyurezeTheme {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: healingGreen50, foregroundColor: Colors.white),
+          backgroundColor: healingGreenFill, foregroundColor: Colors.white),
       chipTheme: ChipThemeData(
           backgroundColor: darkSurfaceMuted,
           labelStyle: const TextStyle(color: darkTextPrimary)),

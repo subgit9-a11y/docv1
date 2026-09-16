@@ -252,7 +252,7 @@ class _VoicePlayerState extends State<VoicePlayer> {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            color: AyurezeTheme.healingGreen50,
+            color: AyurezeTheme.healingGreenFill,
             shape: BoxShape.circle,
           ),
           child: Icon(

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// WCAG 2.1 relative luminance for an sRGB colour.
@@ -81,5 +82,66 @@ void main() {
         );
       }
     });
+  });
+
+  group('filled controls carrying a white glyph', () {
+    // Regression guard: these used healingGreen50 (#10B981), which is only
+    // 2.54:1 against white and failed in BOTH light and dark mode. The
+    // healingGreenFill token exists for exactly this role.
+    test('healingGreenFill is legible under white', () {
+      expect(
+        contrastRatio(
+          AyurezeTheme.healingGreenFill.toARGB32(),
+          const Color(0xFFFFFFFF).toARGB32(),
+        ),
+        greaterThanOrEqualTo(4.5),
+      );
+    });
+
+    test('healingGreen50 is NOT a valid white-glyph fill', () {
+      // Documents why the token exists: this pairing must stay below AA so
+      // nobody quietly swaps it back in.
+      expect(
+        contrastRatio(
+          AyurezeTheme.healingGreen50.toARGB32(),
+          const Color(0xFFFFFFFF).toARGB32(),
+        ),
+        lessThan(4.5),
+      );
+    });
+  });
+
+  group('brand accent pairs (shade 100 foreground on shade 10 tint)', () {
+    const List<List<Object>> pairs = [
+      [
+        'primary/success',
+        AyurezeTheme.healingGreen10,
+        AyurezeTheme.healingGreen100
+      ],
+      ['secondary', AyurezeTheme.oslerGray10, AyurezeTheme.oslerGray100],
+      [
+        'warning',
+        AyurezeTheme.sunshineYellow10,
+        AyurezeTheme.sunshineYellow100
+      ],
+      ['danger', AyurezeTheme.remoteRed10, AyurezeTheme.remoteRed100],
+      [
+        'info',
+        AyurezeTheme.connectivityBlue10,
+        AyurezeTheme.connectivityBlue100
+      ],
+    ];
+
+    for (final List<Object> pair in pairs) {
+      test('${pair[0]} chip is readable', () {
+        expect(
+          contrastRatio(
+            (pair[2] as Color).toARGB32(),
+            (pair[1] as Color).toARGB32(),
+          ),
+          greaterThanOrEqualTo(4.5),
+        );
+      });
+    }
   });
 }

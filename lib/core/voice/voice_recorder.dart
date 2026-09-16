@@ -335,7 +335,10 @@ class VoiceInputButton extends StatelessWidget {
             height: size,
             child: Icon(
               isListening ? Icons.stop : Icons.mic,
-              color: isListening ? Colors.white : AyurezeTheme.healingGreen50,
+              // The idle state sits on a 10%-emerald tint, where a
+              // healingGreen50 glyph is only 2.31:1. The 100 shade gives
+              // 14.16:1 and reads as the same brand accent.
+              color: isListening ? Colors.white : AyurezeTheme.healingGreen100,
               size: size * 0.5,
             ),
           ),

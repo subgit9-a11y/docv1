@@ -146,7 +146,7 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen>
           width: 70,
           height: 70,
           decoration: BoxDecoration(
-            color: AyurezeTheme.healingGreen50,
+            color: AyurezeTheme.healingGreenFill,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(

@@ -95,7 +95,7 @@ class AstraFloatingButton extends StatelessWidget {
       child: Material(
         elevation: 4,
         shape: const CircleBorder(),
-        color: AyurezeTheme.healingGreen50,
+        color: AyurezeTheme.healingGreenFill,
         child: InkWell(
           onTap: () => _onTap(context),
           customBorder: const CircleBorder(),

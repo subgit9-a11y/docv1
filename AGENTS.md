@@ -5,9 +5,11 @@ Flutter telehealth app for doctors. Branch: `astra-ai-integration`.
 ## Commands
 
 ```bash
-export PATH="/home/openhands/flutter/bin:$PATH"   # Flutter 3.47.4 stable
+# Flutter 3.47.4 stable. The SDK lives in /workspace, not $HOME: the
+# sandbox recycles $HOME mid-session and wipes anything installed there.
+export PATH="/workspace/tools/flutter/bin:$PATH"
 flutter analyze                                   # expect 0 errors, 0 warnings
-flutter test                                      # 125 tests
+flutter test                                      # 132 tests
 flutter build web --release
 dart format lib test
 ```
@@ -95,6 +97,23 @@ screens open with white text on an `AyurezeTheme.heroDecoration()`
 gradient. Only treat it as a bug when it is a **surface** colour (a card,
 tray, or avatar background), where it produces white-on-white in dark
 mode.
+
+### White content on a green fill
+
+Use `healingGreenFill` (not `healingGreen50`) whenever a filled control
+carries a white glyph or label: FAB, checkbox, circular play/AI/record
+buttons, success discs. `healingGreen50` is the brand emerald but reaches
+only 2.54:1 against white, which fails WCAG AA (4.5:1) and even the 3:1
+UI-component threshold, and it fails in *both* modes. `healingGreenFill`
+is the same hue at 5.48:1.
+
+`healingGreen50` remains correct as a bare accent: an icon or border on a
+neutral surface, or the 10%-alpha tint used behind an idle control.
+
+Accent-on-tint pairs follow a shade 10 background with a shade 100
+foreground (`healingGreen10`/`healingGreen100` and the equivalents for
+red, yellow, blue, violet). Those pairings are all 13:1 or better and are
+the intended pattern; the contrast test covers them.
 
 Body text must clear WCAG AA (4.5:1) on its surface.
 `test/theme/theme_contrast_test.dart` enforces this for the theme's text
