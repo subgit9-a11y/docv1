@@ -26,7 +26,7 @@ class OslerCheckbox extends StatelessWidget {
             height: 22,
             decoration: BoxDecoration(
               color: value ? AyurezeTheme.healingGreenFill : Colors.transparent,
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusXs),
               border: Border.all(
                 color: isError
                     ? AyurezeTheme.remoteRed50

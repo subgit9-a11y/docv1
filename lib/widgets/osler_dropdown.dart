@@ -44,15 +44,15 @@ class OslerDropdown extends StatelessWidget {
                     size: 20, color: AyurezeTheme.healingGreen100)
                 : null,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
               borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
               borderSide: const BorderSide(color: Colors.transparent),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
               borderSide:
                   BorderSide(color: AyurezeTheme.healingGreen50, width: 2),
             ),

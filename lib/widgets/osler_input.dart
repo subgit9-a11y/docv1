@@ -61,15 +61,15 @@ class OslerInput extends StatelessWidget {
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
               borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
               borderSide: const BorderSide(color: Colors.transparent),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
               borderSide:
                   BorderSide(color: AyurezeTheme.healingGreen50, width: 2),
             ),

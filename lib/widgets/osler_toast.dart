@@ -58,7 +58,8 @@ class OslerToast {
         ),
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd)),
         duration: duration,
         margin: const EdgeInsets.all(16),
       ),

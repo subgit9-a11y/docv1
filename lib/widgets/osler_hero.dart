@@ -34,7 +34,7 @@ class OslerHero extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.14),
-                borderRadius: BorderRadius.circular(999),
+                borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
               ),
               child: Text(
                 eyebrow!,

@@ -109,6 +109,33 @@ class AyurezeTheme {
     vertical: 16,
   );
 
+  // Corner radius scale. Before this existed the UI used 14 different radii
+  // with no shared vocabulary, so "the same" card could be 12, 16 or 24
+  // depending on the screen. These are the values the Osler kit already
+  // reached for; naming them makes the choice deliberate.
+  static const double radiusXs = 6; // checkbox, tight chips
+  static const double radiusSm = 8; // tooltips, small badges
+  static const double radiusMd = 12; // inline alerts, toast
+  static const double radiusLg = 16; // inputs, dropdowns, alert cards
+  static const double radiusXl = 24; // cards, sheets
+  static const double radius2xl = 28; // modals
+  static const double radiusPill = 999; // fully rounded / pills
+
+  // Spacing scale, in the 4pt rhythm the screens mostly follow already.
+  static const double spaceXs = 4;
+  static const double spaceSm = 8;
+  static const double spaceMd = 12;
+  static const double spaceLg = 16;
+  static const double spaceXl = 20;
+  static const double space2xl = 24;
+  static const double space3xl = 32;
+
+  static BorderRadius get borderRadiusMd => BorderRadius.circular(radiusMd);
+  static BorderRadius get borderRadiusLg => BorderRadius.circular(radiusLg);
+  static BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
+  static BorderRadius get borderRadius2xl => BorderRadius.circular(radius2xl);
+  static BorderRadius get borderRadiusPill => BorderRadius.circular(radiusPill);
+
   static ThemeData theme({bool isDarkMode = false}) {
     if (isDarkMode) {
       return darkTheme();

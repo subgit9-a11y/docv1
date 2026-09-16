@@ -38,7 +38,7 @@ class OslerButton extends StatelessWidget {
             foregroundColor: _getForegroundColor(bgColor),
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(999),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
               side: style == OslerButtonStyle.outline
                   ? BorderSide(color: bgColor)
                   : BorderSide.none,

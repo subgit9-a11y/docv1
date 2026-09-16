@@ -23,7 +23,7 @@ class OslerAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: _getBackgroundColor(),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -33,7 +33,7 @@ class OslerAlert extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: _getIconBackgroundColor(),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
                 ),
                 child: Icon(_getIcon(), color: _getIconColor(), size: 20),
               ),

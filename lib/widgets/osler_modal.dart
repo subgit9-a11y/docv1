@@ -38,7 +38,7 @@ class OslerModal {
         return AlertDialog(
           backgroundColor: AyurezeTheme.surface,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radius2xl),
           ),
           contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
           titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
@@ -107,7 +107,8 @@ class OslerModal {
                           : AyurezeTheme.border,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius:
+                          BorderRadius.circular(AyurezeTheme.radiusMd),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
@@ -129,7 +130,7 @@ class OslerModal {
                       : AyurezeTheme.healingGreen100,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   elevation: 0,
