@@ -19,8 +19,12 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.2+5
 
 environment:
-  sdk: '>=3.4.4 <6.0.0'
-#  flutter: '>=3.16.4 <3.16.6'
+  # Flutter 3.27 is the floor this project targets; Flutter 3.27 ships Dart 3.6,
+  # so the Dart floor follows from it. The upper bound is capped at 4.0.0 because
+  # Dart 4 is a breaking major release, and the previous `<6.0.0` would have
+  # silently accepted it.
+  sdk: '>=3.6.0 <4.0.0'
+  flutter: '>=3.27.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions

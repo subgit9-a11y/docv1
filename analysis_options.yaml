@@ -14,6 +14,9 @@ analyzer:
     - ios/**
     - web/**
     - windows/**
+    # One-off local scripts. Excluded by path rather than by lowering a rule's
+    # severity, so real findings in lib/ and test/ still surface.
+    - scratch/**
 include: package:flutter_lints/flutter.yaml
 
 linter:
@@ -31,6 +34,13 @@ linter:
   rules:
     avoid_print: true # Enforce using a logger instead of print.
     # prefer_single_quotes: true
+
+    # Off deliberately. The constants in app_string.dart, apis.dart and
+    # prefConstatnt.dart are named to match the localization and preference
+    # keys they carry (`login_heading = "login_heading"`), so the names are
+    # snake_case on purpose. Renaming them would break that one-to-one
+    # correspondence with en.json for no behavioural gain.
+    constant_identifier_names: false
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
