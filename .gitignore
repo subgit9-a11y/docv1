@@ -43,5 +43,13 @@ windows/flutter/generated_plugins.cmake
 supabase_to_mysql_sync.py
 test_supabase.py
 
+# One-off local refactor / inspection scripts. These were committed by mistake;
+# they are not part of the app and several embed credentials or DB dumps.
+/scratch/
+/*.py
+
 # Environment variables (secrets)
-.env
+# Match every .env variant (.env.staging, .env.production, ...). A bare `.env`
+# rule does not match those, which is how .env.staging got committed.
+.env*
+!.env.example
