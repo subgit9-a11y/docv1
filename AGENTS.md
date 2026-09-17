@@ -161,3 +161,38 @@ on `darkSurfaceMuted`.
   `UserChat.fromMap`) so it can be unit-tested without Firestore. Do not
   implement `DocumentSnapshot` in a test — it is a sealed class and the
   analyzer flags it.
+
+## Build configuration
+
+All runtime configuration resolves through `Env` in `lib/core/config/env.dart`.
+Never read `dotenv` or `String.fromEnvironment` directly elsewhere; add a getter
+to `Env` instead, so there is one precedence rule rather than several.
+
+Precedence is `--dart-define` first, then `.env`, then empty string. The
+resolver never throws, because it is called on release paths where `dotenv.load`
+has not run.
+
+`.env` is deliberately NOT declared under `assets:` in pubspec.yaml. Adding it
+would ship the file inside every APK, where it can be extracted from the bundle.
+It is loaded in debug builds only. For local work that matches a release build,
+use `flutter run --dart-define-from-file=.env.json`; that file is gitignored.
+
+Keys split into two groups:
+
+- Required and public by design: `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
+  `FIREBASE_API_KEY`. Safe to embed; they identify the project rather than
+  authorising anything on their own. Missing values are reported once at
+  startup by `Env.missingKeys()`.
+- Server authority, must not ship in a client build: `FIREBASE_SERVER_KEY`,
+  `ASTRA_API_KEY`, `SARVAM_API_KEY`. `--dart-define` embeds values in the
+  binary and they are recoverable from a release APK. The legacy FCM server key
+  can push to every device in the project. Do not add these to the CI build
+  step; move the calls that need them to the backend.
+
+CI (`build-apk.yml`) passes only the public keys. If you add a new key, decide
+which group it belongs to before wiring it up.
+
+`test/core/env_test.dart` asserts behavior under both configured and
+unconfigured builds, so CI runs the suite twice (see the two "Run Tests"
+steps). Adding a test that only makes sense in one mode will fail the other;
+branch on `String.fromEnvironment` in the test instead.
