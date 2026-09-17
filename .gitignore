@@ -53,3 +53,9 @@ test_supabase.py
 # rule does not match those, which is how .env.staging got committed.
 .env*
 !.env.example
+!.env.json.example
+
+# Values for --dart-define-from-file live here. Local secret store; the same
+# rule as .env applies, it must never be committed.
+.env.json
+*.env.json

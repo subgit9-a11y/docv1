@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctro/features/consultation/chat/pages/chat_page.dart'
     show ChatPage;
 import 'package:doctro/core/navigator_key.dart';
+import 'package:doctro/core/config/env.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/utils/logger.dart';
 import 'package:doctro/utils/notification.dart' show NotificationHandler;
@@ -72,17 +73,14 @@ Future<void> main() async {
   // CRITICAL: Ensure Flutter binding is initialized FIRST and ONLY ONCE
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    await dotenv.load(fileName: ".env");
-  } catch (e) {
-    debugPrint("DotEnv load failed: $e");
-  }
-
-  String? getEnvSafe(String key) {
+  // Local development convenience only. A release build must be configured
+  // with --dart-define, so this is skipped there to avoid a pointless failed
+  // asset load. `.env` is intentionally not bundled; see lib/core/config/env.dart.
+  if (kDebugMode) {
     try {
-      return dotenv.maybeGet(key);
+      await dotenv.load(fileName: ".env");
     } catch (_) {
-      return null;
+      debugPrint('Config: no .env found - using --dart-define values only.');
     }
   }
 
@@ -140,10 +138,17 @@ Future<void> main() async {
   }
 
   // Initialize Supabase if credentials exist
-  final String supabaseUrl = getEnvSafe('SUPABASE_URL') ??
-      const String.fromEnvironment('SUPABASE_URL');
-  final String supabaseAnonKey = getEnvSafe('SUPABASE_ANON_KEY') ??
-      const String.fromEnvironment('SUPABASE_ANON_KEY');
+  final String supabaseUrl = Env.supabaseUrl;
+  final String supabaseAnonKey = Env.supabaseAnonKey;
+
+  // Report configuration gaps once, at startup, rather than letting every
+  // caller discover them independently and fail quietly.
+  final missing = Env.missingKeys();
+  if (missing.isNotEmpty) {
+    debugPrint('Config: missing ${missing.join(', ')}. '
+        'Pass them with --dart-define (or --dart-define-from-file for local '
+        'development). Features that need them are disabled until then.');
+  }
 
   if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty) {
     try {

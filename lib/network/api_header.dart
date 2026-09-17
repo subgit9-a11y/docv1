@@ -3,7 +3,7 @@ import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/navigator_key.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:doctro/core/config/env.dart';
 
 import '../utils/logger.dart';
 
@@ -112,13 +112,7 @@ class RetroApi {
 
   Future<String?> refreshFirebaseToken(String refreshToken) async {
     try {
-      String? apiKey;
-      try {
-        apiKey = dotenv.maybeGet('FIREBASE_API_KEY');
-      } catch (_) {
-        apiKey = null;
-      }
-      apiKey ??= const String.fromEnvironment('FIREBASE_API_KEY');
+      final String apiKey = Env.firebaseApiKey;
       if (apiKey.isEmpty) {
         return null;
       }

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
+import 'package:doctro/core/config/env.dart';
 
 /// Astra AI Configuration
 ///
@@ -146,8 +147,7 @@ class AstraConfig {
   /// Supplied at build time via `--dart-define=ASTRA_API_KEY=...`. An empty
   /// value means "not configured": prefer [authorizationHeader], which falls
   /// back to the signed-in doctor's session token.
-  static const String apiKey =
-      String.fromEnvironment('ASTRA_API_KEY', defaultValue: '');
+  static String get apiKey => Env.astraApiKey;
 
   /// Authorization header value to use for Astra requests.
   ///

@@ -55,11 +55,46 @@ jobs:
       - name: Analyze Code
         run: flutter analyze --no-fatal-infos
 
-      - name: Run Tests
+      # Two passes over the suite, deliberately.
+      #
+      # The first has no configuration and proves the app degrades instead of
+      # crashing when nothing is defined. The second supplies defines so that
+      # the compile-time branch of Env._resolve is actually covered - without
+      # it, that precedence check can be deleted without any test noticing.
+      - name: Run Tests (unconfigured)
         run: flutter test
 
+      - name: Run Tests (configured)
+        run: |
+          flutter test \
+            --dart-define=SUPABASE_URL="https://ci-placeholder.supabase.co" \
+            --dart-define=SUPABASE_ANON_KEY="ci-placeholder-anon-key" \
+            --dart-define=FIREBASE_API_KEY="ci-placeholder-api-key"
+
+      # Build-time configuration.
+      #
+      # The app reads config from --dart-define, so a build with no defines
+      # silently ships with push notifications and Firebase token refresh
+      # disabled (both used to depend on a local-only .env that CI never had).
+      #
+      # These are passed as values rather than written into a file, and the
+      # only required entries are keys that are public by design: SUPABASE_URL,
+      # SUPABASE_ANON_KEY and FIREBASE_API_KEY. FIREBASE_API_KEY is already
+      # committed in lib/firebase_options.dart, so the fallback below is not a
+      # leak - it just keeps refresh working when the secret is unset.
+      #
+      # Do NOT add FIREBASE_SERVER_KEY, ASTRA_API_KEY or SARVAM_API_KEY here.
+      # They grant server-side authority and would be embedded in the APK.
       - name: Build Release APK
-        run: flutter build apk --release --no-tree-shake-icons
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY || 'AIzaSyDbeOvU5nkgLkYCc8CFMnlrK5duMQySKf0' }}
+        run: |
+          flutter build apk --release --no-tree-shake-icons \
+            --dart-define=SUPABASE_URL="$SUPABASE_URL" \
+            --dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
+            --dart-define=FIREBASE_API_KEY="$FIREBASE_API_KEY"
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4

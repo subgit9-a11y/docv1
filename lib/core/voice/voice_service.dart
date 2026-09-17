@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:doctro/core/astra/utils/astra_config.dart';
+import 'package:doctro/core/config/env.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
 
 /// Voice Service
@@ -33,7 +34,7 @@ class VoiceService {
     if (_sarvamApiKey != null) return _sarvamApiKey!;
 
     // Try environment variable first
-    const apiKey = String.fromEnvironment('SARVAM_API_KEY', defaultValue: '');
+    final apiKey = Env.sarvamApiKey;
     if (apiKey.isNotEmpty) return apiKey;
 
     // Fallback: log warning (do not return empty string)
