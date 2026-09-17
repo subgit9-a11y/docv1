@@ -36,6 +36,7 @@ class _VideoOverlayWidgetState extends State<VideoOverlayWidget> {
       });
     });
     Future.delayed(Duration(milliseconds: 250), () {
+      if (!mounted) return;
       Provider.of<OverlayHandlerProvider>(context, listen: false).disablePip();
     });
   }

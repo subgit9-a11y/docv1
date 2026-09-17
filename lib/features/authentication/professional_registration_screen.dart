@@ -283,6 +283,7 @@ class _ProfessionalRegistrationScreenState
         "is_filled": 1,
       });
 
+      if (!mounted) return;
       final response = await RestClient(await RetroApi().dioData(context))
           .registerRequest(finalData);
 
@@ -384,6 +385,7 @@ class _ProfessionalRegistrationScreenState
       body["id_proof"] = idProofUrl ?? "";
       body["is_filled"] = 1;
 
+      if (!mounted) return;
       final response = await RestClient(await RetroApi().dioData(context))
           .updateProfile(body);
 

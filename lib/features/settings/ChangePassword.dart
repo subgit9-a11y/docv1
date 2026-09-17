@@ -227,6 +227,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                               _confirmPassword.text,
                             );
 
+                            // Inside build() the `context` parameter shadows State.context,
+                            // so the check must be context.mounted.
+                            if (!context.mounted) return;
                             if (response != null) {
                               if (response.success == true) {
                                 OslerToast.success(context, response.data!);

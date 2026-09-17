@@ -2010,9 +2010,13 @@ class _ProfileScreen extends State<ProfileScreen> {
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .updateProfile(body);
-      Navigator.pushNamed(context, "loginHome");
+      // The preference write is a side effect, not a UI action, so it stays
+      // outside the guard. Only the context uses need mounted.
       SharedPreferenceHelper.setInt(Preferences.is_filled, 1);
-      OslerToast.success(context, response.msg!);
+      if (mounted) {
+        Navigator.pushNamed(context, "loginHome");
+        OslerToast.success(context, response.msg!);
+      }
     } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));

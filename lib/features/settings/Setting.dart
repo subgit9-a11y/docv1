@@ -88,6 +88,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         onChanged: (val) async {
                           viewModel.setDarkMode(val);
                           await context.read<ThemeProvider>().setDarkMode(val);
+                          // Inside build() the `context` parameter shadows State.context,
+                          // so the check must be context.mounted.
+                          if (!context.mounted) return;
                           OslerToast.success(
                               context, "Dark mode: ${val ? 'ON' : 'OFF'}");
                         },
@@ -139,6 +142,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         onChanged: (val) async {
                           bool success =
                               await viewModel.updateVCall(context, val);
+                          // Inside build() the `context` parameter shadows State.context,
+                          // so the check must be context.mounted.
+                          if (!context.mounted) return;
                           if (success) {
                             OslerToast.success(
                                 context, "Call settings updated!");

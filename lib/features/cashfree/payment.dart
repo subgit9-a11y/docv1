@@ -412,6 +412,7 @@ class _PaymentScreen extends State<PaymentScreen> {
 
   Future<void> logoutUser() async {
     await SharedPreferenceHelper.clearPref();
+    if (!mounted) return;
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (BuildContext context) => SignIn()),
@@ -603,6 +604,11 @@ class _PaymentScreen extends State<PaymentScreen> {
   }
 
   void _showWithdrawDialog() {
+    // The builders below shadow `context` with the dialog's own, and the modal
+    // is popped before the request returns. Toasts must therefore target the
+    // screen's context: the dialog's is already unmounted by then, so guarding
+    // on it would silently swallow every message.
+    final BuildContext parentContext = context;
     final TextEditingController amountController =
         TextEditingController(text: availableBalance.toInt().toString());
     final TextEditingController upiController = TextEditingController();
@@ -753,17 +759,23 @@ class _PaymentScreen extends State<PaymentScreen> {
                             });
 
                             if (response["success"] == true) {
-                              OslerToast.success(
-                                  context,
-                                  response["message"] ??
-                                      "Payout triggered successfully!");
+                              if (parentContext.mounted) {
+                                OslerToast.success(
+                                    parentContext,
+                                    response["message"] ??
+                                        "Payout triggered successfully!");
+                              }
                             } else {
-                              OslerToast.error(context,
-                                  response["error"] ?? "Withdrawal failed.");
+                              if (parentContext.mounted) {
+                                OslerToast.error(parentContext,
+                                    response["error"] ?? "Withdrawal failed.");
+                              }
                             }
                           } catch (e) {
-                            OslerToast.error(
-                                context, "Failed to connect to API.");
+                            if (parentContext.mounted) {
+                              OslerToast.error(
+                                  parentContext, "Failed to connect to API.");
+                            }
                           } finally {
                             setState(() => isWithdrawing = false);
                             loadWalletStats();

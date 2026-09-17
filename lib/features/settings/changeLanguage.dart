@@ -161,7 +161,9 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                               language.name,
                             );
                             await updateProfile();
-                            if (!mounted) return;
+                            // Inside build() the `context` parameter shadows State.context,
+                            // so the check has to be context.mounted rather than mounted.
+                            if (!context.mounted) return;
                             setState(() => value = selected);
                             MyApp.setLocale(context, locale);
                             Navigator.popAndPushNamed(context, "loginHome");
@@ -300,7 +302,12 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .updateProfile(body);
-      OslerToast.success(context, response.msg!);
+      // The screen can be disposed while the request is in flight, and a
+      // toast on a dead context throws. Guarded, not returned, because the
+      // caller still needs the response.
+      if (mounted) {
+        OslerToast.success(context, response.msg!);
+      }
     } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }

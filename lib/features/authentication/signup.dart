@@ -426,6 +426,13 @@ class _CreateAccountState extends State<CreateAccount> {
         isFaceVerified: _isFaceVerified,
       );
 
+      // The uploads above can outlive the screen; dioData(context) reads the
+      // context, so bail before the request rather than after it.
+      if (!mounted) {
+        return BaseModel()
+          ..setException(
+              ServerError.withError(error: "Screen closed during signup"));
+      }
       response = await RestClient(await RetroApi().dioData(context))
           .registerRequest(body);
 

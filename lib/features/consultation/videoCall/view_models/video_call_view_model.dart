@@ -112,6 +112,8 @@ class VideoCallViewModel extends ChangeNotifier {
       if (response['success'] == true) {
         channelName = response['channel'];
         token = response['token'];
+        // getVideoToken above is an async gap; the widget may be gone by now.
+        if (!context.mounted) return;
         await initAgora(context, callEnd, id, flag);
         notifyListeners();
       } else {

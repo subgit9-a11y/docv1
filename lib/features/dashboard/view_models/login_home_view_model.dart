@@ -37,6 +37,9 @@ class LoginHomeViewModel extends ChangeNotifier {
 
   void initializeData(BuildContext context) {
     Future.delayed(Duration.zero, () {
+      // The caller passes the widget's context into create(), and this callback
+      // is deferred, so the widget may already be gone.
+      if (!context.mounted) return;
       final isLoggedIn =
           SharedPreferenceHelper.getBoolean(Preferences.is_logged_in);
 

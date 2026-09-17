@@ -762,7 +762,9 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
       response = await RestClient(await RetroApi().dioData(context))
           .updateTimingRequest(body);
       doctorWorkingHoursFunction();
-      OslerToast.success(context, response.msg!);
+      if (mounted) {
+        OslerToast.success(context, response.msg!);
+      }
     } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
