@@ -162,7 +162,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      getTranslated(context, "welcome")
+                                      getTranslated(context,
+                                              AppString.dashboard_welcome)
                                           .toString(),
                                       style: textTheme.bodyMedium?.copyWith(
                                         color: AyurezeTheme.textSecondary,
@@ -257,7 +258,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                 Text(
                                   getTranslated(
                                     context,
-                                    "today_appointment_schedule",
+                                    AppString.today_appointment_heading,
                                   ).toString(),
                                   style: textTheme.headlineMedium?.copyWith(
                                     color: Colors.white,
@@ -293,13 +294,21 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                               Preferences.currency_symbol,
                             );
 
-                            return GridView.count(
-                              crossAxisCount: isWide ? 4 : 2,
+                            // A fixed tile height, not an aspect ratio: the card
+                            // stacks an icon, a value and a label, so its content
+                            // height is constant while a ratio-derived height
+                            // shrank below that on narrow phones and in the
+                            // 4-column branch, overflowing every card.
+                            return GridView(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              mainAxisSpacing: 12,
-                              crossAxisSpacing: 12,
-                              childAspectRatio: isWide ? 1.8 : 1.5,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: isWide ? 4 : 2,
+                                mainAxisSpacing: 12,
+                                crossAxisSpacing: 12,
+                                mainAxisExtent: 120,
+                              ),
                               children: [
                                 _buildStatCard(
                                   context,

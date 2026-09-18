@@ -411,24 +411,37 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  /// Resolves the persisted interface language.
+  ///
+  /// Never throws: an exception here would escape an unawaited future, so keep
+  /// the failure contained and leave the default locale in place.
+  Future<void> _loadLocale() async {
+    try {
+      final local = await getLocale();
+      if (!mounted) return;
+      setState(() => _locale = local);
+    } catch (e) {
+      // _locale already defaults to en_US, which is a valid state; leaving it
+      // alone is better than replacing the app with an empty widget.
+      debugPrint('Config: could not resolve saved locale, using default: $e');
+    }
+  }
+
   @override
   void didChangeDependencies() {
-    getLocale().then((local) => {
-          if (mounted)
-            setState(() {
-              _locale = local;
-            })
-        });
+    _loadLocale();
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Defensive: _locale is non-null from the start, but this branch must never
+    // be a bare SizedBox. It has no Material or Directionality ancestor, so
+    // such a subtree has no background to paint and shows as a blank screen.
     if (_locale == null) {
-      return const SizedBox(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+      return const ColoredBox(
+        color: Color(0xFFE9EEE4),
+        child: Center(child: CircularProgressIndicator()),
       );
     } else {
       return AnnotatedRegion<SystemUiOverlayStyle>(

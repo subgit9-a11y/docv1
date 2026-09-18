@@ -3,8 +3,15 @@ import 'package:doctro/core/constants/preferences.dart';
 import 'package:flutter/material.dart';
 import 'language_localization.dart';
 
-String? getTranslated(BuildContext context, String key) {
-  return LanguageLocalization.of(context)!.getTranslateValue(key);
+/// Translates [key] for the active locale.
+///
+/// Returns the key unchanged when no [LanguageLocalization] is reachable. The
+/// localizations delegate resolves asynchronously, so a widget can be built
+/// while it is still unavailable, and widgets are also built outside the
+/// [MaterialApp] subtree in tests. Throwing here previously aborted the whole
+/// subtree's build, leaving an empty screen rather than a visible error.
+String getTranslated(BuildContext context, String key) {
+  return LanguageLocalization.of(context)?.getTranslateValue(key) ?? key;
 }
 
 const String ENGLISH = "en";

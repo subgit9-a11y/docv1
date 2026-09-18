@@ -161,6 +161,20 @@ on `darkSurfaceMuted`.
   `UserChat.fromMap`) so it can be unit-tested without Firestore. Do not
   implement `DocumentSnapshot` in a test — it is a sealed class and the
   analyzer flags it.
+- **Screen size comes from `tester.view`, not `setSurfaceSize`.**
+  `tester.view.physicalSize` (with `devicePixelRatio`) is what drives
+  `MediaQuery`; `setSurfaceSize` leaves it at the default 800x600, so a
+  width-dependent layout bug silently cannot reproduce. Always pair them
+  with `addTearDown(tester.view.resetPhysicalSize)`.
+- **One `testWidgets` per file per app boot.** Booting a `MaterialApp`
+  with an async `LocalizationsDelegate` works in the first `testWidgets`
+  of a file and silently builds *no child* in the rest, so assertions
+  see an empty tree. Re-pump at different sizes inside one test body
+  instead of adding more `testWidgets`.
+- The `_locale == null` branch in `main.dart` is unreachable (`_locale`
+  is initialised to `en_US`); it is defensive only. It must return
+  `ColoredBox`, never a bare `SizedBox`: with no `Material` or
+  `Directionality` ancestor it has nothing to paint.
 
 ## Build configuration
 
