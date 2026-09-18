@@ -133,30 +133,12 @@ dev_dependencies:
     sdk: flutter
   retrofit_generator: ^9.0.0
   build_runner: ^2.3.3
-  flutter_native_splash: ^2.2.16
   pip_view: ^0.9.7
   permission_handler: ^11.0.0
   # pip_view: ^0.9.7
   change_app_package_name: ^1.1.0
   flutter_lints: ^5.0.0
 
-
-flutter_native_splash:
-  color: "#FFFFFF"
-  image: assets/images/appIcon.png
-  color_dark: "#FFFFFF"
-  image_dark: assets/images/appIcon.png
-  android: true
-  ios: true
-  web: true
-  android_gravity: center
-  ios_content_mode: center
-
-  android_12:
-    image: assets/images/appIcon.png
-    color: "#FFFFFF"
-    icon_background_color: "#FFFFFF"
-    color_android: "#FFFFFF"
 
 flutter_icons:
    image_path: "assets/images/appIcon.png"

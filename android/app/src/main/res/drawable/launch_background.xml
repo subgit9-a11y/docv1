@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- The window shown while the Flutter engine starts. It paints a flat
+     background only: there is deliberately no logo here, so launching the app
+     does not present a branded opening screen. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <bitmap android:gravity="fill" android:src="@drawable/background"/>
-    </item>
-    <item>
-        <bitmap android:gravity="center" android:src="@drawable/splash"/>
     </item>
 </layer-list>

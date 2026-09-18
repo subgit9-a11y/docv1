@@ -210,3 +210,20 @@ which group it belongs to before wiring it up.
 unconfigured builds, so CI runs the suite twice (see the two "Run Tests"
 steps). Adding a test that only makes sense in one mode will fail the other;
 branch on `String.fromEnvironment` in the test instead.
+
+## Startup flow
+
+The app has no opening or splash screen. `main()` initializes
+`SharedPreferences` before `runApp`, and `StartupGate`
+(`lib/features/startup_gate.dart`) reads `Preferences.is_logged_in`
+synchronously to pick the first screen: `LoginHomeScreen` when a session is
+stored, `SignIn` otherwise. There is no delay and no branding screen.
+
+Two things to keep true if you touch this:
+
+- Do not add a timer or an `await` before the destination is chosen. The gate is
+  meant to render the real screen on the first frame.
+- The native launch window (Android `launch_background.xml`, iOS
+  `LaunchScreen.storyboard`) paints a flat background only. `flutter_native_splash`
+  and its config were removed, so re-adding the package would reintroduce a
+  branded launch screen.

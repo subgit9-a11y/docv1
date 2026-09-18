@@ -507,13 +507,17 @@ class _SignInViewState extends State<SignInView>
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      getTranslated(context,
-                                              AppString.login_dont_have_account)
-                                          .toString(),
-                                      style: textTheme.bodyMedium?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: AyurezeTheme.textSecondary,
+                                    Flexible(
+                                      child: Text(
+                                        getTranslated(
+                                                context,
+                                                AppString
+                                                    .login_dont_have_account)
+                                            .toString(),
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: AyurezeTheme.textSecondary,
+                                        ),
                                       ),
                                     ),
                                     TextButton(

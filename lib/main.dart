@@ -19,7 +19,7 @@ import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:doctro/features/authentication/SignIn.dart';
-import 'package:doctro/features/splash_screen.dart';
+import 'package:doctro/features/startup_gate.dart';
 import 'package:doctro/features/authentication/forgotpassword.dart';
 import 'package:doctro/features/notifications/ViewAllNotification.dart';
 import 'package:doctro/features/schedule/ScheduleTimings.dart';
@@ -499,7 +499,7 @@ class _MyAppState extends State<MyApp> {
                     darkTheme: AyurezeTheme.darkTheme(),
                     themeAnimationDuration: const Duration(milliseconds: 300),
                     themeAnimationCurve: Curves.easeInOut,
-                    home: const SplashScreen(),
+                    home: const StartupGate(),
                     locale: _locale,
                     supportedLocales: supportedLocales,
                     localizationsDelegates: const [
