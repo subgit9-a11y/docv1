@@ -162,7 +162,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      getTranslated(context, "welcome")
+                                      getTranslated(context,
+                                              AppString.dashboard_welcome)
                                           .toString(),
                                       style: textTheme.bodyMedium?.copyWith(
                                         color: AyurezeTheme.textSecondary,
@@ -231,7 +232,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.18),
+                                        color: Colors.white
+                                            .withValues(alpha: 0.18),
                                         borderRadius:
                                             BorderRadius.circular(999),
                                       ),
@@ -246,7 +248,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                     const Spacer(),
                                     Icon(
                                       Icons.health_and_safety_rounded,
-                                      color: Colors.white.withOpacity(0.9),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.9),
                                       size: 24,
                                     ),
                                   ],
@@ -255,7 +258,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                 Text(
                                   getTranslated(
                                     context,
-                                    "today_appointment_schedule",
+                                    AppString.today_appointment_heading,
                                   ).toString(),
                                   style: textTheme.headlineMedium?.copyWith(
                                     color: Colors.white,
@@ -266,7 +269,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                 Text(
                                   "Manage your consultations & patient health records seamlessly.",
                                   style: textTheme.bodyMedium?.copyWith(
-                                    color: Colors.white.withOpacity(0.85),
+                                    color: Colors.white.withValues(alpha: 0.85),
                                   ),
                                 ),
                               ],
@@ -291,13 +294,21 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                               Preferences.currency_symbol,
                             );
 
-                            return GridView.count(
-                              crossAxisCount: isWide ? 4 : 2,
+                            // A fixed tile height, not an aspect ratio: the card
+                            // stacks an icon, a value and a label, so its content
+                            // height is constant while a ratio-derived height
+                            // shrank below that on narrow phones and in the
+                            // 4-column branch, overflowing every card.
+                            return GridView(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              mainAxisSpacing: 12,
-                              crossAxisSpacing: 12,
-                              childAspectRatio: isWide ? 1.8 : 1.5,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: isWide ? 4 : 2,
+                                mainAxisSpacing: 12,
+                                crossAxisSpacing: 12,
+                                mainAxisExtent: 120,
+                              ),
                               children: [
                                 _buildStatCard(
                                   context,
@@ -487,7 +498,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.14),
+                  color: color.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, size: 18, color: color),
@@ -598,6 +609,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     }
 
     if (items == null || items.isEmpty) {
+      final showError = vm.hasError && !isSearching;
       return SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
@@ -607,13 +619,19 @@ class _LoginHomeViewState extends State<_LoginHomeView>
             child: Column(
               children: [
                 Icon(
-                  Icons.event_available_rounded,
+                  showError
+                      ? Icons.cloud_off_rounded
+                      : Icons.event_available_rounded,
                   size: 48,
-                  color: AyurezeTheme.forestDeep.withOpacity(0.5),
+                  color: showError
+                      ? AyurezeTheme.remoteRed50
+                      : AyurezeTheme.forestDeep.withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  "No Appointments Found",
+                  showError
+                      ? "Couldn't Load Appointments"
+                      : "No Appointments Found",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AyurezeTheme.textPrimary,
                         fontWeight: FontWeight.bold,
@@ -621,9 +639,11 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  isSearching
-                      ? "No patient matching '${_searchController.text}'"
-                      : "There are no appointments scheduled for this section.",
+                  showError
+                      ? vm.errorMessage
+                      : isSearching
+                          ? "No patient matching '${_searchController.text}'"
+                          : "There are no appointments scheduled for this section.",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AyurezeTheme.textSecondary,

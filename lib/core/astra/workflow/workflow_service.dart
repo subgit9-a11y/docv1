@@ -17,19 +17,26 @@ import 'package:doctro/core/astra/utils/astra_logger.dart';
 /// - Shopify cart creation
 class WorkflowService {
   static final WorkflowService _instance = WorkflowService._internal();
-  
+
   factory WorkflowService() => _instance;
   WorkflowService._internal();
 
   String get _baseUrl => AstraConfig.baseUrl;
-  String get _apiKey => AstraConfig.apiKey;
+
+  /// Auth header for Astra requests, or an empty map when no token is
+  /// available (avoids sending a literal "Bearer " with nothing after it).
+  Map<String, String> get _authHeaders {
+    final authorization = AstraConfig.authorizationHeader;
+    if (authorization.isEmpty) return const {};
+    return {AstraConfig.authHeader: authorization};
+  }
 
   // ============================================================
   // PRESCRIPTION WORKFLOW
   // ============================================================
 
   /// Start prescription workflow
-  /// 
+  ///
   /// This is the ONLY endpoint Flutter calls.
   /// Backend handles all downstream tasks:
   /// - Generate PDF prescription
@@ -48,41 +55,47 @@ class WorkflowService {
     Map<String, dynamic>? prescriptionData,
   }) async {
     try {
-      AstraLogger.i('Starting prescription workflow', tag: 'WorkflowService', data: {
-        'prescriptionId': prescriptionId,
-        'patientId': patientId,
-      });
+      AstraLogger.i('Starting prescription workflow',
+          tag: 'WorkflowService',
+          data: {
+            'prescriptionId': prescriptionId,
+            'patientId': patientId,
+          });
 
       final uri = Uri.parse('$_baseUrl/api/workflow/prescription');
-      
-      final response = await http.post(
-        uri,
-        headers: {
-          'Authorization': 'Bearer $_apiKey',
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode({
-          'prescription_id': prescriptionId,
-          'patient_id': patientId,
-          'doctor_id': doctorId,
-          if (patientPhone != null) 'patient_phone': patientPhone,
-          if (patientName != null) 'patient_name': patientName,
-          if (prescriptionData != null) 'prescription_data': prescriptionData,
-        }),
-      ).timeout(
-        const Duration(seconds: 60),
-        onTimeout: () => throw WorkflowException(
-          'Workflow timeout',
-          WorkflowErrorType.timeout,
-        ),
-      );
+
+      final response = await http
+          .post(
+            uri,
+            headers: {
+              if (_authHeaders.isNotEmpty) ..._authHeaders,
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: jsonEncode({
+              'prescription_id': prescriptionId,
+              'patient_id': patientId,
+              'doctor_id': doctorId,
+              if (patientPhone != null) 'patient_phone': patientPhone,
+              if (patientName != null) 'patient_name': patientName,
+              if (prescriptionData != null)
+                'prescription_data': prescriptionData,
+            }),
+          )
+          .timeout(
+            const Duration(seconds: 60),
+            onTimeout: () => throw WorkflowException(
+              'Workflow timeout',
+              WorkflowErrorType.timeout,
+            ),
+          );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
         final workflow = PrescriptionWorkflow.fromJson(data);
-        
-        AstraLogger.i('Workflow started: ${workflow.id}', tag: 'WorkflowService');
+
+        AstraLogger.i('Workflow started: ${workflow.id}',
+            tag: 'WorkflowService');
         return workflow;
       } else {
         throw WorkflowException(
@@ -104,11 +117,11 @@ class WorkflowService {
   Future<PrescriptionWorkflow> getWorkflowStatus(String workflowId) async {
     try {
       final uri = Uri.parse('$_baseUrl/api/workflow/$workflowId');
-      
+
       final response = await http.get(
         uri,
         headers: {
-          'Authorization': 'Bearer $_apiKey',
+          if (_authHeaders.isNotEmpty) ..._authHeaders,
           'Accept': 'application/json',
         },
       ).timeout(const Duration(seconds: 30));
@@ -138,18 +151,18 @@ class WorkflowService {
     Duration timeout = const Duration(minutes: 5),
   }) async* {
     final stopwatch = Stopwatch()..start();
-    
+
     while (stopwatch.elapsed < timeout) {
       final workflow = await getWorkflowStatus(workflowId);
       yield workflow;
-      
+
       if (workflow.isComplete || workflow.isFailed) {
         break;
       }
-      
+
       await Future.delayed(interval);
     }
-    
+
     stopwatch.stop();
   }
 
@@ -157,11 +170,11 @@ class WorkflowService {
   Future<void> cancelWorkflow(String workflowId) async {
     try {
       final uri = Uri.parse('$_baseUrl/api/workflow/$workflowId/cancel');
-      
+
       await http.delete(
         uri,
         headers: {
-          'Authorization': 'Bearer $_apiKey',
+          if (_authHeaders.isNotEmpty) ..._authHeaders,
         },
       );
     } catch (e) {
@@ -182,11 +195,11 @@ class WorkflowService {
       final uri = Uri.parse(
         '$_baseUrl/api/workflow/$workflowId/tasks/$taskId/retry',
       );
-      
+
       final response = await http.post(
         uri,
         headers: {
-          'Authorization': 'Bearer $_apiKey',
+          if (_authHeaders.isNotEmpty) ..._authHeaders,
           'Accept': 'application/json',
         },
       );
@@ -218,11 +231,11 @@ class WorkflowService {
       final uri = Uri.parse(
         '$_baseUrl/api/workflow/$workflowId/tasks/$taskId/skip',
       );
-      
+
       await http.post(
         uri,
         headers: {
-          'Authorization': 'Bearer $_apiKey',
+          if (_authHeaders.isNotEmpty) ..._authHeaders,
         },
       );
 

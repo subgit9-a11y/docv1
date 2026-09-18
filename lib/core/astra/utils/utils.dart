@@ -1,6 +1,7 @@
 /// Astra Utils
 ///
 /// Utility classes and helpers for Astra AI integration.
+library;
 
 export 'astra_cache.dart';
 export 'astra_config.dart';

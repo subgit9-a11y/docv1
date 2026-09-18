@@ -1,4 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:doctro/core/constants/prefConstatnt.dart';
+import 'package:doctro/core/constants/preferences.dart';
+import 'package:doctro/core/config/env.dart';
 
 /// Astra AI Configuration
 ///
@@ -43,7 +46,8 @@ class AstraConfig {
   /// Prescription endpoints
   static const String prescriptionCreate = 'api/prescriptions/create';
   static const String prescriptionGet = 'api/prescriptions/{id}';
-  static const String prescriptionPatient = 'api/prescriptions/patient/{patient_id}';
+  static const String prescriptionPatient =
+      'api/prescriptions/patient/{patient_id}';
   static const String prescriptionWorkflow = 'prescription-workflow/execute';
 
   /// Astra Fill (Voice/Text Processing)
@@ -70,7 +74,8 @@ class AstraConfig {
   static const String orderPatient = 'orders/patient/{patient_id}';
 
   /// Reminders
-  static const String reminderCreate = 'medicine-reminders/create-from-prescription';
+  static const String reminderCreate =
+      'medicine-reminders/create-from-prescription';
 
   /// Notifications
   static const String notificationStoreFcm = 'notifications/store-fcm-token';
@@ -132,6 +137,32 @@ class AstraConfig {
 
   /// Bearer token prefix
   static const String bearerPrefix = 'Bearer ';
+
+  // ============================================================
+  // API AUTHENTICATION
+  // ============================================================
+
+  /// API key for server-to-server Astra calls.
+  ///
+  /// Supplied at build time via `--dart-define=ASTRA_API_KEY=...`. An empty
+  /// value means "not configured": prefer [authorizationHeader], which falls
+  /// back to the signed-in doctor's session token.
+  static String get apiKey => Env.astraApiKey;
+
+  /// Authorization header value to use for Astra requests.
+  ///
+  /// Uses the configured API key when present, otherwise the doctor's session
+  /// token loaded from secure storage. Returns an empty string when neither is
+  /// available so callers can omit the header rather than send `Bearer `.
+  static String get authorizationHeader {
+    if (apiKey.isNotEmpty) return '$bearerPrefix$apiKey';
+    final sessionToken =
+        SharedPreferenceHelper.getString(Preferences.auth_token);
+    if (sessionToken.isNotEmpty && sessionToken != 'N_A') {
+      return '$bearerPrefix$sessionToken';
+    }
+    return '';
+  }
 
   // ============================================================
   // DEEP LINK SCHEME
@@ -213,7 +244,8 @@ class AstraConfig {
   }
 
   /// Build URL with path parameters
-  static String buildUrlWithParams(String endpoint, Map<String, String> params) {
+  static String buildUrlWithParams(
+      String endpoint, Map<String, String> params) {
     String url = endpoint;
     params.forEach((key, value) {
       url = url.replaceAll('{$key}', value);

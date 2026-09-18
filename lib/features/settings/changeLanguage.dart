@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:doctro/widgets/osler_hero.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
@@ -16,6 +17,7 @@ import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:doctro/main.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChangeLanguage extends StatefulWidget {
@@ -147,38 +149,35 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Container(
                         decoration: AyurezeTheme.panelDecoration(),
-                        child: RadioListTile(
-                          value: index,
-                          controlAffinity: ListTileControlAffinity.trailing,
+                        child: RadioGroup<int>(
                           groupValue: value,
-                          activeColor: AyurezeTheme.forestDeep,
-                          onChanged: (dynamic selected) async {
-                            Future.delayed(const Duration(seconds: 1),
-                                () async {
-                              value = selected;
-                              Locale local = await setLocale(
-                                Language.languageList()[index].languageCode,
-                              );
-                              setState(() {
-                                SharedPreferenceHelper.setString(
-                                  Preferences.current_language_code,
-                                  Language.languageList()[index].languageCode,
-                                );
-                                SharedPreferenceHelper.setString(
-                                  Preferences.language_name,
-                                  Language.languageList()[index].name,
-                                );
-                                updateProfile();
-                                Navigator.popAndPushNamed(context, "loginHome");
-                              });
-                            });
+                          onChanged: (selected) async {
+                            if (selected == null) return;
+                            final language = Language.languageList()[selected];
+                            final locale =
+                                await setLocale(language.languageCode);
+                            await SharedPreferenceHelper.setString(
+                              Preferences.language_name,
+                              language.name,
+                            );
+                            await updateProfile();
+                            // Inside build() the `context` parameter shadows State.context,
+                            // so the check has to be context.mounted rather than mounted.
+                            if (!context.mounted) return;
+                            setState(() => value = selected);
+                            MyApp.setLocale(context, locale);
+                            Navigator.popAndPushNamed(context, "loginHome");
                           },
-                          title: Text(
-                            Language.languageList()[index].name,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: AyurezeTheme.textPrimary,
+                          child: RadioListTile<int>(
+                            value: index,
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            title: Text(
+                              Language.languageList()[index].name,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: AyurezeTheme.textPrimary,
+                              ),
                             ),
                           ),
                         ),
@@ -195,49 +194,11 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
   }
 
   Widget _buildHero() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: AyurezeTheme.heroDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Text(
-              "Language preferences",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          const Text(
-            "Choose how your Ayureze workspace speaks to you.",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Pick the language that fits your workflow best. The app will switch as soon as the preference is saved.",
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
-              fontSize: 14,
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
+    return const OslerHero(
+      eyebrow: 'Language preferences',
+      title: 'Choose how your Ayureze workspace speaks to you.',
+      subtitle:
+          'Pick the language that fits your workflow best. The app will switch as soon as the preference is saved.',
     );
   }
 
@@ -341,7 +302,12 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .updateProfile(body);
-      OslerToast.success(context, response.msg!);
+      // The screen can be disposed while the request is in flight, and a
+      // toast on a dead context throws. Guarded, not returned, because the
+      // caller still needs the response.
+      if (mounted) {
+        OslerToast.success(context, response.msg!);
+      }
     } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }

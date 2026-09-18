@@ -28,14 +28,16 @@ void main() {
     test('should create action from message metadata', () {
       // Simulate extracting action from AI response
       final aiResponse = {
-        'response': 'I found patient John Doe. Would you like to view their details?',
+        'response':
+            'I found patient John Doe. Would you like to view their details?',
         'action': {
           'type': 'openPatient',
           'params': {'id': '123', 'patient_name': 'John Doe'},
         },
       };
 
-      final action = AstraNavigationAction.fromJson(aiResponse['action'] as Map<String, dynamic>);
+      final action = AstraNavigationAction.fromJson(
+          aiResponse['action'] as Map<String, dynamic>);
 
       expect(action.type, AstraActionType.openPatient);
       expect(action.targetId, '123');
@@ -46,8 +48,14 @@ void main() {
       final response = {
         'response': 'I found some suggestions for this patient.',
         'actions': [
-          {'type': 'openPrescription', 'params': {'id': '456'}},
-          {'type': 'openReminders', 'params': {'patient_id': '123'}},
+          {
+            'type': 'openPrescription',
+            'params': {'id': '456'}
+          },
+          {
+            'type': 'openReminders',
+            'params': {'patient_id': '123'}
+          },
         ],
       };
 
@@ -70,7 +78,8 @@ void main() {
     });
 
     test('should parse https://ayureze.in URLs', () {
-      final uri = AppRouter.parseDeepLink('https://ayureze.in/prescription/456');
+      final uri =
+          AppRouter.parseDeepLink('https://ayureze.in/prescription/456');
 
       expect(uri, isNotNull);
       expect(uri!.pathSegments, isNotEmpty);
@@ -84,7 +93,7 @@ void main() {
 
     test('should parse cart URL', () {
       final uri = AppRouter.parseDeepLink('ayureze://cart');
-      
+
       // Cart URL should be parsed (may have empty path segments)
       expect(uri, isNotNull);
     });

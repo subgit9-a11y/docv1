@@ -15,7 +15,7 @@ class ContextBuilder {
 
   /// Current language code (default: English)
   String _currentLanguage = 'en';
-  
+
   /// Current screen context
   String _currentScreenContext = ScreenContextType.unknown;
 
@@ -220,11 +220,11 @@ class AstraRequestContext {
   factory AstraRequestContext.fromJson(Map<String, dynamic> json) {
     return AstraRequestContext(
       doctor: DoctorContext.fromJson(json['doctor'] ?? {}),
-      patient: json['patient'] != null 
-          ? PatientContext.fromJson(json['patient']) 
+      patient: json['patient'] != null
+          ? PatientContext.fromJson(json['patient'])
           : null,
-      consultation: json['consultation'] != null 
-          ? ConsultationContext.fromJson(json['consultation']) 
+      consultation: json['consultation'] != null
+          ? ConsultationContext.fromJson(json['consultation'])
           : null,
       language: json['language'] ?? 'en',
       screenContext: json['screen_context'] ?? ScreenContextType.unknown,
@@ -272,7 +272,7 @@ class AstraRequestContext {
   /// Get patient summary for prompts
   String get patientSummary {
     if (patient == null) return 'No patient selected';
-    
+
     final parts = <String>[];
     parts.add('Patient: ${patient!.name}');
     if (patient!.age != null) parts.add('Age: ${patient!.age}');
@@ -284,7 +284,8 @@ class AstraRequestContext {
       parts.add(patient!.chronicConditionsSummary);
     }
     if (patient!.bmi != null) {
-      parts.add('BMI: ${patient!.bmi!.toStringAsFixed(1)} (${patient!.bmiCategory})');
+      parts.add(
+          'BMI: ${patient!.bmi!.toStringAsFixed(1)} (${patient!.bmiCategory})');
     }
     return parts.join('\n');
   }
@@ -292,7 +293,7 @@ class AstraRequestContext {
   /// Get consultation summary for prompts
   String get consultationSummary {
     if (consultation == null) return 'No active consultation';
-    
+
     final parts = <String>[];
     parts.add('Type: ${consultation!.consultationTypeDisplay}');
     if (consultation!.chiefComplaint != null) {

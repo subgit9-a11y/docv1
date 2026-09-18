@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:doctro/core/voice/voice_service.dart';
-import 'package:doctro/core/voice/voice_recorder.dart';
-import 'package:doctro/core/voice/voice_player.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
 
 /// Voice Controller
@@ -12,7 +10,7 @@ import 'package:doctro/core/astra/utils/astra_logger.dart';
 /// Coordinates between recorder, player, and Astra service.
 class VoiceController extends ChangeNotifier {
   static final VoiceController _instance = VoiceController._internal();
-  
+
   factory VoiceController() => _instance;
   VoiceController._internal();
 
@@ -21,7 +19,7 @@ class VoiceController extends ChangeNotifier {
   // State
   VoiceState _state = VoiceState.idle;
   VoiceState get state => _state;
-  
+
   bool get isRecording => _state == VoiceState.recording;
   bool get isTranscribing => _state == VoiceState.transcribing;
   bool get isPlaying => _state == VoiceState.playing;
@@ -99,13 +97,14 @@ class VoiceController extends ChangeNotifier {
 
       _lastTranscription = result;
       _state = VoiceState.idle;
-      
+
       if (result.isLowConfidence) {
         AstraLogger.w('Low transcription confidence: ${result.confidence}');
       }
 
       notifyListeners();
-      AstraLogger.i('Transcription complete: ${result.text}', tag: 'VoiceController');
+      AstraLogger.i('Transcription complete: ${result.text}',
+          tag: 'VoiceController');
     } catch (e) {
       _handleError('Transcription failed: $e');
     }

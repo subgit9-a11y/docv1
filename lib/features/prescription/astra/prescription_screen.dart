@@ -527,14 +527,16 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                           label: const Text("Add Medicine"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 48),
-                            backgroundColor: AyurezeTheme.healingGreen10,
-                            foregroundColor: AyurezeTheme.healingGreen100,
+                            // Dark-aware: healingGreen10 is light-only, so this
+                            // button stayed pale with dark text in dark mode.
+                            backgroundColor: AyurezeTheme.surfaceMuted,
+                            foregroundColor: AyurezeTheme.textPrimary,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                               side: BorderSide(
                                   color: AyurezeTheme.healingGreen50
-                                      .withOpacity(0.3)),
+                                      .withValues(alpha: 0.3)),
                             ),
                           ),
                         ),

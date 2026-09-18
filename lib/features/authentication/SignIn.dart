@@ -60,7 +60,6 @@ class _SignInViewState extends State<SignInView>
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -97,7 +96,8 @@ class _SignInViewState extends State<SignInView>
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 6),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.14),
+                                        color: Colors.white
+                                            .withValues(alpha: 0.14),
                                         borderRadius:
                                             BorderRadius.circular(999),
                                       ),
@@ -135,7 +135,7 @@ class _SignInViewState extends State<SignInView>
                                                     ?.copyWith(
                                                   height: 1.4,
                                                   color: Colors.white
-                                                      .withOpacity(0.85),
+                                                      .withValues(alpha: 0.85),
                                                 ),
                                               ),
                                             ],
@@ -452,7 +452,7 @@ class _SignInViewState extends State<SignInView>
                                                 textTheme.bodySmall?.copyWith(
                                               fontWeight: FontWeight.w600,
                                               color: AyurezeTheme.textSecondary
-                                                  .withOpacity(0.7),
+                                                  .withValues(alpha: 0.7),
                                             ),
                                           ),
                                         ),
@@ -507,13 +507,17 @@ class _SignInViewState extends State<SignInView>
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      getTranslated(context,
-                                              AppString.login_dont_have_account)
-                                          .toString(),
-                                      style: textTheme.bodyMedium?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: AyurezeTheme.textSecondary,
+                                    Flexible(
+                                      child: Text(
+                                        getTranslated(
+                                                context,
+                                                AppString
+                                                    .login_dont_have_account)
+                                            .toString(),
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: AyurezeTheme.textSecondary,
+                                        ),
                                       ),
                                     ),
                                     TextButton(

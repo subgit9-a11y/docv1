@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/core/astra/models/conversation_model.dart';
-import 'package:doctro/core/astra/actions/action_models.dart';
 import 'package:doctro/core/astra/utils/astra_config.dart';
 
 /// Astra Chat Bubble Widget
@@ -10,12 +9,13 @@ import 'package:doctro/core/astra/utils/astra_config.dart';
 class AstraChatBubble extends StatelessWidget {
   /// The message to display
   final AstraMessage message;
-  
+
   /// Whether this message is from the current user
   final bool isUser;
-  
+
   /// Callback when action is tapped
-  final void Function(String actionType, Map<String, dynamic>? params)? onActionTap;
+  final void Function(String actionType, Map<String, dynamic>? params)?
+      onActionTap;
 
   const AstraChatBubble({
     super.key,
@@ -26,11 +26,11 @@ class AstraChatBubble extends StatelessWidget {
 
   /// Get accessibility label for screen readers
   String get _accessibilityLabel {
-    final role = message.role == MessageRole.user 
-        ? 'You' 
+    final role = message.role == MessageRole.user
+        ? 'You'
         : (message.role == MessageRole.system ? 'System' : 'Astra AI');
-    final status = message.status == MessageStatus.sending 
-        ? 'Sending' 
+    final status = message.status == MessageStatus.sending
+        ? 'Sending'
         : (message.status == MessageStatus.failed ? 'Failed' : '');
     return '$role message: ${message.content}. $status'.trim();
   }
@@ -38,7 +38,7 @@ class AstraChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Semantics(
       label: _accessibilityLabel,
       child: Align(
@@ -54,7 +54,7 @@ class AstraChatBubble extends StatelessWidget {
             bottom: 4,
           ),
           child: Column(
-            crossAxisAlignment: 
+            crossAxisAlignment:
                 isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
               // Message content
@@ -75,7 +75,7 @@ class AstraChatBubble extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
@@ -86,20 +86,19 @@ class AstraChatBubble extends StatelessWidget {
                     children: [
                       // Message text
                       _buildMessageContent(theme),
-                      
+
                       // Streaming indicator
-                      if (message.status == MessageStatus.sending && 
+                      if (message.status == MessageStatus.sending &&
                           message.role == MessageRole.assistant)
                         _buildStreamingIndicator(),
-                      
+
                       // Action button
-                      if (message.action != null)
-                        _buildActionButton(theme),
+                      if (message.action != null) _buildActionButton(theme),
                     ],
                   ),
                 ),
               ),
-              
+
               // Timestamp
               Semantics(
                 label: 'Sent at ${_formatTime(message.createdAt)}',
@@ -115,7 +114,7 @@ class AstraChatBubble extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               // Error indicator
               if (message.status == MessageStatus.failed)
                 _buildErrorIndicator(theme),
@@ -132,23 +131,25 @@ class AstraChatBubble extends StatelessWidget {
           ? Colors.red.shade50
           : Colors.blue.shade50;
     }
-    
+
     if (message.status == MessageStatus.failed) {
       return Colors.red.shade50;
     }
-    
+
     return isUser
-        ? AstraConfig.enableLogging ? Colors.green.shade100 : Colors.grey.shade200
+        ? AstraConfig.enableLogging
+            ? Colors.green.shade100
+            : Colors.grey.shade200
         : Colors.white;
   }
 
   Widget _buildMessageContent(ThemeData theme) {
     final textColor = message.role == MessageRole.system
-        ? (message.status == MessageStatus.failed 
-            ? Colors.red.shade700 
+        ? (message.status == MessageStatus.failed
+            ? Colors.red.shade700
             : Colors.blue.shade700)
         : (isUser ? Colors.white : Colors.black87);
-    
+
     return SelectableText(
       message.content,
       style: theme.textTheme.bodyMedium?.copyWith(
@@ -191,7 +192,7 @@ class AstraChatBubble extends StatelessWidget {
   Widget _buildActionButton(ThemeData theme) {
     final action = message.action!;
     final actionLabel = action.description ?? _getActionLabel(action.type.name);
-    
+
     return Semantics(
       label: 'Action button: $actionLabel',
       hint: 'Double tap to open ${_getActionLabel(action.type.name)}',
@@ -207,8 +208,8 @@ class AstraChatBubble extends StatelessWidget {
               vertical: 8,
             ),
             decoration: BoxDecoration(
-              color: AstraConfig.enableLogging 
-                  ? Colors.green.shade100 
+              color: AstraConfig.enableLogging
+                  ? Colors.green.shade100
                   : Colors.grey.shade100,
               borderRadius: BorderRadius.circular(20),
             ),

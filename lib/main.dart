@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctro/features/consultation/chat/pages/chat_page.dart'
     show ChatPage;
 import 'package:doctro/core/navigator_key.dart';
+import 'package:doctro/core/config/env.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/utils/logger.dart';
 import 'package:doctro/utils/notification.dart' show NotificationHandler;
@@ -17,7 +19,7 @@ import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:doctro/features/authentication/SignIn.dart';
-import 'package:doctro/features/splash_screen.dart';
+import 'package:doctro/features/startup_gate.dart';
 import 'package:doctro/features/authentication/forgotpassword.dart';
 import 'package:doctro/features/notifications/ViewAllNotification.dart';
 import 'package:doctro/features/schedule/ScheduleTimings.dart';
@@ -46,6 +48,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:doctro/theme/theme_provider.dart';
+import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/features/consultation/videoCall/VideoCall/overlay_handler.dart';
 import 'package:doctro/features/consultation/chat/pages/home_page.dart';
 import 'package:doctro/features/consultation/chat/providers/auth_provider.dart'
@@ -60,7 +63,6 @@ import 'package:doctro/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:doctro/features/dashboard/patient_information.dart';
 import 'package:doctro/features/notifications/notifications.dart';
-import 'package:doctro/features/profile/profile.dart' hide Container;
 import 'package:doctro/features/review/rate&review.dart';
 import 'package:doctro/features/cashfree/payment.dart';
 
@@ -71,17 +73,14 @@ Future<void> main() async {
   // CRITICAL: Ensure Flutter binding is initialized FIRST and ONLY ONCE
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    await dotenv.load(fileName: ".env");
-  } catch (e) {
-    debugPrint("DotEnv load failed: $e");
-  }
-
-  String? getEnvSafe(String key) {
+  // Local development convenience only. A release build must be configured
+  // with --dart-define, so this is skipped there to avoid a pointless failed
+  // asset load. `.env` is intentionally not bundled; see lib/core/config/env.dart.
+  if (kDebugMode) {
     try {
-      return dotenv.maybeGet(key);
+      await dotenv.load(fileName: ".env");
     } catch (_) {
-      return null;
+      debugPrint('Config: no .env found - using --dart-define values only.');
     }
   }
 
@@ -105,7 +104,7 @@ Future<void> main() async {
     debugPrint("SharedPreferenceHelper init failed: $e");
   }
 
-  if (Platform.isAndroid) {
+  if (!kIsWeb && Platform.isAndroid) {
     await SharedPreferenceHelper.setString(
         Preferences.device_platform, "Android");
   }
@@ -139,10 +138,17 @@ Future<void> main() async {
   }
 
   // Initialize Supabase if credentials exist
-  final String supabaseUrl = getEnvSafe('SUPABASE_URL') ??
-      const String.fromEnvironment('SUPABASE_URL');
-  final String supabaseAnonKey = getEnvSafe('SUPABASE_ANON_KEY') ??
-      const String.fromEnvironment('SUPABASE_ANON_KEY');
+  final String supabaseUrl = Env.supabaseUrl;
+  final String supabaseAnonKey = Env.supabaseAnonKey;
+
+  // Report configuration gaps once, at startup, rather than letting every
+  // caller discover them independently and fail quietly.
+  final missing = Env.missingKeys();
+  if (missing.isNotEmpty) {
+    debugPrint('Config: missing ${missing.join(', ')}. '
+        'Pass them with --dart-define (or --dart-define-from-file for local '
+        'development). Features that need them are disabled until then.');
+  }
 
   if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty) {
     try {
@@ -173,7 +179,7 @@ Future<void> main() async {
   }
 
   // Finally, run the app with guaranteed non-null prefs
-  runApp(MyApp(prefs: prefs ?? await SharedPreferences.getInstance()));
+  runApp(MyApp(prefs: prefs));
 }
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -227,7 +233,7 @@ class _MyAppState extends State<MyApp> {
     _setupFirebaseMessagingListeners();
 
     // Request notification permissions
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       await Permission.notification.request();
     }
 
@@ -236,10 +242,12 @@ class _MyAppState extends State<MyApp> {
 
     // Implement Screenshot Protection for Enterprise Compliance
     try {
-      if (Platform.isAndroid) {
+      if (!kIsWeb && Platform.isAndroid) {
         await _secureWindowChannel.invokeMethod('enableFlagSecure');
       }
-    } catch (e) {}
+    } catch (_) {
+      // Secure-window flag is Android-only polish; failure must not block startup.
+    }
   }
 
   Future<void> _initializeNotifications() async {
@@ -403,24 +411,37 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  /// Resolves the persisted interface language.
+  ///
+  /// Never throws: an exception here would escape an unawaited future, so keep
+  /// the failure contained and leave the default locale in place.
+  Future<void> _loadLocale() async {
+    try {
+      final local = await getLocale();
+      if (!mounted) return;
+      setState(() => _locale = local);
+    } catch (e) {
+      // _locale already defaults to en_US, which is a valid state; leaving it
+      // alone is better than replacing the app with an empty widget.
+      debugPrint('Config: could not resolve saved locale, using default: $e');
+    }
+  }
+
   @override
   void didChangeDependencies() {
-    getLocale().then((local) => {
-          if (mounted)
-            setState(() {
-              _locale = local;
-            })
-        });
+    _loadLocale();
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Defensive: _locale is non-null from the start, but this branch must never
+    // be a bare SizedBox. It has no Material or Directionality ancestor, so
+    // such a subtree has no background to paint and shows as a blank screen.
     if (_locale == null) {
-      return const SizedBox(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+      return const ColoredBox(
+        color: Color(0xFFE9EEE4),
+        child: Center(child: CircularProgressIndicator()),
       );
     } else {
       return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -468,18 +489,19 @@ class _MyAppState extends State<MyApp> {
                     }
                   },
                   child: MaterialApp(
-                    themeMode: ThemeMode.system,
+                    themeMode: themeProvider.isDarkMode
+                        ? ThemeMode.dark
+                        : ThemeMode.light,
                     navigatorKey: navigatorKey,
                     title: "Ayureze",
                     debugShowCheckedModeBanner: false,
-                    theme: themeProvider.theme,
+                    theme: AyurezeTheme.lightTheme(),
+                    darkTheme: AyurezeTheme.darkTheme(),
                     themeAnimationDuration: const Duration(milliseconds: 300),
                     themeAnimationCurve: Curves.easeInOut,
-                    home: const SplashScreen(),
+                    home: const StartupGate(),
                     locale: _locale,
-                    supportedLocales: const [
-                      Locale(ENGLISH, 'US'),
-                    ],
+                    supportedLocales: supportedLocales,
                     localizationsDelegates: const [
                       LanguageLocalization.delegate,
                       GlobalMaterialLocalizations.delegate,

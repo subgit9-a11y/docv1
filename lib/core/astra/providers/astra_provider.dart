@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:doctro/core/astra/controllers/astra_controller.dart';
 
 /// Astra Provider
@@ -10,7 +11,10 @@ class AstraProvider extends ChangeNotifier {
 
   AstraProvider({String? patientId, String? patientName, String? appointmentId})
       : _controller = AstraController() {
-    _initialize(patientId: patientId, patientName: patientName, appointmentId: appointmentId);
+    _initialize(
+        patientId: patientId,
+        patientName: patientName,
+        appointmentId: appointmentId);
   }
 
   AstraController get controller => _controller;

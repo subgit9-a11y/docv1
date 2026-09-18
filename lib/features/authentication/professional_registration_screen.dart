@@ -169,7 +169,7 @@ class _ProfessionalRegistrationScreenState
         }
       }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -283,8 +283,11 @@ class _ProfessionalRegistrationScreenState
         "is_filled": 1,
       });
 
+      if (!mounted) return;
       final response = await RestClient(await RetroApi().dioData(context))
           .registerRequest(finalData);
+
+      if (!mounted) return;
 
       if (response.success == true) {
         try {
@@ -298,8 +301,11 @@ class _ProfessionalRegistrationScreenState
             photoUrl: "",
             isFaceVerified: true,
           );
-        } catch (e) {}
+        } catch (_) {
+          // Supabase mirror is best-effort; the API registration already succeeded.
+        }
 
+        if (!mounted) return;
         _savePreferences(response);
         Navigator.pushAndRemoveUntil(
           context,
@@ -313,9 +319,11 @@ class _ProfessionalRegistrationScreenState
           (route) => false,
         );
       } else {
+        if (!mounted) return;
         OslerToast.error(context, response.msg ?? "Registration failed");
       }
     } catch (e) {
+      if (!mounted) return;
       if (e is DioException) {
         String errorMsg = "Registration failed";
         if (e.response?.data is Map) {
@@ -328,7 +336,7 @@ class _ProfessionalRegistrationScreenState
         OslerToast.error(context, "An unexpected error occurred: $e");
       }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -377,9 +385,11 @@ class _ProfessionalRegistrationScreenState
       body["id_proof"] = idProofUrl ?? "";
       body["is_filled"] = 1;
 
+      if (!mounted) return;
       final response = await RestClient(await RetroApi().dioData(context))
           .updateProfile(body);
 
+      if (!mounted) return;
       if (response.success == true) {
         OslerToast.success(context, "Clinical Profile Updated");
         Navigator.pop(context);
@@ -387,6 +397,7 @@ class _ProfessionalRegistrationScreenState
         OslerToast.error(context, response.msg ?? "Update failed");
       }
     } catch (e) {
+      if (!mounted) return;
       if (e is DioException) {
         String errorMsg = "Profile update failed";
         if (e.response?.data is Map) {
@@ -399,7 +410,7 @@ class _ProfessionalRegistrationScreenState
         OslerToast.error(context, "An error occurred: $e");
       }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -602,10 +613,11 @@ class _ProfessionalRegistrationScreenState
           color: AyurezeTheme.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-              color: AyurezeTheme.healingGreen50.withOpacity(0.35), width: 2),
+              color: AyurezeTheme.healingGreen50.withValues(alpha: 0.35),
+              width: 2),
           boxShadow: [
             BoxShadow(
-                color: AyurezeTheme.shadow.withOpacity(0.08),
+                color: AyurezeTheme.shadow.withValues(alpha: 0.08),
                 blurRadius: 10,
                 spreadRadius: 0)
           ],
@@ -625,7 +637,8 @@ class _ProfessionalRegistrationScreenState
                     children: [
                       Icon(Icons.add_a_photo_outlined,
                           size: 40,
-                          color: AyurezeTheme.healingGreen50.withOpacity(0.65)),
+                          color: AyurezeTheme.healingGreen50
+                              .withValues(alpha: 0.65)),
                       const SizedBox(height: 10),
                       Text(placeholder,
                           style: textTheme.labelLarge?.copyWith(
@@ -676,10 +689,10 @@ class _ProfessionalRegistrationScreenState
       decoration: BoxDecoration(
         color: AyurezeTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AyurezeTheme.border.withOpacity(0.6)),
+        border: Border.all(color: AyurezeTheme.border.withValues(alpha: 0.6)),
         boxShadow: [
           BoxShadow(
-              color: AyurezeTheme.shadow.withOpacity(0.06),
+              color: AyurezeTheme.shadow.withValues(alpha: 0.06),
               blurRadius: 5,
               spreadRadius: 0)
         ],
@@ -739,8 +752,8 @@ class _ProfessionalRegistrationScreenState
                   const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide:
-                      BorderSide(color: AyurezeTheme.border.withOpacity(0.6))),
+                  borderSide: BorderSide(
+                      color: AyurezeTheme.border.withValues(alpha: 0.6))),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
@@ -798,10 +811,12 @@ class _ProfessionalRegistrationScreenState
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AyurezeTheme.healingGreen10,
+        // Dark-aware: healingGreen10 is a light-only constant, so it left a
+        // pale card behind dark-mode text.
+        color: AyurezeTheme.surfaceMuted,
         borderRadius: BorderRadius.circular(15),
-        border:
-            Border.all(color: AyurezeTheme.healingGreen50.withOpacity(0.35)),
+        border: Border.all(
+            color: AyurezeTheme.healingGreen50.withValues(alpha: 0.35)),
       ),
       child: Column(
         children: [

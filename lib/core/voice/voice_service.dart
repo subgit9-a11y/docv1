@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:doctro/core/astra/utils/astra_config.dart';
+import 'package:doctro/core/config/env.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
 
 /// Voice Service
@@ -12,31 +12,31 @@ import 'package:doctro/core/astra/utils/astra_logger.dart';
 /// This service communicates with the FastAPI backend which wraps Sarvam AI.
 class VoiceService {
   static final VoiceService _instance = VoiceService._internal();
-  
+
   factory VoiceService() => _instance;
   VoiceService._internal();
 
   /// Base URL for voice API (through FastAPI backend)
   String get _baseUrl => AstraConfig.baseUrl;
-  
+
   /// Sarvam API key - set via environment variable or runtime
   /// DO NOT hardcode API keys in source code
   String? _sarvamApiKey;
-  
+
   /// Set the Sarvam API key (call this during app initialization)
   void setApiKey(String key) {
     _sarvamApiKey = key;
     AstraLogger.d('Sarvam API key configured', tag: 'VoiceService');
   }
-  
+
   /// Get API key from environment or runtime config
   String get _apiKey {
     if (_sarvamApiKey != null) return _sarvamApiKey!;
-    
+
     // Try environment variable first
-    const apiKey = String.fromEnvironment('SARVAM_API_KEY', defaultValue: '');
+    final apiKey = Env.sarvamApiKey;
     if (apiKey.isNotEmpty) return apiKey;
-    
+
     // Fallback: log warning (do not return empty string)
     AstraLogger.w('Sarvam API key not configured', tag: 'VoiceService');
     return '';
@@ -80,9 +80,10 @@ class VoiceService {
       request.fields['language'] = language;
 
       final streamedResponse = await request.send().timeout(
-        const Duration(seconds: 30),
-        onTimeout: () => throw VoiceException('STT timeout', VoiceErrorType.timeout),
-      );
+            const Duration(seconds: 30),
+            onTimeout: () =>
+                throw VoiceException('STT timeout', VoiceErrorType.timeout),
+          );
 
       final response = await http.Response.fromStream(streamedResponse);
 
@@ -127,7 +128,7 @@ class VoiceService {
     if (chunks.isNotEmpty) {
       final tempFile = File('${Directory.systemTemp.path}/stream_audio.wav');
       await tempFile.writeAsBytes(chunks);
-      
+
       yield await speechToText(audioFile: tempFile, language: language);
       await tempFile.delete();
     }
@@ -156,31 +157,35 @@ class VoiceService {
       AstraLogger.d('Starting TTS conversion', tag: 'VoiceService');
 
       final uri = Uri.parse('$_baseUrl/api/voice/tts');
-      
-      final response = await http.post(
-        uri,
-        headers: {
-          'Authorization': 'Bearer $_apiKey',
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode({
-          'text': text,
-          'language': language,
-          'speaker': speaker,
-          'speed': speed,
-        }),
-      ).timeout(
-        const Duration(seconds: 60),
-        onTimeout: () => throw VoiceException('TTS timeout', VoiceErrorType.timeout),
-      );
+
+      final response = await http
+          .post(
+            uri,
+            headers: {
+              'Authorization': 'Bearer $_apiKey',
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: jsonEncode({
+              'text': text,
+              'language': language,
+              'speaker': speaker,
+              'speed': speed,
+            }),
+          )
+          .timeout(
+            const Duration(seconds: 60),
+            onTimeout: () =>
+                throw VoiceException('TTS timeout', VoiceErrorType.timeout),
+          );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final audioBase64 = data['audio'] as String?;
-        
+
         if (audioBase64 == null) {
-          throw VoiceException('No audio data in response', VoiceErrorType.parseError);
+          throw VoiceException(
+              'No audio data in response', VoiceErrorType.parseError);
         }
 
         final audioBytes = base64Decode(audioBase64);
@@ -214,17 +219,18 @@ class VoiceService {
 
   /// Get supported languages for voice
   static List<VoiceLanguage> get supportedLanguages => [
-    VoiceLanguage(code: 'en-IN', name: 'English (India)', nativeName: 'English'),
-    VoiceLanguage(code: 'hi-IN', name: 'Hindi', nativeName: 'हिंदी'),
-    VoiceLanguage(code: 'bn-IN', name: 'Bengali', nativeName: 'বাংলা'),
-    VoiceLanguage(code: 'ta-IN', name: 'Tamil', nativeName: 'தமிழ்'),
-    VoiceLanguage(code: 'te-IN', name: 'Telugu', nativeName: 'తెలుగు'),
-    VoiceLanguage(code: 'mr-IN', name: 'Marathi', nativeName: 'मराठी'),
-    VoiceLanguage(code: 'gu-IN', name: 'Gujarati', nativeName: 'ગુજરાતી'),
-    VoiceLanguage(code: 'kn-IN', name: 'Kannada', nativeName: 'ಕನ್ನಡ'),
-    VoiceLanguage(code: 'ml-IN', name: 'Malayalam', nativeName: 'മലയാളം'),
-    VoiceLanguage(code: 'pa-IN', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ'),
-  ];
+        VoiceLanguage(
+            code: 'en-IN', name: 'English (India)', nativeName: 'English'),
+        VoiceLanguage(code: 'hi-IN', name: 'Hindi', nativeName: 'हिंदी'),
+        VoiceLanguage(code: 'bn-IN', name: 'Bengali', nativeName: 'বাংলা'),
+        VoiceLanguage(code: 'ta-IN', name: 'Tamil', nativeName: 'தமிழ்'),
+        VoiceLanguage(code: 'te-IN', name: 'Telugu', nativeName: 'తెలుగు'),
+        VoiceLanguage(code: 'mr-IN', name: 'Marathi', nativeName: 'मराठी'),
+        VoiceLanguage(code: 'gu-IN', name: 'Gujarati', nativeName: 'ગુજરાતી'),
+        VoiceLanguage(code: 'kn-IN', name: 'Kannada', nativeName: 'ಕನ್ನಡ'),
+        VoiceLanguage(code: 'ml-IN', name: 'Malayalam', nativeName: 'മലയാളം'),
+        VoiceLanguage(code: 'pa-IN', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ'),
+      ];
 
   /// Check if language is supported
   static bool isLanguageSupported(String code) {

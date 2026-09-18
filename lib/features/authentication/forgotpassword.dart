@@ -105,7 +105,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                                                     .forgot_password_description)
                                             .toString(),
                                         style: textTheme.bodyMedium?.copyWith(
-                                          color: Colors.white.withOpacity(0.85),
+                                          color: Colors.white
+                                              .withValues(alpha: 0.85),
                                           height: 1.4,
                                         ),
                                       ),

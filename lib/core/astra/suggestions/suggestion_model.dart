@@ -7,31 +7,31 @@ import 'package:flutter/material.dart';
 class AISuggestion {
   /// Unique identifier
   final String id;
-  
+
   /// Suggestion type
   final SuggestionType type;
-  
+
   /// Suggestion title
   final String title;
-  
+
   /// Detailed description
   final String? description;
-  
+
   /// Priority level
   final SuggestionPriority priority;
-  
+
   /// Associated action (optional)
   final SuggestionAction? action;
-  
+
   /// Category for grouping
   final String? category;
-  
+
   /// Additional metadata
   final Map<String, dynamic>? metadata;
-  
+
   /// Timestamp when suggestion was generated
   final DateTime? generatedAt;
-  
+
   /// Whether the suggestion has been dismissed
   bool isDismissed;
 
@@ -51,18 +51,19 @@ class AISuggestion {
   /// Create from JSON
   factory AISuggestion.fromJson(Map<String, dynamic> json) {
     return AISuggestion(
-      id: json['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id: json['id']?.toString() ??
+          DateTime.now().millisecondsSinceEpoch.toString(),
       type: SuggestionType.fromString(json['type']),
       title: json['title'] ?? 'Suggestion',
       description: json['description'],
       priority: SuggestionPriority.fromString(json['priority']),
-      action: json['action'] != null 
-          ? SuggestionAction.fromJson(json['action']) 
+      action: json['action'] != null
+          ? SuggestionAction.fromJson(json['action'])
           : null,
       category: json['category'],
       metadata: json['metadata'],
-      generatedAt: json['generated_at'] != null 
-          ? DateTime.tryParse(json['generated_at']) 
+      generatedAt: json['generated_at'] != null
+          ? DateTime.tryParse(json['generated_at'])
           : null,
     );
   }
@@ -299,7 +300,7 @@ enum SuggestionPriority {
 class SuggestionAction {
   /// Action type
   final String type;
-  
+
   /// Action parameters
   final Map<String, dynamic> params;
 
@@ -336,7 +337,7 @@ class AISuggestionGroup {
   });
 
   /// Get non-dismissed suggestions
-  List<AISuggestion> get activeSuggestions => 
+  List<AISuggestion> get activeSuggestions =>
       suggestions.where((s) => !s.isDismissed).toList();
 
   /// Check if has any active suggestions

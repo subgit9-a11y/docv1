@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AyurezeTheme {
   // Osler UI Kit Colors
@@ -8,12 +7,24 @@ class AyurezeTheme {
   static const Color oslerGray50 = Color(0xFF849087);
   static const Color oslerGray10 = Color(0xFFF5F5F5);
 
+  // NOTE: these are mode-independent constants, not dark-aware tokens.
+  // They intentionally keep their value in dark mode, which makes them safe
+  // as accents and foregrounds but unsafe as page/card backgrounds. For
+  // backgrounds, borders and body text use the getters below (surface,
+  // surfaceMuted, canvas, border, textPrimary, textSecondary).
   static const Color healingGreen100 =
       Color(0xFF0F2916); // Deep Botanical Forest Green
   static const Color healingGreen50 =
       Color(0xFF10B981); // Premium Healing Emerald Green
   static const Color healingGreen10 =
       Color(0xFFE6F7F0); // Soft Sage Mint Accent
+
+  // Fill for filled controls that carry a white glyph or label (FAB,
+  // checkbox, circular play/AI buttons). healingGreen50 is the brand
+  // emerald but only reaches 2.54:1 against white, which fails both WCAG AA
+  // for text (4.5:1) and the UI-component threshold (3:1). This darker
+  // shade keeps the same hue at 5.48:1, so white content is legible.
+  static const Color healingGreenFill = Color(0xFF047857);
 
   static const Color remoteRed100 = Color(0xFF4C050B);
   static const Color remoteRed50 = Color(0xFFF43F5E);
@@ -49,7 +60,9 @@ class AyurezeTheme {
   static const Color darkSurfaceMuted = Color(0xFF3D3D3D);
   static const Color darkBorder = Color(0xFF4D4D4D);
   static const Color darkTextPrimary = Color(0xFFE0E0E0);
-  static const Color darkTextSecondary = Color(0xFFA0A0A0);
+  // 4.15:1 against darkSurfaceMuted (#3D3D3D) failed WCAG AA (needs 4.5).
+  // #B4B4B4 gives 5.24:1 on darkSurfaceMuted and 6.64:1 on darkSurface.
+  static const Color darkTextSecondary = Color(0xFFB4B4B4);
 
   // Dynamic Getters
   static Color get canvas => _isDark ? darkCanvas : lightCanvas;
@@ -96,6 +109,33 @@ class AyurezeTheme {
     vertical: 16,
   );
 
+  // Corner radius scale. Before this existed the UI used 14 different radii
+  // with no shared vocabulary, so "the same" card could be 12, 16 or 24
+  // depending on the screen. These are the values the Osler kit already
+  // reached for; naming them makes the choice deliberate.
+  static const double radiusXs = 6; // checkbox, tight chips
+  static const double radiusSm = 8; // tooltips, small badges
+  static const double radiusMd = 12; // inline alerts, toast
+  static const double radiusLg = 16; // inputs, dropdowns, alert cards
+  static const double radiusXl = 24; // cards, sheets
+  static const double radius2xl = 28; // modals
+  static const double radiusPill = 999; // fully rounded / pills
+
+  // Spacing scale, in the 4pt rhythm the screens mostly follow already.
+  static const double spaceXs = 4;
+  static const double spaceSm = 8;
+  static const double spaceMd = 12;
+  static const double spaceLg = 16;
+  static const double spaceXl = 20;
+  static const double space2xl = 24;
+  static const double space3xl = 32;
+
+  static BorderRadius get borderRadiusMd => BorderRadius.circular(radiusMd);
+  static BorderRadius get borderRadiusLg => BorderRadius.circular(radiusLg);
+  static BorderRadius get borderRadiusXl => BorderRadius.circular(radiusXl);
+  static BorderRadius get borderRadius2xl => BorderRadius.circular(radius2xl);
+  static BorderRadius get borderRadiusPill => BorderRadius.circular(radiusPill);
+
   static ThemeData theme({bool isDarkMode = false}) {
     if (isDarkMode) {
       return darkTheme();
@@ -131,47 +171,45 @@ class AyurezeTheme {
       cardColor: lightSurface,
       dividerColor: lightBorder,
       shadowColor: const Color(0x16000000),
-      textTheme: GoogleFonts.nunitoTextTheme(
-        ThemeData.light().textTheme,
-      ).copyWith(
-        headlineLarge: const TextStyle(
-          fontSize: 32,
-          height: 1.05,
-          fontWeight: FontWeight.w800,
-          color: lightTextPrimary,
-        ),
-        headlineMedium: const TextStyle(
-          fontSize: 24,
-          height: 1.15,
-          fontWeight: FontWeight.w800,
-          color: lightTextPrimary,
-        ),
-        titleLarge: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: lightTextPrimary,
-        ),
-        titleMedium: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-          color: lightTextPrimary,
-        ),
-        bodyLarge: const TextStyle(
-          fontSize: 15,
-          height: 1.4,
-          color: lightTextPrimary,
-        ),
-        bodyMedium: const TextStyle(
-          fontSize: 14,
-          height: 1.35,
-          color: lightTextSecondary,
-        ),
-        labelLarge: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 0.2,
-        ),
-      ),
+      textTheme: ThemeData.light().textTheme.copyWith(
+            headlineLarge: const TextStyle(
+              fontSize: 32,
+              height: 1.05,
+              fontWeight: FontWeight.w800,
+              color: lightTextPrimary,
+            ),
+            headlineMedium: const TextStyle(
+              fontSize: 24,
+              height: 1.15,
+              fontWeight: FontWeight.w800,
+              color: lightTextPrimary,
+            ),
+            titleLarge: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: lightTextPrimary,
+            ),
+            titleMedium: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: lightTextPrimary,
+            ),
+            bodyLarge: const TextStyle(
+              fontSize: 15,
+              height: 1.4,
+              color: lightTextPrimary,
+            ),
+            bodyMedium: const TextStyle(
+              fontSize: 14,
+              height: 1.35,
+              color: lightTextSecondary,
+            ),
+            labelLarge: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.2,
+            ),
+          ),
       appBarTheme: const AppBarTheme(
         backgroundColor: lightCanvas,
         surfaceTintColor: Colors.transparent,
@@ -342,47 +380,45 @@ class AyurezeTheme {
       cardColor: darkSurface,
       dividerColor: darkBorder,
       shadowColor: const Color(0x40000000),
-      textTheme: GoogleFonts.nunitoTextTheme(
-        ThemeData.dark().textTheme,
-      ).copyWith(
-        headlineLarge: const TextStyle(
-          fontSize: 32,
-          height: 1.05,
-          fontWeight: FontWeight.w800,
-          color: darkTextPrimary,
-        ),
-        headlineMedium: const TextStyle(
-          fontSize: 24,
-          height: 1.15,
-          fontWeight: FontWeight.w800,
-          color: darkTextPrimary,
-        ),
-        titleLarge: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: darkTextPrimary,
-        ),
-        titleMedium: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-          color: darkTextPrimary,
-        ),
-        bodyLarge: const TextStyle(
-          fontSize: 15,
-          height: 1.4,
-          color: darkTextPrimary,
-        ),
-        bodyMedium: const TextStyle(
-          fontSize: 14,
-          height: 1.35,
-          color: darkTextSecondary,
-        ),
-        labelLarge: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          color: darkTextPrimary,
-        ),
-      ),
+      textTheme: ThemeData.dark().textTheme.copyWith(
+            headlineLarge: const TextStyle(
+              fontSize: 32,
+              height: 1.05,
+              fontWeight: FontWeight.w800,
+              color: darkTextPrimary,
+            ),
+            headlineMedium: const TextStyle(
+              fontSize: 24,
+              height: 1.15,
+              fontWeight: FontWeight.w800,
+              color: darkTextPrimary,
+            ),
+            titleLarge: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: darkTextPrimary,
+            ),
+            titleMedium: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: darkTextPrimary,
+            ),
+            bodyLarge: const TextStyle(
+              fontSize: 15,
+              height: 1.4,
+              color: darkTextPrimary,
+            ),
+            bodyMedium: const TextStyle(
+              fontSize: 14,
+              height: 1.35,
+              color: darkTextSecondary,
+            ),
+            labelLarge: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: darkTextPrimary,
+            ),
+          ),
       appBarTheme: const AppBarTheme(
         backgroundColor: darkSurface,
         foregroundColor: darkTextPrimary,
@@ -456,7 +492,7 @@ class AyurezeTheme {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: healingGreen50, foregroundColor: Colors.white),
+          backgroundColor: healingGreenFill, foregroundColor: Colors.white),
       chipTheme: ChipThemeData(
           backgroundColor: darkSurfaceMuted,
           labelStyle: const TextStyle(color: darkTextPrimary)),
@@ -501,7 +537,8 @@ class AyurezeTheme {
       filled: true,
       fillColor: surface,
       labelStyle: TextStyle(color: textSecondary, fontSize: 14),
-      hintStyle: TextStyle(color: textSecondary.withOpacity(0.6), fontSize: 14),
+      hintStyle:
+          TextStyle(color: textSecondary.withValues(alpha: 0.6), fontSize: 14),
     );
   }
 }

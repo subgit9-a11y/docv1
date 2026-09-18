@@ -161,7 +161,7 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
+              color: Colors.white.withValues(alpha: 0.14),
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(
@@ -185,7 +185,7 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
           Text(
             "Track all your scheduled and completed appointments at a glance.",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withOpacity(0.78),
+                  color: Colors.white.withValues(alpha: 0.78),
                 ),
           ),
         ],
@@ -202,13 +202,15 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: AyurezeTheme.healingGreen10,
+              // Dark-aware surface, and a matching icon weight: the previous
+              // pale-mint circle with a healingGreen50 icon was 2.36:1.
+              color: AyurezeTheme.surfaceMuted,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.calendar_today_outlined,
               size: 36,
-              color: AyurezeTheme.healingGreen50,
+              color: AyurezeTheme.textSecondary,
             ),
           ),
           const SizedBox(height: 20),

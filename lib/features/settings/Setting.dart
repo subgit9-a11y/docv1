@@ -88,6 +88,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         onChanged: (val) async {
                           viewModel.setDarkMode(val);
                           await context.read<ThemeProvider>().setDarkMode(val);
+                          // Inside build() the `context` parameter shadows State.context,
+                          // so the check must be context.mounted.
+                          if (!context.mounted) return;
                           OslerToast.success(
                               context, "Dark mode: ${val ? 'ON' : 'OFF'}");
                         },
@@ -139,6 +142,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         onChanged: (val) async {
                           bool success =
                               await viewModel.updateVCall(context, val);
+                          // Inside build() the `context` parameter shadows State.context,
+                          // so the check must be context.mounted.
+                          if (!context.mounted) return;
                           if (success) {
                             OslerToast.success(
                                 context, "Call settings updated!");
@@ -209,7 +215,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () => _showDeleteAccountDialog(viewModel),
+                      onPressed: () => _showDeleteAccountDialog(),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AyurezeTheme.danger,
                         side: BorderSide(color: AyurezeTheme.danger),
@@ -241,7 +247,7 @@ class _SettingScreenState extends State<SettingScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
+              color: Colors.white.withValues(alpha: 0.14),
               borderRadius: BorderRadius.circular(999),
             ),
             child: const Text(
@@ -267,7 +273,7 @@ class _SettingScreenState extends State<SettingScreen> {
           Text(
             "Appearance, patient call controls, account security, and support live here.",
             style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
+              color: Colors.white.withValues(alpha: 0.78),
               fontSize: 14,
               height: 1.4,
             ),
@@ -355,7 +361,7 @@ class _SettingScreenState extends State<SettingScreen> {
           : null,
       trailing: Switch.adaptive(
         value: value,
-        activeColor: AyurezeTheme.forestDeep,
+        activeThumbColor: AyurezeTheme.forestDeep,
         activeTrackColor: AyurezeTheme.healingGreen50,
         onChanged: onChanged,
       ),
@@ -396,27 +402,26 @@ class _SettingScreenState extends State<SettingScreen> {
       width: 42,
       height: 42,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.16),
+        color: color.withValues(alpha: 0.16),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Icon(icon, color: color, size: 22),
     );
   }
 
-  void _showDeleteAccountDialog(SettingsViewModel viewModel) {
+  void _showDeleteAccountDialog() {
+    // Self-service deletion has no backend endpoint yet, so this dialog must
+    // not claim the account has been deleted or that removal is in progress.
+    // Telling the user their data was erased when nothing happened is a
+    // correctness problem, not just a copy problem - health data is involved.
     OslerModal.show(
       context: context,
-      title: "Delete Account?",
+      title: "Delete Account",
       message:
-          "This action is permanent and cannot be undone. All your data will be removed from our servers.",
-      primaryText: "Cancel",
-      secondaryText: "Delete",
+          "Account deletion isn't available in the app yet. To request permanent "
+          "deletion of your account and data, please contact our support team.",
+      primaryText: "Close",
       primaryAction: () => Navigator.pop(context),
-      secondaryAction: () {
-        viewModel.deleteAccount(context);
-        Navigator.pop(context);
-        OslerToast.success(context, "Request submitted to admin");
-      },
       isDanger: true,
     );
   }

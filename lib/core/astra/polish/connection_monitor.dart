@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
 
@@ -8,21 +9,20 @@ import 'package:doctro/core/astra/utils/astra_logger.dart';
 /// Monitors network connectivity and provides offline detection.
 /// Integrates with Astra AI for offline-first experience.
 class ConnectionMonitor extends ChangeNotifier {
-  ConnectionMonitor._();
   static final ConnectionMonitor _instance = ConnectionMonitor._internal();
-  
+
   factory ConnectionMonitor() => _instance;
   ConnectionMonitor._internal();
 
   final Connectivity _connectivity = Connectivity();
-  
+
   bool _isOnline = true;
   bool get isOnline => _isOnline;
   bool get isOffline => !_isOnline;
-  
+
   ConnectionType _connectionType = ConnectionType.unknown;
   ConnectionType get connectionType => _connectionType;
-  
+
   StreamSubscription<List<ConnectivityResult>>? _subscription;
 
   // ============================================================
@@ -34,10 +34,11 @@ class ConnectionMonitor extends ChangeNotifier {
     // Check initial status
     final results = await _connectivity.checkConnectivity();
     _updateConnection(results);
-    
+
     // Listen for changes
-    _subscription = _connectivity.onConnectivityChanged.listen(_updateConnection);
-    
+    _subscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnection);
+
     AstraLogger.i('Connection monitor initialized', tag: 'ConnectionMonitor');
   }
 
@@ -49,13 +50,13 @@ class ConnectionMonitor extends ChangeNotifier {
 
   void _updateConnection(List<ConnectivityResult> results) {
     final wasOnline = _isOnline;
-    
+
     if (results.contains(ConnectivityResult.none)) {
       _isOnline = false;
       _connectionType = ConnectionType.none;
     } else {
       _isOnline = true;
-      
+
       if (results.contains(ConnectivityResult.wifi)) {
         _connectionType = ConnectionType.wifi;
       } else if (results.contains(ConnectivityResult.mobile)) {
@@ -66,7 +67,7 @@ class ConnectionMonitor extends ChangeNotifier {
         _connectionType = ConnectionType.other;
       }
     }
-    
+
     if (wasOnline != _isOnline) {
       AstraLogger.i(
         'Connection changed: ${_isOnline ? "Online" : "Offline"} (${_connectionType.name})',
@@ -86,17 +87,17 @@ class ConnectionMonitor extends ChangeNotifier {
   /// Wait for connection to be restored
   Future<void> waitForConnection({Duration? timeout}) async {
     if (_isOnline) return;
-    
+
     final completer = Completer<void>();
     StreamSubscription<List<ConnectivityResult>>? sub;
-    
+
     sub = _connectivity.onConnectivityChanged.listen((results) {
       if (!results.contains(ConnectivityResult.none)) {
         completer.complete();
         sub?.cancel();
       }
     });
-    
+
     if (timeout != null) {
       Future.delayed(timeout, () {
         if (!completer.isCompleted) {
@@ -104,7 +105,7 @@ class ConnectionMonitor extends ChangeNotifier {
         }
       });
     }
-    
+
     return completer.future;
   }
 }
@@ -162,7 +163,7 @@ class ConnectionStatusBanner extends StatelessWidget {
     return Consumer<ConnectionMonitor>(
       builder: (context, monitor, _) {
         if (monitor.isOnline) return const SizedBox.shrink();
-        
+
         return Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),

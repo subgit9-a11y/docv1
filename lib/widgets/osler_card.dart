@@ -54,18 +54,18 @@ class _OslerCardState extends State<OslerCard> {
         margin: widget.margin,
         child: Material(
           color: widget.backgroundColor ?? AyurezeTheme.surface,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
           child: InkWell(
             onTap: widget.onTap,
             onTapDown: _handleTapDown,
             onTapUp: _handleTapUp,
             onTapCancel: _handleTapCancel,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: widget.padding ?? const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
                 border: widget.showBorder
                     ? Border.all(color: AyurezeTheme.border)
                     : null,

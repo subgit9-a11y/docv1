@@ -38,6 +38,7 @@ class _VideoTitleOverlayWidgetState extends State<VideoTitleOverlayWidget> {
       });
     });
     Future.delayed(const Duration(milliseconds: 250), () {
+      if (!mounted) return;
       Provider.of<OverlayHandlerProvider>(context, listen: false).disablePip();
     });
   }

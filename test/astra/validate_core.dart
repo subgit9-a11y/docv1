@@ -65,33 +65,40 @@ void main() {
   // Test 3: Check for common syntax issues
   print('');
   print('🔍 Checking for common issues...');
-  
+
   final syntaxChecks = [
     // Check conversation_model doesn't have duplicate class
-    {'file': 'lib/core/astra/models/conversation_model.dart', 
-     'pattern': 'class AstraAction', 
-     'shouldContain': false,
-     'desc': 'No duplicate AstraAction class'},
+    {
+      'file': 'lib/core/astra/models/conversation_model.dart',
+      'pattern': 'class AstraAction',
+      'shouldContain': false,
+      'desc': 'No duplicate AstraAction class'
+    },
     // Check astra_chat_page has correct Future.delayed usage
-    {'file': 'lib/features/consultation/astra_chat/astra_chat_page.dart',
-     'pattern': 'await Future.delayed',
-     'shouldContain': true,
-     'desc': 'Correct Future.delayed usage'},
+    {
+      'file': 'lib/features/consultation/astra_chat/astra_chat_page.dart',
+      'pattern': 'await Future.delayed',
+      'shouldContain': true,
+      'desc': 'Correct Future.delayed usage'
+    },
     // Check imports are correct
-    {'file': 'lib/core/astra/widgets/astra_chat_bubble.dart',
-     'pattern': "import 'package:doctro/core/astra/actions/action_models.dart'",
-     'shouldContain': true,
-     'desc': 'Has action_models import'},
+    {
+      'file': 'lib/core/astra/widgets/astra_chat_bubble.dart',
+      'pattern':
+          "import 'package:doctro/core/astra/actions/action_models.dart'",
+      'shouldContain': true,
+      'desc': 'Has action_models import'
+    },
   ];
 
   for (final check in syntaxChecks) {
     final f = File(check['file'] as String);
     if (!f.existsSync()) continue;
-    
+
     final content = f.readAsStringSync();
     final contains = content.contains(check['pattern'] as String);
     final shouldContain = check['shouldContain'] as bool;
-    
+
     if (contains == shouldContain) {
       print('  ✅ ${check['desc']}');
       passed++;
@@ -109,7 +116,7 @@ void main() {
   for (final file in files) {
     final f = File(file);
     if (!f.existsSync()) continue;
-    
+
     final content = f.readAsStringSync();
     final todos = RegExp(r'(TODO|FIXME|HACK|XXX)').allMatches(content);
     todoCount += todos.length;
@@ -124,7 +131,7 @@ void main() {
   for (final file in files) {
     final f = File(file);
     if (!f.existsSync()) continue;
-    
+
     final lines = f.readAsStringSync().split('\n').length;
     totalLines += lines;
     totalFiles++;

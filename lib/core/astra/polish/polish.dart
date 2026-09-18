@@ -7,6 +7,7 @@
 /// - Responsive layouts
 /// - Dark mode support
 /// - Accessibility helpers
+library;
 
 export 'connection_monitor.dart';
 export 'retry_handler.dart';

@@ -2,6 +2,7 @@
 ///
 /// This is the main entry point for the Astra AI integration in the Doctor App.
 /// It provides all the core infrastructure needed for Astra Brain integration.
+library;
 
 /// Utils - Configuration, logging, and exceptions
 export 'utils/utils.dart';

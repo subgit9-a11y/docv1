@@ -94,13 +94,15 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: AyurezeTheme.healingGreen10,
+                          // Dark-aware: the pale-mint constant made the
+                          // forestDeep icon 2.36:1 in dark mode.
+                          color: AyurezeTheme.surfaceMuted,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           Icons.mark_email_read_outlined,
                           size: 48,
-                          color: AyurezeTheme.forestDeep,
+                          color: AyurezeTheme.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -140,8 +142,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                             borderRadius: BorderRadius.circular(12),
                             color: AyurezeTheme.forestDeep,
                             border: Border.all(
-                              color:
-                                  AyurezeTheme.healingGreen50.withOpacity(.3),
+                              color: AyurezeTheme.healingGreen50
+                                  .withValues(alpha: .3),
                             ),
                           ),
                         ),
@@ -224,6 +226,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .otpVerifyRequest(body);
+      if (!mounted) return BaseModel()..data = response;
       if (response.success == true) {
         _saveUserData(response);
 
@@ -264,6 +267,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       response = await RestClient(await RetroApi().dioData(context))
           .resentOtpRequest(id);
 
+      if (!mounted) return BaseModel()..data = response;
       Navigator.pushNamed(context, 'SignIn');
       OslerToast.success(context, response.msg!);
     } catch (error) {
@@ -293,6 +297,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     try {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       authProvider.handleSignIn();
-    } catch (e) {}
+    } catch (_) {
+      // Sign-in state sync is best-effort; navigator already moved on.
+    }
   }
 }

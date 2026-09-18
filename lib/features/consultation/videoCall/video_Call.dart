@@ -55,10 +55,10 @@ class _VideoCallState extends State<VideoCall> {
             margin: const EdgeInsets.only(bottom: 30),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             decoration: BoxDecoration(
-              color: AyurezeTheme.surfaceDark.withOpacity(0.72),
+              color: AyurezeTheme.surfaceDark.withValues(alpha: 0.72),
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
-                  color: AyurezeTheme.border.withOpacity(0.35), width: 1),
+                  color: AyurezeTheme.border.withValues(alpha: 0.35), width: 1),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -72,7 +72,7 @@ class _VideoCallState extends State<VideoCall> {
                       : AyurezeTheme.textPrimary,
                   bgColor: viewModel.muted
                       ? AyurezeTheme.surface
-                      : AyurezeTheme.surface.withOpacity(0.2),
+                      : AyurezeTheme.surface.withValues(alpha: 0.2),
                 ),
                 const SizedBox(width: 15),
 
@@ -87,7 +87,7 @@ class _VideoCallState extends State<VideoCall> {
                       : AyurezeTheme.textPrimary,
                   bgColor: viewModel.mutedVideo
                       ? AyurezeTheme.surface
-                      : AyurezeTheme.surface.withOpacity(0.2),
+                      : AyurezeTheme.surface.withValues(alpha: 0.2),
                 ),
                 const SizedBox(width: 15),
 
@@ -96,7 +96,7 @@ class _VideoCallState extends State<VideoCall> {
                   onPressed: () => viewModel.switchCamera(),
                   icon: Icons.flip_camera_ios_outlined,
                   color: AyurezeTheme.textPrimary,
-                  bgColor: AyurezeTheme.surface.withOpacity(0.2),
+                  bgColor: AyurezeTheme.surface.withValues(alpha: 0.2),
                 ),
                 const SizedBox(width: 25),
 
@@ -193,7 +193,7 @@ class _VideoCallState extends State<VideoCall> {
             children: [
               CircleAvatar(
                 radius: 50,
-                backgroundColor: AyurezeTheme.surface.withOpacity(0.15),
+                backgroundColor: AyurezeTheme.surface.withValues(alpha: 0.15),
                 child: Icon(Icons.person,
                     size: 50, color: AyurezeTheme.textSecondary),
               ),
@@ -250,7 +250,8 @@ class _VideoCallState extends State<VideoCall> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
                             decoration: BoxDecoration(
-                              color: AyurezeTheme.surfaceDark.withOpacity(0.7),
+                              color: AyurezeTheme.surfaceDark
+                                  .withValues(alpha: 0.7),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Row(
@@ -304,7 +305,8 @@ class _VideoCallState extends State<VideoCall> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                  color: AyurezeTheme.border.withOpacity(0.5),
+                                  color: AyurezeTheme.border
+                                      .withValues(alpha: 0.5),
                                   width: 1.5),
                               boxShadow: const [
                                 BoxShadow(

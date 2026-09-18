@@ -6,16 +6,20 @@ import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/features/authentication/professional_registration_screen.dart';
+import 'package:doctro/features/consultation/chat/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class ModernDrawer extends StatelessWidget {
   const ModernDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final String dName = SharedPreferenceHelper.getString(Preferences.name);
+    final String? dName =
+        SharedPreferenceHelper.getStringOrNull(Preferences.name);
     final String dFullImage =
         SharedPreferenceHelper.getString(Preferences.image);
-    final String phone = SharedPreferenceHelper.getString(Preferences.phone_no);
+    final String? phone =
+        SharedPreferenceHelper.getStringOrNull(Preferences.phone_no);
 
     return Drawer(
       child: Container(
@@ -35,9 +39,10 @@ class ModernDrawer extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.14),
+                      color: Colors.white.withValues(alpha: 0.14),
                       borderRadius: BorderRadius.circular(999),
-                      border: Border.all(color: Colors.white.withOpacity(0.16)),
+                      border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.16)),
                     ),
                     child: const Text(
                       "Ayureze Doctor Desk",
@@ -78,7 +83,8 @@ class ModernDrawer extends StatelessWidget {
                   Text(
                     phone ?? "",
                     style: TextStyle(
-                        color: Colors.white.withOpacity(0.74), fontSize: 13),
+                        color: Colors.white.withValues(alpha: 0.74),
+                        fontSize: 13),
                   ),
                   const SizedBox(height: 14),
                   Container(
@@ -200,7 +206,7 @@ class ModernDrawer extends StatelessWidget {
       child: Text(
         title.toUpperCase(),
         style: TextStyle(
-          color: AyurezeTheme.textSecondary.withOpacity(0.6),
+          color: AyurezeTheme.textSecondary.withValues(alpha: 0.6),
           fontSize: 11,
           fontWeight: FontWeight.w800,
           letterSpacing: 1.0,
@@ -218,7 +224,7 @@ class ModernDrawer extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.5),
+            color: color.withValues(alpha: 0.5),
             blurRadius: 4,
             spreadRadius: 2,
           )
@@ -239,7 +245,7 @@ class ModernDrawer extends StatelessWidget {
           height: 38,
           decoration: BoxDecoration(
             color: isDestructive
-                ? AyurezeTheme.danger.withOpacity(0.1)
+                ? AyurezeTheme.danger.withValues(alpha: 0.1)
                 : AyurezeTheme.surfaceMuted,
             borderRadius: BorderRadius.circular(14),
           ),
@@ -266,7 +272,7 @@ class ModernDrawer extends StatelessWidget {
               Icons.arrow_forward_ios,
               size: 14,
               color: isDestructive
-                  ? AyurezeTheme.danger.withOpacity(0.7)
+                  ? AyurezeTheme.danger.withValues(alpha: 0.7)
                   : AyurezeTheme.textSecondary,
             ),
           ],
@@ -291,7 +297,10 @@ class ModernDrawer extends StatelessWidget {
                   getTranslated(context, AppString.cancel_button).toString())),
           TextButton(
             onPressed: () async {
-              await SharedPreferenceHelper.clearPref();
+              Navigator.pop(context); // dismiss dialog
+              // Full logout: clears prefs + signs out Firebase/Google.
+              await context.read<AuthProvider>().handleSignOut();
+              if (!context.mounted) return;
               Navigator.pushNamedAndRemoveUntil(
                   context, 'SignIn', (route) => false);
             },

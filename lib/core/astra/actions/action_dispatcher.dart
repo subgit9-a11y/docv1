@@ -71,9 +71,10 @@ class ActionDispatcher {
   Future<ActionResult> dispatchFromJson(Map<String, dynamic> json) async {
     try {
       final action = AstraNavigationAction.fromJson(json);
-      return dispatch(action);
+      return await dispatch(action);
     } catch (e, st) {
-      AstraLogger.e('Failed to parse action from JSON', error: e, stackTrace: st);
+      AstraLogger.e('Failed to parse action from JSON',
+          error: e, stackTrace: st);
       return ActionResult.failure('Invalid action format: $e');
     }
   }
@@ -82,9 +83,10 @@ class ActionDispatcher {
   Future<ActionResult> dispatchFromString(String actionString) async {
     try {
       final action = AstraNavigationAction.fromString(actionString);
-      return dispatch(action);
+      return await dispatch(action);
     } catch (e, st) {
-      AstraLogger.e('Failed to parse action from string', error: e, stackTrace: st);
+      AstraLogger.e('Failed to parse action from string',
+          error: e, stackTrace: st);
       return ActionResult.failure('Invalid action string: $actionString');
     }
   }
@@ -95,7 +97,7 @@ class ActionDispatcher {
 
   Future<ActionResult> _handleOpenPatient(AstraNavigationAction action) async {
     final patientId = action.patientId ?? action.targetId;
-    
+
     if (patientId == null || patientId.isEmpty) {
       AstraLogger.w('Missing patient ID for openPatient action');
       return ActionResult.failure('Patient ID is required');
@@ -108,7 +110,8 @@ class ActionDispatcher {
     );
   }
 
-  Future<ActionResult> _handleOpenPrescription(AstraNavigationAction action) async {
+  Future<ActionResult> _handleOpenPrescription(
+      AstraNavigationAction action) async {
     return _router.openPrescription(
       prescriptionId: action.prescriptionId ?? action.targetId,
       patientId: action.patientId,
@@ -123,8 +126,9 @@ class ActionDispatcher {
   }
 
   Future<ActionResult> _handleOpenProduct(AstraNavigationAction action) async {
-    final productId = action.targetId ?? action.params?['product_id']?.toString();
-    
+    final productId =
+        action.targetId ?? action.params?['product_id']?.toString();
+
     if (productId == null || productId.isEmpty) {
       return ActionResult.failure('Product ID is required');
     }
@@ -137,7 +141,7 @@ class ActionDispatcher {
 
   Future<ActionResult> _handleOpenReport(AstraNavigationAction action) async {
     final reportId = action.targetId ?? action.params?['report_id']?.toString();
-    
+
     if (reportId == null || reportId.isEmpty) {
       return ActionResult.failure('Report ID is required');
     }
@@ -154,17 +158,20 @@ class ActionDispatcher {
     );
   }
 
-  Future<ActionResult> _handleOpenReminders(AstraNavigationAction action) async {
+  Future<ActionResult> _handleOpenReminders(
+      AstraNavigationAction action) async {
     return _router.openReminders(
       patientId: action.patientId,
     );
   }
 
-  Future<ActionResult> _handleOpenNotifications(AstraNavigationAction action) async {
+  Future<ActionResult> _handleOpenNotifications(
+      AstraNavigationAction action) async {
     return _router.openNotifications();
   }
 
-  Future<ActionResult> _handleOpenDoctorBooking(AstraNavigationAction action) async {
+  Future<ActionResult> _handleOpenDoctorBooking(
+      AstraNavigationAction action) async {
     return _router.openDoctorBooking(
       patientId: action.patientId,
     );
@@ -183,16 +190,20 @@ class ActionDispatcher {
     );
   }
 
-  Future<ActionResult> _handleOpenVideoCall(AstraNavigationAction action) async {
+  Future<ActionResult> _handleOpenVideoCall(
+      AstraNavigationAction action) async {
     return _router.openVideoCall(
-      roomId: action.params?['room_id']?.toString() ?? action.params?['channel']?.toString(),
+      roomId: action.params?['room_id']?.toString() ??
+          action.params?['channel']?.toString(),
       patientId: action.patientId,
     );
   }
 
-  Future<ActionResult> _handleOpenAppointment(AstraNavigationAction action) async {
+  Future<ActionResult> _handleOpenAppointment(
+      AstraNavigationAction action) async {
     return _router.openAppointment(
-      appointmentId: action.targetId ?? action.params?['appointment_id']?.toString(),
+      appointmentId:
+          action.targetId ?? action.params?['appointment_id']?.toString(),
       showHistory: action.params?['show_history'] as bool? ?? false,
     );
   }
@@ -207,12 +218,14 @@ class ActionDispatcher {
     return _router.goBack();
   }
 
-  Future<ActionResult> _handleUnknownAction(AstraNavigationAction action) async {
+  Future<ActionResult> _handleUnknownAction(
+      AstraNavigationAction action) async {
     AstraLogger.w('Unknown action type received', tag: 'ActionDispatcher');
-    
+
     // Log the original action data for debugging
-    AstraLogger.d('Unknown action details: ${action.toJson()}', tag: 'ActionDispatcher');
-    
+    AstraLogger.d('Unknown action details: ${action.toJson()}',
+        tag: 'ActionDispatcher');
+
     return ActionResult.failure(
       'Unknown action type: ${action.type.name}. '
       'Original description: ${action.description ?? "none"}',
@@ -260,7 +273,8 @@ class ActionDispatcher {
   }
 
   /// Get the highest priority action from a list
-  AstraNavigationAction? getHighestPriorityAction(List<AstraNavigationAction> actions) {
+  AstraNavigationAction? getHighestPriorityAction(
+      List<AstraNavigationAction> actions) {
     if (actions.isEmpty) return null;
 
     // Sort by priority

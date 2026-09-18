@@ -2,6 +2,7 @@
 ///
 /// AI Context Engine for Astra AI integration.
 /// Provides automatic context injection for every Brain request.
+library;
 
 export 'context_builder.dart';
 export 'consultation_context.dart';

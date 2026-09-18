@@ -4,7 +4,7 @@ import 'voice_service.dart';
 /// Voice Setup
 ///
 /// Configuration helper for Sarvam AI voice services.
-/// 
+///
 /// IMPORTANT: Never hardcode API keys in source code.
 /// API keys are loaded from .env file (which is in .gitignore).
 ///
@@ -23,7 +23,7 @@ class VoiceSetup {
   static bool _isConfigured = false;
 
   /// Load configuration from .env file
-  /// 
+  ///
   /// Returns true if configuration was loaded successfully
   static Future<bool> loadFromEnv() async {
     try {
@@ -32,16 +32,16 @@ class VoiceSetup {
       if (await envFile.exists()) {
         final contents = await envFile.readAsString();
         final lines = contents.split('\n');
-        
+
         for (final line in lines) {
           final trimmed = line.trim();
           if (trimmed.isEmpty || trimmed.startsWith('#')) continue;
-          
+
           final parts = trimmed.split('=');
           if (parts.length >= 2) {
             final key = parts[0].trim();
             final value = parts.sublist(1).join('=').trim();
-            
+
             if (key == 'SARVAM_API_KEY' && value.isNotEmpty) {
               configure(sarvamApiKey: value);
               return true;
@@ -49,14 +49,14 @@ class VoiceSetup {
           }
         }
       }
-      
+
       // Fallback: try environment variable
       final envKey = Platform.environment['SARVAM_API_KEY'];
       if (envKey != null && envKey.isNotEmpty) {
         configure(sarvamApiKey: envKey);
         return true;
       }
-      
+
       return false;
     } catch (e) {
       return false;
@@ -64,7 +64,7 @@ class VoiceSetup {
   }
 
   /// Configure voice services with API keys
-  /// 
+  ///
   /// [sarvamApiKey] - Sarvam AI API key for STT/TTS
   static void configure({
     required String sarvamApiKey,
@@ -75,7 +75,7 @@ class VoiceSetup {
 
     final voiceService = VoiceService();
     voiceService.setApiKey(sarvamApiKey);
-    
+
     _isConfigured = true;
   }
 

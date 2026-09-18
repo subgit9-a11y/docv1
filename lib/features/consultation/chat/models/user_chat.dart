@@ -37,48 +37,28 @@ class UserChat {
   }
 
   factory UserChat.fromDocument(DocumentSnapshot doc) {
-    String photoUrl = "";
-    String nickname = "";
-    String content = "";
-    String shopId = "";
-    String userType = "";
-    String doctorId = "";
-    String token = "";
-    String userId = "";
+    final data = doc.data() as Map<String, dynamic>? ?? const {};
+    return UserChat.fromMap(doc.id, data);
+  }
 
-    try {
-      photoUrl = doc.get(FirestoreConstants.photoUrl);
-    } catch (e) {}
-    try {
-      nickname = doc.get(FirestoreConstants.nickname);
-    } catch (e) {}
-    try {
-      content = doc.get(FirestoreConstants.content);
-    } catch (e) {}
-    try {
-      shopId = doc.get(FirestoreConstants.shopId);
-    } catch (e) {}
-    try {
-      userType = doc.get(FirestoreConstants.userType);
-    } catch (e) {}
-    try {
-      doctorId = doc.get(FirestoreConstants.doctorId);
-    } catch (e) {}
-    try {
-      token = doc.get(FirestoreConstants.token);
-    } catch (e) {}
-    try {
-      userId = doc.get(FirestoreConstants.userId);
-    } catch (e) {}
+  /// Builds a chat participant from raw Firestore fields. Kept separate from
+  /// [UserChat.fromDocument] so the parsing rules are testable without a
+  /// live Firestore snapshot.
+  factory UserChat.fromMap(String id, Map<String, dynamic> data) {
+    String read(String key) {
+      final value = data[key];
+      return value is String ? value : '';
+    }
+
     return UserChat(
-        userId: userId,
-        id: doc.id,
-        photoUrl: photoUrl,
-        nickname: nickname,
-        content: content,
-        shopId: shopId,
-        userType: userType,
-        doctorId: doctorId,
-        token: token);
+        userId: read(FirestoreConstants.userId),
+        id: id,
+        photoUrl: read(FirestoreConstants.photoUrl),
+        nickname: read(FirestoreConstants.nickname),
+        content: read(FirestoreConstants.content),
+        shopId: read(FirestoreConstants.shopId),
+        userType: read(FirestoreConstants.userType),
+        doctorId: read(FirestoreConstants.doctorId),
+        token: read(FirestoreConstants.token));
   }
 }

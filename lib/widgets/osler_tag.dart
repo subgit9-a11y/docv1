@@ -21,7 +21,7 @@ class OslerTag extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: _getBackgroundColor(),
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

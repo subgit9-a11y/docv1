@@ -134,7 +134,7 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                           hintStyle: TextStyle(
                                             fontSize: width * 0.045,
                                             color: AyurezeTheme.textSecondary
-                                                .withOpacity(0.3),
+                                                .withValues(alpha: 0.3),
                                           ),
                                         ),
                                         textAlign: TextAlign.left,

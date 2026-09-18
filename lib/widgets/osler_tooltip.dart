@@ -21,7 +21,7 @@ class OslerTooltip extends StatelessWidget {
       showDuration: const Duration(seconds: 2),
       decoration: BoxDecoration(
         color: AyurezeTheme.healingGreen100,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusSm),
       ),
       textStyle: const TextStyle(
         color: Colors.white,

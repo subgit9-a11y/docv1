@@ -23,7 +23,7 @@ class OslerAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: _getBackgroundColor(),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -33,7 +33,7 @@ class OslerAlert extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: _getIconBackgroundColor(),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
                 ),
                 child: Icon(_getIcon(), color: _getIconColor(), size: 20),
               ),
@@ -107,13 +107,13 @@ class OslerAlert extends StatelessWidget {
   Color _getIconBackgroundColor() {
     switch (type) {
       case OslerAlertType.success:
-        return AyurezeTheme.healingGreen50.withOpacity(0.2);
+        return AyurezeTheme.healingGreen50.withValues(alpha: 0.2);
       case OslerAlertType.error:
-        return AyurezeTheme.remoteRed50.withOpacity(0.2);
+        return AyurezeTheme.remoteRed50.withValues(alpha: 0.2);
       case OslerAlertType.warning:
-        return AyurezeTheme.sunshineYellow50.withOpacity(0.2);
+        return AyurezeTheme.sunshineYellow50.withValues(alpha: 0.2);
       case OslerAlertType.info:
-        return AyurezeTheme.connectivityBlue50.withOpacity(0.2);
+        return AyurezeTheme.connectivityBlue50.withValues(alpha: 0.2);
     }
   }
 

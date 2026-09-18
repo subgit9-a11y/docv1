@@ -10,22 +10,22 @@ import 'package:doctro/theme/ayureze_theme.dart';
 class AISuggestionsCard extends StatelessWidget {
   /// List of suggestions to display
   final List<AISuggestion> suggestions;
-  
+
   /// Title for the card
   final String title;
-  
+
   /// Maximum number of suggestions to show (0 = show all)
   final int maxVisible;
-  
+
   /// Callback when a suggestion is tapped
   final void Function(AISuggestion)? onSuggestionTap;
-  
+
   /// Callback when a suggestion is dismissed
   final void Function(AISuggestion)? onDismiss;
-  
+
   /// Whether to show the card header
   final bool showHeader;
-  
+
   /// Whether to show expand/collapse
   final bool collapsible;
 
@@ -53,7 +53,7 @@ class AISuggestionsCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(
-            color: AyurezeTheme.healingGreen50.withOpacity(0.3),
+            color: AyurezeTheme.healingGreen50.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -72,7 +72,7 @@ class AISuggestionsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 12, 8, 8),
       decoration: BoxDecoration(
-        color: AyurezeTheme.healingGreen50.withOpacity(0.1),
+        color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(12),
           topRight: Radius.circular(12),
@@ -104,7 +104,7 @@ class AISuggestionsCard extends StatelessWidget {
 
   Widget _buildCollapsibleButton(BuildContext context) {
     if (!collapsible) return const SizedBox.shrink();
-    
+
     return IconButton(
       icon: Icon(
         Icons.expand_more,
@@ -121,18 +121,16 @@ class AISuggestionsCard extends StatelessWidget {
   }
 
   Widget _buildSuggestionsList(List<AISuggestion> suggestions) {
-    final visible = maxVisible > 0 
-        ? suggestions.take(maxVisible).toList() 
-        : suggestions;
-    final hidden = maxVisible > 0 
-        ? suggestions.skip(maxVisible).toList() 
+    final visible =
+        maxVisible > 0 ? suggestions.take(maxVisible).toList() : suggestions;
+    final hidden = maxVisible > 0
+        ? suggestions.skip(maxVisible).toList()
         : <AISuggestion>[];
 
     return Column(
       children: [
         ...visible.map((s) => _buildSuggestionTile(s)),
-        if (hidden.isNotEmpty)
-          _buildMoreIndicator(hidden.length),
+        if (hidden.isNotEmpty) _buildMoreIndicator(hidden.length),
       ],
     );
   }
@@ -174,7 +172,7 @@ class AISuggestionsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: suggestion.color.withOpacity(0.1),
+        color: suggestion.color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Icon(
@@ -220,7 +218,7 @@ class AISuggestionsCard extends StatelessWidget {
       margin: const EdgeInsets.only(left: 8),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: suggestion.priorityColor.withOpacity(0.1),
+        color: suggestion.priorityColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
@@ -347,10 +345,10 @@ class AISuggestionBadge extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
-            color: suggestion.color.withOpacity(0.1),
+            color: suggestion.color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: suggestion.color.withOpacity(0.3),
+              color: suggestion.color.withValues(alpha: 0.3),
             ),
           ),
           child: Row(
@@ -398,7 +396,7 @@ class AISuggestionDot extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: (color ?? Colors.green).withOpacity(0.1),
+          color: (color ?? Colors.green).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(

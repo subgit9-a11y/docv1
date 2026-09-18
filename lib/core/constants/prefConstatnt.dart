@@ -72,6 +72,7 @@ class Preferences {
 
   static const String user_email = "user_email";
   static const String user_name = "user_name";
+  static const String specialization = "specialization";
   // ignore: unused_field
   @Deprecated('Security risk: Never store passwords in SharedPreferences')
   static const String password = "password";

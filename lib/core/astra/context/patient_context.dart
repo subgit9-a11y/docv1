@@ -7,49 +7,49 @@ import 'package:doctro/models/astra/patient_model.dart';
 class PatientContext {
   /// Patient's unique identifier
   final String id;
-  
+
   /// Patient's full name
   final String name;
-  
+
   /// Patient's phone number
   final String? phone;
-  
+
   /// Patient's email
   final String? email;
-  
+
   /// Patient's age
   final int? age;
-  
+
   /// Patient's gender
   final String? gender;
-  
+
   /// Patient's date of birth
   final String? dateOfBirth;
-  
+
   /// Patient's address
   final String? address;
-  
+
   /// List of allergies
   final List<String>? allergies;
-  
+
   /// List of chronic conditions
   final List<String>? chronicConditions;
-  
+
   /// Blood group
   final String? bloodGroup;
-  
+
   /// Height in cm
   final double? height;
-  
+
   /// Weight in kg
   final double? weight;
-  
+
   /// Patient code
   final String? patientCode;
-  
+
   /// Profile image URL
   final String? profileImageUrl;
-  
+
   /// Medical history summary
   final String? medicalHistorySummary;
 
@@ -118,11 +118,11 @@ class PatientContext {
       gender: json['gender'],
       dateOfBirth: json['date_of_birth'],
       address: json['address'],
-      allergies: json['allergies'] != null 
-          ? List<String>.from(json['allergies']) 
+      allergies: json['allergies'] != null
+          ? List<String>.from(json['allergies'])
           : null,
-      chronicConditions: json['chronic_conditions'] != null 
-          ? List<String>.from(json['chronic_conditions']) 
+      chronicConditions: json['chronic_conditions'] != null
+          ? List<String>.from(json['chronic_conditions'])
           : null,
       bloodGroup: json['blood_group'],
       height: json['height']?.toDouble(),
@@ -144,17 +144,16 @@ class PatientContext {
       if (gender != null) 'gender': gender,
       if (dateOfBirth != null) 'date_of_birth': dateOfBirth,
       if (address != null) 'address': address,
-      if (allergies != null && allergies!.isNotEmpty) 
-          'allergies': allergies,
-      if (chronicConditions != null && chronicConditions!.isNotEmpty) 
-          'chronic_conditions': chronicConditions,
+      if (allergies != null && allergies!.isNotEmpty) 'allergies': allergies,
+      if (chronicConditions != null && chronicConditions!.isNotEmpty)
+        'chronic_conditions': chronicConditions,
       if (bloodGroup != null) 'blood_group': bloodGroup,
       if (height != null) 'height': height,
       if (weight != null) 'weight': weight,
       if (patientCode != null) 'patient_code': patientCode,
       if (profileImageUrl != null) 'profile_image_url': profileImageUrl,
-      if (medicalHistorySummary != null) 
-          'medical_history_summary': medicalHistorySummary,
+      if (medicalHistorySummary != null)
+        'medical_history_summary': medicalHistorySummary,
     };
   }
 
@@ -181,7 +180,7 @@ class PatientContext {
   bool get hasAllergies => allergies != null && allergies!.isNotEmpty;
 
   /// Check if patient has chronic conditions
-  bool get hasChronicConditions => 
+  bool get hasChronicConditions =>
       chronicConditions != null && chronicConditions!.isNotEmpty;
 
   /// Get short display name

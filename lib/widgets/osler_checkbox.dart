@@ -25,13 +25,13 @@ class OslerCheckbox extends StatelessWidget {
             width: 22,
             height: 22,
             decoration: BoxDecoration(
-              color: value ? AyurezeTheme.healingGreen50 : Colors.transparent,
-              borderRadius: BorderRadius.circular(6),
+              color: value ? AyurezeTheme.healingGreenFill : Colors.transparent,
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusXs),
               border: Border.all(
                 color: isError
                     ? AyurezeTheme.remoteRed50
                     : (value
-                        ? AyurezeTheme.healingGreen50
+                        ? AyurezeTheme.healingGreenFill
                         : AyurezeTheme.border),
                 width: 2,
               ),

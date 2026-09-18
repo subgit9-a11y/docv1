@@ -57,7 +57,8 @@ void main() {
       expect(find.text('System notification'), findsOneWidget);
     });
 
-    testWidgets('should display streaming indicator when sending', (tester) async {
+    testWidgets('should display streaming indicator when sending',
+        (tester) async {
       final message = AstraMessage.streaming(
         content: 'Thinking...',
         progress: 0.5,

@@ -4,18 +4,10 @@ import 'package:doctro/core/astra/actions/action_models.dart';
 /// Astra Action Chip Widget
 ///
 /// Displays a clickable action chip from Astra AI response.
-/// Fully accessible with screen reader support.
 class AstraActionChip extends StatelessWidget {
-  /// The action to display
   final AstraNavigationAction action;
-  
-  /// Callback when action is tapped
   final void Function(AstraNavigationAction action)? onTap;
-  
-  /// Whether the chip is selected
   final bool isSelected;
-  
-  /// Whether the chip is loading
   final bool isLoading;
 
   const AstraActionChip({
@@ -28,18 +20,16 @@ class AstraActionChip extends StatelessWidget {
 
   String get _accessibilityLabel {
     final description = action.description ?? _getDefaultDescription();
-    final priority = action.priority == ActionPriority.high 
-        ? ', High priority' 
-        : (action.priority == ActionPriority.critical 
-            ? ', Critical priority' 
+    final priority = action.priority == ActionPriority.high
+        ? ', High priority'
+        : (action.priority == ActionPriority.critical
+            ? ', Critical priority'
             : '');
     return '$description$priority${isSelected ? ', Selected' : ''}';
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
     return Semantics(
       label: _accessibilityLabel,
       hint: isLoading ? 'Loading, please wait' : 'Double tap to activate',
@@ -52,10 +42,7 @@ class AstraActionChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 10,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
               color: _getBackgroundColor(),
               borderRadius: BorderRadius.circular(24),
@@ -63,29 +50,12 @@ class AstraActionChip extends StatelessWidget {
                 color: _getBorderColor(),
                 width: isSelected ? 2 : 1,
               ),
-              boxShadow: isSelected
-                  ? [
-                      BoxShadow(
-                        color: _getAccentColor().withOpacity(0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ]
-                  : null,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Icon
-                Icon(
-                  _getActionIcon(),
-                  size: 18,
-                  color: _getIconColor(),
-                ),
-                
+                Icon(_getActionIcon(), size: 18, color: _getIconColor()),
                 const SizedBox(width: 8),
-                
-                // Text
                 Text(
                   action.description ?? _getDefaultDescription(),
                   style: TextStyle(
@@ -94,18 +64,11 @@ class AstraActionChip extends StatelessWidget {
                     fontSize: 14,
                   ),
                 ),
-                
-                // Priority indicator
                 if (action.priority == ActionPriority.high ||
                     action.priority == ActionPriority.critical) ...[
                   const SizedBox(width: 8),
-                  Semantics(
-                    label: '${action.priority == ActionPriority.critical ? 'Critical' : 'High'} priority',
-                    child: _buildPriorityIndicator(),
-                  ),
+                  _buildPriorityIndicator(),
                 ],
-                
-                // Loading indicator
                 if (isLoading) ...[
                   const SizedBox(width: 8),
                   SizedBox(
@@ -117,17 +80,13 @@ class AstraActionChip extends StatelessWidget {
                     ),
                   ),
                 ],
-              
-              // Arrow indicator
-              if (!isLoading) ...[
-                const SizedBox(width: 4),
-                Icon(
-                  Icons.chevron_right,
-                  size: 18,
-                  color: _getTextColor().withOpacity(0.6),
-                ),
+                if (!isLoading) ...[
+                  const SizedBox(width: 4),
+                  Icon(Icons.chevron_right,
+                      size: 18, color: _getTextColor().withValues(alpha: 0.6)),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -142,13 +101,9 @@ class AstraActionChip extends StatelessWidget {
           color: Colors.red,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: const Text(
-          '⚡',
-          style: TextStyle(fontSize: 10),
-        ),
+        child: const Text('⚡', style: TextStyle(fontSize: 10)),
       );
     }
-    
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
@@ -167,10 +122,7 @@ class AstraActionChip extends StatelessWidget {
   }
 
   Color _getBackgroundColor() {
-    if (isSelected) {
-      return _getAccentColor().withOpacity(0.1);
-    }
-    
+    if (isSelected) return _getAccentColor().withValues(alpha: 0.1);
     switch (action.priority) {
       case ActionPriority.critical:
         return Colors.red.shade50;
@@ -182,10 +134,7 @@ class AstraActionChip extends StatelessWidget {
   }
 
   Color _getBorderColor() {
-    if (isSelected) {
-      return _getAccentColor();
-    }
-    
+    if (isSelected) return _getAccentColor();
     switch (action.priority) {
       case ActionPriority.critical:
         return Colors.red.shade300;
@@ -208,10 +157,7 @@ class AstraActionChip extends StatelessWidget {
   }
 
   Color _getTextColor() {
-    if (isSelected) {
-      return _getAccentColor();
-    }
-    
+    if (isSelected) return _getAccentColor();
     switch (action.priority) {
       case ActionPriority.critical:
         return Colors.red.shade700;
@@ -223,10 +169,7 @@ class AstraActionChip extends StatelessWidget {
   }
 
   Color _getIconColor() {
-    if (isSelected) {
-      return _getAccentColor();
-    }
-    
+    if (isSelected) return _getAccentColor();
     switch (action.priority) {
       case ActionPriority.critical:
         return Colors.red;
@@ -314,13 +257,8 @@ class AstraActionChip extends StatelessWidget {
 
 /// Widget to display a list of action chips
 class AstraActionChipList extends StatelessWidget {
-  /// List of actions to display
   final List<AstraNavigationAction> actions;
-  
-  /// Callback when an action is tapped
   final void Function(AstraNavigationAction action)? onActionTap;
-  
-  /// Currently executing action
   final String? loadingActionType;
 
   const AstraActionChipList({
@@ -332,10 +270,7 @@ class AstraActionChipList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actions.isEmpty) {
-      return const SizedBox.shrink();
-    }
-    
+    if (actions.isEmpty) return const SizedBox.shrink();
     return Wrap(
       spacing: 8,
       runSpacing: 8,

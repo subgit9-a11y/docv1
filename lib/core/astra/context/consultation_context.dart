@@ -5,37 +5,37 @@
 class ConsultationContext {
   /// Consultation/appointment ID
   final String? id;
-  
+
   /// Appointment date and time
   final DateTime? appointmentTime;
-  
+
   /// Type of consultation (video, audio, in-person)
   final String? consultationType;
-  
+
   /// Chief complaint/reason for visit
   final String? chiefComplaint;
-  
+
   /// Patient's symptoms
   final List<String>? symptoms;
-  
+
   /// Vital signs recorded
   final Map<String, dynamic>? vitalSigns;
-  
+
   /// Diagnosis if made
   final String? diagnosis;
-  
+
   /// Doctor's notes
   final String? notes;
-  
+
   /// Follow-up date if scheduled
   final DateTime? followUpDate;
-  
+
   /// Prescription ID if created
   final String? prescriptionId;
-  
+
   /// Consultation status
   final ConsultationStatus? status;
-  
+
   /// Screen from which Astra was opened
   final String? screenContext;
 
@@ -58,19 +58,18 @@ class ConsultationContext {
   factory ConsultationContext.fromJson(Map<String, dynamic> json) {
     return ConsultationContext(
       id: json['id']?.toString(),
-      appointmentTime: json['appointment_time'] != null 
-          ? DateTime.tryParse(json['appointment_time']) 
+      appointmentTime: json['appointment_time'] != null
+          ? DateTime.tryParse(json['appointment_time'])
           : null,
       consultationType: json['consultation_type'],
       chiefComplaint: json['chief_complaint'],
-      symptoms: json['symptoms'] != null 
-          ? List<String>.from(json['symptoms']) 
-          : null,
+      symptoms:
+          json['symptoms'] != null ? List<String>.from(json['symptoms']) : null,
       vitalSigns: json['vital_signs'],
       diagnosis: json['diagnosis'],
       notes: json['notes'],
-      followUpDate: json['follow_up_date'] != null 
-          ? DateTime.tryParse(json['follow_up_date']) 
+      followUpDate: json['follow_up_date'] != null
+          ? DateTime.tryParse(json['follow_up_date'])
           : null,
       prescriptionId: json['prescription_id']?.toString(),
       status: _parseStatus(json['status']),
@@ -99,16 +98,16 @@ class ConsultationContext {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      if (appointmentTime != null) 
-          'appointment_time': appointmentTime!.toIso8601String(),
+      if (appointmentTime != null)
+        'appointment_time': appointmentTime!.toIso8601String(),
       if (consultationType != null) 'consultation_type': consultationType,
       if (chiefComplaint != null) 'chief_complaint': chiefComplaint,
       if (symptoms != null) 'symptoms': symptoms,
       if (vitalSigns != null) 'vital_signs': vitalSigns,
       if (diagnosis != null) 'diagnosis': diagnosis,
       if (notes != null) 'notes': notes,
-      if (followUpDate != null) 
-          'follow_up_date': followUpDate!.toIso8601String(),
+      if (followUpDate != null)
+        'follow_up_date': followUpDate!.toIso8601String(),
       if (prescriptionId != null) 'prescription_id': prescriptionId,
       if (status != null) 'status': status!.name,
       if (screenContext != null) 'screen_context': screenContext,
@@ -116,12 +115,13 @@ class ConsultationContext {
   }
 
   /// Check if consultation is active
-  bool get isActive => 
+  bool get isActive =>
       status == ConsultationStatus.inProgress ||
       status == ConsultationStatus.scheduled;
 
   /// Check if follow-up is recommended
-  bool get needsFollowUp => followUpDate == null && status == ConsultationStatus.completed;
+  bool get needsFollowUp =>
+      followUpDate == null && status == ConsultationStatus.completed;
 
   /// Get consultation type display name
   String get consultationTypeDisplay {

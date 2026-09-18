@@ -31,7 +31,7 @@ class _LoadingViewState extends State<LoadingView>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black.withOpacity(0.25),
+      color: Colors.black.withValues(alpha: 0.25),
       child: Stack(
         children: [
           // Glassmorphic backdrop filter
@@ -43,12 +43,12 @@ class _LoadingViewState extends State<LoadingView>
             child: Container(
               padding: const EdgeInsets.all(28),
               decoration: BoxDecoration(
-                color: AyurezeTheme.surface.withOpacity(0.85),
+                color: AyurezeTheme.surface.withValues(alpha: 0.85),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.white.withOpacity(0.2)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
+                    color: Colors.black.withValues(alpha: 0.08),
                     blurRadius: 20,
                     spreadRadius: 2,
                   )
@@ -65,7 +65,8 @@ class _LoadingViewState extends State<LoadingView>
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: AyurezeTheme.healingGreen100.withOpacity(0.15),
+                          color: AyurezeTheme.healingGreen100
+                              .withValues(alpha: 0.15),
                           width: 3.5,
                         ),
                       ),
