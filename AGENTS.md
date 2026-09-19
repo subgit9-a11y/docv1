@@ -227,3 +227,28 @@ Two things to keep true if you touch this:
   `LaunchScreen.storyboard`) paints a flat background only. `flutter_native_splash`
   and its config were removed, so re-adding the package would reintroduce a
   branded launch screen.
+
+## Android signing and Google Sign-In
+
+`android/app/build.gradle` signs `release` with `signingConfigs.debug`, and
+that config now points at a fixed, checked-in `android/app/debug.keystore`
+(storePassword/keyPassword `android`, alias `androiddebugkey`) rather than
+AGP's default `~/.android/debug.keystore`.
+
+This matters because CI (`build-apk.yml`) builds on ephemeral GitHub Actions
+runners: without a fixed keystore file, every run generated a brand-new
+random debug key, so every build had a different signing certificate. Google
+Sign-In validates the app's SHA-1 fingerprint against the ones registered for
+the OAuth client in Firebase/Google Cloud Console (see the
+`certificate_hash` entries in `android/app/google-services.json`); a moving
+fingerprint can never match, and it fails with `ApiException: 10`
+(`DEVELOPER_ERROR`), which the app then shows as a generic
+"Google Sign In Error" (see `handleGoogleSignIn` in
+`lib/features/authentication/view_models/signin_view_model.dart`).
+
+If you regenerate `debug.keystore`, its SHA-1 must be re-registered in
+Firebase Console under the Android app (`com.ayureze.ayureze`) → Add
+fingerprint, or Google Sign-In breaks again on every subsequent build.
+`AuthProvider.signInWithGoogle` (`lib/features/consultation/chat/providers/auth_provider.dart`)
+logs the real exception via `debugPrint` on failure - check logcat/CI logs
+there before assuming a new failure is code, not a fingerprint mismatch.

@@ -53,6 +53,26 @@ android {
         multiDexEnabled true
     }
 
+    signingConfigs {
+        // A fixed keystore checked into the repo, not AGP's default
+        // ~/.android/debug.keystore. That file is auto-generated per machine
+        // (a fresh, random one on every CI runner, since GitHub Actions
+        // runners are ephemeral), so every build had a different signing
+        // certificate. Google Sign-In validates the app's SHA-1 fingerprint
+        // against the one(s) registered in Firebase/Google Cloud Console; a
+        // moving fingerprint means that check fails on whichever build wasn't
+        // the one used to register it, surfacing as a generic
+        // "Google Sign In Error" (ApiException: 10 / DEVELOPER_ERROR) with no
+        // useful detail. Keeping the keystore fixed keeps the fingerprint
+        // fixed, so it only has to be registered once. See AGENTS.md.
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+
     buildTypes {
         release {
             signingConfig signingConfigs.debug

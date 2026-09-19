@@ -192,7 +192,11 @@ class AuthProvider extends ChangeNotifier {
         return null;
       }
     } catch (e) {
-      if (e is Exception && e.toString().contains("PlatformException")) {}
+      // The UI only ever shows a generic message for this branch, so the
+      // real cause (e.g. "ApiException: 10" - the app's signing certificate
+      // SHA-1 isn't registered for this OAuth client) would otherwise never
+      // surface anywhere.
+      debugPrint('Google Sign-In failed: $e');
       if (e.toString().contains("sign_in_canceled") ||
           e.toString().contains("cancel")) {
         _status = Status.authenticateCanceled;
