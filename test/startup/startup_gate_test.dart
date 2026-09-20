@@ -9,12 +9,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Regression tests for the removed opening screen.
+/// Regression tests for `StartupGate`'s destination logic, and coverage for
+/// the branded intro animation layered on top of it.
 ///
-/// The app used to open on a `SplashScreen` that showed the brand logo and then
-/// waited on a 3s `Timer` before choosing between sign-in and the dashboard.
-/// That choice now happens synchronously in `StartupGate`, so the first frame
-/// the user sees is already the real screen.
+/// The app used to open on a `SplashScreen` that showed the brand logo and
+/// then waited on a 3s `Timer` before choosing between sign-in and the
+/// dashboard - the destination was not known until the wait was over. That
+/// choice now happens synchronously in `StartupGate`, from a flag already in
+/// memory, so the destination widget is mounted (and doing its own startup
+/// work) from the very first frame. A short animated logo reveal plays over
+/// it for a fixed ~900ms and then removes itself; it never gates or changes
+/// the destination, only what's drawn on top of it briefly.
 ///
 /// `StartupGate` is booted directly rather than through `MyApp`, because `MyApp`
 /// initializes Firebase, notifications and the chat providers, which need live
@@ -47,21 +52,26 @@ void main() {
   }
 
   group('StartupGate', () {
-    testWidgets('signed out shows sign-in on the very first frame',
+    testWidgets(
+        'signed out mounts sign-in on the very first frame, under the intro',
         (tester) async {
       await boot(tester, loggedIn: false);
 
-      // Checked before pumpAndSettle: no frame may pass on a loading or
-      // placeholder screen. A reintroduced Timer would fail this.
+      // Checked before pumpAndSettle: the destination must already be in the
+      // tree on the first frame, not only after some wait resolves it. The
+      // intro animation drawn over it does not change this.
       expect(find.byType(SignIn), findsOneWidget);
       expect(find.byType(LoginHomeScreen), findsNothing);
 
-      // Drains the settings request SignInViewModel issues on construction.
+      // Drains the intro animation and the settings request SignInViewModel
+      // issues on construction.
       await tester.pumpAndSettle();
+      expect(find.byType(SignIn), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('a stored session shows the dashboard on the very first frame',
+    testWidgets(
+        'a stored session mounts the dashboard on the very first frame, under the intro',
         (tester) async {
       await boot(tester, loggedIn: true);
 
@@ -69,6 +79,26 @@ void main() {
       expect(find.byType(SignIn), findsNothing);
 
       await tester.pumpAndSettle();
+      expect(find.byType(LoginHomeScreen), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets(
+        'the intro animation removes itself once its fixed beat elapses',
+        (tester) async {
+      await boot(tester, loggedIn: false);
+
+      // The intro is a Positioned.fill over the destination, so it is the
+      // last (topmost) widget in the Stack while visible.
+      expect(find.byType(Stack), findsWidgets);
+      expect(find.byType(Positioned), findsOneWidget);
+
+      await tester.pumpAndSettle();
+
+      // Once settled, the gate returns the destination directly - no Stack,
+      // no intro overlay left behind.
+      expect(find.byType(Positioned), findsNothing);
+      expect(find.byType(SignIn), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -77,8 +107,8 @@ void main() {
       await boot(tester, loggedIn: false);
       await tester.pumpAndSettle();
 
-      // The old splash navigated away after 3 seconds. Waiting here must not
-      // move the tree anywhere.
+      // The old splash navigated away after 3 seconds. Waiting here, well
+      // past the intro's own fixed beat, must not move the tree anywhere.
       await tester.pump(const Duration(seconds: 5));
       expect(find.byType(SignIn), findsOneWidget);
       expect(find.byType(LoginHomeScreen), findsNothing);

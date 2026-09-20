@@ -275,20 +275,34 @@ branch on `String.fromEnvironment` in the test instead.
 
 ## Startup flow
 
-The app has no opening or splash screen. `main()` initializes
-`SharedPreferences` before `runApp`, and `StartupGate`
+`main()` initializes `SharedPreferences` before `runApp`, and `StartupGate`
 (`lib/features/startup_gate.dart`) reads `Preferences.is_logged_in`
-synchronously to pick the first screen: `LoginHomeScreen` when a session is
-stored, `SignIn` otherwise. There is no delay and no branding screen.
+synchronously in `initState` to pick the first screen: `LoginHomeScreen` when
+a session is stored, `SignIn` otherwise. That destination is mounted
+underneath from the very first frame - not after a wait - so its own startup
+work (view model init, API calls) runs immediately.
 
-Two things to keep true if you touch this:
+A short animated logo reveal (`_BrandIntro` in the same file) plays over the
+destination for a fixed ~900ms via a `Timer`, then removes itself from the
+tree. This is intentionally not the old timed splash screen it replaced (that
+one held the *destination itself* undecided for 3s): the intro only affects
+what's drawn on top, never which screen the user lands on or when its data
+starts loading.
 
-- Do not add a timer or an `await` before the destination is chosen. The gate is
-  meant to render the real screen on the first frame.
+Three things to keep true if you touch this:
+
+- Never make the destination itself depend on the intro's Timer, an `await`,
+  or anything else. It must be chosen synchronously and mounted on the first
+  frame; only the logo overlay may be timed.
 - The native launch window (Android `launch_background.xml`, iOS
-  `LaunchScreen.storyboard`) paints a flat background only. `flutter_native_splash`
-  and its config were removed, so re-adding the package would reintroduce a
-  branded launch screen.
+  `LaunchScreen.storyboard`) still paints a flat background only, not the
+  logo. `flutter_native_splash` was removed; the animated intro is drawn by
+  Flutter itself once it's already running, not by the native splash system,
+  so do not re-add that package to "fix" a brief flat flash before Flutter
+  paints - that flash is the native window, not `StartupGate`.
+- `test/startup/startup_gate_test.dart` covers both: the destination present
+  on frame one, and the intro overlay (a `Positioned.fill`) removing itself
+  once `pumpAndSettle` drains its `Timer`. Update it if you change either.
 
 ## Android signing and Google Sign-In
 
