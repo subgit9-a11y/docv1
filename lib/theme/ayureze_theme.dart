@@ -14,15 +14,14 @@ class AyurezeTheme {
     Color color, {
     double? height,
     double? letterSpacing,
-  }) =>
-      TextStyle(
-        fontFamily: fontFamily,
-        fontSize: size,
-        fontWeight: weight,
-        color: color,
-        height: height,
-        letterSpacing: letterSpacing,
-      );
+  }) => TextStyle(
+    fontFamily: fontFamily,
+    fontSize: size,
+    fontWeight: weight,
+    color: color,
+    height: height,
+    letterSpacing: letterSpacing,
+  );
 
   // Osler UI Kit Colors
   static const Color oslerGray100 = Color(0xFF111A14);
@@ -34,12 +33,15 @@ class AyurezeTheme {
   // as accents and foregrounds but unsafe as page/card backgrounds. For
   // backgrounds, borders and body text use the getters below (surface,
   // surfaceMuted, canvas, border, textPrimary, textSecondary).
-  static const Color healingGreen100 =
-      Color(0xFF0F2916); // Deep Botanical Forest Green
-  static const Color healingGreen50 =
-      Color(0xFF10B981); // Premium Healing Emerald Green
-  static const Color healingGreen10 =
-      Color(0xFFE6F7F0); // Soft Sage Mint Accent
+  static const Color healingGreen100 = Color(
+    0xFF0F2916,
+  ); // Deep Botanical Forest Green
+  static const Color healingGreen50 = Color(
+    0xFF10B981,
+  ); // Premium Healing Emerald Green
+  static const Color healingGreen10 = Color(
+    0xFFE6F7F0,
+  ); // Soft Sage Mint Accent
 
   // Fill for filled controls that carry a white glyph or label (FAB,
   // checkbox, circular play/AI buttons). healingGreen50 is the brand
@@ -166,19 +168,20 @@ class AyurezeTheme {
   }
 
   static ThemeData lightTheme() {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: healingGreen100,
-      brightness: Brightness.light,
-      primary: healingGreen50,
-      secondary: oslerGray50,
-      surface: lightSurface,
-    ).copyWith(
-      onPrimary: Colors.white,
-      onSecondary: Colors.white,
-      onSurface: lightTextPrimary,
-      error: remoteRed50,
-      onError: Colors.white,
-    );
+    final colorScheme =
+        ColorScheme.fromSeed(
+          seedColor: healingGreen100,
+          brightness: Brightness.light,
+          primary: healingGreen50,
+          secondary: oslerGray50,
+          surface: lightSurface,
+        ).copyWith(
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onSurface: lightTextPrimary,
+          error: remoteRed50,
+          onError: Colors.white,
+        );
 
     return ThemeData(
       useMaterial3: true,
@@ -196,18 +199,34 @@ class AyurezeTheme {
       textTheme: ThemeData.light().textTheme
           .apply(fontFamily: fontFamily)
           .copyWith(
-        headlineLarge: font(32, FontWeight.w800, lightTextPrimary,
-            height: 1.05),
-        headlineMedium: font(24, FontWeight.w800, lightTextPrimary,
-            height: 1.15),
-        titleLarge: font(20, FontWeight.w700, lightTextPrimary),
-        titleMedium: font(16, FontWeight.w700, lightTextPrimary),
-        bodyLarge: font(15, FontWeight.w500, lightTextPrimary, height: 1.4),
-        bodyMedium: font(14, FontWeight.w500, lightTextSecondary,
-            height: 1.35),
-        labelLarge: font(14, FontWeight.w700, lightTextPrimary,
-            letterSpacing: 0.2),
-      ),
+            headlineLarge: font(
+              32,
+              FontWeight.w800,
+              lightTextPrimary,
+              height: 1.05,
+            ),
+            headlineMedium: font(
+              24,
+              FontWeight.w800,
+              lightTextPrimary,
+              height: 1.15,
+            ),
+            titleLarge: font(20, FontWeight.w700, lightTextPrimary),
+            titleMedium: font(16, FontWeight.w700, lightTextPrimary),
+            bodyLarge: font(15, FontWeight.w500, lightTextPrimary, height: 1.4),
+            bodyMedium: font(
+              14,
+              FontWeight.w500,
+              lightTextSecondary,
+              height: 1.35,
+            ),
+            labelLarge: font(
+              14,
+              FontWeight.w700,
+              lightTextPrimary,
+              letterSpacing: 0.2,
+            ),
+          ),
       appBarTheme: AppBarTheme(
         backgroundColor: lightCanvas,
         surfaceTintColor: Colors.transparent,
@@ -286,9 +305,7 @@ class AyurezeTheme {
         secondaryLabelStyle: font(13, FontWeight.w700, healingGreen100),
         brightness: Brightness.light,
         side: BorderSide.none,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(999),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       ),
     );
   }
@@ -331,19 +348,20 @@ class AyurezeTheme {
   }
 
   static ThemeData darkTheme() {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: healingGreen100,
-      brightness: Brightness.dark,
-      primary: healingGreen50,
-      secondary: oslerGray50,
-      surface: darkSurface,
-    ).copyWith(
-      onPrimary: Colors.white,
-      onSecondary: Colors.white,
-      onSurface: darkTextPrimary,
-      error: remoteRed50,
-      onError: Colors.white,
-    );
+    final colorScheme =
+        ColorScheme.fromSeed(
+          seedColor: healingGreen100,
+          brightness: Brightness.dark,
+          primary: healingGreen50,
+          secondary: oslerGray50,
+          surface: darkSurface,
+        ).copyWith(
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onSurface: darkTextPrimary,
+          error: remoteRed50,
+          onError: Colors.white,
+        );
 
     return ThemeData(
       useMaterial3: true,
@@ -361,17 +379,29 @@ class AyurezeTheme {
       textTheme: ThemeData.dark().textTheme
           .apply(fontFamily: fontFamily)
           .copyWith(
-        headlineLarge:
-            font(32, FontWeight.w800, darkTextPrimary, height: 1.05),
-        headlineMedium:
-            font(24, FontWeight.w800, darkTextPrimary, height: 1.15),
-        titleLarge: font(20, FontWeight.w700, darkTextPrimary),
-        titleMedium: font(16, FontWeight.w700, darkTextPrimary),
-        bodyLarge: font(15, FontWeight.w500, darkTextPrimary, height: 1.4),
-        bodyMedium:
-            font(14, FontWeight.w500, darkTextSecondary, height: 1.35),
-        labelLarge: font(14, FontWeight.w700, darkTextPrimary),
-      ),
+            headlineLarge: font(
+              32,
+              FontWeight.w800,
+              darkTextPrimary,
+              height: 1.05,
+            ),
+            headlineMedium: font(
+              24,
+              FontWeight.w800,
+              darkTextPrimary,
+              height: 1.15,
+            ),
+            titleLarge: font(20, FontWeight.w700, darkTextPrimary),
+            titleMedium: font(16, FontWeight.w700, darkTextPrimary),
+            bodyLarge: font(15, FontWeight.w500, darkTextPrimary, height: 1.4),
+            bodyMedium: font(
+              14,
+              FontWeight.w500,
+              darkTextSecondary,
+              height: 1.35,
+            ),
+            labelLarge: font(14, FontWeight.w700, darkTextPrimary),
+          ),
       appBarTheme: AppBarTheme(
         backgroundColor: darkSurface,
         foregroundColor: darkTextPrimary,
@@ -385,8 +415,9 @@ class AyurezeTheme {
           foregroundColor: Colors.white,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           textStyle: font(15, FontWeight.w700, Colors.white),
         ),
       ),
@@ -395,16 +426,19 @@ class AyurezeTheme {
           foregroundColor: healingGreen50,
           side: const BorderSide(color: healingGreen50, width: 1.5),
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           textStyle: font(15, FontWeight.w700, healingGreen50),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: darkSurfaceMuted,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 18,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
@@ -427,8 +461,9 @@ class AyurezeTheme {
         color: darkSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: const BorderSide(color: darkBorder)),
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: darkBorder),
+        ),
       ),
       iconTheme: const IconThemeData(color: darkTextPrimary),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -438,16 +473,21 @@ class AyurezeTheme {
       ),
       drawerTheme: const DrawerThemeData(backgroundColor: darkSurface),
       dialogTheme: DialogThemeData(
-          backgroundColor: darkSurface,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
+        backgroundColor: darkSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: healingGreenFill, foregroundColor: Colors.white),
+        backgroundColor: healingGreenFill,
+        foregroundColor: Colors.white,
+      ),
       chipTheme: ChipThemeData(
-          backgroundColor: darkSurfaceMuted,
-          labelStyle: font(13, FontWeight.w700, darkTextPrimary)),
+        backgroundColor: darkSurfaceMuted,
+        labelStyle: font(13, FontWeight.w700, darkTextPrimary),
+      ),
       tabBarTheme: TabBarThemeData(
-          labelColor: healingGreen50, unselectedLabelColor: darkTextSecondary),
+        labelColor: healingGreen50,
+        unselectedLabelColor: darkTextSecondary,
+      ),
     );
   }
 
@@ -466,8 +506,10 @@ class AyurezeTheme {
     );
   }
 
-  static InputDecoration textFieldDecoration(
-      {String? labelText, String? hintText}) {
+  static InputDecoration textFieldDecoration({
+    String? labelText,
+    String? hintText,
+  }) {
     return InputDecoration(
       labelText: labelText,
       hintText: hintText,
@@ -487,8 +529,11 @@ class AyurezeTheme {
       filled: true,
       fillColor: surface,
       labelStyle: font(14, FontWeight.w500, textSecondary),
-      hintStyle:
-          font(14, FontWeight.w500, textSecondary.withValues(alpha: 0.6)),
+      hintStyle: font(
+        14,
+        FontWeight.w500,
+        textSecondary.withValues(alpha: 0.6),
+      ),
     );
   }
 
@@ -505,11 +550,7 @@ class AyurezeTheme {
         color: Colors.white.withValues(alpha: _isDark ? 0.08 : 0.35),
       ),
       boxShadow: [
-        BoxShadow(
-          color: shadow,
-          blurRadius: 24,
-          offset: const Offset(0, 12),
-        ),
+        BoxShadow(color: shadow, blurRadius: 24, offset: const Offset(0, 12)),
       ],
     );
   }
@@ -520,11 +561,7 @@ class AyurezeTheme {
   static const LinearGradient auroraGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      Color(0xFF0F2916),
-      Color(0xFF0F7A55),
-      Color(0xFF10B981),
-    ],
+    colors: [Color(0xFF0F2916), Color(0xFF0F7A55), Color(0xFF10B981)],
     stops: [0.0, 0.55, 1.0],
   );
 }

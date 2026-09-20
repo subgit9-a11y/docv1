@@ -66,19 +66,25 @@ class OslerButton extends StatelessWidget {
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: _getForegroundColor(bgColor)))
+                        strokeWidth: 2,
+                        color: _getForegroundColor(bgColor),
+                      ),
+                    )
                   : Row(
                       key: const ValueKey('content'),
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (icon != null) ...[
                           Icon(icon),
-                          const SizedBox(width: 8)
+                          const SizedBox(width: 8),
                         ],
-                        Text(text,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 16)),
+                        Text(
+                          text,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                        ),
                       ],
                     ),
             ),

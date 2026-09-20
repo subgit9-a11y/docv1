@@ -59,21 +59,14 @@ class _LoginHomeViewState extends State<_LoginHomeView>
       curve: Curves.easeOut,
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.08),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeOutCubic,
-    ));
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(
+          CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
+        );
 
-    _scaleAnimation = Tween<double>(
-      begin: 0.95,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeOutBack,
-    ));
+    _scaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(
+      CurvedAnimation(parent: _animController, curve: Curves.easeOutBack),
+    );
 
     _animController.forward();
   }
@@ -134,11 +127,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                       ),
                                     ],
                                   ),
-                                  child: (viewModel.dFullImage != null &&
+                                  child:
+                                      (viewModel.dFullImage != null &&
                                           viewModel.dFullImage!.isNotEmpty)
                                       ? ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(24),
+                                          borderRadius: BorderRadius.circular(
+                                            24,
+                                          ),
                                           child: CachedNetworkImage(
                                             imageUrl: viewModel.dFullImage!,
                                             fit: BoxFit.cover,
@@ -164,9 +159,10 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      getTranslated(context,
-                                              AppString.dashboard_welcome)
-                                          .toString(),
+                                      getTranslated(
+                                        context,
+                                        AppString.dashboard_welcome,
+                                      ).toString(),
                                       style: textTheme.bodyMedium?.copyWith(
                                         color: AyurezeTheme.textSecondary,
                                       ),
@@ -234,10 +230,12 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: Colors.white
-                                            .withValues(alpha: 0.18),
-                                        borderRadius:
-                                            BorderRadius.circular(999),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.18,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          999,
+                                        ),
                                       ),
                                       child: Text(
                                         "Clinical Dashboard",
@@ -250,8 +248,9 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                     const Spacer(),
                                     Icon(
                                       Icons.health_and_safety_rounded,
-                                      color:
-                                          Colors.white.withValues(alpha: 0.9),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.9,
+                                      ),
                                       size: 24,
                                     ),
                                   ],
@@ -293,8 +292,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                             final isWide = constraints.maxWidth > 500;
                             final currencySymbol =
                                 SharedPreferenceHelper.getString(
-                              Preferences.currency_symbol,
-                            );
+                                  Preferences.currency_symbol,
+                                );
 
                             // A fixed tile height, not an aspect ratio: the card
                             // stacks an icon, a value and a label, so its content
@@ -306,11 +305,11 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: isWide ? 4 : 2,
-                                mainAxisSpacing: 12,
-                                crossAxisSpacing: 12,
-                                mainAxisExtent: 120,
-                              ),
+                                    crossAxisCount: isWide ? 4 : 2,
+                                    mainAxisSpacing: 12,
+                                    crossAxisSpacing: 12,
+                                    mainAxisExtent: 120,
+                                  ),
                               children: [
                                 _buildStatCard(
                                   context,
@@ -567,7 +566,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       color: AyurezeTheme.shadow,
                       blurRadius: 6,
                       offset: const Offset(0, 2),
-                    )
+                    ),
                   ]
                 : [],
           ),
@@ -642,21 +641,20 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       ? "Couldn't Load Appointments"
                       : "No Appointments Found",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AyurezeTheme.textPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    color: AyurezeTheme.textPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   showError
                       ? vm.errorMessage
                       : isSearching
-                          ? "No patient matching '${_searchController.text}'"
-                          : "There are no appointments scheduled for this section.",
+                      ? "No patient matching '${_searchController.text}'"
+                      : "There are no appointments scheduled for this section.",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AyurezeTheme.textSecondary,
-                      ),
+                  style: Theme.of(context).textTheme.bodyMedium
+                      ?.copyWith(color: AyurezeTheme.textSecondary),
                 ),
               ],
             ),
@@ -668,21 +666,17 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            final item = items[index];
-            // Cap the stagger so a long list doesn't push later cards'
-            // entrance animation minutes into the future.
-            return _buildAppointmentCard(context, item, index % 8);
-          },
-          childCount: items.length,
-        ),
+        delegate: SliverChildBuilderDelegate((context, index) {
+          final item = items[index];
+          // Cap the stagger so a long list doesn't push later cards'
+          // entrance animation minutes into the future.
+          return _buildAppointmentCard(context, item, index % 8);
+        }, childCount: items.length),
       ),
     );
   }
 
-  Widget _buildAppointmentCard(
-      BuildContext context, dynamic item, int index) {
+  Widget _buildAppointmentCard(BuildContext context, dynamic item, int index) {
     final textTheme = Theme.of(context).textTheme;
     final String? imageUrl = item.user?.fullImage;
     final String patientName = item.patientName ?? "Patient";
