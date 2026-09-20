@@ -59,21 +59,23 @@ class AstraApiService {
 
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        // Prefer Firebase token when available
-        User? user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          String? token = await user.getIdToken();
-          if (token != null) {
-            options.headers['Authorization'] = 'Bearer $token';
-          }
-        }
-
-        // Fallback to app auth token (doctor login token)
-        if (options.headers['Authorization'] == null) {
-          final String appToken =
-              SharedPreferenceHelper.getString(Preferences.auth_token);
-          if (appToken.isNotEmpty && appToken != 'N_A') {
-            options.headers['Authorization'] = 'Bearer $appToken';
+        // Prefer the Astra-issued session token (from /auth/login) once we
+        // have one: most Astra endpoints (e.g. /auth/user) validate that
+        // token specifically and reject a raw Firebase ID token, even
+        // though a Firebase user stays signed in for the whole session.
+        final String appToken =
+            SharedPreferenceHelper.getString(Preferences.auth_token);
+        if (appToken.isNotEmpty && appToken != 'N_A') {
+          options.headers['Authorization'] = 'Bearer $appToken';
+        } else {
+          // No Astra session token yet (e.g. the /auth/login exchange call
+          // itself) - fall back to the Firebase ID token.
+          User? user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            String? token = await user.getIdToken();
+            if (token != null) {
+              options.headers['Authorization'] = 'Bearer $token';
+            }
           }
         }
         // Set default content type for JSON requests
