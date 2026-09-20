@@ -123,7 +123,6 @@ dependencies:
   flutter_animate: ^4.5.2
   shimmer: ^3.0.0
   minio: ^3.0.2
-  google_fonts: ^6.2.1
 
   
 
@@ -181,22 +180,47 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+  # Uni Neue (licensed, purchased family - see assets/fonts/UniNeue/).
+  # Weights are the usWeightClass values embedded in each file (checked with
+  # fonttools), not a guess from the file name: Thin=250->100, Light=300,
+  # Book=400, Regular=500, Bold=700, Heavy=800, Black=900. AyurezeTheme.font()
+  # only ever asks for w500/w700/w800, so Regular/Bold/Heavy cover every style
+  # the app actually uses; the rest are here for completeness.
+  fonts:
+    - family: Uni Neue
+      fonts:
+        - asset: assets/fonts/UniNeue/UniNeue-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/UniNeue/UniNeue-ThinItalic.ttf
+          weight: 100
+          style: italic
+        - asset: assets/fonts/UniNeue/UniNeue-Light.ttf
+          weight: 300
+        - asset: assets/fonts/UniNeue/UniNeue-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/UniNeue/UniNeue-Book.ttf
+          weight: 400
+        - asset: assets/fonts/UniNeue/UniNeue-BookItalic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/UniNeue/UniNeue-Regular.ttf
+          weight: 500
+        - asset: assets/fonts/UniNeue/UniNeue-RegularItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/UniNeue/UniNeue-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/UniNeue/UniNeue-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/UniNeue/UniNeue-Heavy.ttf
+          weight: 800
+        - asset: assets/fonts/UniNeue/UniNeue-HeavyItalic.ttf
+          weight: 800
+          style: italic
+        - asset: assets/fonts/UniNeue/UniNeue-Black.ttf
+          weight: 900
+        - asset: assets/fonts/UniNeue/UniNeue-BlackItalic.ttf
+          weight: 900
+          style: italic

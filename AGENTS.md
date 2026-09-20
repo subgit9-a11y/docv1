@@ -53,16 +53,33 @@ files nobody committed.
 
 ## Font and motion
 
-The app font is Plus Jakarta Sans, applied once in `AyurezeTheme.lightTheme()`/
-`darkTheme()` via `GoogleFonts.plusJakartaSansTextTheme(...)` as the textTheme
-base, plus `AyurezeTheme.font(size, weight, color, {height, letterSpacing})`
-for every explicit style override (headline/title/body/label, app bar title,
-button/chip/input text styles). Because `Text.style` merges with the nearest
-`DefaultTextStyle` by default, a literal `TextStyle(...)` that leaves
-`fontFamily` null still inherits Plus Jakarta Sans through that chain - so
+The app font is Uni Neue, a licensed family bundled under
+`assets/fonts/UniNeue/` (14 files: 7 weights x roman/italic, declared as a
+single `Uni Neue` family in `pubspec.yaml`). It is **not** a Google Font - do
+not add `google_fonts` back or call `GoogleFonts.*`. Applied once in
+`AyurezeTheme.lightTheme()`/`darkTheme()` via
+`ThemeData.light().textTheme.apply(fontFamily: AyurezeTheme.fontFamily)` as
+the textTheme base, plus `AyurezeTheme.font(size, weight, color, {height,
+letterSpacing})` for every explicit style override (headline/title/body/label,
+app bar title, button/chip/input text styles). Because `Text.style` merges
+with the nearest `DefaultTextStyle` by default, a literal `TextStyle(...)`
+that leaves `fontFamily` null still inherits Uni Neue through that chain - so
 existing screens that build their own `TextStyle` (rather than reading
 `Theme.of(context).textTheme`) get the font for free. Never hardcode a
 different `fontFamily`.
+
+Only 7 weights are bundled (usWeightClass, verified with fonttools rather
+than guessed from filenames): Thin=100, Light=300, Book=400, Regular=500,
+Bold=700, Heavy=800, Black=900. `AyurezeTheme.font()` only ever asks for
+w500/w700/w800 today; if you need a weight this family doesn't have, the
+renderer falls back to the nearest available weight rather than erroring, but
+prefer picking one of the seven.
+
+The `assets/fonts/UniNeue/` files came from a purchased Fontfabric license
+(distinct from an earlier "Trial" bundle that was rejected - trial fonts are
+watermarked and forbidden from shipping in a public product per their EULA;
+only the actual purchased kit was used here). Do not replace these with
+trial/demo files from a font's marketing site.
 
 Android's `pageTransitionsTheme` uses `ZoomPageTransitionsBuilder` (Flutter's
 own Material 3 default) instead of the old `FadeUpwardsPageTransitionsBuilder`,

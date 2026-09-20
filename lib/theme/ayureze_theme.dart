@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AyurezeTheme {
-  /// The one font family for the whole app. Screens should reach
-  /// `Theme.of(context).textTheme` rather than naming this directly, but
-  /// centralizing it here is what keeps every screen's type on the same
-  /// family instead of drifting to the platform default.
+  /// The one font family for the whole app: Uni Neue, a licensed family
+  /// bundled under assets/fonts/UniNeue/ (declared in pubspec.yaml). Screens
+  /// should reach `Theme.of(context).textTheme` rather than naming this
+  /// directly, but centralizing it here is what keeps every screen's type on
+  /// the same family instead of drifting to the platform default.
+  static const String fontFamily = 'Uni Neue';
+
   static TextStyle font(
     double size,
     FontWeight weight,
@@ -13,7 +15,8 @@ class AyurezeTheme {
     double? height,
     double? letterSpacing,
   }) =>
-      GoogleFonts.plusJakartaSans(
+      TextStyle(
+        fontFamily: fontFamily,
         fontSize: size,
         fontWeight: weight,
         color: color,
@@ -190,9 +193,9 @@ class AyurezeTheme {
       cardColor: lightSurface,
       dividerColor: lightBorder,
       shadowColor: const Color(0x16000000),
-      textTheme: GoogleFonts.plusJakartaSansTextTheme(
-        ThemeData.light().textTheme,
-      ).copyWith(
+      textTheme: ThemeData.light().textTheme
+          .apply(fontFamily: fontFamily)
+          .copyWith(
         headlineLarge: font(32, FontWeight.w800, lightTextPrimary,
             height: 1.05),
         headlineMedium: font(24, FontWeight.w800, lightTextPrimary,
@@ -355,9 +358,9 @@ class AyurezeTheme {
       cardColor: darkSurface,
       dividerColor: darkBorder,
       shadowColor: const Color(0x40000000),
-      textTheme: GoogleFonts.plusJakartaSansTextTheme(
-        ThemeData.dark().textTheme,
-      ).copyWith(
+      textTheme: ThemeData.dark().textTheme
+          .apply(fontFamily: fontFamily)
+          .copyWith(
         headlineLarge:
             font(32, FontWeight.w800, darkTextPrimary, height: 1.05),
         headlineMedium:
