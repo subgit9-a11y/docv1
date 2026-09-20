@@ -782,14 +782,18 @@ class _ProfessionalRegistrationScreenState
       lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
-          data: ThemeData.light().copyWith(
+          // Theme.of(context), not ThemeData.light(): a from-scratch
+          // ThemeData carries Flutter's default font and shapes, not the
+          // app's Uni Neue/AyurezeTheme styling, so the date picker looked
+          // visually foreign next to the rest of the screen.
+          data: Theme.of(context).copyWith(
             primaryColor: AyurezeTheme.caringViolet50,
-            colorScheme: ColorScheme.light(
-              primary: AyurezeTheme.healingGreen100,
-              onPrimary: Colors.white,
-              surface: AyurezeTheme.surface,
-              onSurface: AyurezeTheme.textPrimary,
-            ),
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+                  primary: AyurezeTheme.healingGreen100,
+                  onPrimary: Colors.white,
+                  surface: AyurezeTheme.surface,
+                  onSurface: AyurezeTheme.textPrimary,
+                ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                   foregroundColor: AyurezeTheme.caringViolet50),

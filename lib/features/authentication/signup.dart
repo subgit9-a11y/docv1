@@ -476,14 +476,18 @@ class _CreateAccountState extends State<CreateAccount> {
       lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
-          data: ThemeData.light().copyWith(
+          // Theme.of(context), not ThemeData.light(): a from-scratch
+          // ThemeData carries Flutter's default font and shapes, not the
+          // app's Uni Neue/AyurezeTheme styling, so the date picker looked
+          // visually foreign next to the rest of the screen.
+          data: Theme.of(context).copyWith(
             primaryColor: AyurezeTheme.actionButtonPrimary,
-            colorScheme: ColorScheme.light(
-              primary: AyurezeTheme.actionButtonPrimary,
-              onPrimary: Colors.white,
-              surface: Colors.white,
-              onSurface: AyurezeTheme.actionButtonPrimary,
-            ),
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+                  primary: AyurezeTheme.actionButtonPrimary,
+                  onPrimary: Colors.white,
+                  surface: Colors.white,
+                  onSurface: AyurezeTheme.actionButtonPrimary,
+                ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                   foregroundColor: AyurezeTheme.actionButtonPrimary),
