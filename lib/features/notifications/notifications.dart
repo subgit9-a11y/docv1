@@ -10,9 +10,11 @@ import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -113,17 +115,22 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHero(),
+                    ScreenEntrance(index: 0, child: _buildHero()),
                     const SizedBox(height: 18),
                     if (patientNotification.isEmpty)
-                      _buildEmptyState()
+                      ScreenEntrance(index: 1, child: _buildEmptyState())
                     else ...[
                       ...patientNotification
                           .take(patientNotification.length > 6
                               ? 6
                               : patientNotification.length)
-                          .map((item) => _buildNotificationCard(item)),
-                      if (patientNotification.length >= 6) _buildViewAllCard(),
+                          .toList()
+                          .asMap()
+                          .entries
+                          .map((e) =>
+                              _buildNotificationCard(e.value, e.key % 8)),
+                      if (patientNotification.length >= 6)
+                        ScreenEntrance(index: 6, child: _buildViewAllCard()),
                     ],
                   ],
                 ),
@@ -144,10 +151,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Widget _buildNotificationCard(NotificationData item) {
+  Widget _buildNotificationCard(NotificationData item, int index) {
     final date = DateUtil().formattedDate(DateTime.parse(item.createdAt!));
-    return InkWell(
+    final card = InkWell(
       onTap: () {
+        HapticFeedback.selectionClick();
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -238,11 +246,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
       ),
     );
+
+    return ScreenEntrance(index: index, child: card);
   }
 
   Widget _buildViewAllCard() {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, "ViewAllNotification"),
+      onTap: () {
+        HapticFeedback.selectionClick();
+        Navigator.pushNamed(context, "ViewAllNotification");
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: AyurezeTheme.mutedPanelDecoration(),

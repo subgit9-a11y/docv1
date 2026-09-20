@@ -1,4 +1,5 @@
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -215,7 +216,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                               viewModel.searchResult.length,
                                           itemBuilder: (context, i) {
                                             return _buildAppointmentCard(
-                                                viewModel.searchResult[i]);
+                                                viewModel.searchResult[i],
+                                                i % 8);
                                           },
                                         )
                                       : SizedBox(
@@ -236,8 +238,10 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                       reverse: true,
                                       scrollDirection: Axis.vertical,
                                       itemBuilder: (context, index) {
-                                        return _buildAppointmentCard(viewModel
-                                            .cancelAppointmentReq[index]);
+                                        return _buildAppointmentCard(
+                                            viewModel
+                                                .cancelAppointmentReq[index],
+                                            index % 8);
                                       }),
                             ],
                           ),
@@ -251,8 +255,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
     );
   }
 
-  Widget _buildAppointmentCard(AppointmentCancel appointment) {
-    return Column(
+  Widget _buildAppointmentCard(AppointmentCancel appointment, int index) {
+    final card = Column(
       children: [
         Row(
           children: [
@@ -318,8 +322,9 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                             ),
                             trailing: Container(
                                 child: Text(
-                              SharedPreferenceHelper.getString(
-                                      Preferences.currency_symbol) +
+                              (SharedPreferenceHelper.getStringOrNull(
+                                          Preferences.currency_symbol) ??
+                                      '') +
                                   appointment.amount.toString(),
                               style: TextStyle(
                                   fontSize: 16,
@@ -357,6 +362,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
         ),
       ],
     );
+
+    return ScreenEntrance(index: index, child: card);
   }
 }
 
