@@ -8,7 +8,9 @@ import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:doctro/widgets/osler_skeleton.dart';
 import 'package:doctro/features/dashboard/patient_information.dart';
 import 'package:doctro/features/dashboard/view_models/login_home_view_model.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:provider/provider.dart';
 
 class LoginHomeScreen extends StatelessWidget {
@@ -312,6 +314,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                               children: [
                                 _buildStatCard(
                                   context,
+                                  index: 0,
                                   title: getTranslated(
                                     context,
                                     AppString.information_amount,
@@ -323,6 +326,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                 ),
                                 _buildStatCard(
                                   context,
+                                  index: 1,
                                   title: "Patients",
                                   value: "${viewModel.patientCount}",
                                   icon: Icons.people_alt_rounded,
@@ -330,6 +334,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                 ),
                                 _buildStatCard(
                                   context,
+                                  index: 2,
                                   title: "Today",
                                   value:
                                       "${viewModel.todayAppointments.length}",
@@ -338,6 +343,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                 ),
                                 _buildStatCard(
                                   context,
+                                  index: 3,
                                   title: "Reviews",
                                   value: "${viewModel.reviewCount}",
                                   icon: Icons.star_rounded,
@@ -479,6 +485,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
 
   Widget _buildStatCard(
     BuildContext context, {
+    required int index,
     required String title,
     required String value,
     required IconData icon,
@@ -486,7 +493,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
   }) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Container(
+    final card = Container(
       padding: const EdgeInsets.all(14),
       decoration: AyurezeTheme.panelDecoration(),
       child: Column(
@@ -528,6 +535,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
         ],
       ),
     );
+
+    return ScreenEntrance(index: index, child: card);
   }
 
   Widget _buildTabItem(
@@ -662,7 +671,9 @@ class _LoginHomeViewState extends State<_LoginHomeView>
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             final item = items[index];
-            return _buildAppointmentCard(context, item);
+            // Cap the stagger so a long list doesn't push later cards'
+            // entrance animation minutes into the future.
+            return _buildAppointmentCard(context, item, index % 8);
           },
           childCount: items.length,
         ),
@@ -670,7 +681,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     );
   }
 
-  Widget _buildAppointmentCard(BuildContext context, dynamic item) {
+  Widget _buildAppointmentCard(
+      BuildContext context, dynamic item, int index) {
     final textTheme = Theme.of(context).textTheme;
     final String? imageUrl = item.user?.fullImage;
     final String patientName = item.patientName ?? "Patient";
@@ -678,12 +690,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     final String appointmentDate = item.date ?? "";
     final String address = item.patientAddress ?? "In-Clinic Consultation";
 
-    return Padding(
+    final card = Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
+            HapticFeedback.selectionClick();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -812,5 +825,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
         ),
       ),
     );
+
+    return ScreenEntrance(index: index, child: card);
   }
 }

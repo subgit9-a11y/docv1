@@ -51,6 +51,51 @@ files nobody committed.
 - `lib/core/astra/` — the AI "Astra" integration (actions, controllers,
   services, widgets). Each folder has a barrel file.
 
+## Font and motion
+
+The app font is Plus Jakarta Sans, applied once in `AyurezeTheme.lightTheme()`/
+`darkTheme()` via `GoogleFonts.plusJakartaSansTextTheme(...)` as the textTheme
+base, plus `AyurezeTheme.font(size, weight, color, {height, letterSpacing})`
+for every explicit style override (headline/title/body/label, app bar title,
+button/chip/input text styles). Because `Text.style` merges with the nearest
+`DefaultTextStyle` by default, a literal `TextStyle(...)` that leaves
+`fontFamily` null still inherits Plus Jakarta Sans through that chain - so
+existing screens that build their own `TextStyle` (rather than reading
+`Theme.of(context).textTheme`) get the font for free. Never hardcode a
+different `fontFamily`.
+
+Android's `pageTransitionsTheme` uses `ZoomPageTransitionsBuilder` (Flutter's
+own Material 3 default) instead of the old `FadeUpwardsPageTransitionsBuilder`,
+so every `Navigator.push`/named route gets the same modern transition with no
+per-screen change. iOS keeps `CupertinoPageTransitionsBuilder` for its native
+back-swipe gesture.
+
+`lib/theme/app_motion.dart` holds the shared motion vocabulary:
+- `AppMotion` - duration/curve constants. Use these instead of inventing a
+  new duration per screen.
+- `AnimatedTapScale` - wraps a tappable widget with a press-in scale.
+  `OslerButton` and `OslerCard` already use it (plus `HapticFeedback`); reach
+  for it directly on anything else tappable.
+- `ScreenEntrance` - fades/slides a section in, with a `stagger`-per-`index`
+  cascade for lists/grids (see `_buildStatCard`/`_buildAppointmentCard` in
+  `login_home.dart`).
+
+`AyurezeTheme.heroDecoration()` now paints `auroraGradient` (a 3-stop
+green gradient) instead of a flat 2-stop one. It is shared by ~12 screens
+(SignIn, signup, profile, settings, notifications, schedule,
+appointment_history, dashboard, the drawer, `osler_hero.dart` ...), so this
+one change reaches all of them without per-screen edits. `glassDecoration()`
+is available for a frosted surface (pair it with `BackdropFilter`).
+
+Formatting caveat: this sandbox's `dart format` (freshly downloaded "latest
+stable") disagrees with the repo's checked-in style on ~136 of 217 files -
+almost certainly a local toolchain/style-version mismatch, not a real
+formatting debt (CI's own Verify Formatting step was green on the commit
+right before this). Do not bulk-run `dart format` across `lib test` to "fix"
+this; it will produce a massive, unreviewable diff. Format only files you
+hand-edit, and if in doubt, match the surrounding code's existing style
+rather than trusting a freshly-fetched formatter's opinion wholesale.
+
 ## Layout tokens
 
 `AyurezeTheme` has a named radius scale (`radiusXs` 6, `radiusSm` 8,

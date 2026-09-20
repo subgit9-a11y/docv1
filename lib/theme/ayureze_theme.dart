@@ -1,7 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AyurezeTheme {
+  /// The one font family for the whole app. Screens should reach
+  /// `Theme.of(context).textTheme` rather than naming this directly, but
+  /// centralizing it here is what keeps every screen's type on the same
+  /// family instead of drifting to the platform default.
+  static TextStyle font(
+    double size,
+    FontWeight weight,
+    Color color, {
+    double? height,
+    double? letterSpacing,
+  }) =>
+      GoogleFonts.plusJakartaSans(
+        fontSize: size,
+        fontWeight: weight,
+        color: color,
+        height: height,
+        letterSpacing: letterSpacing,
+      );
+
   // Osler UI Kit Colors
   static const Color oslerGray100 = Color(0xFF111A14);
   static const Color oslerGray50 = Color(0xFF849087);
@@ -164,64 +183,36 @@ class AyurezeTheme {
       scaffoldBackgroundColor: lightCanvas,
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {
-          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.android: ZoomPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
       ),
       cardColor: lightSurface,
       dividerColor: lightBorder,
       shadowColor: const Color(0x16000000),
-      textTheme: ThemeData.light().textTheme.copyWith(
-            headlineLarge: const TextStyle(
-              fontSize: 32,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-              color: lightTextPrimary,
-            ),
-            headlineMedium: const TextStyle(
-              fontSize: 24,
-              height: 1.15,
-              fontWeight: FontWeight.w800,
-              color: lightTextPrimary,
-            ),
-            titleLarge: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: lightTextPrimary,
-            ),
-            titleMedium: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: lightTextPrimary,
-            ),
-            bodyLarge: const TextStyle(
-              fontSize: 15,
-              height: 1.4,
-              color: lightTextPrimary,
-            ),
-            bodyMedium: const TextStyle(
-              fontSize: 14,
-              height: 1.35,
-              color: lightTextSecondary,
-            ),
-            labelLarge: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.2,
-            ),
-          ),
-      appBarTheme: const AppBarTheme(
+      textTheme: GoogleFonts.plusJakartaSansTextTheme(
+        ThemeData.light().textTheme,
+      ).copyWith(
+        headlineLarge: font(32, FontWeight.w800, lightTextPrimary,
+            height: 1.05),
+        headlineMedium: font(24, FontWeight.w800, lightTextPrimary,
+            height: 1.15),
+        titleLarge: font(20, FontWeight.w700, lightTextPrimary),
+        titleMedium: font(16, FontWeight.w700, lightTextPrimary),
+        bodyLarge: font(15, FontWeight.w500, lightTextPrimary, height: 1.4),
+        bodyMedium: font(14, FontWeight.w500, lightTextSecondary,
+            height: 1.35),
+        labelLarge: font(14, FontWeight.w700, lightTextPrimary,
+            letterSpacing: 0.2),
+      ),
+      appBarTheme: AppBarTheme(
         backgroundColor: lightCanvas,
         surfaceTintColor: Colors.transparent,
         foregroundColor: lightTextPrimary,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
-        titleTextStyle: TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w800,
-          color: lightTextPrimary,
-        ),
+        titleTextStyle: font(22, FontWeight.w800, lightTextPrimary),
       ),
       cardTheme: CardThemeData(
         color: lightSurface,
@@ -241,10 +232,7 @@ class AyurezeTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(999),
           ),
-          textStyle: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: font(15, FontWeight.w700, Colors.white),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -256,17 +244,14 @@ class AyurezeTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          textStyle: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: font(15, FontWeight.w700, lightTextPrimary),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: lightSurface,
-        hintStyle: const TextStyle(color: lightTextSecondary),
-        labelStyle: const TextStyle(color: lightTextSecondary),
+        hintStyle: font(14, FontWeight.w500, lightTextSecondary),
+        labelStyle: font(14, FontWeight.w500, lightTextSecondary),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
           vertical: 18,
@@ -294,14 +279,8 @@ class AyurezeTheme {
         selectedColor: healingGreen50,
         secondarySelectedColor: healingGreen50,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        labelStyle: const TextStyle(
-          color: healingGreen100,
-          fontWeight: FontWeight.w700,
-        ),
-        secondaryLabelStyle: const TextStyle(
-          color: healingGreen100,
-          fontWeight: FontWeight.w700,
-        ),
+        labelStyle: font(13, FontWeight.w700, healingGreen100),
+        secondaryLabelStyle: font(13, FontWeight.w700, healingGreen100),
         brightness: Brightness.light,
         side: BorderSide.none,
         shape: RoundedRectangleBorder(
@@ -314,11 +293,7 @@ class AyurezeTheme {
   static BoxDecoration heroDecoration() {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(32),
-      gradient: const LinearGradient(
-        colors: [healingGreen50, healingGreen100],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
+      gradient: auroraGradient,
       boxShadow: const [
         BoxShadow(
           color: Color(0x22000000),
@@ -373,62 +348,33 @@ class AyurezeTheme {
       scaffoldBackgroundColor: darkCanvas,
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {
-          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.android: ZoomPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
       ),
       cardColor: darkSurface,
       dividerColor: darkBorder,
       shadowColor: const Color(0x40000000),
-      textTheme: ThemeData.dark().textTheme.copyWith(
-            headlineLarge: const TextStyle(
-              fontSize: 32,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-              color: darkTextPrimary,
-            ),
-            headlineMedium: const TextStyle(
-              fontSize: 24,
-              height: 1.15,
-              fontWeight: FontWeight.w800,
-              color: darkTextPrimary,
-            ),
-            titleLarge: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: darkTextPrimary,
-            ),
-            titleMedium: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: darkTextPrimary,
-            ),
-            bodyLarge: const TextStyle(
-              fontSize: 15,
-              height: 1.4,
-              color: darkTextPrimary,
-            ),
-            bodyMedium: const TextStyle(
-              fontSize: 14,
-              height: 1.35,
-              color: darkTextSecondary,
-            ),
-            labelLarge: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: darkTextPrimary,
-            ),
-          ),
-      appBarTheme: const AppBarTheme(
+      textTheme: GoogleFonts.plusJakartaSansTextTheme(
+        ThemeData.dark().textTheme,
+      ).copyWith(
+        headlineLarge:
+            font(32, FontWeight.w800, darkTextPrimary, height: 1.05),
+        headlineMedium:
+            font(24, FontWeight.w800, darkTextPrimary, height: 1.15),
+        titleLarge: font(20, FontWeight.w700, darkTextPrimary),
+        titleMedium: font(16, FontWeight.w700, darkTextPrimary),
+        bodyLarge: font(15, FontWeight.w500, darkTextPrimary, height: 1.4),
+        bodyMedium:
+            font(14, FontWeight.w500, darkTextSecondary, height: 1.35),
+        labelLarge: font(14, FontWeight.w700, darkTextPrimary),
+      ),
+      appBarTheme: AppBarTheme(
         backgroundColor: darkSurface,
         foregroundColor: darkTextPrimary,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w700,
-          color: darkTextPrimary,
-        ),
+        titleTextStyle: font(18, FontWeight.w700, darkTextPrimary),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -438,7 +384,7 @@ class AyurezeTheme {
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          textStyle: font(15, FontWeight.w700, Colors.white),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -448,6 +394,7 @@ class AyurezeTheme {
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          textStyle: font(15, FontWeight.w700, healingGreen50),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -471,7 +418,7 @@ class AyurezeTheme {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: remoteRed50),
         ),
-        hintStyle: const TextStyle(color: darkTextSecondary),
+        hintStyle: font(14, FontWeight.w500, darkTextSecondary),
       ),
       cardTheme: CardThemeData(
         color: darkSurface,
@@ -495,7 +442,7 @@ class AyurezeTheme {
           backgroundColor: healingGreenFill, foregroundColor: Colors.white),
       chipTheme: ChipThemeData(
           backgroundColor: darkSurfaceMuted,
-          labelStyle: const TextStyle(color: darkTextPrimary)),
+          labelStyle: font(13, FontWeight.w700, darkTextPrimary)),
       tabBarTheme: TabBarThemeData(
           labelColor: healingGreen50, unselectedLabelColor: darkTextSecondary),
     );
@@ -536,9 +483,45 @@ class AyurezeTheme {
       ),
       filled: true,
       fillColor: surface,
-      labelStyle: TextStyle(color: textSecondary, fontSize: 14),
+      labelStyle: font(14, FontWeight.w500, textSecondary),
       hintStyle:
-          TextStyle(color: textSecondary.withValues(alpha: 0.6), fontSize: 14),
+          font(14, FontWeight.w500, textSecondary.withValues(alpha: 0.6)),
     );
   }
+
+  /// A frosted, translucent surface for headers/sheets that sit over other
+  /// content (e.g. a sticky app bar over a scrolling hero). Pair with
+  /// `BackdropFilter(filter: ImageFilter.blur(...))` in the widget; this only
+  /// supplies the fill/border/shadow so every glass surface in the app looks
+  /// the same.
+  static BoxDecoration glassDecoration({double radius = radius2xl}) {
+    return BoxDecoration(
+      color: (_isDark ? Colors.black : Colors.white).withValues(alpha: 0.14),
+      borderRadius: BorderRadius.circular(radius),
+      border: Border.all(
+        color: Colors.white.withValues(alpha: _isDark ? 0.08 : 0.35),
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: shadow,
+          blurRadius: 24,
+          offset: const Offset(0, 12),
+        ),
+      ],
+    );
+  }
+
+  /// The signature multi-stop brand gradient for hero surfaces that want more
+  /// depth than `heroDecoration`'s flat two-stop gradient - the dashboard
+  /// header, onboarding, and other "first thing you see" moments.
+  static const LinearGradient auroraGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color(0xFF0F2916),
+      Color(0xFF0F7A55),
+      Color(0xFF10B981),
+    ],
+    stops: [0.0, 0.55, 1.0],
+  );
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:doctro/theme/ayureze_theme.dart';
 
 class OslerCard extends StatefulWidget {
@@ -56,7 +57,12 @@ class _OslerCardState extends State<OslerCard> {
           color: widget.backgroundColor ?? AyurezeTheme.surface,
           borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
           child: InkWell(
-            onTap: widget.onTap,
+            onTap: widget.onTap == null
+                ? null
+                : () {
+                    HapticFeedback.selectionClick();
+                    widget.onTap!();
+                  },
             onTapDown: _handleTapDown,
             onTapUp: _handleTapUp,
             onTapCancel: _handleTapCancel,
