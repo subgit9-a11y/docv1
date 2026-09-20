@@ -12,6 +12,7 @@ import 'package:doctro/network/network_api.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:doctro/features/authentication/registration_success_screen.dart';
 import 'package:doctro/services/supabase_service.dart';
+import 'package:doctro/services/astra_api_service.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/models/register.dart';
@@ -62,6 +63,7 @@ class _ProfessionalRegistrationScreenState
   String? _selectedCategoryId = "1";
 
   final SupabaseService _supabaseService = SupabaseService();
+  final AstraApiService _astraApiService = AstraApiService();
 
   late AnimationController _animController;
   late Animation<double> _fadeAnim;
@@ -304,6 +306,30 @@ class _ProfessionalRegistrationScreenState
           );
         } catch (_) {
           // Supabase mirror is best-effort; the API registration already succeeded.
+        }
+
+        try {
+          await _astraApiService.registerDoctor({
+            "unique_id": uniqueId,
+            "name": combinedData['name'] ?? '',
+            "email": combinedData['email'] ?? '',
+            "phone": combinedData['phone'] ?? '',
+            "gender": combinedData['gender'] ?? '',
+            "dob": combinedData['dob'] ?? '',
+            "education": combinedData['education'] ?? '',
+            "experience": combinedData['experience'] ?? '',
+            "language": combinedData['language'] ?? '',
+            "desc": combinedData['desc'] ?? '',
+            "appointment_fees": combinedData['appointment_fees'] ?? '',
+            "video_appointment_fees":
+                combinedData['video_appointment_fees'] ?? '',
+            "license_number": combinedData['license_number'] ?? '',
+            "certificate": finalData['certificate'] ?? '',
+            "id_proof": finalData['id_proof'] ?? '',
+          });
+        } catch (_) {
+          // Astra directory sync is best-effort; the primary registration
+          // already succeeded and must not be blocked by it.
         }
 
         if (!mounted) return;
