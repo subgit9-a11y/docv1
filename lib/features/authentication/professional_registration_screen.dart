@@ -394,6 +394,9 @@ class _ProfessionalRegistrationScreenState
       if (doctorId == 'N_A' || doctorId.isEmpty) {
         doctorId = SharedPreferenceHelper.getString(Preferences.doctorId);
       }
+      if (doctorId == 'N_A' || doctorId.isEmpty) {
+        doctorId = _supabaseService.generateDoctorID();
+      }
 
       String? certUrl = _existingCertificateUrl;
       String? idProofUrl = _existingIdProofUrl;
@@ -412,16 +415,67 @@ class _ProfessionalRegistrationScreenState
       body["id_proof"] = idProofUrl ?? "";
       body["is_filled"] = 1;
 
-      if (!mounted) return;
-      final response = await RestClient(await RetroApi().dioData(context))
-          .updateProfile(body);
+      // The legacy REST API (Apis.baseUrl) is permanently dead - confirmed
+      // 404 on every route, including this one. Astra and Supabase are the
+      // real, live backends, so they must not be gated behind the legacy
+      // call succeeding; it is attempted only for whatever installs still
+      // depend on it, and never blocks a real profile update.
+      bool astraSynced = false;
+      try {
+        await _astraApiService.registerDoctor({
+          "unique_id": doctorId,
+          "name": body['name'] ?? '',
+          "email": body['email'] ?? '',
+          "phone": body['phone'] ?? '',
+          "gender": body['gender'] ?? '',
+          "dob": body['dob'] ?? '',
+          "education": body['education'] ?? '',
+          "experience": body['experience'] ?? '',
+          "language": body['language'] ?? '',
+          "desc": body['desc'] ?? '',
+          "appointment_fees": body['appointment_fees'] ?? '',
+          "video_appointment_fees": body['video_appointment_fees'] ?? '',
+          "license_number": body['license_number'] ?? '',
+          "certificate": body['certificate'] ?? '',
+          "id_proof": body['id_proof'] ?? '',
+        });
+        astraSynced = true;
+      } catch (_) {
+        // Reported to the user below via legacySynced/astraSynced check.
+      }
+
+      try {
+        await _supabaseService.saveDoctorProfile(
+          doctorId: doctorId,
+          name: body['name'] ?? '',
+          email: body['email'] ?? '',
+          phone: body['phone'] ?? '',
+          gender: body['gender'] ?? '',
+          dob: body['dob'] ?? '',
+          photoUrl: "",
+          isFaceVerified: true,
+        );
+      } catch (_) {
+        // Supabase mirror is best-effort and must not block a real update.
+      }
 
       if (!mounted) return;
-      if (response.success == true) {
+      bool legacySynced = false;
+      try {
+        final response = await RestClient(await RetroApi().dioData(context))
+            .updateProfile(body);
+        legacySynced = response.success == true;
+      } catch (_) {
+        // Legacy endpoint is dead; astraSynced is the real signal below.
+      }
+
+      if (!mounted) return;
+      if (astraSynced || legacySynced) {
+        SharedPreferenceHelper.setString(Preferences.uniqueId, doctorId);
         OslerToast.success(context, "Clinical Profile Updated");
         Navigator.pop(context);
       } else {
-        OslerToast.error(context, response.msg ?? "Update failed");
+        OslerToast.error(context, "Update failed");
       }
     } catch (e) {
       if (!mounted) return;
