@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/date_util.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
@@ -93,7 +94,7 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
                                     duration = "${secondType}s ";
                                   }
 
-                                  return Column(
+                                  final row = Column(
                                     children: [
                                       Container(
                                         margin: EdgeInsets.symmetric(
@@ -255,6 +256,9 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
                                       ),
                                     ],
                                   );
+
+                                  return ScreenEntrance(
+                                      index: index % 8, child: row);
                                 },
                               )
                             : Center(

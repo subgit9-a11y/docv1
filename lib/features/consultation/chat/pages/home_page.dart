@@ -7,10 +7,12 @@ import 'package:doctro/features/consultation/chat/providers/home_provider.dart';
 import 'package:doctro/features/consultation/chat/utils/debouncer.dart';
 import 'package:doctro/features/consultation/chat/utils/utilities.dart';
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/features/dashboard/login_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -133,7 +135,9 @@ class HomePageState extends State<HomePage> {
                             return ListView.builder(
                               padding: const EdgeInsets.all(10),
                               itemBuilder: (context, index) => buildItem(
-                                  context, snapshot.data?.docs[index]),
+                                  context,
+                                  snapshot.data?.docs[index],
+                                  index % 8),
                               itemCount: snapshot.data?.docs.length,
                               controller: listScrollController,
                             );
@@ -166,16 +170,18 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildItem(BuildContext context, DocumentSnapshot? document) {
+  Widget buildItem(
+      BuildContext context, DocumentSnapshot? document, int index) {
     if (document != null) {
       UserChat userChat = UserChat.fromDocument(document);
       if (currentUserId == null && userChat.id == currentUserId) {
         return const SizedBox.shrink();
       } else {
-        return Container(
+        final item = Container(
           margin: const EdgeInsets.only(bottom: 10, left: 5, right: 5),
           child: TextButton(
             onPressed: () {
+              HapticFeedback.selectionClick();
               if (Utilities.isKeyboardShowing()) {
                 Utilities.closeKeyboard(context);
               }
@@ -278,6 +284,8 @@ class HomePageState extends State<HomePage> {
             ),
           ),
         );
+
+        return ScreenEntrance(index: index, child: item);
       }
     } else {
       return const SizedBox.shrink();
