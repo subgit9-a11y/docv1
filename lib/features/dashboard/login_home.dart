@@ -61,8 +61,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
 
     _slideAnimation =
         Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(
-          CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
-        );
+      CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
+    );
 
     _scaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeOutBack),
@@ -127,8 +127,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                       ),
                                     ],
                                   ),
-                                  child:
-                                      (viewModel.dFullImage != null &&
+                                  child: (viewModel.dFullImage != null &&
                                           viewModel.dFullImage!.isNotEmpty)
                                       ? ClipRRect(
                                           borderRadius: BorderRadius.circular(
@@ -292,8 +291,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                             final isWide = constraints.maxWidth > 500;
                             final currencySymbol =
                                 SharedPreferenceHelper.getString(
-                                  Preferences.currency_symbol,
-                                );
+                              Preferences.currency_symbol,
+                            );
 
                             // A fixed tile height, not an aspect ratio: the card
                             // stacks an icon, a value and a label, so its content
@@ -305,11 +304,11 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: isWide ? 4 : 2,
-                                    mainAxisSpacing: 12,
-                                    crossAxisSpacing: 12,
-                                    mainAxisExtent: 120,
-                                  ),
+                                crossAxisCount: isWide ? 4 : 2,
+                                mainAxisSpacing: 12,
+                                crossAxisSpacing: 12,
+                                mainAxisExtent: 120,
+                              ),
                               children: [
                                 _buildStatCard(
                                   context,
@@ -641,19 +640,21 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       ? "Couldn't Load Appointments"
                       : "No Appointments Found",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AyurezeTheme.textPrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
+                        color: AyurezeTheme.textPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   showError
                       ? vm.errorMessage
                       : isSearching
-                      ? "No patient matching '${_searchController.text}'"
-                      : "There are no appointments scheduled for this section.",
+                          ? "No patient matching '${_searchController.text}'"
+                          : "There are no appointments scheduled for this section.",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
                       ?.copyWith(color: AyurezeTheme.textSecondary),
                 ),
               ],

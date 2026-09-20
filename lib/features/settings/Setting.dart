@@ -93,8 +93,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           onChanged: (val) async {
                             viewModel.setDarkMode(val);
                             await context.read<ThemeProvider>().setDarkMode(
-                              val,
-                            );
+                                  val,
+                                );
                             // Inside build() the `context` parameter shadows State.context,
                             // so the check must be context.mounted.
                             if (!context.mounted) return;

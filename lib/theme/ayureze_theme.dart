@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AyurezeTheme {
@@ -14,14 +15,15 @@ class AyurezeTheme {
     Color color, {
     double? height,
     double? letterSpacing,
-  }) => TextStyle(
-    fontFamily: fontFamily,
-    fontSize: size,
-    fontWeight: weight,
-    color: color,
-    height: height,
-    letterSpacing: letterSpacing,
-  );
+  }) =>
+      TextStyle(
+        fontFamily: fontFamily,
+        fontSize: size,
+        fontWeight: weight,
+        color: color,
+        height: height,
+        letterSpacing: letterSpacing,
+      );
 
   // Osler UI Kit Colors
   static const Color oslerGray100 = Color(0xFF111A14);
@@ -168,20 +170,19 @@ class AyurezeTheme {
   }
 
   static ThemeData lightTheme() {
-    final colorScheme =
-        ColorScheme.fromSeed(
-          seedColor: healingGreen100,
-          brightness: Brightness.light,
-          primary: healingGreen50,
-          secondary: oslerGray50,
-          surface: lightSurface,
-        ).copyWith(
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
-          onSurface: lightTextPrimary,
-          error: remoteRed50,
-          onError: Colors.white,
-        );
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: healingGreen100,
+      brightness: Brightness.light,
+      primary: healingGreen50,
+      secondary: oslerGray50,
+      surface: lightSurface,
+    ).copyWith(
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onSurface: lightTextPrimary,
+      error: remoteRed50,
+      onError: Colors.white,
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -196,7 +197,8 @@ class AyurezeTheme {
       cardColor: lightSurface,
       dividerColor: lightBorder,
       shadowColor: const Color(0x16000000),
-      textTheme: ThemeData.light().textTheme
+      textTheme: ThemeData.light()
+          .textTheme
           .apply(fontFamily: fontFamily)
           .copyWith(
             headlineLarge: font(
@@ -348,20 +350,19 @@ class AyurezeTheme {
   }
 
   static ThemeData darkTheme() {
-    final colorScheme =
-        ColorScheme.fromSeed(
-          seedColor: healingGreen100,
-          brightness: Brightness.dark,
-          primary: healingGreen50,
-          secondary: oslerGray50,
-          surface: darkSurface,
-        ).copyWith(
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
-          onSurface: darkTextPrimary,
-          error: remoteRed50,
-          onError: Colors.white,
-        );
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: healingGreen100,
+      brightness: Brightness.dark,
+      primary: healingGreen50,
+      secondary: oslerGray50,
+      surface: darkSurface,
+    ).copyWith(
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onSurface: darkTextPrimary,
+      error: remoteRed50,
+      onError: Colors.white,
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -376,7 +377,8 @@ class AyurezeTheme {
       cardColor: darkSurface,
       dividerColor: darkBorder,
       shadowColor: const Color(0x40000000),
-      textTheme: ThemeData.dark().textTheme
+      textTheme: ThemeData.dark()
+          .textTheme
           .apply(fontFamily: fontFamily)
           .copyWith(
             headlineLarge: font(
