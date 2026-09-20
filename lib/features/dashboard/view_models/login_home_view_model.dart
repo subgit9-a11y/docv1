@@ -48,7 +48,10 @@ class LoginHomeViewModel extends ChangeNotifier {
         fetchAppointments(context);
       }
 
-      dName = SharedPreferenceHelper.getString(Preferences.name);
+      // getStringOrNull, not getString: an unset or blank name must reach
+      // the UI as null so its "Dr. ${dName ?? 'Doctor'}" fallback fires,
+      // rather than rendering the raw 'N_A' sentinel or a bare "Dr.".
+      dName = SharedPreferenceHelper.getStringOrNull(Preferences.name);
       dFullImage = SharedPreferenceHelper.getString(Preferences.image);
       isFilled = SharedPreferenceHelper.getInt(Preferences.is_filled);
       subscription =

@@ -289,10 +289,16 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             final isWide = constraints.maxWidth > 500;
+                            // getString falls back to the literal 'N_A'
+                            // sentinel when the key was never written (e.g.
+                            // the settings fetch that populates it failed),
+                            // which rendered as "N_A0" here. Fall back to
+                            // nothing rather than propagate the sentinel.
                             final currencySymbol =
-                                SharedPreferenceHelper.getString(
-                              Preferences.currency_symbol,
-                            );
+                                SharedPreferenceHelper.getStringOrNull(
+                                      Preferences.currency_symbol,
+                                    ) ??
+                                    '';
 
                             // A fixed tile height, not an aspect ratio: the card
                             // stacks an icon, a value and a label, so its content
