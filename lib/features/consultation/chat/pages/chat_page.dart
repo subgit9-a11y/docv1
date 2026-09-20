@@ -12,9 +12,11 @@ import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/core/utils/safe_parse.dart';
 import 'package:doctro/features/dashboard/login_home.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FA;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -173,6 +175,7 @@ class ChatPageState extends State<ChatPage> {
                 children: [
                   InkWell(
                     onTap: () {
+                      HapticFeedback.selectionClick();
                       getImageCamera();
                       Navigator.pop(context);
                     },
@@ -196,6 +199,7 @@ class ChatPageState extends State<ChatPage> {
                   ),
                   InkWell(
                     onTap: () {
+                      HapticFeedback.selectionClick();
                       getImageGallery();
                       Navigator.pop(context);
                     },
@@ -628,7 +632,10 @@ class ChatPageState extends State<ChatPage> {
               margin: const EdgeInsets.symmetric(horizontal: 1),
               child: IconButton(
                 icon: Icon(Icons.image),
-                onPressed: _modalBottomSheetMenu,
+                onPressed: () {
+                  HapticFeedback.selectionClick();
+                  _modalBottomSheetMenu();
+                },
                 color: AyurezeTheme.forestDeep,
               ),
             ),
@@ -654,8 +661,10 @@ class ChatPageState extends State<ChatPage> {
               margin: const EdgeInsets.symmetric(horizontal: 8),
               child: IconButton(
                 icon: Icon(Icons.send),
-                onPressed: () =>
-                    onSendMessage(textEditingController.text, TypeMessage.text),
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  onSendMessage(textEditingController.text, TypeMessage.text);
+                },
                 color: AyurezeTheme.forestDeep,
               ),
             ),
@@ -686,8 +695,10 @@ class ChatPageState extends State<ChatPage> {
                     );
                   } else {
                     return Center(
-                        child: Text(getTranslated(context, AppString.no_message)
-                            .toString()));
+                        child: ScreenEntrance(
+                      child: Text(getTranslated(context, AppString.no_message)
+                          .toString()),
+                    ));
                   }
                 } else {
                   return Center(

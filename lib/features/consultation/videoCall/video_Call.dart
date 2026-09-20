@@ -6,6 +6,7 @@ import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/features/consultation/videoCall/view_models/video_call_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:pip_view/pip_view.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:provider/provider.dart';
@@ -102,7 +103,10 @@ class _VideoCallState extends State<VideoCall> {
 
                 // End Call
                 GestureDetector(
-                  onTap: () => viewModel.endCall(context),
+                  onTap: () {
+                    HapticFeedback.mediumImpact();
+                    viewModel.endCall(context);
+                  },
                   child: Container(
                     height: 55,
                     width: 55,
@@ -135,7 +139,10 @@ class _VideoCallState extends State<VideoCall> {
     required Color bgColor,
   }) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: () {
+        HapticFeedback.selectionClick();
+        onPressed();
+      },
       child: Container(
         height: 48,
         width: 48,

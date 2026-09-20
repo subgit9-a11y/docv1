@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:provider/provider.dart';
 import 'package:doctro/core/astra/astra_core.dart';
 import 'package:doctro/core/astra/widgets/widgets.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_loader.dart';
 
@@ -305,54 +307,56 @@ class _AstraChatPageState extends State<AstraChatPage> {
 
   Widget _buildEmptyState() {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
+      child: ScreenEntrance(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.psychology,
+                  size: 64,
+                  color: AyurezeTheme.healingGreen50,
+                ),
               ),
-              child: Icon(
-                Icons.psychology,
-                size: 64,
-                color: AyurezeTheme.healingGreen50,
+              const SizedBox(height: 24),
+              Text(
+                'Chat with Astra AI',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AyurezeTheme.textPrimary,
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Chat with Astra AI',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AyurezeTheme.textPrimary,
+              const SizedBox(height: 12),
+              Text(
+                'Ask questions about patients, prescriptions, or get AI-powered assistance for your consultations.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AyurezeTheme.textSecondary,
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Ask questions about patients, prescriptions, or get AI-powered assistance for your consultations.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: AyurezeTheme.textSecondary,
+              const SizedBox(height: 24),
+              // Quick action chips
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                alignment: WrapAlignment.center,
+                children: [
+                  _buildQuickAction('Summarize patient'),
+                  _buildQuickAction('Check medications'),
+                  _buildQuickAction('Generate prescription'),
+                ],
               ),
-            ),
-            const SizedBox(height: 24),
-            // Quick action chips
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              alignment: WrapAlignment.center,
-              children: [
-                _buildQuickAction('Summarize patient'),
-                _buildQuickAction('Check medications'),
-                _buildQuickAction('Generate prescription'),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -518,7 +522,10 @@ class _AstraChatPageState extends State<AstraChatPage> {
                         : const Icon(Icons.send, color: Colors.white),
                     onPressed: controller.isLoading || controller.isStreaming
                         ? null
-                        : _sendMessage,
+                        : () {
+                            HapticFeedback.lightImpact();
+                            _sendMessage();
+                          },
                   ),
                 ),
               ],
