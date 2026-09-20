@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/theme/ayureze_date_picker.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:doctro/network/api_header.dart';
@@ -773,36 +774,14 @@ class _ProfessionalRegistrationScreenState
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    DateTime? picked = await showDatePicker(
+    DateTime? picked = await showAyurezeDatePicker(
       context: context,
       initialDate: _dobController.text.isNotEmpty
           ? DateFormat('dd-MM-yyyy').parse(_dobController.text)
           : DateTime.now().subtract(const Duration(days: 365 * 25)),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(
-          // Theme.of(context), not ThemeData.light(): a from-scratch
-          // ThemeData carries Flutter's default font and shapes, not the
-          // app's Uni Neue/AyurezeTheme styling, so the date picker looked
-          // visually foreign next to the rest of the screen.
-          data: Theme.of(context).copyWith(
-            primaryColor: AyurezeTheme.caringViolet50,
-            colorScheme: Theme.of(context).colorScheme.copyWith(
-                  primary: AyurezeTheme.healingGreen100,
-                  onPrimary: Colors.white,
-                  surface: AyurezeTheme.surface,
-                  onSurface: AyurezeTheme.textPrimary,
-                ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                  foregroundColor: AyurezeTheme.caringViolet50),
-            ),
-            dialogTheme: DialogThemeData(backgroundColor: AyurezeTheme.surface),
-          ),
-          child: child!,
-        );
-      },
+      accentColor: AyurezeTheme.healingGreen100,
     );
     if (picked != null) {
       setState(() {

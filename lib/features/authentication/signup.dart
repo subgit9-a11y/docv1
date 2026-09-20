@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:country_picker/country_picker.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/theme/ayureze_date_picker.dart';
 import 'package:doctro/core/constants/common_function.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/register.dart';
@@ -467,36 +468,14 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   _selectDate(BuildContext context) async {
-    DateTime? newSelectedDate = await showDatePicker(
+    DateTime? newSelectedDate = await showAyurezeDatePicker(
       context: context,
       initialDate: _selectedDate != null
           ? _selectedDate!
           : DateTime.now().subtract(const Duration(days: 365 * 25)),
       firstDate: DateTime(1950, 1),
       lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(
-          // Theme.of(context), not ThemeData.light(): a from-scratch
-          // ThemeData carries Flutter's default font and shapes, not the
-          // app's Uni Neue/AyurezeTheme styling, so the date picker looked
-          // visually foreign next to the rest of the screen.
-          data: Theme.of(context).copyWith(
-            primaryColor: AyurezeTheme.actionButtonPrimary,
-            colorScheme: Theme.of(context).colorScheme.copyWith(
-                  primary: AyurezeTheme.actionButtonPrimary,
-                  onPrimary: Colors.white,
-                  surface: Colors.white,
-                  onSurface: AyurezeTheme.actionButtonPrimary,
-                ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                  foregroundColor: AyurezeTheme.actionButtonPrimary),
-            ),
-            dialogTheme: DialogThemeData(backgroundColor: Colors.white),
-          ),
-          child: child!,
-        );
-      },
+      accentColor: AyurezeTheme.actionButtonPrimary,
     );
     if (newSelectedDate != null) {
       _selectedDate = newSelectedDate;

@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/theme/ayureze_date_picker.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
@@ -2319,36 +2320,14 @@ class _ProfileScreen extends State<ProfileScreen> {
   }
 
   _selectDate(BuildContext context) async {
-    DateTime? newSelectedDate = await showDatePicker(
+    DateTime? newSelectedDate = await showAyurezeDatePicker(
       context: context,
       initialDate: _selectedDate != null
           ? _selectedDate!
           : DateTime.now().subtract(const Duration(days: 365 * 25)),
       firstDate: DateTime(1950, 1),
       lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(
-          // Theme.of(context), not ThemeData.light(): a from-scratch
-          // ThemeData carries Flutter's default font and shapes, not the
-          // app's Uni Neue/AyurezeTheme styling, so the date picker looked
-          // visually foreign next to the rest of the screen.
-          data: Theme.of(context).copyWith(
-            primaryColor: AyurezeTheme.healingGreen100,
-            colorScheme: Theme.of(context).colorScheme.copyWith(
-                  primary: AyurezeTheme.healingGreen100,
-                  onPrimary: Colors.white,
-                  surface: AyurezeTheme.surface,
-                  onSurface: AyurezeTheme.textPrimary,
-                ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                  foregroundColor: AyurezeTheme.healingGreen100),
-            ),
-            dialogTheme: DialogThemeData(backgroundColor: AyurezeTheme.surface),
-          ),
-          child: child!,
-        );
-      },
+      accentColor: AyurezeTheme.healingGreen100,
     );
     if (newSelectedDate != null) {
       _selectedDate = newSelectedDate;

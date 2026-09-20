@@ -1,5 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:doctro/core/constants/prefConstatnt.dart';
+import 'package:doctro/core/constants/preferences.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +12,7 @@ import 'package:doctro/widgets/osler_modal.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:doctro/widgets/osler_tooltip.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 
 import 'ChangePassword.dart';
 import 'changeLanguage.dart';
@@ -57,11 +62,7 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
           title: Text(
             getTranslated(context, AppString.drawer_setting).toString(),
-            style: TextStyle(
-              color: AyurezeTheme.textPrimary,
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-            ),
+            style: AyurezeTheme.font(20, FontWeight.w800, AyurezeTheme.textPrimary),
           ),
         ),
         body: Consumer<SettingsViewModel>(
@@ -71,9 +72,11 @@ class _SettingScreenState extends State<SettingScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeroCard(),
+                  ScreenEntrance(index: 0, child: _buildHeroCard()),
                   const SizedBox(height: 18),
-                  _buildSection(
+                  ScreenEntrance(
+                    index: 1,
+                    child: _buildSection(
                     title: getTranslated(context, AppString.settings_appearance)
                         .toString(),
                     items: [
@@ -110,8 +113,11 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ],
                   ),
+                  ),
                   const SizedBox(height: 18),
-                  _buildSection(
+                  ScreenEntrance(
+                    index: 2,
+                    child: _buildSection(
                     title: getTranslated(
                       context,
                       AppString.settings_notifications_section,
@@ -153,8 +159,11 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ],
                   ),
+                  ),
                   const SizedBox(height: 18),
-                  _buildSection(
+                  ScreenEntrance(
+                    index: 3,
+                    child: _buildSection(
                     title: getTranslated(
                       context,
                       AppString.settings_security_section,
@@ -175,8 +184,11 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ],
                   ),
+                  ),
                   const SizedBox(height: 18),
-                  _buildSection(
+                  ScreenEntrance(
+                    index: 4,
+                    child: _buildSection(
                     title: getTranslated(
                       context,
                       AppString.settings_support_section,
@@ -211,11 +223,17 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ],
                   ),
+                  ),
                   const SizedBox(height: 22),
-                  SizedBox(
+                  ScreenEntrance(
+                    index: 5,
+                    child: SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () => _showDeleteAccountDialog(),
+                      onPressed: () {
+                        HapticFeedback.mediumImpact();
+                        _showDeleteAccountDialog();
+                      },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AyurezeTheme.danger,
                         side: BorderSide(color: AyurezeTheme.danger),
@@ -227,6 +245,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ),
                   ),
+                  ),
                 ],
               ),
             );
@@ -237,6 +256,13 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   Widget _buildHeroCard() {
+    final name = SharedPreferenceHelper.getString(Preferences.name);
+    final specialization =
+        SharedPreferenceHelper.getStringOrNull(Preferences.specialization);
+    final avatarUrl = SharedPreferenceHelper.getString(Preferences.image);
+    final hasAvatar = avatarUrl.isNotEmpty && avatarUrl != 'N_A';
+    final hasName = name.isNotEmpty && name != 'N_A';
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
@@ -244,39 +270,83 @@ class _SettingScreenState extends State<SettingScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.14),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Text(
-              "Workspace controls",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
+          Row(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.4),
+                    width: 1.5,
+                  ),
+                ),
+                child: ClipOval(
+                  child: hasAvatar
+                      ? CachedNetworkImage(
+                          imageUrl: avatarUrl,
+                          fit: BoxFit.cover,
+                          placeholder: (_, __) => const Icon(
+                              Icons.person_rounded,
+                              color: Colors.white),
+                          errorWidget: (_, __, ___) => const Icon(
+                              Icons.person_rounded,
+                              color: Colors.white),
+                        )
+                      : const Icon(Icons.person_rounded,
+                          color: Colors.white, size: 26),
+                ),
               ),
-            ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      hasName ? "Dr. $name" : "Doctor",
+                      style: AyurezeTheme.font(17, FontWeight.w800, Colors.white),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (specialization != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        specialization,
+                        style: AyurezeTheme.font(
+                            13, FontWeight.w500, Colors.white.withValues(alpha: 0.78)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Text(
+                  "Workspace",
+                  style: AyurezeTheme.font(11, FontWeight.w700, Colors.white),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 14),
-          const Text(
+          const SizedBox(height: 18),
+          Text(
             "Tune how your Ayureze desk behaves day to day.",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-            ),
+            style: AyurezeTheme.font(22, FontWeight.w800, Colors.white,
+                height: 1.05),
           ),
           const SizedBox(height: 8),
           Text(
             "Appearance, patient call controls, account security, and support live here.",
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.78),
-              fontSize: 14,
-              height: 1.4,
-            ),
+            style: AyurezeTheme.font(
+                14, FontWeight.w500, Colors.white.withValues(alpha: 0.78),
+                height: 1.4),
           ),
         ],
       ),
@@ -294,12 +364,9 @@ class _SettingScreenState extends State<SettingScreen> {
           padding: const EdgeInsets.only(left: 4, bottom: 10),
           child: Text(
             title.toUpperCase(),
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w800,
-              color: AyurezeTheme.textSecondary,
-              letterSpacing: 1.1,
-            ),
+            style: AyurezeTheme.font(
+                12, FontWeight.w800, AyurezeTheme.textSecondary,
+                letterSpacing: 1.1),
           ),
         ),
         Container(
@@ -334,6 +401,12 @@ class _SettingScreenState extends State<SettingScreen> {
     required ValueChanged<bool> onChanged,
   }) {
     return ListTile(
+      // Tapping anywhere in the row toggles it too, not just the switch
+      // itself - a larger, more forgiving tap target.
+      onTap: () {
+        HapticFeedback.selectionClick();
+        onChanged(!value);
+      },
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       leading: OslerTooltip(
         message: title,
@@ -341,21 +414,15 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
       title: Text(
         title,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w700,
-          color: AyurezeTheme.textPrimary,
-        ),
+        style: AyurezeTheme.font(15, FontWeight.w700, AyurezeTheme.textPrimary),
       ),
       subtitle: subtitle != null
           ? Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
                 subtitle,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AyurezeTheme.textSecondary,
-                ),
+                style: AyurezeTheme.font(
+                    12, FontWeight.w500, AyurezeTheme.textSecondary),
               ),
             )
           : null,
@@ -363,7 +430,10 @@ class _SettingScreenState extends State<SettingScreen> {
         value: value,
         activeThumbColor: AyurezeTheme.forestDeep,
         activeTrackColor: AyurezeTheme.healingGreen50,
-        onChanged: onChanged,
+        onChanged: (val) {
+          HapticFeedback.selectionClick();
+          onChanged(val);
+        },
       ),
     );
   }
@@ -374,25 +444,33 @@ class _SettingScreenState extends State<SettingScreen> {
     required Color color,
     required VoidCallback onTap,
   }) {
-    return ListTile(
-      onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      leading: OslerTooltip(
-        message: title,
-        child: _iconBadge(icon, color),
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w700,
-          color: AyurezeTheme.textPrimary,
+    return AnimatedTapScale(
+      // Dummy tap: only here to drive the press-in scale. The real tap
+      // (with haptic) stays solely on ListTile's onTap below, so this
+      // doesn't double-fire the callback.
+      pressedScale: 0.99,
+      onTap: () {},
+      child: ListTile(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        leading: OslerTooltip(
+          message: title,
+          child: _iconBadge(icon, color),
         ),
-      ),
-      trailing: Icon(
-        Icons.arrow_forward_ios_rounded,
-        size: 14,
-        color: AyurezeTheme.textSecondary,
+        title: Text(
+          title,
+          style:
+              AyurezeTheme.font(15, FontWeight.w700, AyurezeTheme.textPrimary),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_rounded,
+          size: 14,
+          color: AyurezeTheme.textSecondary,
+        ),
       ),
     );
   }
