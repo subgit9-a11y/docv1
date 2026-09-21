@@ -15,6 +15,7 @@ class GlassSurface extends StatelessWidget {
   final double radius;
   final double blur;
   final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final double? width;
 
   const GlassSurface({
@@ -23,20 +24,24 @@ class GlassSurface extends StatelessWidget {
     this.radius = AyurezeTheme.radiusXl,
     this.blur = 18,
     this.padding,
+    this.margin,
     this.width,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: Container(
-          width: width,
-          padding: padding,
-          decoration: AyurezeTheme.glassDecoration(radius: radius),
-          child: child,
+    return Container(
+      margin: margin,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(radius),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+          child: Container(
+            width: width,
+            padding: padding,
+            decoration: AyurezeTheme.glassDecoration(radius: radius),
+            child: child,
+          ),
         ),
       ),
     );

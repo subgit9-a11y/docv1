@@ -3,6 +3,7 @@ import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
@@ -103,10 +104,9 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget _buildFormCard() {
     return Consumer<ChangePasswordViewModel>(
       builder: (context, viewModel, child) {
-        return Container(
+        return GlassSurface(
           width: double.infinity,
           padding: const EdgeInsets.all(20),
-          decoration: AyurezeTheme.panelDecoration(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -7,6 +7,7 @@ import 'package:doctro/core/localization/localization_constant.dart';
 
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/astra_fill_display.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_loader.dart';
 import 'package:doctro/widgets/osler_toast.dart';
@@ -169,9 +170,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                               child: Column(
                                 children: [
                                   // Profile Card
-                                  Container(
+                                  GlassSurface(
                                     padding: const EdgeInsets.all(20),
-                                    decoration: AyurezeTheme.panelDecoration(),
                                     child: Column(
                                       children: [
                                         Row(
@@ -305,13 +305,11 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                   const SizedBox(height: 14),
 
                                   // Appointment Overview Stats Panel
-                                  Container(
+                                  GlassSurface(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 16,
                                       horizontal: 12,
                                     ),
-                                    decoration:
-                                        AyurezeTheme.mutedPanelDecoration(),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
@@ -437,12 +435,10 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                     children: [
                                       // Status Buttons / Status Bar
                                       if (!hideButton)
-                                        Container(
+                                        GlassSurface(
                                           padding: const EdgeInsets.all(16),
                                           margin:
                                               const EdgeInsets.only(bottom: 16),
-                                          decoration:
-                                              AyurezeTheme.panelDecoration(),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -725,11 +721,9 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                   padding: const EdgeInsets.all(20),
                                   child: Column(
                                     children: [
-                                      Container(
+                                      GlassSurface(
                                         width: double.infinity,
                                         padding: const EdgeInsets.all(20),
-                                        decoration:
-                                            AyurezeTheme.panelDecoration(),
                                         child: Column(
                                           children: [
                                             HugeIcon(
@@ -932,9 +926,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Container(
+      child: GlassSurface(
         padding: const EdgeInsets.all(14),
-        decoration: AyurezeTheme.panelDecoration(),
         child: Row(
           children: [
             Container(
@@ -984,10 +977,9 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
   }) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Container(
+    return GlassSurface(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      decoration: AyurezeTheme.panelDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

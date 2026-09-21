@@ -6,6 +6,7 @@ import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/theme_provider.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:provider/provider.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/widgets/osler_modal.dart';
@@ -411,8 +412,7 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
           ),
         ),
-        Container(
-          decoration: AyurezeTheme.panelDecoration(),
+        GlassSurface(
           child: Column(
             children: List.generate(items.length, (index) {
               return Column(
