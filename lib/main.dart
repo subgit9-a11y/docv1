@@ -104,6 +104,18 @@ Future<void> main() async {
     debugPrint("SharedPreferenceHelper init failed: $e");
   }
 
+  // `settingRequest()` (GET /api/v1/setting) is a dead legacy endpoint - it
+  // 404s against the live Astra backend, so it never populates
+  // currency_symbol, and every "${getString(currency_symbol)}$amount" read
+  // silently rendered the literal 'N_A' fallback (e.g. wallet balance shown
+  // as "N_A0.00"). Seed a real default once so those reads degrade to the
+  // app's actual currency instead of a debug sentinel; a future working
+  // settingRequest() response still overwrites it via setString.
+  if (SharedPreferenceHelper.getStringOrNull(Preferences.currency_symbol) ==
+      null) {
+    await SharedPreferenceHelper.setString(Preferences.currency_symbol, '₹');
+  }
+
   if (!kIsWeb && Platform.isAndroid) {
     await SharedPreferenceHelper.setString(
         Preferences.device_platform, "Android");
