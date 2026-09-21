@@ -112,9 +112,6 @@ class OslerButton extends StatelessWidget {
         bgColor == AyurezeTheme.oslerGray50) {
       return Colors.white;
     }
-    if (bgColor == AyurezeTheme.gold500) {
-      return AyurezeTheme.goldOnGold;
-    }
     return AyurezeTheme.healingGreen100;
   }
 }

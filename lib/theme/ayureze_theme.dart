@@ -90,31 +90,6 @@ class AyurezeTheme {
   // #B4B4B4 gives 5.24:1 on darkSurfaceMuted and 6.64:1 on darkSurface.
   static const Color darkTextSecondary = Color(0xFFB4B4B4);
 
-  // "Night + Gold" direction — a premium, high-contrast palette used by the
-  // redesigned SignIn/Dashboard surfaces. Distinct from the green brand's
-  // light/dark tokens above (not wired to _isDark): these screens opt in to
-  // this look explicitly rather than following the system theme toggle.
-  static const Color nightSurface900 = Color(0xFF14120E);
-  static const Color nightSurface800 = Color(0xFF1D1A15);
-  static const Color nightBorder = Color(0xFF2A2620);
-  static const Color nightBorderStrong = Color(0xFF3A362D);
-  static const Color gold500 = Color(0xFFE8B93D);
-  static const Color goldOnGold = Color(0xFF241C05);
-  static const Color nightTextPrimary = Color(0xFFF5F1E6);
-  static const Color nightTextSecondary = Color(0xFFB7AF9C);
-  static const Color nightTextFaint = Color(0xFF9C9585);
-
-  static BoxDecoration nightHeroDecoration() => BoxDecoration(
-        borderRadius: BorderRadius.circular(radius2xl),
-        color: nightSurface900,
-      );
-
-  static BoxDecoration nightPanelDecoration() => BoxDecoration(
-        color: nightSurface800,
-        borderRadius: BorderRadius.circular(radiusXl),
-        border: Border.all(color: nightBorder, width: 1.5),
-      );
-
   // Dynamic Getters
   static Color get canvas => _isDark ? darkCanvas : lightCanvas;
   static Color get surface => _isDark ? darkSurface : lightSurface;

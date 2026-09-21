@@ -16,16 +16,6 @@ class OslerInput extends StatelessWidget {
   final bool readOnly;
   final VoidCallback? onTap;
 
-  /// Overrides for a screen that opts out of the default light card look
-  /// (e.g. the night + gold SignIn). Leaving these null keeps every other
-  /// existing caller's appearance unchanged.
-  final Color? fillColor;
-  final Color? borderColor;
-  final Color? focusedBorderColor;
-  final Color? textColor;
-  final Color? labelColor;
-  final Color? hintColor;
-
   const OslerInput({
     super.key,
     required this.label,
@@ -40,12 +30,6 @@ class OslerInput extends StatelessWidget {
     this.validator,
     this.readOnly = false,
     this.onTap,
-    this.fillColor,
-    this.borderColor,
-    this.focusedBorderColor,
-    this.textColor,
-    this.labelColor,
-    this.hintColor,
   });
 
   @override
@@ -55,8 +39,7 @@ class OslerInput extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 14, color: labelColor),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
         ),
         const SizedBox(height: 8),
         TextFormField(
@@ -68,13 +51,11 @@ class OslerInput extends StatelessWidget {
           readOnly: readOnly,
           onTap: onTap,
           validator: validator,
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w600, color: textColor),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: hintColor != null ? TextStyle(color: hintColor) : null,
             filled: true,
-            fillColor: fillColor ?? AyurezeTheme.oslerGray10,
+            fillColor: AyurezeTheme.oslerGray10,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
             prefixIcon: prefixIcon,
@@ -85,13 +66,12 @@ class OslerInput extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
-              borderSide: BorderSide(color: borderColor ?? Colors.transparent),
+              borderSide: const BorderSide(color: Colors.transparent),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
-              borderSide: BorderSide(
-                  color: focusedBorderColor ?? AyurezeTheme.healingGreen50,
-                  width: 2),
+              borderSide:
+                  BorderSide(color: AyurezeTheme.healingGreen50, width: 2),
             ),
           ),
         ),

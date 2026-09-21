@@ -84,42 +84,6 @@ void main() {
     });
   });
 
-  group('night + gold direction', () {
-    test('nightTextPrimary on both night surfaces', () {
-      for (final int surface in [
-        AyurezeTheme.nightSurface900.toARGB32(),
-        AyurezeTheme.nightSurface800.toARGB32(),
-      ]) {
-        expect(
-          contrastRatio(AyurezeTheme.nightTextPrimary.toARGB32(), surface),
-          greaterThanOrEqualTo(4.5),
-        );
-      }
-    });
-
-    test('nightTextSecondary on both night surfaces', () {
-      for (final int surface in [
-        AyurezeTheme.nightSurface900.toARGB32(),
-        AyurezeTheme.nightSurface800.toARGB32(),
-      ]) {
-        expect(
-          contrastRatio(AyurezeTheme.nightTextSecondary.toARGB32(), surface),
-          greaterThanOrEqualTo(4.5),
-        );
-      }
-    });
-
-    test('goldOnGold is legible on gold500 fills', () {
-      expect(
-        contrastRatio(
-          AyurezeTheme.goldOnGold.toARGB32(),
-          AyurezeTheme.gold500.toARGB32(),
-        ),
-        greaterThanOrEqualTo(4.5),
-      );
-    });
-  });
-
   group('filled controls carrying a white glyph', () {
     // Regression guard: these used healingGreen50 (#10B981), which is only
     // 2.54:1 against white and failed in BOTH light and dark mode. The
