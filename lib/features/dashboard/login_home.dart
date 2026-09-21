@@ -86,13 +86,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: AyurezeTheme.canvas,
+      backgroundColor: AyurezeTheme.nightSurface900,
       drawer: const ModernDrawer(),
       body: Consumer<LoginHomeViewModel>(
         builder: (context, viewModel, _) {
           return RefreshIndicator(
-            color: AyurezeTheme.healingGreen50,
-            backgroundColor: AyurezeTheme.surface,
+            color: AyurezeTheme.gold500,
+            backgroundColor: AyurezeTheme.nightSurface800,
             onRefresh: () => viewModel.fetchAppointments(context),
             child: SafeArea(
               child: CustomScrollView(
@@ -115,18 +115,11 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   width: 48,
                                   height: 48,
                                   decoration: BoxDecoration(
-                                    color: AyurezeTheme.surface,
+                                    color: AyurezeTheme.nightSurface800,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AyurezeTheme.border,
+                                      color: AyurezeTheme.nightBorder,
                                     ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: AyurezeTheme.shadow,
-                                        blurRadius: 8,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
                                   ),
                                   child: (viewModel.dFullImage != null &&
                                           viewModel.dFullImage!.isNotEmpty)
@@ -140,19 +133,19 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                             placeholder: (_, __) => HugeIcon(
                                               icon: HugeIcons
                                                   .strokeRoundedUserCircle,
-                                              color: AyurezeTheme.forestDeep,
+                                              color: AyurezeTheme.gold500,
                                             ),
                                             errorWidget: (_, __, ___) =>
                                                 HugeIcon(
                                               icon: HugeIcons
                                                   .strokeRoundedUserCircle,
-                                              color: AyurezeTheme.forestDeep,
+                                              color: AyurezeTheme.gold500,
                                             ),
                                           ),
                                         )
                                       : HugeIcon(
                                           icon: HugeIcons.strokeRoundedMenu01,
-                                          color: AyurezeTheme.forestDeep,
+                                          color: AyurezeTheme.gold500,
                                         ),
                                 ),
                               ),
@@ -167,13 +160,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                         AppString.dashboard_welcome,
                                       ).toString(),
                                       style: textTheme.bodyMedium?.copyWith(
-                                        color: AyurezeTheme.textSecondary,
+                                        color: AyurezeTheme.nightTextFaint,
                                       ),
                                     ),
                                     Text(
                                       "Dr. ${viewModel.dName ?? 'Doctor'}",
                                       style: textTheme.titleLarge?.copyWith(
-                                        color: AyurezeTheme.textPrimary,
+                                        color: AyurezeTheme.nightTextPrimary,
                                         fontWeight: FontWeight.bold,
                                       ),
                                       maxLines: 1,
@@ -190,15 +183,15 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                 icon: Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: AyurezeTheme.surface,
+                                    color: AyurezeTheme.nightSurface800,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AyurezeTheme.border,
+                                      color: AyurezeTheme.nightBorder,
                                     ),
                                   ),
                                   child: HugeIcon(
                                     icon: HugeIcons.strokeRoundedNotification02,
-                                    color: AyurezeTheme.textPrimary,
+                                    color: AyurezeTheme.nightTextPrimary,
                                     size: 22,
                                   ),
                                 ),
@@ -221,7 +214,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                           child: Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(20),
-                            decoration: AyurezeTheme.heroDecoration(),
+                            decoration: AyurezeTheme.nightPanelDecoration(),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -233,9 +226,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withValues(
-                                          alpha: 0.18,
-                                        ),
+                                        color: AyurezeTheme.gold500
+                                            .withValues(alpha: 0.12),
                                         borderRadius: BorderRadius.circular(
                                           999,
                                         ),
@@ -243,17 +235,16 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                       child: Text(
                                         "Clinical Dashboard",
                                         style: textTheme.labelLarge?.copyWith(
-                                          color: Colors.white,
+                                          color: AyurezeTheme.gold500,
                                           fontSize: 12,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                       ),
                                     ),
                                     const Spacer(),
                                     HugeIcon(
                                       icon: HugeIcons.strokeRoundedHealth,
-                                      color: Colors.white.withValues(
-                                        alpha: 0.9,
-                                      ),
+                                      color: AyurezeTheme.gold500,
                                       size: 24,
                                     ),
                                   ],
@@ -265,7 +256,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                     AppString.today_appointment_heading,
                                   ).toString(),
                                   style: textTheme.headlineMedium?.copyWith(
-                                    color: Colors.white,
+                                    color: AyurezeTheme.nightTextPrimary,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -273,7 +264,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                 Text(
                                   "Manage your consultations & patient health records seamlessly.",
                                   style: textTheme.bodyMedium?.copyWith(
-                                    color: Colors.white.withValues(alpha: 0.85),
+                                    color: AyurezeTheme.nightTextSecondary,
                                   ),
                                 ),
                               ],
@@ -330,7 +321,6 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   value:
                                       "$currencySymbol${viewModel.totalEarnings.toStringAsFixed(0)}",
                                   icon: HugeIcons.strokeRoundedWallet02,
-                                  color: AyurezeTheme.healingGreen50,
                                 ),
                                 _buildStatCard(
                                   context,
@@ -338,7 +328,6 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   title: "Patients",
                                   value: "${viewModel.patientCount}",
                                   icon: HugeIcons.strokeRoundedUserGroup,
-                                  color: AyurezeTheme.connectivityBlue50,
                                 ),
                                 _buildStatCard(
                                   context,
@@ -347,7 +336,6 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   value:
                                       "${viewModel.todayAppointments.length}",
                                   icon: HugeIcons.strokeRoundedCalendar01,
-                                  color: AyurezeTheme.sunshineYellow50,
                                 ),
                                 _buildStatCard(
                                   context,
@@ -355,7 +343,6 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   title: "Reviews",
                                   value: "${viewModel.reviewCount}",
                                   icon: HugeIcons.strokeRoundedStar,
-                                  color: AyurezeTheme.caringViolet50,
                                 ),
                               ],
                             );
@@ -376,22 +363,22 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                           onChanged: (text) =>
                               viewModel.onSearchTextChanged(text),
                           style: textTheme.bodyLarge?.copyWith(
-                            color: AyurezeTheme.textPrimary,
+                            color: AyurezeTheme.nightTextPrimary,
                           ),
                           decoration: InputDecoration(
                             hintText: "Search patient by name...",
                             hintStyle: textTheme.bodyMedium?.copyWith(
-                              color: AyurezeTheme.textSecondary,
+                              color: AyurezeTheme.nightTextFaint,
                             ),
                             prefixIcon: HugeIcon(
                               icon: HugeIcons.strokeRoundedSearch01,
-                              color: AyurezeTheme.forestDeep,
+                              color: AyurezeTheme.gold500,
                             ),
                             suffixIcon: _searchController.text.isNotEmpty
                                 ? IconButton(
                                     icon: HugeIcon(
                                       icon: HugeIcons.strokeRoundedCancel01,
-                                      color: AyurezeTheme.textSecondary,
+                                      color: AyurezeTheme.nightTextSecondary,
                                     ),
                                     onPressed: () {
                                       _searchController.clear();
@@ -401,7 +388,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   )
                                 : null,
                             filled: true,
-                            fillColor: AyurezeTheme.surface,
+                            fillColor: AyurezeTheme.nightSurface800,
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 16,
                               vertical: 14,
@@ -409,13 +396,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
-                                color: AyurezeTheme.border,
+                                color: AyurezeTheme.nightBorder,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
-                                color: AyurezeTheme.healingGreen50,
+                                color: AyurezeTheme.gold500,
                                 width: 1.5,
                               ),
                             ),
@@ -434,9 +421,9 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                         child: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: AyurezeTheme.surfaceMuted,
+                            color: AyurezeTheme.nightSurface800,
                             borderRadius: BorderRadius.circular(18),
-                            border: Border.all(color: AyurezeTheme.border),
+                            border: Border.all(color: AyurezeTheme.nightBorder),
                           ),
                           child: Row(
                             children: [
@@ -497,13 +484,12 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     required String title,
     required String value,
     required List<List<dynamic>> icon,
-    required Color color,
   }) {
     final textTheme = Theme.of(context).textTheme;
 
     final card = Container(
       padding: const EdgeInsets.all(14),
-      decoration: AyurezeTheme.panelDecoration(),
+      decoration: AyurezeTheme.nightPanelDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -513,10 +499,11 @@ class _LoginHomeViewState extends State<_LoginHomeView>
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.14),
+                  color: AyurezeTheme.gold500.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: HugeIcon(icon: icon, size: 18, color: color),
+                child:
+                    HugeIcon(icon: icon, size: 18, color: AyurezeTheme.gold500),
               ),
               const Spacer(),
             ],
@@ -525,7 +512,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
           Text(
             value,
             style: textTheme.titleLarge?.copyWith(
-              color: AyurezeTheme.textPrimary,
+              color: AyurezeTheme.nightTextPrimary,
               fontWeight: FontWeight.bold,
             ),
             maxLines: 1,
@@ -534,7 +521,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
           Text(
             title,
             style: textTheme.bodyMedium?.copyWith(
-              color: AyurezeTheme.textSecondary,
+              color: AyurezeTheme.nightTextFaint,
               fontSize: 12,
             ),
             maxLines: 1,
@@ -567,25 +554,16 @@ class _LoginHomeViewState extends State<_LoginHomeView>
           curve: Curves.easeInOut,
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? AyurezeTheme.surface : Colors.transparent,
+            color: isSelected ? AyurezeTheme.gold500 : Colors.transparent,
             borderRadius: BorderRadius.circular(14),
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: AyurezeTheme.shadow,
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    ),
-                  ]
-                : [],
           ),
           child: Text(
             label,
             textAlign: TextAlign.center,
             style: textTheme.bodyMedium?.copyWith(
               color: isSelected
-                  ? AyurezeTheme.textPrimary
-                  : AyurezeTheme.textSecondary,
+                  ? AyurezeTheme.goldOnGold
+                  : AyurezeTheme.nightTextFaint,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
               fontSize: 13,
             ),
@@ -632,7 +610,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
           child: Container(
             padding: const EdgeInsets.all(28),
-            decoration: AyurezeTheme.mutedPanelDecoration(),
+            decoration: AyurezeTheme.nightPanelDecoration(),
             child: Column(
               children: [
                 HugeIcon(
@@ -642,7 +620,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                   size: 48,
                   color: showError
                       ? AyurezeTheme.remoteRed50
-                      : AyurezeTheme.forestDeep.withValues(alpha: 0.5),
+                      : AyurezeTheme.gold500.withValues(alpha: 0.6),
                 ),
                 const SizedBox(height: 12),
                 Text(
@@ -650,7 +628,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       ? "Couldn't Load Appointments"
                       : "No Appointments Found",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AyurezeTheme.textPrimary,
+                        color: AyurezeTheme.nightTextPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                 ),
@@ -665,7 +643,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
-                      ?.copyWith(color: AyurezeTheme.textSecondary),
+                      ?.copyWith(color: AyurezeTheme.nightTextSecondary),
                 ),
               ],
             ),
@@ -712,7 +690,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
           borderRadius: BorderRadius.circular(24),
           child: Container(
             padding: const EdgeInsets.all(16),
-            decoration: AyurezeTheme.panelDecoration(),
+            decoration: AyurezeTheme.nightPanelDecoration(),
             child: Row(
               children: [
                 // Patient Image
@@ -722,7 +700,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: AyurezeTheme.healingGreen50,
+                      color: AyurezeTheme.gold500,
                       width: 1.5,
                     ),
                   ),
@@ -762,7 +740,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       Text(
                         patientName,
                         style: textTheme.titleMedium?.copyWith(
-                          color: AyurezeTheme.textPrimary,
+                          color: AyurezeTheme.nightTextPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 1,
@@ -774,13 +752,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                           HugeIcon(
                             icon: HugeIcons.strokeRoundedTime01,
                             size: 14,
-                            color: AyurezeTheme.forestDeep,
+                            color: AyurezeTheme.gold500,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             appointmentTime,
                             style: textTheme.bodyMedium?.copyWith(
-                              color: AyurezeTheme.textPrimary,
+                              color: AyurezeTheme.nightTextPrimary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -789,7 +767,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                             Text(
                               "• $appointmentDate",
                               style: textTheme.bodyMedium?.copyWith(
-                                color: AyurezeTheme.textSecondary,
+                                color: AyurezeTheme.nightTextFaint,
                               ),
                             ),
                           ],
@@ -799,7 +777,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       Text(
                         address,
                         style: textTheme.bodyMedium?.copyWith(
-                          color: AyurezeTheme.textSecondary,
+                          color: AyurezeTheme.nightTextFaint,
                           fontSize: 12,
                         ),
                         maxLines: 1,
@@ -814,13 +792,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: AyurezeTheme.surfaceMuted,
+                    color: AyurezeTheme.nightSurface900,
                     shape: BoxShape.circle,
-                    border: Border.all(color: AyurezeTheme.border),
+                    border: Border.all(color: AyurezeTheme.nightBorder),
                   ),
                   child: HugeIcon(
                     icon: HugeIcons.strokeRoundedArrowRight01,
-                    color: AyurezeTheme.forestDeep,
+                    color: AyurezeTheme.gold500,
                     size: 22,
                   ),
                 ),
