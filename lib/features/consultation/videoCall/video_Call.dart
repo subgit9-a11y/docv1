@@ -7,6 +7,7 @@ import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/features/consultation/videoCall/view_models/video_call_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
+import 'package:hugeicons/hugeicons.dart';
 import 'package:pip_view/pip_view.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:provider/provider.dart';
@@ -95,7 +96,7 @@ class _VideoCallState extends State<VideoCall> {
                 // Switch Camera
                 _buildControlButton(
                   onPressed: () => viewModel.switchCamera(),
-                  icon: Icons.flip_camera_ios_outlined,
+                  icon: AppIcons.cameraFlip,
                   color: AyurezeTheme.textPrimary,
                   bgColor: AyurezeTheme.surface.withValues(alpha: 0.2),
                 ),
@@ -120,8 +121,8 @@ class _VideoCallState extends State<VideoCall> {
                             offset: Offset(0, 4))
                       ],
                     ),
-                    child:
-                        Icon(AppIcons.callEnd, color: Colors.white, size: 28),
+                    child: HugeIcon(
+                        icon: AppIcons.callEnd, color: Colors.white, size: 28),
                   ),
                 ),
               ],
@@ -134,7 +135,7 @@ class _VideoCallState extends State<VideoCall> {
 
   Widget _buildControlButton({
     required VoidCallback onPressed,
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required Color color,
     required Color bgColor,
   }) {
@@ -150,7 +151,7 @@ class _VideoCallState extends State<VideoCall> {
           color: bgColor,
           shape: BoxShape.circle,
         ),
-        child: Icon(icon, color: color, size: 22),
+        child: HugeIcon(icon: icon, color: color, size: 22),
       ),
     );
   }

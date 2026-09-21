@@ -29,6 +29,7 @@ import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -186,8 +187,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        child: Icon(
-                          AppIcons.back,
+                        child: HugeIcon(
+                          icon: AppIcons.back,
                           size: 20,
                           color: Colors.white,
                         ),
@@ -999,7 +1000,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               45)),
-                                                  child: Icon(AppIcons.add,
+                                                  child: HugeIcon(
+                                                      icon: AppIcons.add,
                                                       size: width! * 0.06,
                                                       color: AyurezeTheme
                                                           .actionButtonPrimary),
@@ -1262,7 +1264,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               45)),
-                                                  child: Icon(AppIcons.add,
+                                                  child: HugeIcon(
+                                                      icon: AppIcons.add,
                                                       size: width! * 0.06,
                                                       color: AyurezeTheme
                                                           .actionButtonPrimary),
@@ -2230,7 +2233,7 @@ class _ProfileScreen extends State<ProfileScreen> {
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                    leading: Icon(AppIcons.photo),
+                    leading: HugeIcon(icon: AppIcons.photo),
                     title: Text(
                       getTranslated(context, AppString.choose_image_gallery)
                           .toString(),
@@ -2240,7 +2243,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                       Navigator.of(context).pop();
                     }),
                 ListTile(
-                  leading: Icon(AppIcons.camera),
+                  leading: HugeIcon(icon: AppIcons.camera),
                   title: Text(
                     getTranslated(context, AppString.choose_image_camera)
                         .toString(),

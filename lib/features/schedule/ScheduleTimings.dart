@@ -13,6 +13,7 @@ import 'package:doctro/network/server_error.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 
 class ScheduleTimings extends StatefulWidget {
@@ -90,8 +91,10 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
         backgroundColor: AyurezeTheme.canvas,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(AppIcons.back,
-              color: AyurezeTheme.healingGreen100, size: 20),
+          icon: HugeIcon(
+              icon: AppIcons.back,
+              color: AyurezeTheme.healingGreen100,
+              size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(

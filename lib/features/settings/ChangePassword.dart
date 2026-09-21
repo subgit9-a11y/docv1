@@ -7,6 +7,7 @@ import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 import 'view_models/change_password_view_model.dart';
 
@@ -47,8 +48,8 @@ class _ChangePasswordState extends State<ChangePassword> {
         appBar: AppBar(
           backgroundColor: AyurezeTheme.canvas,
           leading: IconButton(
-            icon: Icon(
-              AppIcons.back,
+            icon: HugeIcon(
+              icon: AppIcons.back,
               color: AyurezeTheme.forestDeep,
               size: 20,
             ),
@@ -265,8 +266,8 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   Widget _toggleIcon(bool hidden, VoidCallback onTap) {
     return IconButton(
-      icon: Icon(
-        hidden ? AppIcons.visibility : AppIcons.visibilityOff,
+      icon: HugeIcon(
+        icon: hidden ? AppIcons.visibility : AppIcons.visibilityOff,
         color: AyurezeTheme.textSecondary,
       ),
       onPressed: onTap,

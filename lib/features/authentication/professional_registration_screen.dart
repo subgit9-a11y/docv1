@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
-import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/ayureze_date_picker.dart';
 import 'package:doctro/widgets/osler_button.dart';
@@ -548,8 +547,10 @@ class _ProfessionalRegistrationScreenState
                                             "Email Address",
                                             _emailController,
                                             Icons.email_outlined),
-                                        _buildTextField("Phone Number",
-                                            _phoneController, AppIcons.phone,
+                                        _buildTextField(
+                                            "Phone Number",
+                                            _phoneController,
+                                            Icons.phone_android_outlined,
                                             isNumber: true),
                                         Row(
                                           children: [

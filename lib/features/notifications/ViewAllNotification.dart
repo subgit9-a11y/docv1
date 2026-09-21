@@ -9,6 +9,7 @@ import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class ViewAllNotification extends StatefulWidget {
   const ViewAllNotification({super.key});
@@ -40,8 +41,8 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
       appBar: AppBar(
         backgroundColor: AyurezeTheme.canvas,
         leading: IconButton(
-          icon: Icon(
-            AppIcons.back,
+          icon: HugeIcon(
+            icon: AppIcons.back,
             color: AyurezeTheme.forestDeep,
             size: 20,
           ),
@@ -180,8 +181,8 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                     width: 58,
                     height: 58,
                     color: AyurezeTheme.surfaceMuted,
-                    child: Icon(
-                      AppIcons.profile,
+                    child: HugeIcon(
+                      icon: AppIcons.profile,
                       color: AyurezeTheme.textSecondary,
                     ),
                   );

@@ -16,6 +16,7 @@ import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -58,8 +59,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
-            AppIcons.back,
+          icon: HugeIcon(
+            icon: AppIcons.back,
             color: AyurezeTheme.forestDeep,
             size: 20,
           ),
@@ -195,8 +196,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     width: 58,
                     height: 58,
                     color: AyurezeTheme.surfaceMuted,
-                    child: Icon(
-                      AppIcons.profile,
+                    child: HugeIcon(
+                      icon: AppIcons.profile,
                       color: AyurezeTheme.textSecondary,
                     ),
                   );

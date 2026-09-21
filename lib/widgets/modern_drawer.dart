@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -186,7 +187,7 @@ class ModernDrawer extends StatelessWidget {
                   ),
                   _drawerItem(
                       context,
-                      Icons.logout,
+                      AppIcons.logout,
                       getTranslated(context, AppString.drawer_logout)
                           .toString(),
                       () => _showLogoutDialog(context),
@@ -233,8 +234,8 @@ class ModernDrawer extends StatelessWidget {
     );
   }
 
-  Widget _drawerItem(
-      BuildContext context, IconData icon, String label, VoidCallback onTap,
+  Widget _drawerItem(BuildContext context, List<List<dynamic>> icon,
+      String label, VoidCallback onTap,
       {bool isDestructive = false, Widget? badge}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -249,7 +250,8 @@ class ModernDrawer extends StatelessWidget {
                 : AyurezeTheme.surfaceMuted,
             borderRadius: BorderRadius.circular(14),
           ),
-          child: Icon(icon,
+          child: HugeIcon(
+              icon: icon,
               color: isDestructive
                   ? AyurezeTheme.danger
                   : AyurezeTheme.textPrimary,

@@ -15,6 +15,7 @@ import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:doctro/widgets/osler_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 
 class RateAndReviewRoutesScreen extends StatefulWidget {
@@ -91,8 +92,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
         backgroundColor: AyurezeTheme.canvas,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
-            AppIcons.menu,
+          icon: HugeIcon(
+            icon: AppIcons.menu,
             color: AyurezeTheme.healingGreen100,
           ),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
@@ -232,8 +233,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
           hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AyurezeTheme.textSecondary,
               ),
-          suffixIcon: Icon(
-            AppIcons.search,
+          suffixIcon: HugeIcon(
+            icon: AppIcons.search,
             color: AyurezeTheme.healingGreen100,
           ),
         ),
@@ -266,7 +267,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
                           width: 56,
                           height: 56,
                           color: AyurezeTheme.surfaceMuted,
-                          child: Icon(AppIcons.profile,
+                          child: HugeIcon(
+                              icon: AppIcons.profile,
                               color: AyurezeTheme.textSecondary),
                         ),
                       )
@@ -274,7 +276,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
                         width: 56,
                         height: 56,
                         color: AyurezeTheme.surfaceMuted,
-                        child: Icon(AppIcons.profile,
+                        child: HugeIcon(
+                            icon: AppIcons.profile,
                             color: AyurezeTheme.textSecondary),
                       ),
           ),

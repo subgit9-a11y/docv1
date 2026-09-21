@@ -18,6 +18,7 @@ import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/main.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -98,8 +99,8 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
       appBar: AppBar(
         backgroundColor: AyurezeTheme.canvas,
         leading: IconButton(
-          icon: Icon(
-            AppIcons.back,
+          icon: HugeIcon(
+            icon: AppIcons.back,
             color: AyurezeTheme.forestDeep,
             size: 20,
           ),

@@ -1,154 +1,178 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 
+/// Centralized icon set for the app, backed by Hugeicons' stroke-rounded
+/// family instead of Material's built-in glyphs, for a more distinctive
+/// look. Every getter returns the `List<List<dynamic>>` shape `HugeIcon`
+/// expects; render with `HugeIcon(icon: AppIcons.x, color: ..., size: ...)`
+/// rather than the Material `Icon(...)` widget.
 class AppIcons {
   static const Color iconPrimary = Color(0xFF24382C);
   static const Color iconSecondary = Color(0xFF607063);
   static const Color iconAccent = Color(0xFF2E7D32);
 
-  static IconData get home => Icons.home_rounded;
-  static IconData get homeFilled => Icons.home_rounded;
+  static List<List<dynamic>> get home => HugeIcons.strokeRoundedHome01;
+  static List<List<dynamic>> get homeFilled => HugeIcons.strokeRoundedHome01;
 
-  static IconData get calendar => Icons.calendar_month_rounded;
-  static IconData get calendarFilled => Icons.calendar_month_rounded;
+  static List<List<dynamic>> get calendar => HugeIcons.strokeRoundedCalendar03;
+  static List<List<dynamic>> get calendarFilled =>
+      HugeIcons.strokeRoundedCalendar03;
 
-  static IconData get chat => Icons.chat_bubble_rounded;
-  static IconData get chatFilled => Icons.chat_bubble_rounded;
+  static List<List<dynamic>> get chat => HugeIcons.strokeRoundedMessage01;
+  static List<List<dynamic>> get chatFilled => HugeIcons.strokeRoundedMessage01;
 
-  static IconData get profile => Icons.person_rounded;
-  static IconData get profileFilled => Icons.person_rounded;
+  static List<List<dynamic>> get profile => HugeIcons.strokeRoundedUserCircle;
+  static List<List<dynamic>> get profileFilled =>
+      HugeIcons.strokeRoundedUserCircle;
 
-  static IconData get settings => Icons.settings_rounded;
-  static IconData get settingsFilled => Icons.settings_rounded;
+  static List<List<dynamic>> get settings => HugeIcons.strokeRoundedSettings01;
+  static List<List<dynamic>> get settingsFilled =>
+      HugeIcons.strokeRoundedSettings01;
 
-  static IconData get notifications => Icons.notifications_rounded;
-  static IconData get notificationsFilled => Icons.notifications_rounded;
+  static List<List<dynamic>> get notifications =>
+      HugeIcons.strokeRoundedNotification01;
+  static List<List<dynamic>> get notificationsFilled =>
+      HugeIcons.strokeRoundedNotification01;
 
-  static IconData get search => Icons.search_rounded;
+  static List<List<dynamic>> get search => HugeIcons.strokeRoundedSearch01;
 
-  static IconData get menu => Icons.menu_rounded;
+  static List<List<dynamic>> get menu => HugeIcons.strokeRoundedMenu01;
 
-  static IconData get back => Icons.arrow_back_ios_new_rounded;
+  static List<List<dynamic>> get back => HugeIcons.strokeRoundedArrowLeft01;
 
-  static IconData get forward => Icons.arrow_forward_ios_rounded;
+  static List<List<dynamic>> get forward => HugeIcons.strokeRoundedArrowRight01;
 
-  static IconData get add => Icons.add_circle_rounded;
-  static IconData get addFilled => Icons.add_circle_rounded;
+  static List<List<dynamic>> get add => HugeIcons.strokeRoundedAddCircle;
+  static List<List<dynamic>> get addFilled => HugeIcons.strokeRoundedAddCircle;
 
-  static IconData get edit => Icons.edit_rounded;
+  static List<List<dynamic>> get edit => HugeIcons.strokeRoundedEdit01;
 
-  static IconData get delete => Icons.delete_rounded;
+  static List<List<dynamic>> get delete => HugeIcons.strokeRoundedDelete01;
 
-  static IconData get call => Icons.call_rounded;
-  static IconData get callEnd => Icons.call_end_rounded;
+  static List<List<dynamic>> get call => HugeIcons.strokeRoundedCall02;
+  static List<List<dynamic>> get callEnd => HugeIcons.strokeRoundedCallEnd01;
 
-  static IconData get mic => Icons.mic_rounded;
+  static List<List<dynamic>> get mic => HugeIcons.strokeRoundedMic01;
 
-  static IconData get micOff => Icons.mic_off_rounded;
+  static List<List<dynamic>> get micOff => HugeIcons.strokeRoundedMicOff01;
 
-  static IconData get videoCall => Icons.videocam_rounded;
-  static IconData get videoCallOff => Icons.videocam_off_rounded;
+  static List<List<dynamic>> get videoCall => HugeIcons.strokeRoundedVideo01;
+  static List<List<dynamic>> get videoCallOff =>
+      HugeIcons.strokeRoundedVideoOff;
 
-  static IconData get camera => Icons.camera_alt_rounded;
+  static List<List<dynamic>> get camera => HugeIcons.strokeRoundedCamera01;
 
-  static IconData get photo => Icons.photo_library_rounded;
+  static List<List<dynamic>> get cameraFlip =>
+      HugeIcons.strokeRoundedCameraRotated01;
 
-  static IconData get medical => Icons.medical_services_rounded;
+  static List<List<dynamic>> get photo => HugeIcons.strokeRoundedImage01;
 
-  static IconData get prescription => Icons.description_rounded;
+  static List<List<dynamic>> get medical => HugeIcons.strokeRoundedStethoscope;
 
-  static IconData get patient => Icons.people_rounded;
+  static List<List<dynamic>> get prescription =>
+      HugeIcons.strokeRoundedPrescription;
 
-  static IconData get appointment => Icons.event_rounded;
+  static List<List<dynamic>> get patient => HugeIcons.strokeRoundedUserGroup;
 
-  static IconData get payment => Icons.payment_rounded;
+  static List<List<dynamic>> get appointment =>
+      HugeIcons.strokeRoundedCalendarCheck01;
 
-  static IconData get subscription => Icons.card_membership_rounded;
+  static List<List<dynamic>> get payment => HugeIcons.strokeRoundedCreditCard;
 
-  static IconData get language => Icons.language_rounded;
+  static List<List<dynamic>> get subscription => HugeIcons.strokeRoundedIdCard;
 
-  static IconData get password => Icons.lock_rounded;
+  static List<List<dynamic>> get language => HugeIcons.strokeRoundedTranslate;
 
-  static IconData get logout => Icons.logout_rounded;
+  static List<List<dynamic>> get password =>
+      HugeIcons.strokeRoundedSquareLockPassword;
 
-  static IconData get check => Icons.check_circle_rounded;
+  static List<List<dynamic>> get logout => HugeIcons.strokeRoundedLogout01;
 
-  static IconData get warning => Icons.warning_amber_rounded;
+  static List<List<dynamic>> get check =>
+      HugeIcons.strokeRoundedCheckmarkCircle01;
 
-  static IconData get error => Icons.error_rounded;
+  static List<List<dynamic>> get warning => HugeIcons.strokeRoundedAlert01;
 
-  static IconData get info => Icons.info_rounded;
+  static List<List<dynamic>> get error => HugeIcons.strokeRoundedAlertCircle;
 
-  static IconData get time => Icons.access_time_rounded;
+  static List<List<dynamic>> get info =>
+      HugeIcons.strokeRoundedInformationCircle;
 
-  static IconData get date => Icons.calendar_today_rounded;
+  static List<List<dynamic>> get time => HugeIcons.strokeRoundedTime01;
 
-  static IconData get send => Icons.send_rounded;
+  static List<List<dynamic>> get date => HugeIcons.strokeRoundedCalendar01;
 
-  static IconData get attach => Icons.attach_file_rounded;
+  static List<List<dynamic>> get send => HugeIcons.strokeRoundedSent;
 
-  static IconData get document => Icons.insert_drive_file_rounded;
+  static List<List<dynamic>> get attach => HugeIcons.strokeRoundedAttachment01;
 
-  static IconData get folder => Icons.folder_rounded;
+  static List<List<dynamic>> get document => HugeIcons.strokeRoundedFile01;
 
-  static IconData get star => Icons.star_rounded;
-  static IconData get starFilled => Icons.star_rounded;
+  static List<List<dynamic>> get folder => HugeIcons.strokeRoundedFolder01;
 
-  static IconData get filter => Icons.filter_list_rounded;
+  static List<List<dynamic>> get star => HugeIcons.strokeRoundedStar;
+  static List<List<dynamic>> get starFilled => HugeIcons.strokeRoundedStar;
 
-  static IconData get more => Icons.more_vert_rounded;
+  static List<List<dynamic>> get filter => HugeIcons.strokeRoundedFilter;
 
-  static IconData get close => Icons.close_rounded;
+  static List<List<dynamic>> get more => HugeIcons.strokeRoundedMoreVertical;
 
-  static IconData get visibility => Icons.visibility_rounded;
-  static IconData get visibilityOff => Icons.visibility_off_rounded;
+  static List<List<dynamic>> get close => HugeIcons.strokeRoundedCancel01;
 
-  static IconData get email => Icons.email_rounded;
+  static List<List<dynamic>> get visibility => HugeIcons.strokeRoundedView;
+  static List<List<dynamic>> get visibilityOff =>
+      HugeIcons.strokeRoundedViewOff;
 
-  static IconData get phone => Icons.phone_rounded;
+  static List<List<dynamic>> get email => HugeIcons.strokeRoundedMailAtSign01;
 
-  static IconData get location => Icons.location_on_rounded;
+  static List<List<dynamic>> get phone => HugeIcons.strokeRoundedCall02;
 
-  static IconData get doctor => Icons.local_hospital_rounded;
+  static List<List<dynamic>> get location => HugeIcons.strokeRoundedLocation01;
 
-  static IconData get hospital => Icons.business_rounded;
+  static List<List<dynamic>> get doctor => HugeIcons.strokeRoundedStethoscope02;
 
-  static IconData get wallet => Icons.account_balance_wallet_rounded;
+  static List<List<dynamic>> get hospital => HugeIcons.strokeRoundedHospital01;
 
-  static IconData get share => Icons.share_rounded;
+  static List<List<dynamic>> get wallet => HugeIcons.strokeRoundedWallet01;
 
-  static IconData get download => Icons.download_rounded;
+  static List<List<dynamic>> get share => HugeIcons.strokeRoundedShare01;
 
-  static IconData get upload => Icons.cloud_upload_rounded;
+  static List<List<dynamic>> get download => HugeIcons.strokeRoundedDownload01;
 
-  static IconData get image => Icons.image_rounded;
+  static List<List<dynamic>> get upload => HugeIcons.strokeRoundedUpload01;
 
-  static IconData get help => Icons.help_rounded;
+  static List<List<dynamic>> get image => HugeIcons.strokeRoundedImage02;
 
-  static IconData get privacy => Icons.privacy_tip_rounded;
+  static List<List<dynamic>> get help => HugeIcons.strokeRoundedHelpCircle;
 
-  static IconData get terms => Icons.article_rounded;
+  static List<List<dynamic>> get privacy => HugeIcons.strokeRoundedShieldCheck;
 
-  static IconData get about => Icons.info_rounded;
+  static List<List<dynamic>> get terms => HugeIcons.strokeRoundedAgreement01;
 
-  static IconData get shield => Icons.shield_rounded;
+  static List<List<dynamic>> get about =>
+      HugeIcons.strokeRoundedInformationCircle;
 
-  static IconData get verified => Icons.verified_rounded;
+  static List<List<dynamic>> get shield => HugeIcons.strokeRoundedShield01;
 
-  static IconData get clock => Icons.schedule_rounded;
+  static List<List<dynamic>> get verified =>
+      HugeIcons.strokeRoundedCheckmarkBadge01;
 
-  static IconData get mail => Icons.mail_rounded;
+  static List<List<dynamic>> get clock => HugeIcons.strokeRoundedClock01;
 
-  static IconData get sms => Icons.sms_rounded;
+  static List<List<dynamic>> get mail => HugeIcons.strokeRoundedMailAtSign02;
 
-  static IconData get wifi => Icons.wifi_rounded;
+  static List<List<dynamic>> get sms => HugeIcons.strokeRoundedMessage02;
 
-  static IconData get refresh => Icons.refresh_rounded;
+  static List<List<dynamic>> get wifi => HugeIcons.strokeRoundedWifi01;
 
-  static IconData get list => Icons.list_rounded;
+  static List<List<dynamic>> get refresh => HugeIcons.strokeRoundedReload;
 
-  static IconData get grid => Icons.grid_view_rounded;
+  static List<List<dynamic>> get list => HugeIcons.strokeRoundedListView;
 
-  static IconData get analytics => Icons.analytics_rounded;
+  static List<List<dynamic>> get grid => HugeIcons.strokeRoundedGridView;
 
-  static IconData get language2 => Icons.translate_rounded;
+  static List<List<dynamic>> get analytics =>
+      HugeIcons.strokeRoundedAnalytics01;
+
+  static List<List<dynamic>> get language2 => HugeIcons.strokeRoundedTranslate;
 }

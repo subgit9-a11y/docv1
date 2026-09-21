@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/services/astra_api_service.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
@@ -363,8 +364,10 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
         ),
         backgroundColor: AyurezeTheme.canvas,
         leading: IconButton(
-          icon: Icon(AppIcons.back,
-              color: AyurezeTheme.healingGreen100, size: 20),
+          icon: HugeIcon(
+              icon: AppIcons.back,
+              color: AyurezeTheme.healingGreen100,
+              size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         elevation: 0,
@@ -511,7 +514,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                                   ],
                                 ),
                                 trailing: IconButton(
-                                  icon: Icon(AppIcons.delete,
+                                  icon: HugeIcon(
+                                      icon: AppIcons.delete,
                                       color: AyurezeTheme.remoteRed50),
                                   onPressed: () =>
                                       setState(() => _medicines.removeAt(idx)),
@@ -523,7 +527,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                         const SizedBox(height: 16),
                         ElevatedButton.icon(
                           onPressed: _showSearchSheet,
-                          icon: Icon(AppIcons.add, size: 18),
+                          icon: HugeIcon(icon: AppIcons.add, size: 18),
                           label: const Text("Add Medicine"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 48),
@@ -734,8 +738,8 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
             controller: _searchController,
             decoration: InputDecoration(
               hintText: "Type medicine name",
-              prefixIcon:
-                  Icon(AppIcons.search, color: AyurezeTheme.healingGreen100),
+              prefixIcon: HugeIcon(
+                  icon: AppIcons.search, color: AyurezeTheme.healingGreen100),
             ),
             onChanged: _onSearchChanged,
           ),

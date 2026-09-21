@@ -7,6 +7,7 @@ import 'package:doctro/core/constants/date_util.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/core/utils/safe_parse.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 
 import 'view_models/videocallhistory_view_model.dart';
@@ -32,8 +33,8 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
           appBar: AppBar(
             elevation: 0,
             leading: IconButton(
-              icon: Icon(
-                AppIcons.back,
+              icon: HugeIcon(
+                icon: AppIcons.back,
                 size: 20,
                 color: AyurezeTheme.textSecondary,
               ),

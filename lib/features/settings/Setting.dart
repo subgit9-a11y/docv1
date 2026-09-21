@@ -13,6 +13,7 @@ import 'package:doctro/widgets/osler_toast.dart';
 import 'package:doctro/widgets/osler_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
+import 'package:hugeicons/hugeicons.dart';
 
 import 'ChangePassword.dart';
 import 'changeLanguage.dart';
@@ -53,7 +54,8 @@ class _SettingScreenState extends State<SettingScreen> {
         appBar: AppBar(
           backgroundColor: AyurezeTheme.canvas,
           leading: IconButton(
-            icon: Icon(AppIcons.back, color: AyurezeTheme.forestDeep, size: 20),
+            icon: HugeIcon(
+                icon: AppIcons.back, color: AyurezeTheme.forestDeep, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
@@ -209,7 +211,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       ).toString(),
                       items: [
                         _buildNavigationItem(
-                          icon: Icons.support_agent_outlined,
+                          icon: AppIcons.help,
                           title: "Contact Support",
                           color: const Color(0xFF7AA6D8),
                           onTap: () {
@@ -220,7 +222,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           },
                         ),
                         _buildNavigationItem(
-                          icon: Icons.privacy_tip_outlined,
+                          icon: AppIcons.privacy,
                           title: getTranslated(
                             context,
                             AppString.settings_privacy_policy,
@@ -229,7 +231,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           onTap: () {},
                         ),
                         _buildNavigationItem(
-                          icon: Icons.description_outlined,
+                          icon: AppIcons.terms,
                           title: getTranslated(
                             context,
                             AppString.settings_terms_conditions,
@@ -433,7 +435,7 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   Widget _buildToggleItem({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String title,
     String? subtitle,
     required bool value,
@@ -479,7 +481,7 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   Widget _buildNavigationItem({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String title,
     required Color color,
     required VoidCallback onTap,
@@ -514,7 +516,7 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  Widget _iconBadge(IconData icon, Color color) {
+  Widget _iconBadge(List<List<dynamic>> icon, Color color) {
     return Container(
       width: 42,
       height: 42,
@@ -522,7 +524,7 @@ class _SettingScreenState extends State<SettingScreen> {
         color: color.withValues(alpha: 0.16),
         borderRadius: BorderRadius.circular(14),
       ),
-      child: Icon(icon, color: color, size: 22),
+      child: HugeIcon(icon: icon, color: color, size: 22),
     );
   }
 

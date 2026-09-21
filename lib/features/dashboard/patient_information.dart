@@ -20,6 +20,7 @@ import 'package:doctro/features/dashboard/view_models/patient_information_view_m
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -834,7 +835,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                  leading: Icon(AppIcons.call, color: AyurezeTheme.forestDeep),
+                  leading: HugeIcon(
+                      icon: AppIcons.call, color: AyurezeTheme.forestDeep),
                   title: Text(
                     getTranslated(context, "call_text").toString(),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(

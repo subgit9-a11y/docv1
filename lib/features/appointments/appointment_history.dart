@@ -6,6 +6,7 @@ import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:doctro/widgets/osler_skeleton.dart';
 import 'package:doctro/features/appointments/view_models/appointment_history_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 
 class AppointmentHistory extends StatelessWidget {
@@ -311,7 +312,8 @@ class _AppointmentCardState extends State<_AppointmentCard>
                       width: 58,
                       height: 58,
                       color: AyurezeTheme.surfaceMuted,
-                      child: Icon(AppIcons.profile,
+                      child: HugeIcon(
+                          icon: AppIcons.profile,
                           color: AyurezeTheme.textSecondary),
                     ),
                   ),
