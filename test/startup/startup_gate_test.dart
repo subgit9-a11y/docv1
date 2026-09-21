@@ -89,15 +89,25 @@ void main() {
       await boot(tester, loggedIn: false);
 
       // The intro is a Positioned.fill over the destination, so it is the
-      // last (topmost) widget in the Stack while visible.
+      // last (topmost) widget in the Stack while visible. Matched by its
+      // zero insets rather than bare byType(Positioned): SignIn's own
+      // decorative background blobs are also Positioned widgets, just not
+      // full-bleed ones.
+      Finder findPositionedFill() => find.byWidgetPredicate((widget) =>
+          widget is Positioned &&
+          widget.left == 0 &&
+          widget.top == 0 &&
+          widget.right == 0 &&
+          widget.bottom == 0);
+
       expect(find.byType(Stack), findsWidgets);
-      expect(find.byType(Positioned), findsOneWidget);
+      expect(findPositionedFill(), findsOneWidget);
 
       await tester.pumpAndSettle();
 
-      // Once settled, the gate returns the destination directly - no Stack,
-      // no intro overlay left behind.
-      expect(find.byType(Positioned), findsNothing);
+      // Once settled, the gate returns the destination directly - no
+      // intro overlay left behind.
+      expect(findPositionedFill(), findsNothing);
       expect(find.byType(SignIn), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
