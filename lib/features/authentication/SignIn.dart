@@ -64,7 +64,7 @@ class _SignInViewState extends State<SignInView>
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: AyurezeTheme.canvas,
+      backgroundColor: AyurezeTheme.nightSurface900,
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusScope.of(context).unfocus(),
@@ -89,24 +89,25 @@ class _SignInViewState extends State<SignInView>
                               Container(
                                 width: double.infinity,
                                 padding: const EdgeInsets.all(22),
-                                decoration: AyurezeTheme.heroDecoration(),
+                                decoration: AyurezeTheme.nightHeroDecoration(),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 6),
+                                          horizontal: 12, vertical: 6),
                                       decoration: BoxDecoration(
-                                        color: Colors.white
-                                            .withValues(alpha: 0.14),
+                                        color: AyurezeTheme.gold500
+                                            .withValues(alpha: 0.12),
                                         borderRadius:
                                             BorderRadius.circular(999),
                                       ),
                                       child: Text(
                                         "Doctor workspace",
                                         style: textTheme.labelSmall?.copyWith(
-                                          color: Colors.white,
+                                          color: AyurezeTheme.gold500,
                                           fontWeight: FontWeight.w700,
+                                          letterSpacing: 0.4,
                                         ),
                                       ),
                                     ),
@@ -126,7 +127,8 @@ class _SignInViewState extends State<SignInView>
                                                     ?.copyWith(
                                                   height: 1.05,
                                                   fontWeight: FontWeight.w800,
-                                                  color: Colors.white,
+                                                  color: AyurezeTheme
+                                                      .nightTextPrimary,
                                                 ),
                                               ),
                                               const SizedBox(height: 10),
@@ -135,8 +137,8 @@ class _SignInViewState extends State<SignInView>
                                                 style: textTheme.bodyMedium
                                                     ?.copyWith(
                                                   height: 1.4,
-                                                  color: Colors.white
-                                                      .withValues(alpha: 0.85),
+                                                  color: AyurezeTheme
+                                                      .nightTextSecondary,
                                                 ),
                                               ),
                                             ],
@@ -163,7 +165,7 @@ class _SignInViewState extends State<SignInView>
                                 width: double.infinity,
                                 padding:
                                     const EdgeInsets.fromLTRB(20, 22, 20, 20),
-                                decoration: AyurezeTheme.panelDecoration(),
+                                decoration: AyurezeTheme.nightPanelDecoration(),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -182,8 +184,7 @@ class _SignInViewState extends State<SignInView>
                                                   bottom: BorderSide(
                                                     color: !viewModel
                                                             .isOtpLoginMode
-                                                        ? AyurezeTheme
-                                                            .forestDeep
+                                                        ? AyurezeTheme.gold500
                                                         : Colors.transparent,
                                                     width: 2,
                                                   ),
@@ -197,10 +198,9 @@ class _SignInViewState extends State<SignInView>
                                                     fontWeight: FontWeight.bold,
                                                     color: !viewModel
                                                             .isOtpLoginMode
-                                                        ? AyurezeTheme
-                                                            .forestDeep
+                                                        ? AyurezeTheme.gold500
                                                         : AyurezeTheme
-                                                            .textSecondary,
+                                                            .nightTextSecondary,
                                                   ),
                                                 ),
                                               ),
@@ -220,8 +220,7 @@ class _SignInViewState extends State<SignInView>
                                                   bottom: BorderSide(
                                                     color: viewModel
                                                             .isOtpLoginMode
-                                                        ? AyurezeTheme
-                                                            .forestDeep
+                                                        ? AyurezeTheme.gold500
                                                         : Colors.transparent,
                                                     width: 2,
                                                   ),
@@ -233,12 +232,11 @@ class _SignInViewState extends State<SignInView>
                                                   style: textTheme.titleSmall
                                                       ?.copyWith(
                                                     fontWeight: FontWeight.bold,
-                                                    color:
-                                                        viewModel.isOtpLoginMode
-                                                            ? AyurezeTheme
-                                                                .forestDeep
-                                                            : AyurezeTheme
-                                                                .textSecondary,
+                                                    color: viewModel
+                                                            .isOtpLoginMode
+                                                        ? AyurezeTheme.gold500
+                                                        : AyurezeTheme
+                                                            .nightTextSecondary,
                                                   ),
                                                 ),
                                               ),
@@ -257,12 +255,20 @@ class _SignInViewState extends State<SignInView>
                                         controller: viewModel.email,
                                         keyboardType:
                                             TextInputType.emailAddress,
+                                        fillColor: AyurezeTheme.nightSurface900,
+                                        borderColor: AyurezeTheme.nightBorder,
+                                        focusedBorderColor:
+                                            AyurezeTheme.gold500,
+                                        textColor:
+                                            AyurezeTheme.nightTextPrimary,
+                                        labelColor:
+                                            AyurezeTheme.nightTextSecondary,
+                                        hintColor: AyurezeTheme.nightTextFaint,
                                         prefixIcon: HugeIcon(
                                             icon: HugeIcons
                                                 .strokeRoundedMailAtSign01,
                                             size: 20,
-                                            color:
-                                                AyurezeTheme.healingGreen100),
+                                            color: AyurezeTheme.gold500),
                                         validator: (String? value) {
                                           if (value!.isEmpty) {
                                             return getTranslated(
@@ -291,12 +297,20 @@ class _SignInViewState extends State<SignInView>
                                         hint: "••••••••",
                                         controller: viewModel.password,
                                         isPassword: viewModel.isHidden,
+                                        fillColor: AyurezeTheme.nightSurface900,
+                                        borderColor: AyurezeTheme.nightBorder,
+                                        focusedBorderColor:
+                                            AyurezeTheme.gold500,
+                                        textColor:
+                                            AyurezeTheme.nightTextPrimary,
+                                        labelColor:
+                                            AyurezeTheme.nightTextSecondary,
+                                        hintColor: AyurezeTheme.nightTextFaint,
                                         prefixIcon: HugeIcon(
                                             icon: HugeIcons
                                                 .strokeRoundedSquareLock01,
                                             size: 20,
-                                            color:
-                                                AyurezeTheme.healingGreen100),
+                                            color: AyurezeTheme.gold500),
                                         suffixIcon: IconButton(
                                           icon: HugeIcon(
                                               icon: viewModel.isHidden
@@ -304,8 +318,8 @@ class _SignInViewState extends State<SignInView>
                                                       .strokeRoundedViewOff
                                                   : HugeIcons.strokeRoundedView,
                                               size: 20,
-                                              color:
-                                                  AyurezeTheme.healingGreen100),
+                                              color: AyurezeTheme
+                                                  .nightTextSecondary),
                                           onPressed: viewModel
                                               .togglePasswordVisibility,
                                         ),
@@ -335,8 +349,7 @@ class _SignInViewState extends State<SignInView>
                                             style:
                                                 textTheme.labelMedium?.copyWith(
                                               fontWeight: FontWeight.w600,
-                                              color:
-                                                  AyurezeTheme.healingGreen100,
+                                              color: AyurezeTheme.gold500,
                                             ),
                                           ),
                                         ),
@@ -346,6 +359,7 @@ class _SignInViewState extends State<SignInView>
                                         text: getTranslated(
                                                 context, AppString.login_button)
                                             .toString(),
+                                        customColor: AyurezeTheme.gold500,
                                         onPressed: () {
                                           if (viewModel.formKey.currentState!
                                               .validate()) {
@@ -366,6 +380,18 @@ class _SignInViewState extends State<SignInView>
                                               controller:
                                                   viewModel.phoneCodeController,
                                               readOnly: true,
+                                              fillColor:
+                                                  AyurezeTheme.nightSurface900,
+                                              borderColor:
+                                                  AyurezeTheme.nightBorder,
+                                              focusedBorderColor:
+                                                  AyurezeTheme.gold500,
+                                              textColor:
+                                                  AyurezeTheme.nightTextPrimary,
+                                              labelColor: AyurezeTheme
+                                                  .nightTextSecondary,
+                                              hintColor:
+                                                  AyurezeTheme.nightTextFaint,
                                               onTap: () {
                                                 showCountryPicker(
                                                   context: context,
@@ -386,12 +412,23 @@ class _SignInViewState extends State<SignInView>
                                               controller:
                                                   viewModel.phoneController,
                                               keyboardType: TextInputType.phone,
+                                              fillColor:
+                                                  AyurezeTheme.nightSurface900,
+                                              borderColor:
+                                                  AyurezeTheme.nightBorder,
+                                              focusedBorderColor:
+                                                  AyurezeTheme.gold500,
+                                              textColor:
+                                                  AyurezeTheme.nightTextPrimary,
+                                              labelColor: AyurezeTheme
+                                                  .nightTextSecondary,
+                                              hintColor:
+                                                  AyurezeTheme.nightTextFaint,
                                               prefixIcon: HugeIcon(
                                                   icon: HugeIcons
                                                       .strokeRoundedSmartPhone01,
                                                   size: 20,
-                                                  color: AyurezeTheme
-                                                      .healingGreen100),
+                                                  color: AyurezeTheme.gold500),
                                               validator: (String? value) {
                                                 if (value!.isEmpty) {
                                                   return "Please enter phone number";
@@ -413,12 +450,22 @@ class _SignInViewState extends State<SignInView>
                                           controller:
                                               viewModel.otpCodeController,
                                           keyboardType: TextInputType.number,
+                                          fillColor:
+                                              AyurezeTheme.nightSurface900,
+                                          borderColor: AyurezeTheme.nightBorder,
+                                          focusedBorderColor:
+                                              AyurezeTheme.gold500,
+                                          textColor:
+                                              AyurezeTheme.nightTextPrimary,
+                                          labelColor:
+                                              AyurezeTheme.nightTextSecondary,
+                                          hintColor:
+                                              AyurezeTheme.nightTextFaint,
                                           prefixIcon: HugeIcon(
                                               icon: HugeIcons
                                                   .strokeRoundedPinLocation01,
                                               size: 20,
-                                              color:
-                                                  AyurezeTheme.healingGreen100),
+                                              color: AyurezeTheme.gold500),
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
                                               return "Please enter OTP code";
@@ -435,6 +482,7 @@ class _SignInViewState extends State<SignInView>
                                         text: viewModel.otpSent
                                             ? "Verify & Login"
                                             : "Send OTP Verification",
+                                        customColor: AyurezeTheme.gold500,
                                         onPressed: () {
                                           if (viewModel.otpSent) {
                                             viewModel.verifyOtpCode(context);
@@ -449,7 +497,8 @@ class _SignInViewState extends State<SignInView>
                                       children: [
                                         Expanded(
                                             child: Divider(
-                                                color: AyurezeTheme.border)),
+                                                color:
+                                                    AyurezeTheme.nightBorder)),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 16),
@@ -458,26 +507,29 @@ class _SignInViewState extends State<SignInView>
                                             style:
                                                 textTheme.bodySmall?.copyWith(
                                               fontWeight: FontWeight.w600,
-                                              color: AyurezeTheme.textSecondary
-                                                  .withValues(alpha: 0.7),
+                                              color:
+                                                  AyurezeTheme.nightTextFaint,
                                             ),
                                           ),
                                         ),
                                         Expanded(
                                             child: Divider(
-                                                color: AyurezeTheme.border)),
+                                                color:
+                                                    AyurezeTheme.nightBorder)),
                                       ],
                                     ),
                                     const SizedBox(height: 20),
                                     OutlinedButton(
                                       style: OutlinedButton.styleFrom(
+                                        backgroundColor:
+                                            AyurezeTheme.nightSurface900,
                                         minimumSize:
                                             const Size(double.infinity, 56),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(16)),
                                         side: BorderSide(
-                                            color: AyurezeTheme.border),
+                                            color: AyurezeTheme.nightBorder),
                                       ),
                                       onPressed: () =>
                                           viewModel.handleGoogleSignIn(context),
@@ -496,7 +548,8 @@ class _SignInViewState extends State<SignInView>
                                             style:
                                                 textTheme.titleMedium?.copyWith(
                                               fontWeight: FontWeight.w700,
-                                              color: AyurezeTheme.textPrimary,
+                                              color:
+                                                  AyurezeTheme.nightTextPrimary,
                                             ),
                                           ),
                                         ],
@@ -510,7 +563,7 @@ class _SignInViewState extends State<SignInView>
                                 width: double.infinity,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 8),
-                                decoration: AyurezeTheme.mutedPanelDecoration(),
+                                decoration: AyurezeTheme.nightPanelDecoration(),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -523,7 +576,8 @@ class _SignInViewState extends State<SignInView>
                                             .toString(),
                                         style: textTheme.bodyMedium?.copyWith(
                                           fontWeight: FontWeight.w500,
-                                          color: AyurezeTheme.textSecondary,
+                                          color:
+                                              AyurezeTheme.nightTextSecondary,
                                         ),
                                       ),
                                     ),
@@ -536,7 +590,7 @@ class _SignInViewState extends State<SignInView>
                                             .toString(),
                                         style: textTheme.bodyMedium?.copyWith(
                                           fontWeight: FontWeight.w800,
-                                          color: AyurezeTheme.forestDeep,
+                                          color: AyurezeTheme.gold500,
                                         ),
                                       ),
                                     ),
