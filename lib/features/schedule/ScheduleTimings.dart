@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/working_hours.dart';
 import 'package:doctro/models/UpdateTiming.dart';
@@ -126,10 +127,9 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                       children: [
                         _buildHero(context),
                         const SizedBox(height: 22),
-                        Container(
+                        GlassSurface(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 12),
-                          decoration: AyurezeTheme.mutedPanelDecoration(),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

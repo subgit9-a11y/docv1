@@ -8,6 +8,7 @@ import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -112,10 +113,9 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                 ),
                 const SizedBox(height: 18),
                 if (patientNotification.isEmpty)
-                  Container(
+                  GlassSurface(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 36),
-                    decoration: AyurezeTheme.panelDecoration(),
                     child: Column(
                       children: [
                         Image.asset("assets/images/no-data.png", height: 88),

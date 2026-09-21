@@ -12,6 +12,7 @@ import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
@@ -110,31 +111,48 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 );
               }
 
-              return SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: AyurezeTheme.screenPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ScreenEntrance(index: 0, child: _buildHero()),
-                    const SizedBox(height: 18),
-                    if (patientNotification.isEmpty)
-                      ScreenEntrance(index: 1, child: _buildEmptyState())
-                    else ...[
-                      ...patientNotification
-                          .take(patientNotification.length > 6
-                              ? 6
-                              : patientNotification.length)
-                          .toList()
-                          .asMap()
-                          .entries
-                          .map((e) =>
-                              _buildNotificationCard(e.value, e.key % 8)),
-                      if (patientNotification.length >= 6)
-                        ScreenEntrance(index: 6, child: _buildViewAllCard()),
-                    ],
-                  ],
-                ),
+              return Stack(
+                children: [
+                  Positioned(
+                    top: -60,
+                    right: -80,
+                    child: GlassBlob(
+                        size: 220, color: AyurezeTheme.healingGreen50),
+                  ),
+                  Positioned(
+                    bottom: 120,
+                    left: -90,
+                    child: GlassBlob(
+                        size: 220, color: AyurezeTheme.sunshineYellow50),
+                  ),
+                  SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: AyurezeTheme.screenPadding,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ScreenEntrance(index: 0, child: _buildHero()),
+                        const SizedBox(height: 18),
+                        if (patientNotification.isEmpty)
+                          ScreenEntrance(index: 1, child: _buildEmptyState())
+                        else ...[
+                          ...patientNotification
+                              .take(patientNotification.length > 6
+                                  ? 6
+                                  : patientNotification.length)
+                              .toList()
+                              .asMap()
+                              .entries
+                              .map((e) =>
+                                  _buildNotificationCard(e.value, e.key % 8)),
+                          if (patientNotification.length >= 6)
+                            ScreenEntrance(
+                                index: 6, child: _buildViewAllCard()),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
               );
             },
           ),
@@ -257,9 +275,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         HapticFeedback.selectionClick();
         Navigator.pushNamed(context, "ViewAllNotification");
       },
-      child: Container(
+      child: GlassSurface(
         padding: const EdgeInsets.all(16),
-        decoration: AyurezeTheme.mutedPanelDecoration(),
         child: Row(
           children: [
             Expanded(
@@ -295,10 +312,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Widget _buildEmptyState() {
-    return Container(
+    return GlassSurface(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 36),
-      decoration: AyurezeTheme.panelDecoration(),
       child: Column(
         children: [
           Image.asset("assets/images/no-data.png", height: 88),

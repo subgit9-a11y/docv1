@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
@@ -221,8 +222,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
   }
 
   Widget _buildSearchCard(BuildContext context) {
-    return Container(
-      decoration: AyurezeTheme.panelDecoration(),
+    return GlassSurface(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
       child: TextField(
         controller: _search,
@@ -336,10 +336,9 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
 
   Widget _buildEmptyState(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Container(
+    return GlassSurface(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 40),
-      decoration: AyurezeTheme.panelDecoration(),
       child: Column(
         children: [
           Image.asset("assets/images/no-data.png", height: 96),
