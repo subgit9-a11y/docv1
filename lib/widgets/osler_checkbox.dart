@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 
 class OslerCheckbox extends StatelessWidget {
@@ -36,8 +38,9 @@ class OslerCheckbox extends StatelessWidget {
                 width: 2,
               ),
             ),
-            child:
-                value ? Icon(Icons.check, size: 14, color: Colors.white) : null,
+            child: value
+                ? HugeIcon(icon: AppIcons.check, size: 14, color: Colors.white)
+                : null,
           ),
           const SizedBox(width: 12),
           Expanded(

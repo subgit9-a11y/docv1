@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 import 'package:doctro/widgets/osler_hero.dart';
 import 'package:doctro/core/constants/app_string.dart';
@@ -273,8 +275,8 @@ class _PaymentScreen extends State<PaymentScreen> {
               color: AyurezeTheme.surfaceMuted,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(
-              Icons.payments_outlined,
+            child: HugeIcon(
+              icon: HugeIcons.strokeRoundedMoney03,
               color: AyurezeTheme.forestDeep,
             ),
           ),
@@ -560,7 +562,10 @@ class _PaymentScreen extends State<PaymentScreen> {
                   color: AyurezeTheme.textPrimary,
                 ),
               ),
-              Icon(Icons.wallet, color: AyurezeTheme.forestDeep, size: 24),
+              HugeIcon(
+                  icon: AppIcons.wallet,
+                  color: AyurezeTheme.forestDeep,
+                  size: 24),
             ],
           ),
           const SizedBox(height: 12),

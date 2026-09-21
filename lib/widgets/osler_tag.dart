@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 enum OslerTagStyle { primary, secondary, success, warning, danger, info }
 
 class OslerTag extends StatelessWidget {
   final String label;
   final OslerTagStyle style;
-  final IconData? icon;
+  final List<List<dynamic>>? icon;
 
   const OslerTag({
     super.key,
@@ -27,7 +28,7 @@ class OslerTag extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(icon, size: 14, color: _getForegroundColor()),
+            HugeIcon(icon: icon!, size: 14, color: _getForegroundColor()),
             const SizedBox(width: 4),
           ],
           Text(

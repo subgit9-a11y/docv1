@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:hugeicons/hugeicons.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctro/features/consultation/chat/constants/firestore_constants.dart';
@@ -106,7 +107,7 @@ class HomePageState extends State<HomePage> {
                   MaterialPageRoute(
                       builder: (context) => LoginHomeScreen(chat: "")));
             },
-            child: Icon(Icons.arrow_back)),
+            child: HugeIcon(icon: HugeIcons.strokeRoundedArrowLeft01)),
         backgroundColor: AyurezeTheme.surface,
         title: Text(
           getTranslated(context, AppString.chats).toString(),
@@ -240,15 +241,15 @@ class HomePageState extends State<HomePage> {
                             );
                           },
                           errorBuilder: (context, object, stackTrace) {
-                            return Icon(
-                              Icons.account_circle,
+                            return HugeIcon(
+                              icon: HugeIcons.strokeRoundedUserCircle,
                               size: 50,
                               color: AyurezeTheme.textSecondary,
                             );
                           },
                         )
-                      : Icon(
-                          Icons.account_circle,
+                      : HugeIcon(
+                          icon: HugeIcons.strokeRoundedUserCircle,
                           size: 50,
                           color: AyurezeTheme.textSecondary,
                         ),

@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:hugeicons/hugeicons.dart';
 import 'dart:io';
 
 import 'package:country_picker/country_picker.dart';
@@ -98,8 +99,10 @@ class _CreateAccountState extends State<CreateAccount> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded,
-              color: AyurezeTheme.textPrimary, size: 20),
+          icon: HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowLeft01,
+              color: AyurezeTheme.textPrimary,
+              size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -154,8 +157,10 @@ class _CreateAccountState extends State<CreateAccount> {
                           FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]"))
                         ],
                         textCapitalization: TextCapitalization.words,
-                        prefixIcon: Icon(Icons.person_outline_rounded,
-                            size: 20, color: AyurezeTheme.healingGreen100),
+                        prefixIcon: HugeIcon(
+                            icon: HugeIcons.strokeRoundedUserCircle02,
+                            size: 20,
+                            color: AyurezeTheme.healingGreen100),
                         validator: (String? value) {
                           if (value!.isEmpty) {
                             return getTranslated(
@@ -173,8 +178,10 @@ class _CreateAccountState extends State<CreateAccount> {
                         hint: "Enter your email",
                         controller: _email,
                         keyboardType: TextInputType.emailAddress,
-                        prefixIcon: Icon(Icons.alternate_email_rounded,
-                            size: 20, color: AyurezeTheme.healingGreen100),
+                        prefixIcon: HugeIcon(
+                            icon: HugeIcons.strokeRoundedMailAtSign01,
+                            size: 20,
+                            color: AyurezeTheme.healingGreen100),
                         validator: (String? value) {
                           if (value!.isEmpty) {
                             return getTranslated(
@@ -220,7 +227,8 @@ class _CreateAccountState extends State<CreateAccount> {
                                 FilteringTextInputFormatter.digitsOnly,
                                 LengthLimitingTextInputFormatter(10)
                               ],
-                              prefixIcon: Icon(Icons.phone_iphone_rounded,
+                              prefixIcon: HugeIcon(
+                                  icon: HugeIcons.strokeRoundedSmartPhone01,
                                   size: 20,
                                   color: AyurezeTheme.healingGreen100),
                               validator: (String? value) {
@@ -249,8 +257,10 @@ class _CreateAccountState extends State<CreateAccount> {
                         controller: _dob,
                         readOnly: true,
                         onTap: () => _selectDate(context),
-                        prefixIcon: Icon(Icons.calendar_month_rounded,
-                            size: 20, color: AyurezeTheme.healingGreen100),
+                        prefixIcon: HugeIcon(
+                            icon: HugeIcons.strokeRoundedCalendar03,
+                            size: 20,
+                            color: AyurezeTheme.healingGreen100),
                         validator: (String? value) {
                           if (value!.isEmpty) {
                             return getTranslated(
@@ -268,7 +278,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             .toString(),
                         value: _genderSelect,
                         items: gender,
-                        prefixIcon: Icons.people_alt_rounded,
+                        prefixIcon: HugeIcons.strokeRoundedUserGroup,
                         onChanged: (newValue) =>
                             setState(() => _genderSelect = newValue),
                         validator: (value) => value == null
@@ -285,13 +295,15 @@ class _CreateAccountState extends State<CreateAccount> {
                         hint: "••••••••",
                         controller: _password,
                         isPassword: _isHidden,
-                        prefixIcon: Icon(Icons.lock_outline_rounded,
-                            size: 20, color: AyurezeTheme.healingGreen100),
+                        prefixIcon: HugeIcon(
+                            icon: HugeIcons.strokeRoundedSquareLock01,
+                            size: 20,
+                            color: AyurezeTheme.healingGreen100),
                         suffixIcon: IconButton(
-                          icon: Icon(
-                              _isHidden
-                                  ? Icons.visibility_off_rounded
-                                  : Icons.visibility_rounded,
+                          icon: HugeIcon(
+                              icon: _isHidden
+                                  ? HugeIcons.strokeRoundedViewOff
+                                  : HugeIcons.strokeRoundedView,
                               size: 20,
                               color: AyurezeTheme.healingGreen100),
                           onPressed: () =>

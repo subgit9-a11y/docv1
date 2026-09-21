@@ -1,4 +1,5 @@
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
@@ -72,8 +73,10 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded,
-              color: AyurezeTheme.forestDeep, size: 20),
+          icon: HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowLeft01,
+              color: AyurezeTheme.forestDeep,
+              size: 20),
           onPressed: () => Navigator.pushNamed(context, 'SignIn'),
         ),
       ),
@@ -99,8 +102,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                           color: AyurezeTheme.surfaceMuted,
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
-                          Icons.mark_email_read_outlined,
+                        child: HugeIcon(
+                          icon: HugeIcons.strokeRoundedMailOpen01,
                           size: 48,
                           color: AyurezeTheme.textPrimary,
                         ),

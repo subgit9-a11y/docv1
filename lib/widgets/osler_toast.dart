@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 enum OslerToastType { success, error, warning, info }
 
@@ -12,28 +13,28 @@ class OslerToast {
   }) {
     final Color backgroundColor;
     final Color textColor;
-    final IconData icon;
+    final List<List<dynamic>> icon;
 
     switch (type) {
       case OslerToastType.success:
         backgroundColor = AyurezeTheme.healingGreen100;
         textColor = Colors.white;
-        icon = Icons.check_circle_outline;
+        icon = HugeIcons.strokeRoundedCheckmarkCircle02;
         break;
       case OslerToastType.error:
         backgroundColor = AyurezeTheme.remoteRed100;
         textColor = Colors.white;
-        icon = Icons.error_outline;
+        icon = HugeIcons.strokeRoundedAlertCircle;
         break;
       case OslerToastType.warning:
         backgroundColor = AyurezeTheme.sunshineYellow100;
         textColor = Colors.black87;
-        icon = Icons.warning_amber_outlined;
+        icon = HugeIcons.strokeRoundedAlert02;
         break;
       case OslerToastType.info:
         backgroundColor = AyurezeTheme.connectivityBlue100;
         textColor = Colors.white;
-        icon = Icons.info_outline;
+        icon = HugeIcons.strokeRoundedInformationCircle;
         break;
     }
 
@@ -42,7 +43,7 @@ class OslerToast {
       SnackBar(
         content: Row(
           children: [
-            Icon(icon, color: textColor, size: 20),
+            HugeIcon(icon: icon, color: textColor, size: 20),
             const SizedBox(width: 12),
             Expanded(
               child: Text(

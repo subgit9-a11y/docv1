@@ -68,8 +68,10 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded,
-              color: AyurezeTheme.textPrimary, size: 20),
+          icon: HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowLeft01,
+              color: AyurezeTheme.textPrimary,
+              size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -80,8 +82,10 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
         actions: [
           IconButton(
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-            icon: Icon(Icons.menu_rounded,
-                color: AyurezeTheme.forestDeep, size: 22),
+            icon: HugeIcon(
+                icon: HugeIcons.strokeRoundedMenu01,
+                color: AyurezeTheme.forestDeep,
+                size: 22),
           ),
         ],
       ),
@@ -208,8 +212,8 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
               color: AyurezeTheme.surfaceMuted,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.calendar_today_outlined,
+            child: HugeIcon(
+              icon: HugeIcons.strokeRoundedCalendar01,
               size: 36,
               color: AyurezeTheme.textSecondary,
             ),
@@ -356,8 +360,10 @@ class _AppointmentCardState extends State<_AppointmentCard>
                       const SizedBox(height: 6),
                       Row(
                         children: [
-                          Icon(Icons.schedule_rounded,
-                              size: 14, color: AyurezeTheme.textSecondary),
+                          HugeIcon(
+                              icon: HugeIcons.strokeRoundedClock01,
+                              size: 14,
+                              color: AyurezeTheme.textSecondary),
                           const SizedBox(width: 4),
                           Text(
                             '${appt.appointmentDate ?? ''} • ${appt.slotTime ?? ''}',
@@ -369,8 +375,10 @@ class _AppointmentCardState extends State<_AppointmentCard>
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            Icon(Icons.medical_services_outlined,
-                                size: 14, color: AyurezeTheme.textSecondary),
+                            HugeIcon(
+                                icon: HugeIcons.strokeRoundedStethoscope,
+                                size: 14,
+                                color: AyurezeTheme.textSecondary),
                             const SizedBox(width: 4),
                             Text(
                               appt.appointmentType.toString(),
@@ -386,8 +394,8 @@ class _AppointmentCardState extends State<_AppointmentCard>
                   ),
                 ),
                 const SizedBox(width: 8),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
+                HugeIcon(
+                  icon: HugeIcons.strokeRoundedArrowRight01,
                   size: 14,
                   color: AyurezeTheme.textSecondary,
                 ),

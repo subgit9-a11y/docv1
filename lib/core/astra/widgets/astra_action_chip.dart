@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/actions/action_models.dart';
 
 /// Astra Action Chip Widget
@@ -54,7 +56,8 @@ class AstraActionChip extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(_getActionIcon(), size: 18, color: _getIconColor()),
+                HugeIcon(
+                    icon: _getActionIcon(), size: 18, color: _getIconColor()),
                 const SizedBox(width: 8),
                 Text(
                   action.description ?? _getDefaultDescription(),
@@ -82,8 +85,10 @@ class AstraActionChip extends StatelessWidget {
                 ],
                 if (!isLoading) ...[
                   const SizedBox(width: 4),
-                  Icon(Icons.chevron_right,
-                      size: 18, color: _getTextColor().withValues(alpha: 0.6)),
+                  HugeIcon(
+                      icon: HugeIcons.strokeRoundedArrowRight01,
+                      size: 18,
+                      color: _getTextColor().withValues(alpha: 0.6)),
                 ],
               ],
             ),
@@ -180,40 +185,40 @@ class AstraActionChip extends StatelessWidget {
     }
   }
 
-  IconData _getActionIcon() {
+  List<List<dynamic>> _getActionIcon() {
     switch (action.type) {
       case AstraActionType.openPatient:
-        return Icons.person;
+        return HugeIcons.strokeRoundedUser;
       case AstraActionType.openPrescription:
-        return Icons.description;
+        return HugeIcons.strokeRoundedFile01;
       case AstraActionType.openCart:
-        return Icons.shopping_cart;
+        return HugeIcons.strokeRoundedShoppingCart01;
       case AstraActionType.openProduct:
-        return Icons.medication;
+        return HugeIcons.strokeRoundedMedicine01;
       case AstraActionType.openReport:
-        return Icons.assessment;
+        return HugeIcons.strokeRoundedChartLine;
       case AstraActionType.openStorage:
-        return Icons.folder;
+        return AppIcons.folder;
       case AstraActionType.openReminders:
-        return Icons.alarm;
+        return HugeIcons.strokeRoundedAlarmClock;
       case AstraActionType.openNotifications:
-        return Icons.notifications;
+        return AppIcons.notifications;
       case AstraActionType.openDoctorBooking:
-        return Icons.calendar_month;
+        return HugeIcons.strokeRoundedCalendar03;
       case AstraActionType.openChat:
-        return Icons.chat;
+        return AppIcons.chat;
       case AstraActionType.openPayment:
-        return Icons.payment;
+        return AppIcons.payment;
       case AstraActionType.openVideoCall:
-        return Icons.videocam;
+        return HugeIcons.strokeRoundedVideo01;
       case AstraActionType.openAppointment:
-        return Icons.event;
+        return HugeIcons.strokeRoundedCalendar03;
       case AstraActionType.openProfile:
-        return Icons.account_circle;
+        return HugeIcons.strokeRoundedUserCircle;
       case AstraActionType.goBack:
-        return Icons.arrow_back;
+        return HugeIcons.strokeRoundedArrowLeft01;
       case AstraActionType.unknown:
-        return Icons.touch_app;
+        return HugeIcons.strokeRoundedCursor02;
     }
   }
 

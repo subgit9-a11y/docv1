@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 /// AI Suggestion Model
 ///
@@ -111,7 +113,7 @@ class AISuggestion {
   }
 
   /// Get icon for this suggestion type
-  IconData get icon => type.icon;
+  List<List<dynamic>> get icon => type.icon;
 
   /// Get color for this suggestion type
   Color get color => type.color;
@@ -170,34 +172,34 @@ enum SuggestionType {
     }
   }
 
-  IconData get icon {
+  List<List<dynamic>> get icon {
     switch (this) {
       case SuggestionType.followUp:
-        return Icons.calendar_today;
+        return HugeIcons.strokeRoundedCalendar01;
       case SuggestionType.reminder:
-        return Icons.alarm;
+        return HugeIcons.strokeRoundedAlarmClock;
       case SuggestionType.payment:
-        return Icons.payment;
+        return AppIcons.payment;
       case SuggestionType.medication:
-        return Icons.medication;
+        return HugeIcons.strokeRoundedMedicine01;
       case SuggestionType.healthTip:
-        return Icons.lightbulb;
+        return HugeIcons.strokeRoundedIdea01;
       case SuggestionType.labTest:
-        return Icons.science;
+        return HugeIcons.strokeRoundedTestTube01;
       case SuggestionType.referral:
-        return Icons.person_add;
+        return HugeIcons.strokeRoundedUserAdd01;
       case SuggestionType.vitalAlert:
-        return Icons.monitor_heart;
+        return HugeIcons.strokeRoundedPulse01;
       case SuggestionType.drugInteraction:
-        return Icons.warning;
+        return AppIcons.warning;
       case SuggestionType.duplicateMedicine:
-        return Icons.copy;
+        return HugeIcons.strokeRoundedCopy01;
       case SuggestionType.alternative:
-        return Icons.swap_horiz;
+        return HugeIcons.strokeRoundedArrowDataTransferHorizontal;
       case SuggestionType.appointmentReminder:
-        return Icons.event;
+        return HugeIcons.strokeRoundedCalendar03;
       case SuggestionType.general:
-        return Icons.tips_and_updates;
+        return HugeIcons.strokeRoundedIdea01;
     }
   }
 

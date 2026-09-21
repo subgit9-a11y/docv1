@@ -1,5 +1,6 @@
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 /// OslerModal — Animated, modern dialog system for the Ayureze app.
 /// Supports danger, info, and confirmation modes.
@@ -57,10 +58,10 @@ class OslerModal {
                         : AyurezeTheme.healingGreen10),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    isDanger
-                        ? Icons.warning_amber_rounded
-                        : Icons.check_circle_outline_rounded,
+                  child: HugeIcon(
+                    icon: isDanger
+                        ? HugeIcons.strokeRoundedAlert01
+                        : HugeIcons.strokeRoundedCheckmarkCircle02,
                     color: isDanger
                         ? AyurezeTheme.remoteRed50
                         : AyurezeTheme.healingGreen50,

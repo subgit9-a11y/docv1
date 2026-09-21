@@ -1,4 +1,5 @@
 import 'package:country_picker/country_picker.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'dart:core';
 
 import 'package:doctro/core/constants/app_string.dart';
@@ -256,8 +257,9 @@ class _SignInViewState extends State<SignInView>
                                         controller: viewModel.email,
                                         keyboardType:
                                             TextInputType.emailAddress,
-                                        prefixIcon: Icon(
-                                            Icons.alternate_email_rounded,
+                                        prefixIcon: HugeIcon(
+                                            icon: HugeIcons
+                                                .strokeRoundedMailAtSign01,
                                             size: 20,
                                             color:
                                                 AyurezeTheme.healingGreen100),
@@ -289,16 +291,18 @@ class _SignInViewState extends State<SignInView>
                                         hint: "••••••••",
                                         controller: viewModel.password,
                                         isPassword: viewModel.isHidden,
-                                        prefixIcon: Icon(
-                                            Icons.lock_outline_rounded,
+                                        prefixIcon: HugeIcon(
+                                            icon: HugeIcons
+                                                .strokeRoundedSquareLock01,
                                             size: 20,
                                             color:
                                                 AyurezeTheme.healingGreen100),
                                         suffixIcon: IconButton(
-                                          icon: Icon(
-                                              viewModel.isHidden
-                                                  ? Icons.visibility_off_rounded
-                                                  : Icons.visibility_rounded,
+                                          icon: HugeIcon(
+                                              icon: viewModel.isHidden
+                                                  ? HugeIcons
+                                                      .strokeRoundedViewOff
+                                                  : HugeIcons.strokeRoundedView,
                                               size: 20,
                                               color:
                                                   AyurezeTheme.healingGreen100),
@@ -382,8 +386,9 @@ class _SignInViewState extends State<SignInView>
                                               controller:
                                                   viewModel.phoneController,
                                               keyboardType: TextInputType.phone,
-                                              prefixIcon: Icon(
-                                                  Icons.phone_iphone_rounded,
+                                              prefixIcon: HugeIcon(
+                                                  icon: HugeIcons
+                                                      .strokeRoundedSmartPhone01,
                                                   size: 20,
                                                   color: AyurezeTheme
                                                       .healingGreen100),
@@ -408,7 +413,9 @@ class _SignInViewState extends State<SignInView>
                                           controller:
                                               viewModel.otpCodeController,
                                           keyboardType: TextInputType.number,
-                                          prefixIcon: Icon(Icons.pin_outlined,
+                                          prefixIcon: HugeIcon(
+                                              icon: HugeIcons
+                                                  .strokeRoundedPinLocation01,
                                               size: 20,
                                               color:
                                                   AyurezeTheme.healingGreen100),

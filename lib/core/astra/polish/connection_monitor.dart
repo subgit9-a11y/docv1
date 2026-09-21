@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -136,20 +138,20 @@ enum ConnectionType {
     }
   }
 
-  IconData get icon {
+  List<List<dynamic>> get icon {
     switch (this) {
       case ConnectionType.wifi:
-        return Icons.wifi;
+        return AppIcons.wifi;
       case ConnectionType.mobile:
-        return Icons.signal_cellular_alt;
+        return HugeIcons.strokeRoundedSignalFull02;
       case ConnectionType.ethernet:
-        return Icons.lan;
+        return HugeIcons.strokeRoundedNetwork;
       case ConnectionType.none:
-        return Icons.signal_wifi_off;
+        return HugeIcons.strokeRoundedWifiOff01;
       case ConnectionType.unknown:
-        return Icons.help_outline;
+        return HugeIcons.strokeRoundedHelpCircle;
       case ConnectionType.other:
-        return Icons.device_unknown;
+        return HugeIcons.strokeRoundedQuestion;
     }
   }
 }
@@ -172,7 +174,10 @@ class ConnectionStatusBanner extends StatelessWidget {
             bottom: false,
             child: Row(
               children: [
-                const Icon(Icons.wifi_off, color: Colors.white, size: 18),
+                const HugeIcon(
+                    icon: HugeIcons.strokeRoundedWifiOff01,
+                    color: Colors.white,
+                    size: 18),
                 const SizedBox(width: 8),
                 const Expanded(
                   child: Text(

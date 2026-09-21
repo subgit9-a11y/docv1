@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
@@ -175,8 +176,8 @@ class _VoicePlayerState extends State<VoicePlayer> {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.volume_up,
+                HugeIcon(
+                  icon: HugeIcons.strokeRoundedVolumeHigh,
                   color: AyurezeTheme.healingGreen50,
                   size: 20,
                 ),
@@ -231,8 +232,10 @@ class _VoicePlayerState extends State<VoicePlayer> {
             color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(
-            _isPlaying ? Icons.pause : Icons.play_arrow,
+          child: HugeIcon(
+            icon: _isPlaying
+                ? HugeIcons.strokeRoundedPauseCircle
+                : HugeIcons.strokeRoundedPlayCircle,
             color: AyurezeTheme.healingGreen50,
             size: 24,
           ),
@@ -255,8 +258,10 @@ class _VoicePlayerState extends State<VoicePlayer> {
             color: AyurezeTheme.healingGreenFill,
             shape: BoxShape.circle,
           ),
-          child: Icon(
-            _isPlaying ? Icons.pause : Icons.play_arrow,
+          child: HugeIcon(
+            icon: _isPlaying
+                ? HugeIcons.strokeRoundedPauseCircle
+                : HugeIcons.strokeRoundedPlayCircle,
             color: Colors.white,
             size: iconSize,
           ),
@@ -279,7 +284,10 @@ class _VoicePlayerState extends State<VoicePlayer> {
             color: AyurezeTheme.border,
             shape: BoxShape.circle,
           ),
-          child: Icon(Icons.stop, color: AyurezeTheme.textPrimary, size: 20),
+          child: HugeIcon(
+              icon: HugeIcons.strokeRoundedStopCircle,
+              color: AyurezeTheme.textPrimary,
+              size: 20),
         ),
       ),
     );
@@ -352,7 +360,7 @@ class _VoicePlayerState extends State<VoicePlayer> {
               '${_playbackSpeed}x',
               style: const TextStyle(fontSize: 12),
             ),
-            const Icon(Icons.arrow_drop_down, size: 16),
+            const HugeIcon(icon: HugeIcons.strokeRoundedArrowDown01, size: 16),
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/features/dashboard/login_home.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
@@ -156,8 +157,8 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen>
               ),
             ],
           ),
-          child: const Icon(
-            Icons.check_rounded,
+          child: const HugeIcon(
+            icon: HugeIcons.strokeRoundedTick01,
             color: Colors.white,
             size: 40,
           ),

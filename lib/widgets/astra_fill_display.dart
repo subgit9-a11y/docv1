@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/services/astra_api_service.dart';
 
@@ -96,8 +97,10 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
         padding: EdgeInsets.all(16),
         child: Row(
           children: [
-            Icon(Icons.info_outline,
-                color: AyurezeTheme.textSecondary, size: 20),
+            HugeIcon(
+                icon: HugeIcons.strokeRoundedInformationCircle,
+                color: AyurezeTheme.textSecondary,
+                size: 20),
             SizedBox(width: 12),
             Expanded(
               child: Text(
@@ -178,8 +181,10 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         color: AyurezeTheme.purple,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Icon(Icons.auto_awesome,
-                          color: Colors.white, size: 20),
+                      child: HugeIcon(
+                          icon: HugeIcons.strokeRoundedSparkles,
+                          color: Colors.white,
+                          size: 20),
                     ),
                     SizedBox(width: 12),
                     Expanded(
@@ -222,10 +227,10 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         ),
                       ),
                     SizedBox(width: 8),
-                    Icon(
-                      _isExpanded
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
+                    HugeIcon(
+                      icon: _isExpanded
+                          ? HugeIcons.strokeRoundedArrowUp01
+                          : HugeIcons.strokeRoundedArrowDown01,
                       color: AyurezeTheme.purple,
                     ),
                   ],
@@ -243,7 +248,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                     // Chief Complaint
                     if (chiefComplaint.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.report_problem_outlined,
+                        icon: HugeIcons.strokeRoundedAlertDiamond,
                         title: "Primary Complaint",
                         content: chiefComplaint.toString(),
                         iconColor: AyurezeTheme.warning,
@@ -253,7 +258,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                     if (severityDetails.toString().isNotEmpty ||
                         timing.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.timeline,
+                        icon: HugeIcons.strokeRoundedChartLine,
                         title: "Pattern & Severity",
                         content:
                             "${severityDetails.toString().isNotEmpty ? 'Severity: $severityDetails\n' : ''}"
@@ -264,7 +269,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                     // Duration
                     if (duration.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.schedule,
+                        icon: HugeIcons.strokeRoundedClock01,
                         title: "Duration",
                         content: duration.toString(),
                         iconColor: Colors.blue,
@@ -276,7 +281,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         bowelDetails.toString().isNotEmpty ||
                         micturitionDetails.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.self_improvement,
+                        icon: HugeIcons.strokeRoundedYoga01,
                         title: "Lifestyle & Ashtavidha Pariksha",
                         content: "${sleepDetails.toString().isNotEmpty ? '• Sleep: $sleepDetails\n' : ''}"
                                 "${appetiteDetails.toString().isNotEmpty ? '• Appetite: $appetiteDetails\n' : ''}"
@@ -292,7 +297,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         hasBp ||
                         pastHistory.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.history,
+                        icon: HugeIcons.strokeRoundedClock05,
                         title: "Medical History",
                         content: "${hasDiabetes ? '⚠️ Diabetes\n' : ''}"
                                 "${hasThyroid ? '⚠️ Thyroid\n' : ''}"
@@ -305,7 +310,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                     // Previous Treatment
                     if (previousTreatment.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.medication_liquid,
+                        icon: HugeIcons.strokeRoundedMedicineBottle01,
                         title: "Previous Treatment",
                         content: previousTreatment.toString(),
                         iconColor: Colors.teal,
@@ -315,7 +320,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                     if (currentMedications != null &&
                         (currentMedications as List).isNotEmpty)
                       _buildChipsSection(
-                        icon: Icons.medication_outlined,
+                        icon: HugeIcons.strokeRoundedMedicine02,
                         title: "Current Medications",
                         items: List<String>.from(currentMedications),
                         chipColor: AyurezeTheme.healingGreen10,
@@ -340,7 +345,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
   }
 
   Widget _buildSection({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String title,
     required String content,
     required Color iconColor,
@@ -356,7 +361,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
               color: iconColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Icon(icon, color: iconColor, size: 18),
+            child: HugeIcon(icon: icon, color: iconColor, size: 18),
           ),
           SizedBox(width: 12),
           Expanded(
@@ -383,7 +388,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
   }
 
   Widget _buildChipsSection({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String title,
     required List<String> items,
     required Color chipColor,
@@ -396,7 +401,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
         children: [
           Row(
             children: [
-              Icon(icon, color: textColor, size: 18),
+              HugeIcon(icon: icon, color: textColor, size: 18),
               SizedBox(width: 8),
               Text(title,
                   style: TextStyle(
@@ -440,8 +445,10 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
         children: [
           Row(
             children: [
-              Icon(Icons.monitor_heart_outlined,
-                  color: AyurezeTheme.danger, size: 18),
+              HugeIcon(
+                  icon: HugeIcons.strokeRoundedPulse02,
+                  color: AyurezeTheme.danger,
+                  size: 18),
               SizedBox(width: 8),
               Text("Vitals",
                   style: TextStyle(
@@ -460,19 +467,19 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
               children: [
                 if (vitals['blood_pressure'] != null)
                   _buildVitalItem("BP", vitals['blood_pressure'].toString(),
-                      Icons.favorite),
+                      HugeIcons.strokeRoundedFavouriteCircle),
                 if (vitals['heart_rate'] != null)
-                  _buildVitalItem(
-                      "HR", "${vitals['heart_rate']} bpm", Icons.monitor_heart),
+                  _buildVitalItem("HR", "${vitals['heart_rate']} bpm",
+                      HugeIcons.strokeRoundedPulse01),
                 if (vitals['temperature'] != null)
-                  _buildVitalItem(
-                      "Temp", "${vitals['temperature']}°F", Icons.thermostat),
+                  _buildVitalItem("Temp", "${vitals['temperature']}°F",
+                      HugeIcons.strokeRoundedTemperature),
                 if (vitals['oxygen_saturation'] != null ||
                     vitals['spo2'] != null)
                   _buildVitalItem(
                       "SpO2",
                       "${vitals['oxygen_saturation'] ?? vitals['spo2']}%",
-                      Icons.air),
+                      HugeIcons.strokeRoundedWind),
               ],
             ),
           ),
@@ -481,10 +488,10 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
     );
   }
 
-  Widget _buildVitalItem(String label, String value, IconData icon) {
+  Widget _buildVitalItem(String label, String value, List<List<dynamic>> icon) {
     return Column(
       children: [
-        Icon(icon, color: Colors.blue.shade700, size: 20),
+        HugeIcon(icon: icon, color: Colors.blue.shade700, size: 20),
         SizedBox(height: 4),
         Text(label,
             style: TextStyle(fontSize: 10, color: AyurezeTheme.textSecondary)),
@@ -526,7 +533,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
     if (conditions.isEmpty) return SizedBox.shrink();
 
     return _buildChipsSection(
-      icon: Icons.history,
+      icon: HugeIcons.strokeRoundedClock05,
       title: "Medical History",
       items: conditions,
       chipColor: AyurezeTheme.surfaceMuted,
@@ -571,7 +578,10 @@ class AstraFillCompactWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.auto_awesome, color: AyurezeTheme.purple, size: 18),
+                HugeIcon(
+                    icon: HugeIcons.strokeRoundedSparkles,
+                    color: AyurezeTheme.purple,
+                    size: 18),
                 SizedBox(width: 8),
                 Text(
                   "Astra AI Summary",

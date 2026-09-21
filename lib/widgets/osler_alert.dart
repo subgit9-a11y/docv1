@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 
 enum OslerAlertType { success, error, warning, info }
@@ -35,7 +37,8 @@ class OslerAlert extends StatelessWidget {
                   color: _getIconBackgroundColor(),
                   borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
                 ),
-                child: Icon(_getIcon(), color: _getIconColor(), size: 20),
+                child: HugeIcon(
+                    icon: _getIcon(), color: _getIconColor(), size: 20),
               ),
               const SizedBox(width: 12),
             ],
@@ -68,8 +71,10 @@ class OslerAlert extends StatelessWidget {
             if (onDismiss != null) ...[
               GestureDetector(
                 onTap: onDismiss,
-                child:
-                    Icon(Icons.close, color: _getForegroundColor(), size: 18),
+                child: HugeIcon(
+                    icon: AppIcons.close,
+                    color: _getForegroundColor(),
+                    size: 18),
               ),
             ],
           ],
@@ -130,16 +135,16 @@ class OslerAlert extends StatelessWidget {
     }
   }
 
-  IconData _getIcon() {
+  List<List<dynamic>> _getIcon() {
     switch (type) {
       case OslerAlertType.success:
-        return Icons.check_circle_outline;
+        return HugeIcons.strokeRoundedCheckmarkCircle02;
       case OslerAlertType.error:
-        return Icons.error_outline;
+        return HugeIcons.strokeRoundedAlertCircle;
       case OslerAlertType.warning:
-        return Icons.warning_amber_outlined;
+        return HugeIcons.strokeRoundedAlert02;
       case OslerAlertType.info:
-        return Icons.info_outline;
+        return HugeIcons.strokeRoundedInformationCircle;
     }
   }
 }

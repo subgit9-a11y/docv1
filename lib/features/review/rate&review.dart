@@ -300,8 +300,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
                     ),
                     RatingBarIndicator(
                       rating: (item.rate ?? 0).toDouble(),
-                      itemBuilder: (context, index) => Icon(
-                        Icons.star_rounded,
+                      itemBuilder: (context, index) => HugeIcon(
+                        icon: HugeIcons.strokeRoundedStar,
                         color: AyurezeTheme.sunshineYellow50,
                       ),
                       itemCount: 5,

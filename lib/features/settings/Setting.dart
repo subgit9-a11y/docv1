@@ -307,17 +307,17 @@ class _SettingScreenState extends State<SettingScreen> {
                       ? CachedNetworkImage(
                           imageUrl: avatarUrl,
                           fit: BoxFit.cover,
-                          placeholder: (_, __) => const Icon(
-                            Icons.person_rounded,
+                          placeholder: (_, __) => const HugeIcon(
+                            icon: HugeIcons.strokeRoundedUserCircle,
                             color: Colors.white,
                           ),
-                          errorWidget: (_, __, ___) => const Icon(
-                            Icons.person_rounded,
+                          errorWidget: (_, __, ___) => const HugeIcon(
+                            icon: HugeIcons.strokeRoundedUserCircle,
                             color: Colors.white,
                           ),
                         )
-                      : const Icon(
-                          Icons.person_rounded,
+                      : const HugeIcon(
+                          icon: HugeIcons.strokeRoundedUserCircle,
                           color: Colors.white,
                           size: 26,
                         ),
@@ -507,8 +507,8 @@ class _SettingScreenState extends State<SettingScreen> {
             AyurezeTheme.textPrimary,
           ),
         ),
-        trailing: Icon(
-          Icons.arrow_forward_ios_rounded,
+        trailing: HugeIcon(
+          icon: HugeIcons.strokeRoundedArrowRight01,
           size: 14,
           color: AyurezeTheme.textSecondary,
         ),

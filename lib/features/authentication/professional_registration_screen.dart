@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -508,8 +509,10 @@ class _ProfessionalRegistrationScreenState
         elevation: 0.5,
         centerTitle: true,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new,
-                color: AyurezeTheme.textPrimary, size: 20),
+            icon: HugeIcon(
+                icon: HugeIcons.strokeRoundedArrowLeft01,
+                color: AyurezeTheme.textPrimary,
+                size: 20),
             onPressed: () => Navigator.pop(context)),
       ),
       body: _isLoading
@@ -717,7 +720,8 @@ class _ProfessionalRegistrationScreenState
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.add_a_photo_outlined,
+                      HugeIcon(
+                          icon: HugeIcons.strokeRoundedCameraAdd01,
                           size: 40,
                           color: AyurezeTheme.healingGreen50
                               .withValues(alpha: 0.65)),
@@ -783,7 +787,8 @@ class _ProfessionalRegistrationScreenState
         child: DropdownButton<String>(
           value: value,
           isExpanded: true,
-          icon: Icon(Icons.keyboard_arrow_down,
+          icon: HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowDown01,
               color: AyurezeTheme.textSecondary),
           hint: Text("Select",
               style: textTheme.bodyMedium

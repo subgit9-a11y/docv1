@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/workflow/workflow_model.dart';
 import 'package:doctro/core/astra/workflow/workflow_service.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
@@ -197,8 +199,8 @@ class _PrescriptionWorkflowProgressState
         color: _workflow.status.color.withValues(alpha: 0.2),
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        _workflow.status.icon,
+      child: HugeIcon(
+        icon: _workflow.status.icon,
         color: _workflow.status.color,
         size: 24,
       ),
@@ -239,7 +241,7 @@ class _PrescriptionWorkflowProgressState
   Widget _buildRetryButton() {
     return TextButton.icon(
       onPressed: _retryWorkflow,
-      icon: const Icon(Icons.refresh, size: 16),
+      icon: HugeIcon(icon: AppIcons.refresh, size: 16),
       label: const Text('Retry'),
       style: TextButton.styleFrom(
         foregroundColor: Colors.red,
@@ -360,11 +362,11 @@ class _PrescriptionWorkflowProgressState
         color: task.color.withValues(alpha: 0.2),
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        task.status == WorkflowTaskStatus.completed
-            ? Icons.check
+      child: HugeIcon(
+        icon: task.status == WorkflowTaskStatus.completed
+            ? AppIcons.check
             : (task.status == WorkflowTaskStatus.failed
-                ? Icons.close
+                ? AppIcons.close
                 : task.icon),
         size: 14,
         color: task.color,
@@ -415,31 +417,31 @@ class _PrescriptionWorkflowProgressState
           const SizedBox(height: 12),
           if (result.pdfUrl != null)
             _buildResultItem(
-              icon: Icons.picture_as_pdf,
+              icon: HugeIcons.strokeRoundedPdf01,
               label: 'PDF Generated',
               onTap: widget.onOpenPdf,
             ),
           if (result.shopifyCartUrl != null)
             _buildResultItem(
-              icon: Icons.shopping_cart,
+              icon: HugeIcons.strokeRoundedShoppingCart01,
               label: 'Shopify Cart Created',
               onTap: widget.onOpenCart,
             ),
           if (result.notificationId != null)
             _buildResultItem(
-              icon: Icons.notifications,
+              icon: AppIcons.notifications,
               label: 'Notification Sent',
               subtitle: 'Patient notified',
             ),
           if (result.whatsappMessageId != null)
             _buildResultItem(
-              icon: Icons.message,
+              icon: HugeIcons.strokeRoundedMessage01,
               label: 'WhatsApp Sent',
               subtitle: 'Message delivered',
             ),
           if (result.reminderId != null)
             _buildResultItem(
-              icon: Icons.alarm,
+              icon: HugeIcons.strokeRoundedAlarmClock,
               label: 'Reminder Set',
               subtitle: 'Medication reminder created',
             ),
@@ -449,7 +451,7 @@ class _PrescriptionWorkflowProgressState
   }
 
   Widget _buildResultItem({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String label,
     String? subtitle,
     VoidCallback? onTap,
@@ -460,7 +462,7 @@ class _PrescriptionWorkflowProgressState
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Row(
           children: [
-            Icon(icon, size: 18, color: Colors.green.shade700),
+            HugeIcon(icon: icon, size: 18, color: Colors.green.shade700),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
@@ -485,8 +487,8 @@ class _PrescriptionWorkflowProgressState
               ),
             ),
             if (onTap != null)
-              Icon(
-                Icons.arrow_forward_ios,
+              HugeIcon(
+                icon: HugeIcons.strokeRoundedArrowRight01,
                 size: 14,
                 color: AyurezeTheme.textSecondary,
               ),
@@ -540,8 +542,8 @@ class WorkflowStatusBadge extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              status.icon,
+            HugeIcon(
+              icon: status.icon,
               size: 14,
               color: status.color,
             ),

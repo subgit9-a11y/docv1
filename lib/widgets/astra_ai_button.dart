@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/features/consultation/astra_chat/astra_chat_page.dart';
 
@@ -60,8 +61,8 @@ class AstraAIFloatingButton extends StatelessWidget {
                   _PulsingEffect(size: size),
 
                   // Icon
-                  Icon(
-                    Icons.psychology,
+                  HugeIcon(
+                    icon: HugeIcons.strokeRoundedBrain01,
                     color: Colors.white,
                     size: size * 0.5,
                   ),
@@ -152,13 +153,13 @@ class AstraAIInlineButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   /// Icon to display
-  final IconData icon;
+  final List<List<dynamic>> icon;
 
   const AstraAIInlineButton({
     super.key,
     this.label = 'Ask Astra AI',
     this.onPressed,
-    this.icon = Icons.psychology,
+    this.icon = HugeIcons.strokeRoundedBrain01,
   });
 
   @override
@@ -174,8 +175,8 @@ class AstraAIInlineButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                icon,
+              HugeIcon(
+                icon: icon,
                 size: 18,
                 color: AyurezeTheme.healingGreen50,
               ),
@@ -262,8 +263,8 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
               : Colors.orange.withValues(alpha: 0.2),
           shape: BoxShape.circle,
         ),
-        child: Icon(
-          _isHealthy ? Icons.psychology : Icons.psychology_outlined,
+        child: HugeIcon(
+          icon: HugeIcons.strokeRoundedBrain01,
           size: 16,
           color: _isHealthy ? AyurezeTheme.healingGreen50 : Colors.orange,
         ),
@@ -296,8 +297,10 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
                 ),
               )
             else
-              Icon(
-                _isHealthy ? Icons.check_circle : Icons.warning_amber,
+              HugeIcon(
+                icon: _isHealthy
+                    ? HugeIcons.strokeRoundedCheckmarkCircle01
+                    : HugeIcons.strokeRoundedAlert01,
                 size: 14,
                 color: _isHealthy ? AyurezeTheme.healingGreen50 : Colors.orange,
               ),

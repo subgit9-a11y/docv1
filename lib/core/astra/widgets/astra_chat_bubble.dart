@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/models/conversation_model.dart';
 import 'package:doctro/core/astra/utils/astra_config.dart';
 
@@ -216,8 +218,8 @@ class AstraChatBubble extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  _getActionIcon(action.type.name),
+                HugeIcon(
+                  icon: _getActionIcon(action.type.name),
                   size: 16,
                   color: Colors.green.shade700,
                 ),
@@ -231,8 +233,8 @@ class AstraChatBubble extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 4),
-                Icon(
-                  Icons.arrow_forward_ios,
+                HugeIcon(
+                  icon: HugeIcons.strokeRoundedArrowRight01,
                   size: 12,
                   color: Colors.green.shade700,
                 ),
@@ -250,8 +252,8 @@ class AstraChatBubble extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.error_outline,
+          HugeIcon(
+            icon: HugeIcons.strokeRoundedAlertCircle,
             size: 14,
             color: Colors.red.shade400,
           ),
@@ -268,32 +270,32 @@ class AstraChatBubble extends StatelessWidget {
     );
   }
 
-  IconData _getActionIcon(String actionType) {
+  List<List<dynamic>> _getActionIcon(String actionType) {
     switch (actionType) {
       case 'openPatient':
-        return Icons.person;
+        return HugeIcons.strokeRoundedUser;
       case 'openPrescription':
-        return Icons.description;
+        return HugeIcons.strokeRoundedFile01;
       case 'openCart':
-        return Icons.shopping_cart;
+        return HugeIcons.strokeRoundedShoppingCart01;
       case 'openPayment':
-        return Icons.payment;
+        return AppIcons.payment;
       case 'openNotifications':
-        return Icons.notifications;
+        return AppIcons.notifications;
       case 'openChat':
-        return Icons.chat;
+        return AppIcons.chat;
       case 'openVideoCall':
-        return Icons.videocam;
+        return HugeIcons.strokeRoundedVideo01;
       case 'openAppointment':
-        return Icons.calendar_today;
+        return HugeIcons.strokeRoundedCalendar01;
       case 'openReminders':
-        return Icons.alarm;
+        return HugeIcons.strokeRoundedAlarmClock;
       case 'openReport':
-        return Icons.assessment;
+        return HugeIcons.strokeRoundedChartLine;
       case 'goBack':
-        return Icons.arrow_back;
+        return HugeIcons.strokeRoundedArrowLeft01;
       default:
-        return Icons.touch_app;
+        return HugeIcons.strokeRoundedCursor02;
     }
   }
 

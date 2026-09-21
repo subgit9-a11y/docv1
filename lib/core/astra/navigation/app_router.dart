@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/navigator_key.dart' as core;
 import 'package:doctro/core/astra/actions/action_models.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
@@ -491,7 +492,10 @@ class _AstraFallbackChatPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.psychology, size: 64, color: Colors.grey),
+            HugeIcon(
+                icon: HugeIcons.strokeRoundedBrain01,
+                size: 64,
+                color: Colors.grey),
             SizedBox(height: 16),
             Text('Astra AI Assistant'),
             SizedBox(height: 8),

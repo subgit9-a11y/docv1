@@ -105,8 +105,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
+          icon: HugeIcon(
+            icon: HugeIcons.strokeRoundedArrowLeft01,
             color: AyurezeTheme.forestDeep,
             size: 20,
           ),
@@ -546,7 +546,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_patient_name,
                                         ).toString(),
                                         value: name ?? "-",
-                                        icon: Icons.person_outline_rounded,
+                                        icon:
+                                            HugeIcons.strokeRoundedUserCircle02,
                                       ),
                                       _buildDetailTile(
                                         context,
@@ -555,7 +556,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_patient_age,
                                         ).toString(),
                                         value: age != null ? "$age yrs" : "-",
-                                        icon: Icons.cake_outlined,
+                                        icon:
+                                            HugeIcons.strokeRoundedBirthdayCake,
                                       ),
                                       _buildDetailTile(
                                         context,
@@ -565,7 +567,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               .information_patient_phone_number,
                                         ).toString(),
                                         value: phoneNo ?? "-",
-                                        icon: Icons.phone_outlined,
+                                        icon: HugeIcons.strokeRoundedCall02,
                                       ),
                                       _buildDetailTile(
                                         context,
@@ -574,7 +576,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_patient_time,
                                         ).toString(),
                                         value: time ?? "-",
-                                        icon: Icons.access_time_rounded,
+                                        icon: HugeIcons.strokeRoundedTime01,
                                       ),
                                       _buildDetailTile(
                                         context,
@@ -583,7 +585,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_patient_address,
                                         ).toString(),
                                         value: patientAddress ?? "-",
-                                        icon: Icons.location_on_outlined,
+                                        icon: HugeIcons.strokeRoundedLocation01,
                                       ),
 
                                       // Insurance Details
@@ -595,7 +597,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             AppString.policy_provider,
                                           ).toString(),
                                           value: policyInsurerName,
-                                          icon: Icons.verified_user_outlined,
+                                          icon:
+                                              HugeIcons.strokeRoundedShieldUser,
                                         ),
                                         _buildDetailTile(
                                           context,
@@ -604,8 +607,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             AppString.policy_number,
                                           ).toString(),
                                           value: policyNumber,
-                                          icon: Icons
-                                              .confirmation_number_outlined,
+                                          icon: HugeIcons.strokeRoundedTicket01,
                                         ),
                                       ] else ...[
                                         _buildDetailTile(
@@ -618,7 +620,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             context,
                                             AppString.patientIsNotInsured,
                                           ).toString(),
-                                          icon: Icons.shield_outlined,
+                                          icon: HugeIcons.strokeRoundedShield01,
                                         ),
                                       ],
                                     ],
@@ -649,7 +651,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               .information_patient_illness_information,
                                         ).toString(),
                                         content: illness ?? "None reported",
-                                        icon: Icons.healing_rounded,
+                                        icon: HugeIcons.strokeRoundedBandage,
                                       ),
                                       const SizedBox(height: 12),
                                       _buildInfoCard(
@@ -660,7 +662,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               .information_side_effect_drug,
                                         ).toString(),
                                         content: drugEffect ?? "None reported",
-                                        icon: Icons.medication_rounded,
+                                        icon: HugeIcons.strokeRoundedMedicine01,
                                       ),
                                       const SizedBox(height: 12),
                                       _buildInfoCard(
@@ -670,7 +672,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_note,
                                         ).toString(),
                                         content: note ?? "No notes added",
-                                        icon: Icons.notes_rounded,
+                                        icon: HugeIcons.strokeRoundedNote01,
                                       ),
 
                                       // Report Images
@@ -730,8 +732,9 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             AyurezeTheme.panelDecoration(),
                                         child: Column(
                                           children: [
-                                            Icon(
-                                              Icons.auto_awesome,
+                                            HugeIcon(
+                                              icon: HugeIcons
+                                                  .strokeRoundedSparkles,
                                               size: 40,
                                               color: AyurezeTheme.forestDeep,
                                             ),
@@ -756,8 +759,9 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             ),
                                             const SizedBox(height: 18),
                                             ElevatedButton.icon(
-                                              icon: const Icon(
-                                                Icons.auto_awesome,
+                                              icon: const HugeIcon(
+                                                icon: HugeIcons
+                                                    .strokeRoundedSparkles,
                                                 color: Colors.white,
                                               ),
                                               label: const Text(
@@ -857,8 +861,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                 ),
                 if (appointmentType == 'video')
                   ListTile(
-                    leading: Icon(
-                      Icons.videocam_rounded,
+                    leading: HugeIcon(
+                      icon: HugeIcons.strokeRoundedVideo01,
                       color: AyurezeTheme.forestDeep,
                     ),
                     title: Text(
@@ -922,7 +926,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     BuildContext context, {
     required String label,
     required String value,
-    required IconData icon,
+    required List<List<dynamic>> icon,
   }) {
     final textTheme = Theme.of(context).textTheme;
 
@@ -939,7 +943,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                 color: AyurezeTheme.surfaceMuted,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, size: 20, color: AyurezeTheme.forestDeep),
+              child: HugeIcon(
+                  icon: icon, size: 20, color: AyurezeTheme.forestDeep),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -975,7 +980,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     BuildContext context, {
     required String title,
     required String content,
-    required IconData icon,
+    required List<List<dynamic>> icon,
   }) {
     final textTheme = Theme.of(context).textTheme;
 
@@ -988,7 +993,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
         children: [
           Row(
             children: [
-              Icon(icon, size: 20, color: AyurezeTheme.forestDeep),
+              HugeIcon(icon: icon, size: 20, color: AyurezeTheme.forestDeep),
               const SizedBox(width: 8),
               Text(
                 title,

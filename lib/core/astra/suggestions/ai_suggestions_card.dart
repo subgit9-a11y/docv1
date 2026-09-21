@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/suggestions/suggestion_model.dart';
 import 'package:doctro/core/astra/navigation/app_router.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
@@ -80,8 +82,8 @@ class AISuggestionsCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.psychology,
+          HugeIcon(
+            icon: HugeIcons.strokeRoundedBrain01,
             size: 18,
             color: AyurezeTheme.healingGreen50,
           ),
@@ -106,8 +108,8 @@ class AISuggestionsCard extends StatelessWidget {
     if (!collapsible) return const SizedBox.shrink();
 
     return IconButton(
-      icon: Icon(
-        Icons.expand_more,
+      icon: HugeIcon(
+        icon: HugeIcons.strokeRoundedArrowDown01,
         color: AyurezeTheme.textSecondary,
         size: 20,
       ),
@@ -175,8 +177,8 @@ class AISuggestionsCard extends StatelessWidget {
         color: suggestion.color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Icon(
-        suggestion.icon,
+      child: HugeIcon(
+        icon: suggestion.icon,
         size: 16,
         color: suggestion.color,
       ),
@@ -234,8 +236,8 @@ class AISuggestionsCard extends StatelessWidget {
 
   Widget _buildDismissButton(AISuggestion suggestion) {
     return IconButton(
-      icon: Icon(
-        Icons.close,
+      icon: HugeIcon(
+        icon: AppIcons.close,
         size: 16,
         color: AyurezeTheme.textSecondary,
       ),
@@ -257,8 +259,8 @@ class AISuggestionsCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.expand_more,
+            HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowDown01,
               size: 16,
               color: AyurezeTheme.textSecondary,
             ),
@@ -354,8 +356,8 @@ class AISuggestionBadge extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                suggestion.icon,
+              HugeIcon(
+                icon: suggestion.icon,
                 size: 14,
                 color: suggestion.color,
               ),
@@ -402,8 +404,8 @@ class AISuggestionDot extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.auto_awesome,
+            HugeIcon(
+              icon: HugeIcons.strokeRoundedSparkles,
               size: 10,
               color: color ?? Colors.green,
             ),

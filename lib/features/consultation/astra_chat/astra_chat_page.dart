@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:provider/provider.dart';
 import 'package:doctro/core/astra/astra_core.dart';
@@ -143,8 +145,8 @@ class _AstraChatPageState extends State<AstraChatPage> {
       elevation: 0,
       scrolledUnderElevation: 1,
       leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back_ios_new_rounded,
+        icon: HugeIcon(
+          icon: HugeIcons.strokeRoundedArrowLeft01,
           color: AyurezeTheme.forestDeep,
         ),
         onPressed: () => Navigator.pop(context),
@@ -159,8 +161,8 @@ class _AstraChatPageState extends State<AstraChatPage> {
               color: AyurezeTheme.healingGreen50.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.psychology,
+            child: HugeIcon(
+              icon: HugeIcons.strokeRoundedBrain01,
               color: AyurezeTheme.healingGreen50,
               size: 20,
             ),
@@ -193,14 +195,16 @@ class _AstraChatPageState extends State<AstraChatPage> {
       actions: [
         // More options
         PopupMenuButton<String>(
-          icon: Icon(Icons.more_vert, color: AyurezeTheme.forestDeep),
+          icon: HugeIcon(
+              icon: HugeIcons.strokeRoundedMoreVertical,
+              color: AyurezeTheme.forestDeep),
           onSelected: (value) => _handleMenuAction(value),
           itemBuilder: (context) => [
             const PopupMenuItem(
               value: 'clear',
               child: Row(
                 children: [
-                  Icon(Icons.delete_outline, size: 20),
+                  HugeIcon(icon: HugeIcons.strokeRoundedDelete02, size: 20),
                   SizedBox(width: 8),
                   Text('Clear Chat'),
                 ],
@@ -210,7 +214,8 @@ class _AstraChatPageState extends State<AstraChatPage> {
               value: 'health',
               child: Row(
                 children: [
-                  Icon(Icons.favorite_outline, size: 20),
+                  HugeIcon(
+                      icon: HugeIcons.strokeRoundedFavouriteCircle, size: 20),
                   SizedBox(width: 8),
                   Text('Check Health'),
                 ],
@@ -232,10 +237,10 @@ class _AstraChatPageState extends State<AstraChatPage> {
               : Colors.orange.withValues(alpha: 0.1),
           child: Row(
             children: [
-              Icon(
-                controller.isBrainHealthy
-                    ? Icons.check_circle
-                    : Icons.warning_amber,
+              HugeIcon(
+                icon: controller.isBrainHealthy
+                    ? HugeIcons.strokeRoundedCheckmarkCircle01
+                    : HugeIcons.strokeRoundedAlert01,
                 size: 16,
                 color: controller.isBrainHealthy
                     ? AyurezeTheme.healingGreen50
@@ -264,8 +269,8 @@ class _AstraChatPageState extends State<AstraChatPage> {
                       ),
                     );
                   },
-                  child: Icon(
-                    Icons.info_outline,
+                  child: HugeIcon(
+                    icon: HugeIcons.strokeRoundedInformationCircle,
                     size: 16,
                     color: Colors.orange,
                   ),
@@ -319,8 +324,8 @@ class _AstraChatPageState extends State<AstraChatPage> {
                   color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.psychology,
+                child: HugeIcon(
+                  icon: HugeIcons.strokeRoundedBrain01,
                   size: 64,
                   color: AyurezeTheme.healingGreen50,
                 ),
@@ -436,12 +441,12 @@ class _AstraChatPageState extends State<AstraChatPage> {
               children: [
                 // Stream toggle
                 IconButton(
-                  icon: Icon(
-                    controller.isStreaming
-                        ? Icons.stop
+                  icon: HugeIcon(
+                    icon: controller.isStreaming
+                        ? HugeIcons.strokeRoundedStopCircle
                         : (_useStreaming
-                            ? Icons.auto_awesome
-                            : Icons.auto_awesome_outlined),
+                            ? HugeIcons.strokeRoundedSparkles
+                            : HugeIcons.strokeRoundedSparkle),
                     color: controller.isStreaming
                         ? Colors.red
                         : (_useStreaming
@@ -519,7 +524,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
                               color: Colors.white,
                             ),
                           )
-                        : const Icon(Icons.send, color: Colors.white),
+                        : HugeIcon(icon: AppIcons.send, color: Colors.white),
                     onPressed: controller.isLoading || controller.isStreaming
                         ? null
                         : () {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 
 /// Loading State Widget
@@ -97,7 +99,7 @@ class AstraErrorState extends StatelessWidget {
   final String? details;
   final VoidCallback? onRetry;
   final VoidCallback? onDismiss;
-  final IconData? icon;
+  final List<List<dynamic>>? icon;
   final Color? iconColor;
 
   const AstraErrorState({
@@ -118,8 +120,8 @@ class AstraErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon ?? Icons.error_outline,
+            HugeIcon(
+              icon: icon ?? HugeIcons.strokeRoundedAlertCircle,
               size: 64,
               color: iconColor ?? Colors.red.shade400,
             ),
@@ -157,7 +159,7 @@ class AstraErrorState extends StatelessWidget {
                   if (onDismiss != null) const SizedBox(width: 12),
                   ElevatedButton.icon(
                     onPressed: onRetry,
-                    icon: const Icon(Icons.refresh, size: 18),
+                    icon: HugeIcon(icon: AppIcons.refresh, size: 18),
                     label: const Text('Retry'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AyurezeTheme.healingGreen50,
@@ -180,7 +182,7 @@ class AstraErrorState extends StatelessWidget {
 class AstraEmptyState extends StatelessWidget {
   final String message;
   final String? subtitle;
-  final IconData? icon;
+  final List<List<dynamic>>? icon;
   final Widget? action;
 
   const AstraEmptyState({
@@ -199,8 +201,8 @@ class AstraEmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon ?? Icons.inbox_outlined,
+            HugeIcon(
+              icon: icon ?? HugeIcons.strokeRoundedInbox,
               size: 64,
               color: Colors.grey.shade400,
             ),
@@ -250,7 +252,7 @@ class AstraNetworkError extends StatelessWidget {
     return AstraErrorState(
       message: 'Connection Error',
       details: 'Please check your internet connection and try again.',
-      icon: Icons.wifi_off,
+      icon: HugeIcons.strokeRoundedWifiOff01,
       iconColor: Colors.orange,
       onRetry: onRetry,
     );
@@ -271,7 +273,7 @@ class AstraTimeoutError extends StatelessWidget {
     return AstraErrorState(
       message: 'Request Timeout',
       details: 'The server is taking too long to respond. Please try again.',
-      icon: Icons.timer_off,
+      icon: HugeIcons.strokeRoundedTimerOff,
       iconColor: Colors.orange,
       onRetry: onRetry,
     );
@@ -296,7 +298,7 @@ class AstraServerError extends StatelessWidget {
       details: statusCode != null
           ? 'Something went wrong (Error $statusCode). Please try again later.'
           : 'Something went wrong. Please try again later.',
-      icon: Icons.cloud_off,
+      icon: HugeIcons.strokeRoundedCloudOff,
       iconColor: Colors.red.shade400,
       onRetry: onRetry,
     );
@@ -317,7 +319,10 @@ class AstraOfflineBanner extends StatelessWidget {
         bottom: false,
         child: Row(
           children: [
-            const Icon(Icons.wifi_off, color: Colors.white, size: 18),
+            const HugeIcon(
+                icon: HugeIcons.strokeRoundedWifiOff01,
+                color: Colors.white,
+                size: 18),
             const SizedBox(width: 8),
             const Expanded(
               child: Text(

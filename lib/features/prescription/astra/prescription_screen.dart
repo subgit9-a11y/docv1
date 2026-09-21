@@ -397,7 +397,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                           decoration: InputDecoration(
                             labelText: "Diagnosis",
                             hintText: "Enter clinical diagnosis",
-                            suffixIcon: Icon(Icons.medical_services_rounded,
+                            suffixIcon: HugeIcon(
+                                icon: HugeIcons.strokeRoundedStethoscope02,
                                 color: AyurezeTheme.healingGreen100),
                           ),
                         ),
@@ -445,7 +446,9 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                                     if (noShopify)
                                       Tooltip(
                                         message: "Not available for Auto-Cart",
-                                        child: Icon(Icons.warning_amber_rounded,
+                                        child: HugeIcon(
+                                            icon:
+                                                HugeIcons.strokeRoundedAlert01,
                                             color:
                                                 AyurezeTheme.sunshineYellow50,
                                             size: 20),
@@ -463,7 +466,9 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                                     Row(
                                       children: [
                                         IconButton(
-                                          icon: Icon(Icons.edit_rounded,
+                                          icon: HugeIcon(
+                                              icon:
+                                                  HugeIcons.strokeRoundedEdit02,
                                               size: 18,
                                               color:
                                                   AyurezeTheme.healingGreen100),
@@ -573,8 +578,10 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                           child: TextButton.icon(
                             onPressed: () =>
                                 setState(() => _signatureBytes = null),
-                            icon: Icon(Icons.clear_rounded,
-                                size: 16, color: AyurezeTheme.textSecondary),
+                            icon: HugeIcon(
+                                icon: HugeIcons.strokeRoundedCancel01,
+                                size: 16,
+                                color: AyurezeTheme.textSecondary),
                             label: Text(
                               "Clear Signature",
                               style: textTheme.bodySmall
@@ -725,8 +732,10 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
               else
                 TextButton.icon(
                   onPressed: _syncShopify,
-                  icon: Icon(Icons.sync_rounded,
-                      size: 16, color: AyurezeTheme.healingGreen100),
+                  icon: HugeIcon(
+                      icon: HugeIcons.strokeRoundedReload,
+                      size: 16,
+                      color: AyurezeTheme.healingGreen100),
                   label: Text("Sync Shopify",
                       style: textTheme.labelLarge
                           ?.copyWith(color: AyurezeTheme.healingGreen100)),
@@ -766,7 +775,8 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
                           style: textTheme.bodySmall
                               ?.copyWith(color: AyurezeTheme.textSecondary),
                         ),
-                        trailing: Icon(Icons.add_circle_rounded,
+                        trailing: HugeIcon(
+                            icon: HugeIcons.strokeRoundedAddCircle,
                             color: AyurezeTheme.healingGreen50),
                         onTap: () => widget.onSelect(item),
                       );

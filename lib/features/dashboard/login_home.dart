@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -136,18 +137,21 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                           child: CachedNetworkImage(
                                             imageUrl: viewModel.dFullImage!,
                                             fit: BoxFit.cover,
-                                            placeholder: (_, __) => Icon(
-                                              Icons.person_rounded,
+                                            placeholder: (_, __) => HugeIcon(
+                                              icon: HugeIcons
+                                                  .strokeRoundedUserCircle,
                                               color: AyurezeTheme.forestDeep,
                                             ),
-                                            errorWidget: (_, __, ___) => Icon(
-                                              Icons.person_rounded,
+                                            errorWidget: (_, __, ___) =>
+                                                HugeIcon(
+                                              icon: HugeIcons
+                                                  .strokeRoundedUserCircle,
                                               color: AyurezeTheme.forestDeep,
                                             ),
                                           ),
                                         )
-                                      : Icon(
-                                          Icons.menu_rounded,
+                                      : HugeIcon(
+                                          icon: HugeIcons.strokeRoundedMenu01,
                                           color: AyurezeTheme.forestDeep,
                                         ),
                                 ),
@@ -192,8 +196,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                       color: AyurezeTheme.border,
                                     ),
                                   ),
-                                  child: Icon(
-                                    Icons.notifications_none_rounded,
+                                  child: HugeIcon(
+                                    icon: HugeIcons.strokeRoundedNotification02,
                                     color: AyurezeTheme.textPrimary,
                                     size: 22,
                                   ),
@@ -245,8 +249,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                       ),
                                     ),
                                     const Spacer(),
-                                    Icon(
-                                      Icons.health_and_safety_rounded,
+                                    HugeIcon(
+                                      icon: HugeIcons.strokeRoundedHealth,
                                       color: Colors.white.withValues(
                                         alpha: 0.9,
                                       ),
@@ -325,7 +329,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   ).toString(),
                                   value:
                                       "$currencySymbol${viewModel.totalEarnings.toStringAsFixed(0)}",
-                                  icon: Icons.account_balance_wallet_rounded,
+                                  icon: HugeIcons.strokeRoundedWallet02,
                                   color: AyurezeTheme.healingGreen50,
                                 ),
                                 _buildStatCard(
@@ -333,7 +337,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   index: 1,
                                   title: "Patients",
                                   value: "${viewModel.patientCount}",
-                                  icon: Icons.people_alt_rounded,
+                                  icon: HugeIcons.strokeRoundedUserGroup,
                                   color: AyurezeTheme.connectivityBlue50,
                                 ),
                                 _buildStatCard(
@@ -342,7 +346,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   title: "Today",
                                   value:
                                       "${viewModel.todayAppointments.length}",
-                                  icon: Icons.calendar_today_rounded,
+                                  icon: HugeIcons.strokeRoundedCalendar01,
                                   color: AyurezeTheme.sunshineYellow50,
                                 ),
                                 _buildStatCard(
@@ -350,7 +354,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   index: 3,
                                   title: "Reviews",
                                   value: "${viewModel.reviewCount}",
-                                  icon: Icons.star_rounded,
+                                  icon: HugeIcons.strokeRoundedStar,
                                   color: AyurezeTheme.caringViolet50,
                                 ),
                               ],
@@ -379,14 +383,14 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                             hintStyle: textTheme.bodyMedium?.copyWith(
                               color: AyurezeTheme.textSecondary,
                             ),
-                            prefixIcon: Icon(
-                              Icons.search_rounded,
+                            prefixIcon: HugeIcon(
+                              icon: HugeIcons.strokeRoundedSearch01,
                               color: AyurezeTheme.forestDeep,
                             ),
                             suffixIcon: _searchController.text.isNotEmpty
                                 ? IconButton(
-                                    icon: Icon(
-                                      Icons.clear_rounded,
+                                    icon: HugeIcon(
+                                      icon: HugeIcons.strokeRoundedCancel01,
                                       color: AyurezeTheme.textSecondary,
                                     ),
                                     onPressed: () {
@@ -492,7 +496,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     required int index,
     required String title,
     required String value,
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required Color color,
   }) {
     final textTheme = Theme.of(context).textTheme;
@@ -512,7 +516,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                   color: color.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(icon, size: 18, color: color),
+                child: HugeIcon(icon: icon, size: 18, color: color),
               ),
               const Spacer(),
             ],
@@ -631,10 +635,10 @@ class _LoginHomeViewState extends State<_LoginHomeView>
             decoration: AyurezeTheme.mutedPanelDecoration(),
             child: Column(
               children: [
-                Icon(
-                  showError
-                      ? Icons.cloud_off_rounded
-                      : Icons.event_available_rounded,
+                HugeIcon(
+                  icon: showError
+                      ? HugeIcons.strokeRoundedCloudOff
+                      : HugeIcons.strokeRoundedCalendarCheck01,
                   size: 48,
                   color: showError
                       ? AyurezeTheme.remoteRed50
@@ -767,8 +771,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(
-                            Icons.access_time_rounded,
+                          HugeIcon(
+                            icon: HugeIcons.strokeRoundedTime01,
                             size: 14,
                             color: AyurezeTheme.forestDeep,
                           ),
@@ -814,8 +818,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                     shape: BoxShape.circle,
                     border: Border.all(color: AyurezeTheme.border),
                   ),
-                  child: Icon(
-                    Icons.chevron_right_rounded,
+                  child: HugeIcon(
+                    icon: HugeIcons.strokeRoundedArrowRight01,
                     color: AyurezeTheme.forestDeep,
                     size: 22,
                   ),

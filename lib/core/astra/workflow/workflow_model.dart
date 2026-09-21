@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 /// Prescription Workflow Model
 ///
@@ -152,18 +154,18 @@ enum WorkflowStatus {
     }
   }
 
-  IconData get icon {
+  List<List<dynamic>> get icon {
     switch (this) {
       case WorkflowStatus.pending:
-        return Icons.hourglass_empty;
+        return HugeIcons.strokeRoundedHourglass;
       case WorkflowStatus.inProgress:
-        return Icons.sync;
+        return HugeIcons.strokeRoundedRefresh01;
       case WorkflowStatus.completed:
-        return Icons.check_circle;
+        return HugeIcons.strokeRoundedCheckmarkCircle01;
       case WorkflowStatus.failed:
-        return Icons.error;
+        return AppIcons.error;
       case WorkflowStatus.cancelled:
-        return Icons.cancel;
+        return HugeIcons.strokeRoundedCancel01;
     }
   }
 
@@ -233,7 +235,7 @@ class WorkflowTask {
     };
   }
 
-  IconData get icon => type.icon;
+  List<List<dynamic>> get icon => type.icon;
   Color get color => status.color;
 }
 
@@ -272,26 +274,26 @@ enum TaskType {
     }
   }
 
-  IconData get icon {
+  List<List<dynamic>> get icon {
     switch (this) {
       case TaskType.generatePdf:
-        return Icons.picture_as_pdf;
+        return HugeIcons.strokeRoundedPdf01;
       case TaskType.uploadStorage:
-        return Icons.cloud_upload;
+        return HugeIcons.strokeRoundedCloudUpload;
       case TaskType.createReminder:
-        return Icons.alarm_add;
+        return HugeIcons.strokeRoundedAlarmClockPlus;
       case TaskType.sendNotification:
-        return Icons.notifications_active;
+        return HugeIcons.strokeRoundedNotification03;
       case TaskType.sendWhatsapp:
-        return Icons.message;
+        return HugeIcons.strokeRoundedMessage01;
       case TaskType.createShopifyCart:
-        return Icons.shopping_cart;
+        return HugeIcons.strokeRoundedShoppingCart01;
       case TaskType.notifyPatient:
-        return Icons.person;
+        return HugeIcons.strokeRoundedUser;
       case TaskType.sendEmail:
-        return Icons.email;
+        return AppIcons.email;
       case TaskType.updateAppointment:
-        return Icons.event;
+        return HugeIcons.strokeRoundedCalendar03;
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class OslerChatBubble extends StatelessWidget {
   final String message;
@@ -75,8 +76,10 @@ class OslerChatBubble extends StatelessWidget {
                         ),
                         if (isMe) ...[
                           const SizedBox(width: 4),
-                          Icon(
-                            isRead ? Icons.done_all : Icons.done,
+                          HugeIcon(
+                            icon: isRead
+                                ? HugeIcons.strokeRoundedTick02
+                                : HugeIcons.strokeRoundedTick01,
                             size: 14,
                             color: isRead
                                 ? AyurezeTheme.connectivityBlue50

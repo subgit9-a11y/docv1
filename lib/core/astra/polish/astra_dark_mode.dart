@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 /// Astra Dark Mode Support
 ///
@@ -107,7 +108,7 @@ class AstraDarkModeText extends StatelessWidget {
 
 /// Dark mode aware icon color
 class AstraDarkModeIcon extends StatelessWidget {
-  final IconData icon;
+  final List<List<dynamic>> icon;
   final double? size;
   final Color? lightColor;
   final Color? darkColor;
@@ -128,7 +129,7 @@ class AstraDarkModeIcon extends StatelessWidget {
     } else {
       color = lightColor ?? Colors.black87;
     }
-    return Icon(icon, size: size, color: color);
+    return HugeIcon(icon: icon, size: size ?? 24.0, color: color);
   }
 }
 

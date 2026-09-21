@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -235,8 +237,9 @@ class _VoiceRecorderState extends State<VoiceRecorder>
               ),
             ],
           ),
-          child: Icon(
-            _isRecording ? Icons.stop : Icons.mic,
+          child: HugeIcon(
+            icon:
+                _isRecording ? HugeIcons.strokeRoundedStopCircle : AppIcons.mic,
             color: Colors.white,
             size: widget.size * 0.4,
           ),
@@ -333,8 +336,10 @@ class VoiceInputButton extends StatelessWidget {
           child: SizedBox(
             width: size,
             height: size,
-            child: Icon(
-              isListening ? Icons.stop : Icons.mic,
+            child: HugeIcon(
+              icon: isListening
+                  ? HugeIcons.strokeRoundedStopCircle
+                  : AppIcons.mic,
               // The idle state sits on a 10%-emerald tint, where a
               // healingGreen50 glyph is only 2.31:1. The 100 shade gives
               // 14.16:1 and reads as the same brand accent.

@@ -202,8 +202,10 @@ class _VideoCallState extends State<VideoCall> {
               CircleAvatar(
                 radius: 50,
                 backgroundColor: AyurezeTheme.surface.withValues(alpha: 0.15),
-                child: Icon(Icons.person,
-                    size: 50, color: AyurezeTheme.textSecondary),
+                child: HugeIcon(
+                    icon: HugeIcons.strokeRoundedUser,
+                    size: 50,
+                    color: AyurezeTheme.textSecondary),
               ),
               const SizedBox(height: 25),
               ScalingText(
@@ -330,7 +332,8 @@ class _VideoCallState extends State<VideoCall> {
                                   ? _localPreview(viewModel)
                                   : Container(
                                       color: AyurezeTheme.surfaceDark,
-                                      child: Icon(Icons.videocam_off,
+                                      child: HugeIcon(
+                                          icon: HugeIcons.strokeRoundedVideoOff,
                                           color: AyurezeTheme.textMuted,
                                           size: 30),
                                     ),

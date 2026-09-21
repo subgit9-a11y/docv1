@@ -1,4 +1,5 @@
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +25,8 @@ class FullPhotoPage extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
-            Icons.arrow_back_ios,
+          child: HugeIcon(
+            icon: HugeIcons.strokeRoundedArrowLeft01,
             color: AyurezeTheme.textPrimary,
           ),
         ),

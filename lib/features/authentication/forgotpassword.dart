@@ -1,4 +1,5 @@
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
@@ -52,8 +53,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded,
-                color: AyurezeTheme.textPrimary, size: 20),
+            icon: HugeIcon(
+                icon: HugeIcons.strokeRoundedArrowLeft01,
+                color: AyurezeTheme.textPrimary,
+                size: 20),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -133,8 +136,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                                                   AppString.forgot_email_hint)
                                               .toString(),
                                         ).copyWith(
-                                          prefixIcon: Icon(
-                                              Icons.alternate_email_rounded,
+                                          prefixIcon: HugeIcon(
+                                              icon: HugeIcons
+                                                  .strokeRoundedMailAtSign01,
                                               size: 20,
                                               color: AyurezeTheme.forestDeep),
                                         ),

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'dart:io';
 import 'dart:ui';
 
@@ -391,8 +393,8 @@ class ChatPageState extends State<ChatPage> {
                               );
                             },
                             errorBuilder: (context, object, stackTrace) {
-                              return Icon(
-                                Icons.account_circle,
+                              return HugeIcon(
+                                icon: HugeIcons.strokeRoundedUserCircle,
                                 size: 35,
                                 color: AyurezeTheme.textSecondary,
                               );
@@ -587,8 +589,8 @@ class ChatPageState extends State<ChatPage> {
                         builder: (context) => LoginHomeScreen(chat: "chat")));
               }
             },
-            child: Icon(
-              Icons.arrow_back_ios,
+            child: HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowLeft01,
               color: AyurezeTheme.textPrimary,
             )),
       ),
@@ -631,7 +633,7 @@ class ChatPageState extends State<ChatPage> {
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 1),
               child: IconButton(
-                icon: Icon(Icons.image),
+                icon: HugeIcon(icon: AppIcons.image),
                 onPressed: () {
                   HapticFeedback.selectionClick();
                   _modalBottomSheetMenu();
@@ -660,7 +662,7 @@ class ChatPageState extends State<ChatPage> {
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 8),
               child: IconButton(
-                icon: Icon(Icons.send),
+                icon: HugeIcon(icon: AppIcons.send),
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   onSendMessage(textEditingController.text, TypeMessage.text);

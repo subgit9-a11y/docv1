@@ -285,8 +285,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 child: CircleAvatar(
                                   backgroundColor: AyurezeTheme.healingGreen50,
                                   radius: 14,
-                                  child: const Icon(
-                                    Icons.add,
+                                  child: HugeIcon(
+                                    icon: AppIcons.add,
                                     color: AyurezeTheme.forestDeep,
                                   ),
                                 ),

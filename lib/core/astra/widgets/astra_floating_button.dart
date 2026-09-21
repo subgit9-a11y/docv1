@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/context/context_builder.dart';
 import 'package:doctro/core/astra/context/patient_context.dart';
 import 'package:doctro/core/astra/navigation/app_router.dart';
@@ -105,8 +106,8 @@ class AstraFloatingButton extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.psychology,
+                HugeIcon(
+                  icon: HugeIcons.strokeRoundedBrain01,
                   color: Colors.white,
                   size: size * 0.45,
                 ),
@@ -197,7 +198,7 @@ class AstraMiniButton extends StatelessWidget {
   final VoidCallback? onTap;
 
   /// Icon (optional)
-  final IconData? icon;
+  final List<List<dynamic>>? icon;
 
   const AstraMiniButton({
     super.key,
@@ -223,8 +224,8 @@ class AstraMiniButton extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  icon ?? Icons.psychology,
+                HugeIcon(
+                  icon: icon ?? HugeIcons.strokeRoundedBrain01,
                   size: 16,
                   color: AyurezeTheme.healingGreen50,
                 ),

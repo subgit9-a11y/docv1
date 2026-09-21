@@ -250,8 +250,9 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                     Expanded(
                                       flex: 2,
                                       child: IconButton(
-                                        icon: Icon(
-                                          Icons.edit_calendar_rounded,
+                                        icon: HugeIcon(
+                                          icon: HugeIcons
+                                              .strokeRoundedCalendarSetting01,
                                           color: AyurezeTheme.healingGreen100,
                                           size: 22,
                                         ),
@@ -450,8 +451,8 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                          Icon(
-                                                                              Icons.arrow_forward_rounded,
+                                                                          HugeIcon(
+                                                                              icon: HugeIcons.strokeRoundedArrowRight01,
                                                                               size: 16,
                                                                               color: AyurezeTheme.border),
                                                                           InkWell(
@@ -509,7 +510,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                           if (index !=
                                                                               0)
                                                                             IconButton(
-                                                                              icon: Icon(Icons.remove_circle_outline, color: AyurezeTheme.remoteRed50, size: 20),
+                                                                              icon: HugeIcon(icon: HugeIcons.strokeRoundedMinusSignCircle, color: AyurezeTheme.remoteRed50, size: 20),
                                                                               onPressed: () {
                                                                                 myState(() {
                                                                                   listDynamic.removeAt(index);

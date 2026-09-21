@@ -270,8 +270,8 @@ class ModernDrawer extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (badge != null) ...[badge, const SizedBox(width: 8)],
-            Icon(
-              Icons.arrow_forward_ios,
+            HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowRight01,
               size: 14,
               color: isDestructive
                   ? AyurezeTheme.danger.withValues(alpha: 0.7)
