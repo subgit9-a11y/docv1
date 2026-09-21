@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:hugeicons/hugeicons.dart';
 
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/widgets/osler_hero.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
@@ -125,41 +126,57 @@ class _PaymentScreen extends State<PaymentScreen> {
                 );
               }
 
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: AyurezeTheme.screenPadding,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHero(),
-                      const SizedBox(height: 18),
-                      _buildWalletCard(),
-                      const SizedBox(height: 18),
-                      _buildSearchCard(),
-                      const SizedBox(height: 18),
-                      if (paymentsRequest.isEmpty)
-                        _buildEmptyState()
-                      else ...[
-                        _buildHeaderSummary(),
-                        const SizedBox(height: 12),
-                        ..._buildPaymentItems(),
-                        if (!_searching() &&
-                            !_paymentRequest &&
-                            paymentsRequest.length > 5) ...[
-                          const SizedBox(height: 10),
-                          _buildViewAllCard(),
-                        ],
-                        const SizedBox(height: 14),
-                        _buildTotalBar(),
-                      ],
-                    ],
+              return Stack(
+                children: [
+                  Positioned(
+                    top: -60,
+                    right: -80,
+                    child: GlassBlob(
+                        size: 220, color: AyurezeTheme.healingGreen50),
                   ),
-                ),
+                  Positioned(
+                    bottom: 120,
+                    left: -90,
+                    child: GlassBlob(
+                        size: 220, color: AyurezeTheme.sunshineYellow50),
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: AyurezeTheme.screenPadding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildHero(),
+                          const SizedBox(height: 18),
+                          _buildWalletCard(),
+                          const SizedBox(height: 18),
+                          _buildSearchCard(),
+                          const SizedBox(height: 18),
+                          if (paymentsRequest.isEmpty)
+                            _buildEmptyState()
+                          else ...[
+                            _buildHeaderSummary(),
+                            const SizedBox(height: 12),
+                            ..._buildPaymentItems(),
+                            if (!_searching() &&
+                                !_paymentRequest &&
+                                paymentsRequest.length > 5) ...[
+                              const SizedBox(height: 10),
+                              _buildViewAllCard(),
+                            ],
+                            const SizedBox(height: 14),
+                            _buildTotalBar(),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               );
             },
           ),
@@ -178,8 +195,7 @@ class _PaymentScreen extends State<PaymentScreen> {
   }
 
   Widget _buildSearchCard() {
-    return Container(
-      decoration: AyurezeTheme.panelDecoration(),
+    return GlassSurface(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
       child: Row(
         children: [
@@ -324,9 +340,8 @@ class _PaymentScreen extends State<PaymentScreen> {
           _paymentRequest = true;
         });
       },
-      child: Container(
+      child: GlassSurface(
         padding: const EdgeInsets.all(16),
-        decoration: AyurezeTheme.mutedPanelDecoration(),
         child: Row(
           children: [
             Expanded(
@@ -393,10 +408,9 @@ class _PaymentScreen extends State<PaymentScreen> {
   }
 
   Widget _buildEmptyState() {
-    return Container(
+    return GlassSurface(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 36),
-      decoration: AyurezeTheme.panelDecoration(),
       child: Column(
         children: [
           Image.asset("assets/images/no-data.png", height: 88),
@@ -540,14 +554,10 @@ class _PaymentScreen extends State<PaymentScreen> {
   }
 
   Widget _buildWalletCard() {
-    return Container(
+    return GlassSurface(
       width: double.infinity,
+      radius: 22,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AyurezeTheme.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AyurezeTheme.border, width: 1.5),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
