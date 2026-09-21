@@ -758,10 +758,8 @@ class _PaymentScreen extends State<PaymentScreen> {
                                 SharedPreferenceHelper.getString(
                                     Preferences.doctorId);
                             final response = await AstraApiService()
-                                .requestWithdraw(doctorId, {
-                              "amount": amount,
-                              "payout_details": payoutDetails
-                            });
+                                .requestWithdraw(
+                                    doctorId, amount, payoutDetails);
 
                             if (response["success"] == true) {
                               if (parentContext.mounted) {

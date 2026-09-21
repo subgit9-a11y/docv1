@@ -224,12 +224,18 @@ class AstraApiService {
     }
   }
 
-  /// Request withdrawal
+  /// Request withdrawal. `amount` is a query parameter on this endpoint,
+  /// not a body field - confirmed against the live backend, which returns
+  /// a 422 "amount: Field required" validation error if it's sent in the
+  /// JSON body instead.
   Future<Map<String, dynamic>> requestWithdraw(
-      String doctorId, Map<String, dynamic> data) async {
+      String doctorId, num amount, Map<String, dynamic> payoutDetails) async {
     try {
-      final response =
-          await _dio.post('/api/v1/api/doctors/$doctorId/withdraw', data: data);
+      final response = await _dio.post(
+        '/api/v1/api/doctors/$doctorId/withdraw',
+        queryParameters: {'amount': amount},
+        data: {'payout_details': payoutDetails},
+      );
       return response.data;
     } catch (e) {
       throw _handleError(e);
