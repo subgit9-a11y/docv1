@@ -23,8 +23,9 @@ class ModernDrawer extends StatelessWidget {
         SharedPreferenceHelper.getStringOrNull(Preferences.phone_no);
 
     return Drawer(
+      backgroundColor: AyurezeTheme.nightSurface900,
       child: Container(
-        color: AyurezeTheme.canvas,
+        color: AyurezeTheme.nightSurface900,
         child: Column(
           children: [
             Container(
@@ -32,7 +33,11 @@ class ModernDrawer extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.only(
                   top: 54, left: 22, right: 22, bottom: 22),
-              decoration: AyurezeTheme.heroDecoration(),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32),
+                color: AyurezeTheme.nightSurface800,
+                border: Border.all(color: AyurezeTheme.nightBorder),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -40,15 +45,13 @@ class ModernDrawer extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.14),
+                      color: AyurezeTheme.gold500.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(999),
-                      border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.16)),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Ayureze Doctor Desk",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AyurezeTheme.gold500,
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.3,
@@ -61,8 +64,7 @@ class ModernDrawer extends StatelessWidget {
                     height: 76,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(
-                          color: AyurezeTheme.healingGreen50, width: 2),
+                      border: Border.all(color: AyurezeTheme.gold500, width: 2),
                       image: DecorationImage(
                         image: (dFullImage.isNotEmpty)
                             ? NetworkImage(dFullImage)
@@ -75,8 +77,8 @@ class ModernDrawer extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     "Dr. ${dName ?? "Doctor"}",
-                    style: const TextStyle(
-                        color: Colors.white,
+                    style: TextStyle(
+                        color: AyurezeTheme.nightTextPrimary,
                         fontSize: 20,
                         fontWeight: FontWeight.w800),
                   ),
@@ -84,21 +86,20 @@ class ModernDrawer extends StatelessWidget {
                   Text(
                     phone ?? "",
                     style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.74),
-                        fontSize: 13),
+                        color: AyurezeTheme.nightTextSecondary, fontSize: 13),
                   ),
                   const SizedBox(height: 14),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AyurezeTheme.healingGreen50,
+                      color: AyurezeTheme.gold500,
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
                       "Verified Professional",
                       style: TextStyle(
-                        color: AyurezeTheme.forestDeep,
+                        color: AyurezeTheme.goldOnGold,
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
                       ),
@@ -125,7 +126,7 @@ class ModernDrawer extends StatelessWidget {
                           .toString(),
                       () => Navigator.popAndPushNamed(
                           context, 'AppointmentHistoryScreen'),
-                      badge: _pulsingDot(AyurezeTheme.healingGreen50)),
+                      badge: _pulsingDot(AyurezeTheme.gold500)),
                   _drawerItem(
                       context,
                       AppIcons.close,
@@ -142,7 +143,7 @@ class ModernDrawer extends StatelessWidget {
                           .toString(),
                       () => Navigator.popAndPushNamed(
                           context, 'rateAndReviewRoutes'),
-                      badge: _pulsingDot(AyurezeTheme.healingGreen50)),
+                      badge: _pulsingDot(AyurezeTheme.gold500)),
                   _drawerItem(
                       context,
                       AppIcons.notifications,
@@ -183,7 +184,7 @@ class ModernDrawer extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 10),
-                    child: Divider(color: AyurezeTheme.border),
+                    child: Divider(color: AyurezeTheme.nightBorder),
                   ),
                   _drawerItem(
                       context,
@@ -207,7 +208,7 @@ class ModernDrawer extends StatelessWidget {
       child: Text(
         title.toUpperCase(),
         style: TextStyle(
-          color: AyurezeTheme.textSecondary.withValues(alpha: 0.6),
+          color: AyurezeTheme.nightTextFaint,
           fontSize: 11,
           fontWeight: FontWeight.w800,
           letterSpacing: 1.0,
@@ -239,7 +240,7 @@ class ModernDrawer extends StatelessWidget {
       {bool isDestructive = false, Widget? badge}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      decoration: AyurezeTheme.panelDecoration(),
+      decoration: AyurezeTheme.nightPanelDecoration(),
       child: ListTile(
         leading: Container(
           width: 38,
@@ -247,21 +248,20 @@ class ModernDrawer extends StatelessWidget {
           decoration: BoxDecoration(
             color: isDestructive
                 ? AyurezeTheme.danger.withValues(alpha: 0.1)
-                : AyurezeTheme.surfaceMuted,
+                : AyurezeTheme.gold500.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(14),
           ),
           child: HugeIcon(
               icon: icon,
-              color: isDestructive
-                  ? AyurezeTheme.danger
-                  : AyurezeTheme.textPrimary,
+              color: isDestructive ? AyurezeTheme.danger : AyurezeTheme.gold500,
               size: 20),
         ),
         title: Text(
           label,
           style: TextStyle(
-            color:
-                isDestructive ? AyurezeTheme.danger : AyurezeTheme.textPrimary,
+            color: isDestructive
+                ? AyurezeTheme.danger
+                : AyurezeTheme.nightTextPrimary,
             fontSize: 14,
             fontWeight: FontWeight.w700,
           ),
@@ -275,7 +275,7 @@ class ModernDrawer extends StatelessWidget {
               size: 14,
               color: isDestructive
                   ? AyurezeTheme.danger.withValues(alpha: 0.7)
-                  : AyurezeTheme.textSecondary,
+                  : AyurezeTheme.nightTextFaint,
             ),
           ],
         ),
