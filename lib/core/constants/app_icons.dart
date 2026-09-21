@@ -175,4 +175,26 @@ class AppIcons {
       HugeIcons.strokeRoundedAnalytics01;
 
   static List<List<dynamic>> get language2 => HugeIcons.strokeRoundedTranslate;
+
+  static List<List<dynamic>> get person => HugeIcons.strokeRoundedUser;
+
+  static List<List<dynamic>> get badge => HugeIcons.strokeRoundedBadge;
+
+  static List<List<dynamic>> get cake => HugeIcons.strokeRoundedCake;
+
+  static List<List<dynamic>> get gender => HugeIcons.strokeRoundedUserSwitch;
+
+  static List<List<dynamic>> get verifiedUser =>
+      HugeIcons.strokeRoundedIdVerified;
+
+  static List<List<dynamic>> get school =>
+      HugeIcons.strokeRoundedGraduationScroll;
+
+  static List<List<dynamic>> get history => HugeIcons.strokeRoundedHistory;
+
+  static List<List<dynamic>> get description =>
+      HugeIcons.strokeRoundedNotepadText;
+
+  static List<List<dynamic>> get cloudUpload =>
+      HugeIcons.strokeRoundedCloudUpload;
 }

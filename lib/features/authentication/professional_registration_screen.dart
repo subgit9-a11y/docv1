@@ -3,6 +3,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
+import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/ayureze_date_picker.dart';
 import 'package:doctro/widgets/osler_button.dart';
@@ -536,24 +537,18 @@ class _ProfessionalRegistrationScreenState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               _buildSectionHeader(
-                                  "Personal Information", Icons.person_outline),
+                                  "Personal Information", AppIcons.person),
                               const SizedBox(height: 15),
                               widget.personalData != null
                                   ? _buildPersonalSummaryCard()
                                   : Column(
                                       children: [
-                                        _buildTextField(
-                                            "Full Name",
-                                            _nameController,
-                                            Icons.badge_outlined),
-                                        _buildTextField(
-                                            "Email Address",
-                                            _emailController,
-                                            Icons.email_outlined),
-                                        _buildTextField(
-                                            "Phone Number",
-                                            _phoneController,
-                                            Icons.phone_android_outlined,
+                                        _buildTextField("Full Name",
+                                            _nameController, AppIcons.badge),
+                                        _buildTextField("Email Address",
+                                            _emailController, AppIcons.email),
+                                        _buildTextField("Phone Number",
+                                            _phoneController, AppIcons.phone,
                                             isNumber: true),
                                         Row(
                                           children: [
@@ -576,7 +571,7 @@ class _ProfessionalRegistrationScreenState
                                                 child: _buildTextField(
                                                     "Date of Birth",
                                                     _dobController,
-                                                    Icons.cake_outlined,
+                                                    AppIcons.cake,
                                                     isReadOnly: true,
                                                     onTap: () =>
                                                         _selectDate(context))),
@@ -585,23 +580,23 @@ class _ProfessionalRegistrationScreenState
                                       ],
                                     ),
                               const SizedBox(height: 35),
-                              _buildSectionHeader("Professional Credentials",
-                                  Icons.badge_outlined),
+                              _buildSectionHeader(
+                                  "Professional Credentials", AppIcons.badge),
                               const SizedBox(height: 15),
                               _buildTextField(
                                   "Medical Registration / License Number",
                                   _licenseController,
-                                  Icons.verified_user_outlined),
+                                  AppIcons.verifiedUser),
                               _buildTextField(
                                   "Medical Education (e.g. BAMS, MD)",
                                   _educationController,
-                                  Icons.school_outlined),
+                                  AppIcons.school),
                               _buildTextField("Years of Experience",
-                                  _experienceController, Icons.history,
+                                  _experienceController, AppIcons.history,
                                   isNumber: true),
                               const SizedBox(height: 35),
-                              _buildSectionHeader("Consultation Rates",
-                                  Icons.account_balance_wallet_outlined),
+                              _buildSectionHeader(
+                                  "Consultation Rates", AppIcons.wallet),
                               const SizedBox(height: 15),
                               Row(
                                 children: [
@@ -609,14 +604,14 @@ class _ProfessionalRegistrationScreenState
                                       child: _buildTextField(
                                           "Audio call fee (₹)",
                                           _feesController,
-                                          Icons.phone_android_outlined,
+                                          AppIcons.phone,
                                           isNumber: true)),
                                   const SizedBox(width: 15),
                                   Expanded(
                                       child: _buildTextField(
                                           "Video call fee (₹)",
                                           _videoFeesController,
-                                          Icons.videocam_outlined,
+                                          AppIcons.videoCall,
                                           isNumber: true)),
                                 ],
                               ),
@@ -628,19 +623,19 @@ class _ProfessionalRegistrationScreenState
                                       () => _selectedRevenueModel = val),
                                   _selectedRevenueModel),
                               const SizedBox(height: 35),
-                              _buildSectionHeader("Practice Details",
-                                  Icons.description_outlined),
+                              _buildSectionHeader(
+                                  "Practice Details", AppIcons.description),
                               const SizedBox(height: 15),
                               _buildTextField(
                                   "Languages Spoken (e.g. English, Hindi)",
                                   _languageController,
-                                  Icons.translate),
+                                  AppIcons.language),
                               _buildTextField("Professional Bio / Description",
-                                  _descController, Icons.article_outlined,
+                                  _descController, AppIcons.description,
                                   maxLines: 3),
                               const SizedBox(height: 35),
                               _buildSectionHeader("Verification Documents",
-                                  Icons.cloud_upload_outlined),
+                                  AppIcons.cloudUpload),
                               const SizedBox(height: 15),
                               _buildLabel("Medical Degree / Certificate"),
                               _buildUploadBox(
@@ -740,12 +735,12 @@ class _ProfessionalRegistrationScreenState
     );
   }
 
-  Widget _buildSectionHeader(String title, IconData icon) {
+  Widget _buildSectionHeader(String title, List<List<dynamic>> icon) {
     final textTheme = Theme.of(context).textTheme;
 
     return Row(
       children: [
-        Icon(icon, color: AyurezeTheme.healingGreen100, size: 22),
+        HugeIcon(icon: icon, color: AyurezeTheme.healingGreen100, size: 22),
         const SizedBox(width: 10),
         Text(title,
             style: textTheme.titleMedium?.copyWith(
@@ -809,7 +804,7 @@ class _ProfessionalRegistrationScreenState
   }
 
   Widget _buildTextField(
-      String label, TextEditingController controller, IconData icon,
+      String label, TextEditingController controller, List<List<dynamic>> icon,
       {bool isNumber = false,
       int maxLines = 1,
       bool isReadOnly = false,
@@ -831,8 +826,8 @@ class _ProfessionalRegistrationScreenState
             style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600, color: AyurezeTheme.textPrimary),
             decoration: InputDecoration(
-              prefixIcon:
-                  Icon(icon, color: AyurezeTheme.textSecondary, size: 20),
+              prefixIcon: HugeIcon(
+                  icon: icon, color: AyurezeTheme.textSecondary, size: 20),
               filled: true,
               fillColor: AyurezeTheme.surface,
               contentPadding:
@@ -889,24 +884,26 @@ class _ProfessionalRegistrationScreenState
       ),
       child: Column(
         children: [
-          _buildSummaryRow(Icons.person, "Name", _nameController.text),
+          _buildSummaryRow(AppIcons.person, "Name", _nameController.text),
           const Divider(height: 20),
-          _buildSummaryRow(Icons.email, "Email", _emailController.text),
+          _buildSummaryRow(AppIcons.email, "Email", _emailController.text),
           const Divider(height: 20),
-          _buildSummaryRow(Icons.cake, "DOB", _dobController.text),
+          _buildSummaryRow(AppIcons.cake, "DOB", _dobController.text),
           const Divider(height: 20),
-          _buildSummaryRow(Icons.wc, "Gender", _genderSelect ?? "Not selected"),
+          _buildSummaryRow(
+              AppIcons.gender, "Gender", _genderSelect ?? "Not selected"),
         ],
       ),
     );
   }
 
-  Widget _buildSummaryRow(IconData icon, String label, String value) {
+  Widget _buildSummaryRow(
+      List<List<dynamic>> icon, String label, String value) {
     final textTheme = Theme.of(context).textTheme;
 
     return Row(
       children: [
-        Icon(icon, size: 18, color: AyurezeTheme.healingGreen100),
+        HugeIcon(icon: icon, size: 18, color: AyurezeTheme.healingGreen100),
         const SizedBox(width: 12),
         Text("$label: ",
             style: textTheme.bodySmall
