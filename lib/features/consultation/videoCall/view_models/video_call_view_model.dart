@@ -3,8 +3,6 @@ import 'package:doctro/features/consultation/videoCall/VideoCall/overlay_service
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/network/api_header.dart';
-import 'package:doctro/models/doctor_profile.dart';
-import 'package:doctro/models/setting.dart';
 import 'package:doctro/models/video_call_history_add_model.dart';
 import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
@@ -47,7 +45,7 @@ class VideoCallViewModel extends ChangeNotifier {
   Future<void> init(
       BuildContext context, bool callEnd, int? id, String? flag) async {
     isDisposed = false;
-    await settingRequest(context, callEnd, id, flag);
+    await _fetchAgoraConfigAndToken(context, callEnd, id, flag);
   }
 
   /// Notify listeners only while the view model is still alive.
@@ -58,61 +56,27 @@ class VideoCallViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<BaseModel<Setting>> settingRequest(
+  /// Fetches the Agora App ID and an RTC token, then starts the engine.
+  /// `doctorProfile()`/`settingRequest()` (the previous sources for these)
+  /// and the old `/video/token` route are all dead legacy endpoints (404
+  /// on the live backend) - the App ID and token now both come from live
+  /// Astra endpoints, the same way regardless of who placed the call.
+  Future<void> _fetchAgoraConfigAndToken(
       BuildContext context, bool callEnd, int? id, String? flag) async {
-    Setting response;
     try {
-      response =
-          await RestClient(await RetroApi().dioData(context)).settingRequest();
-      appId = response.data?.agoraAppId;
-      if (!context.mounted) return BaseModel()..data = response;
-      if (flag != "OutGoing") {
-        await doctorProfile(context, callEnd, id, flag);
-      } else {
-        await agoraTokenGenerateDoctor(context, id, callEnd, flag);
-      }
-      notifyListeners();
-    } catch (error, stacktrace) {
-      logger.e("Exception occur: $error stackTrace: $stacktrace");
-      return BaseModel()..setException(ServerError.withError(error: error));
-    }
-    return BaseModel()..data = response;
-  }
+      doctorId = int.tryParse(
+          SharedPreferenceHelper.getStringOrNull(Preferences.doctorId) ?? '');
 
-  Future<BaseModel<DoctorProfile>> doctorProfile(
-      BuildContext context, bool callEnd, int? id, String? flag) async {
-    DoctorProfile response;
-    try {
-      response =
-          await RestClient(await RetroApi().dioData(context)).doctorProfile();
-      if (response.success == true) {
-        token = response.data?.agoraToken;
-        channelName = response.data?.channelName;
-        doctorId = response.data?.id;
-        if (!context.mounted) return BaseModel()..data = response;
-        await initAgora(context, callEnd, id, flag);
-      }
-      notifyListeners();
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
-    }
-    return BaseModel()..data = response;
-  }
+      final configResponse = await AstraApiService().getVideoConfig();
+      appId = configResponse['app_id'] as String?;
+      if (!context.mounted) return;
 
-  Future<void> agoraTokenGenerateDoctor(
-      BuildContext context, int? id, bool callEnd, String? flag) async {
-    final String channel = "call_$id";
-    try {
-      final response = await AstraApiService().getVideoToken(
-        channel: channel,
-        uid: "0",
-        role: "publisher",
-      );
-
-      if (response['success'] == true) {
-        channelName = response['channel'];
-        token = response['token'];
-        // getVideoToken above is an async gap; the widget may be gone by now.
+      final tokenResponse =
+          await AstraApiService().generateVideoToken(toId: '$id', uid: 0);
+      if (tokenResponse['success'] == true) {
+        final data = tokenResponse['data'] as Map<String, dynamic>?;
+        token = data?['token'] as String?;
+        channelName = data?['cn'] as String?;
         if (!context.mounted) return;
         await initAgora(context, callEnd, id, flag);
         notifyListeners();
@@ -122,7 +86,8 @@ class VideoCallViewModel extends ChangeNotifier {
             context, "Failed to call the patient! Unable to connect!");
         Navigator.pop(context);
       }
-    } catch (error) {
+    } catch (error, stacktrace) {
+      logger.e("Exception occur: $error stackTrace: $stacktrace");
       if (!context.mounted) return;
       OslerToast.error(
           context, "Failed to call the patient! Unable to connect!");

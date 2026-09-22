@@ -151,17 +151,33 @@ class AstraApiService {
     }
   }
 
-  /// Get dynamic Agora RTC video token for consultations
-  Future<Map<String, dynamic>> getVideoToken({
-    required String channel,
-    String uid = "0",
-    String role = "publisher",
-    int expiry = 3600,
+  /// Get a dynamic Agora RTC video token for a consultation with [toId]
+  /// (the other party's user id). Hits the live `/video/generate-token`
+  /// route - confirmed against the deployed backend; the previous
+  /// `/video/token` (GET, channel/uid/role query params) 404s, it was
+  /// never mounted in the backend's main.py.
+  Future<Map<String, dynamic>> generateVideoToken({
+    required String toId,
+    int uid = 0,
   }) async {
     try {
-      final path =
-          'api/v1/video/token?channel=$channel&uid=$uid&role=$role&expiry=$expiry';
-      final response = await _getWithDnsFallback(path);
+      final response = await _dio.post(
+        '/api/v1/video/generate-token',
+        data: {'to_id': toId, 'uid': uid},
+      );
+      return response.data;
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  /// Get the Agora App ID needed to initialize the RTC engine, before a
+  /// token can be requested. NOT secret - the App Certificate (used to
+  /// sign tokens) is what must stay server-side. Requires the backend to
+  /// expose `GET /api/v1/video/config`; see the app's video-calling notes.
+  Future<Map<String, dynamic>> getVideoConfig() async {
+    try {
+      final response = await _dio.get('/api/v1/video/config');
       return response.data;
     } catch (e) {
       throw _handleError(e);
