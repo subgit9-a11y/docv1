@@ -17,6 +17,7 @@ import 'package:doctro/features/consultation/chat/constants/firestore_constants.
 import 'package:doctro/features/consultation/chat/models/user_chat.dart';
 import 'package:doctro/features/consultation/chat/pages/chat_page.dart';
 import 'package:doctro/features/consultation/chat/providers/home_provider.dart';
+import 'package:doctro/features/consultation/videoCall/video_Call.dart';
 import 'package:doctro/features/dashboard/view_models/patient_information_view_model.dart';
 
 import 'package:flutter/material.dart';
@@ -183,7 +184,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               onPressed: () => _showCallOptions(
                                                   context,
                                                   phoneNo,
-                                                  appointmentType),
+                                                  appointmentType,
+                                                  userId),
                                               icon: Container(
                                                 padding:
                                                     const EdgeInsets.all(10),
@@ -819,6 +821,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     BuildContext context,
     String? phoneNo,
     String? appointmentType,
+    int? userId,
   ) {
     showModalBottomSheet(
       context: context,
@@ -871,7 +874,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                           ) ==
                           true) {
                         Navigator.of(context).pop();
-                        _addVideoOverlay(context);
+                        _addVideoOverlay(context, userId);
                       } else {
                         Navigator.of(context).pop();
                       }
@@ -1009,8 +1012,21 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     );
   }
 
-  void _addVideoOverlay(BuildContext context) {
-    OslerToast.warning(context, "Video Call feature is currently unavailable.");
+  void _addVideoOverlay(BuildContext context, int? userId) {
+    if (userId == null) {
+      OslerToast.info(context, "Patient details are still loading...");
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoCall(
+          id: userId,
+          callEnd: false,
+          flag: "OutGoing",
+        ),
+      ),
+    );
   }
 
   /// Resolve the patient's Firestore chat user lazily and open the chat.
