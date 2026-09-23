@@ -218,6 +218,15 @@ class AstraController extends ChangeNotifier {
         context: _currentContext,
       );
 
+      // A 200 response can still carry a backend-side failure (e.g. the AI
+      // engine itself is degraded) as {"error": "..."} rather than an HTTP
+      // error status - without this check it silently became a blank
+      // assistant bubble, since none of _parseAssistantResponse's expected
+      // content keys are present.
+      if (response['error'] != null) {
+        throw AstraException(response['error'].toString());
+      }
+
       // Parse and add assistant response
       final assistantMessage = _parseAssistantResponse(response);
       _messages.add(assistantMessage);

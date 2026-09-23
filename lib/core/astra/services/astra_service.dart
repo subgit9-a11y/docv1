@@ -278,21 +278,29 @@ class AstraService {
         final lines = buffer.split('\n');
         buffer = lines.removeLast(); // Keep incomplete line in buffer
 
-        for (final line in lines) {
-          if (line.trim().isEmpty) continue;
+        for (final rawLine in lines) {
+          if (rawLine.trim().isEmpty) continue;
+
+          // Strip a leading SSE "data: " prefix if present, so a JSON
+          // payload the backend sends this way (e.g. {"error": "..."})
+          // still gets decoded as JSON below rather than treated as
+          // literal text.
+          final line = rawLine.startsWith('data:')
+              ? rawLine.substring(5).trim()
+              : rawLine;
+          if (line.isEmpty) continue;
 
           // Try to parse as JSON
           try {
-            final json = jsonDecode(line);
-            yield ChatStreamEvent.data(json as Map<String, dynamic>);
-          } catch (e) {
-            // Not JSON, might be progress text
-            if (line.startsWith('data:')) {
-              final data = line.substring(5).trim();
-              if (data.isNotEmpty) {
-                yield ChatStreamEvent.data({'text': data});
-              }
+            final json = jsonDecode(line) as Map<String, dynamic>;
+            if (json['error'] != null) {
+              yield ChatStreamEvent.error(json['error'].toString());
+            } else {
+              yield ChatStreamEvent.data(json);
             }
+          } catch (e) {
+            // Not JSON - progress/plain text chunk.
+            yield ChatStreamEvent.data({'text': line});
           }
         }
       }
@@ -584,10 +592,26 @@ class AstraService {
   }
 
   Map<String, dynamic> _parseResponse(dynamic response) {
-    if (response == null) return {};
-    if (response is Map<String, dynamic>) return response;
-    if (response is Response && response.data is Map<String, dynamic>) {
-      return response.data;
+    dynamic data = response;
+    if (data is Response) data = data.data;
+    if (data == null) return {};
+    if (data is Map<String, dynamic>) return data;
+    if (data is String) {
+      // Some endpoints (e.g. brain/chat) reply with an SSE-style "data: "
+      // prefix even on a plain, non-streaming POST, and/or a Content-Type
+      // that stops Dio auto-decoding JSON, leaving `data` as a raw string -
+      // decode it manually rather than silently losing the whole body.
+      var text = data.trim();
+      if (text.startsWith('data:')) {
+        text = text.substring(5).trim();
+      }
+      if (text.isEmpty) return {};
+      try {
+        final decoded = jsonDecode(text);
+        if (decoded is Map<String, dynamic>) return decoded;
+      } catch (_) {
+        // Not JSON - fall through to empty map below.
+      }
     }
     return {};
   }
