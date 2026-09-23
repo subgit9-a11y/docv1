@@ -600,7 +600,7 @@ class _PaymentScreen extends State<PaymentScreen> {
             children: [
               Expanded(
                 child: OslerButton(
-                  text: "Instant Self Payout",
+                  text: "Request Payout",
                   onPressed: availableBalance <= 0
                       ? null
                       : () => _showWithdrawDialog(),
@@ -655,7 +655,7 @@ class _PaymentScreen extends State<PaymentScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               title: Text(
-                "Instant Self Payout",
+                "Request Payout",
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
                     color: AyurezeTheme.textPrimary),
@@ -665,7 +665,7 @@ class _PaymentScreen extends State<PaymentScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Withdraw your earnings instantly to your bank account or UPI ID. (1 request per day, max ₹3000 instant limit, Tuesdays and Saturdays only).",
+                      "Submit a withdrawal request for your earnings. An admin reviews and pays it out to your UPI ID or bank account - this isn't instant.",
                       style: TextStyle(
                           fontSize: 12, color: AyurezeTheme.textSecondary),
                     ),
@@ -776,7 +776,7 @@ class _PaymentScreen extends State<PaymentScreen> {
                                 OslerToast.success(
                                     parentContext,
                                     response["message"] ??
-                                        "Payout triggered successfully!");
+                                        "Withdrawal request submitted for admin review.");
                               }
                             } else {
                               if (parentContext.mounted) {
@@ -795,7 +795,7 @@ class _PaymentScreen extends State<PaymentScreen> {
                           }
                         },
                   child: Text(
-                    "Withdraw",
+                    "Submit Request",
                     style: TextStyle(
                         color: isFormValid && !isWithdrawing
                             ? AyurezeTheme.forestDeep
