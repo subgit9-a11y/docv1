@@ -10,7 +10,6 @@ import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/astra/utils/astra_config.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
 import 'package:doctro/core/astra/utils/astra_exception.dart';
-import 'package:doctro/network/apis.dart';
 
 /// Astra Service
 ///
@@ -20,8 +19,9 @@ class AstraService {
   static final AstraService _instance = AstraService._internal();
   late Dio _dio;
 
-  /// Base URL for Astra API
-  final String baseUrl = Apis.astraBaseUrl;
+  /// Base URL for Astra API (includes the /api/v1/ prefix every endpoint
+  /// below is actually served under - AstraConfig.baseUrl alone 404s).
+  final String baseUrl = AstraConfig.apiBaseUrl;
 
   factory AstraService() => _instance;
 
@@ -79,21 +79,22 @@ class AstraService {
   ) async {
     final startTime = DateTime.now();
 
-    // Add Firebase Auth token if available
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      String? token = await user.getIdToken();
-      if (token != null) {
-        options.headers['Authorization'] = 'Bearer $token';
-      }
-    }
-
-    // Fallback to app auth token
-    if (options.headers['Authorization'] == null) {
-      final String appToken =
-          SharedPreferenceHelper.getString(Preferences.auth_token);
-      if (appToken.isNotEmpty && appToken != 'N_A') {
-        options.headers['Authorization'] = 'Bearer $appToken';
+    // Prefer the Astra-issued session token (from /auth/login) once we have
+    // one: most Astra endpoints validate that token specifically and reject
+    // a raw Firebase ID token, even though a Firebase user stays signed in
+    // for the whole session (see the identical pattern in astra_api_service.dart).
+    final String appToken =
+        SharedPreferenceHelper.getString(Preferences.auth_token);
+    if (appToken.isNotEmpty && appToken != 'N_A') {
+      options.headers['Authorization'] = 'Bearer $appToken';
+    } else {
+      // No Astra session token yet - fall back to the Firebase ID token.
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        String? token = await user.getIdToken();
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
       }
     }
 

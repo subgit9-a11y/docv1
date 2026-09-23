@@ -64,9 +64,13 @@ class AstraController extends ChangeNotifier {
 
   String? get errorMessage => _errorMessage;
 
-  /// Get user ID from preferences
+  /// Get doctor ID from preferences. `Preferences.userId` is a stale key -
+  /// nothing in the app ever writes it; the login flow sets
+  /// `Preferences.doctorId`, which is what DoctorContext.fromPreferences()
+  /// also prefers.
   String get doctorId {
-    return SharedPreferenceHelper.getString(Preferences.userId);
+    return SharedPreferenceHelper.getStringOrNull(Preferences.doctorId) ??
+        SharedPreferenceHelper.getString(Preferences.userId);
   }
 
   // ============================================================

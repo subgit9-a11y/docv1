@@ -1,6 +1,7 @@
 import 'dart:ui' show ImageFilter;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:doctro/core/astra/widgets/astra_floating_button.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -90,6 +91,15 @@ class _LoginHomeViewState extends State<_LoginHomeView>
       key: _scaffoldKey,
       backgroundColor: AyurezeTheme.canvas,
       drawer: const ModernDrawer(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AyurezeTheme.healingGreenFill,
+        tooltip: 'Ask Astra AI',
+        onPressed: () => AstraFloatingButton.openAstraChat(),
+        child: HugeIcon(
+          icon: HugeIcons.strokeRoundedBrain01,
+          color: Colors.white,
+        ),
+      ),
       body: Consumer<LoginHomeViewModel>(
         builder: (context, viewModel, _) {
           return RefreshIndicator(
