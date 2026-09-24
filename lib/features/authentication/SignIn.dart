@@ -94,7 +94,8 @@ class _SignInViewState extends State<SignInView>
                 SafeArea(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 16),
+                        horizontal: AyurezeTheme.spaceXl,
+                        vertical: AyurezeTheme.spaceLg),
                     child: Center(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 560),
@@ -121,8 +122,8 @@ class _SignInViewState extends State<SignInView>
                                           decoration: BoxDecoration(
                                             color: Colors.white
                                                 .withValues(alpha: 0.14),
-                                            borderRadius:
-                                                BorderRadius.circular(999),
+                                            borderRadius: BorderRadius.circular(
+                                                AyurezeTheme.radiusPill),
                                           ),
                                           child: Text(
                                             "Doctor workspace",
@@ -173,7 +174,8 @@ class _SignInViewState extends State<SignInView>
                                             const SizedBox(width: 16),
                                             ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(24),
+                                                  BorderRadius.circular(
+                                                      AyurezeTheme.radiusXl),
                                               child: Image.asset(
                                                 "assets/images/confident-doctor-half.png",
                                                 height: 140,
@@ -587,7 +589,8 @@ class _SignInViewState extends State<SignInView>
                                       child: Container(
                                         width: double.infinity,
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 8),
+                                            horizontal: AyurezeTheme.spaceXl,
+                                            vertical: AyurezeTheme.spaceSm),
                                         decoration:
                                             AyurezeTheme.glassDecoration(
                                                 radius: AyurezeTheme.radiusXl),

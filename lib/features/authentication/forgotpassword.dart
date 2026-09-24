@@ -83,7 +83,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                     onTap: () => FocusScope.of(context).unfocus(),
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
+                          horizontal: AyurezeTheme.spaceXl,
+                          vertical: AyurezeTheme.spaceMd),
                       child: Center(
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 560),
@@ -136,7 +137,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                                     ),
                                     const SizedBox(height: 24),
                                     GlassSurface(
-                                      padding: const EdgeInsets.all(20),
+                                      padding: const EdgeInsets.all(
+                                          AyurezeTheme.spaceXl),
                                       child: Column(
                                         children: [
                                           TextFormField(

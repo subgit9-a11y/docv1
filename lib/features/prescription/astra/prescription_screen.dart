@@ -163,8 +163,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
       builder: (context) {
         return AlertDialog(
           backgroundColor: AyurezeTheme.surface,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl)),
           title: Text(
             "Edit Dosage",
             style: textTheme.titleMedium?.copyWith(
@@ -419,8 +419,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                           return OslerCard(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: AyurezeTheme.spaceSm),
                               child: ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: noShopify
@@ -563,7 +563,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                           width: double.infinity,
                           decoration: AyurezeTheme.panelDecoration(),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(28),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radius2xl),
                             child: DoctorSignaturePad(
                               onChanged: (bytes) {
                                 setState(() {
@@ -710,7 +711,7 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       child: Column(
         children: [
           Row(

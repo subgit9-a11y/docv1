@@ -82,7 +82,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AyurezeTheme.space2xl,
+              vertical: AyurezeTheme.spaceLg),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 500),
@@ -95,7 +97,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                     children: [
                       const SizedBox(height: 20),
                       Container(
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
                         decoration: BoxDecoration(
                           // Dark-aware: the pale-mint constant made the
                           // forestDeep icon 2.36:1 in dark mode.
@@ -142,7 +144,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                             color: Colors.white,
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radiusMd),
                             color: AyurezeTheme.forestDeep,
                             border: Border.all(
                               color: AyurezeTheme.healingGreen50
@@ -158,7 +161,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                             color: AyurezeTheme.textPrimary,
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radiusMd),
                             color: AyurezeTheme.surface,
                             border: Border.all(
                               color: AyurezeTheme.forestDeep,
@@ -174,7 +178,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                             color: AyurezeTheme.textPrimary,
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radiusMd),
                             color: AyurezeTheme.surface,
                             border: Border.all(
                               color: AyurezeTheme.border,

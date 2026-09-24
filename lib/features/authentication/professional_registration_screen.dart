@@ -769,7 +769,7 @@ class _ProfessionalRegistrationScreenState
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: AyurezeTheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
         border: Border.all(color: AyurezeTheme.border.withValues(alpha: 0.6)),
         boxShadow: [
           BoxShadow(
@@ -833,17 +833,17 @@ class _ProfessionalRegistrationScreenState
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
                   borderSide: BorderSide(
                       color: AyurezeTheme.border.withValues(alpha: 0.6))),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
                   borderSide: BorderSide(
                       color: AyurezeTheme.healingGreen100, width: 1.5)),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg)),
               errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
                   borderSide: BorderSide(color: AyurezeTheme.remoteRed50)),
             ),
             validator: (value) =>
@@ -873,7 +873,7 @@ class _ProfessionalRegistrationScreenState
 
   Widget _buildPersonalSummaryCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       decoration: BoxDecoration(
         // Dark-aware: healingGreen10 is a light-only constant, so it left a
         // pale card behind dark-mode text.

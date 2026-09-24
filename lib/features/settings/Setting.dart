@@ -362,7 +362,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(999),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
                 ),
                 child: Text(
                   "Workspace",

@@ -189,7 +189,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(999),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
             ),
             child: Text(
               "Patient Feedback",
@@ -255,7 +255,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
             child:
                 item.user?.fullImage != null && item.user!.fullImage!.isNotEmpty
                     ? Image.network(

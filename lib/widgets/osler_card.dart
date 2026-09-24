@@ -69,7 +69,8 @@ class _OslerCardState extends State<OslerCard> {
             borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              padding: widget.padding ?? const EdgeInsets.all(20),
+              padding:
+                  widget.padding ?? const EdgeInsets.all(AyurezeTheme.spaceXl),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
                 border: widget.showBorder
