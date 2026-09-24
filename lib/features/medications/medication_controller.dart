@@ -12,20 +12,32 @@ class MedicationController extends ChangeNotifier {
   final List<Medication> _medications;
   final List<MedicationDoseLog> _logs = [];
 
-  MedicationController({List<AstraPrescription> prescriptions = const []})
-      : _medications = _fromPrescriptions(prescriptions);
+  /// [AstraPrescription] only carries a doctorId, not a name - callers that
+  /// have a real name for that id (e.g. from an [AstraDoctor] lookup) pass
+  /// a resolver here. Without one, medications show a generic label rather
+  /// than fabricating a name out of the raw id.
+  MedicationController({
+    List<AstraPrescription> prescriptions = const [],
+    String Function(String doctorId)? doctorNameResolver,
+  }) : _medications = _fromPrescriptions(prescriptions, doctorNameResolver);
 
   static List<Medication> _fromPrescriptions(
-      List<AstraPrescription> prescriptions) {
+    List<AstraPrescription> prescriptions,
+    String Function(String doctorId)? doctorNameResolver,
+  ) {
     final result = <Medication>[];
     for (final prescription in prescriptions) {
       final medicines = prescription.medicines;
       if (medicines == null) continue;
+      final doctorId = prescription.doctorId;
+      final doctorName = doctorId != null
+          ? (doctorNameResolver?.call(doctorId) ?? 'Your doctor')
+          : 'Your doctor';
       for (var i = 0; i < medicines.length; i++) {
         result.add(Medication.fromPrescriptionItem(
           medicines[i],
           prescriptionId: prescription.prescriptionId ?? prescription.id ?? '',
-          doctorName: 'Dr. ${prescription.doctorId ?? 'Unknown'}',
+          doctorName: doctorName,
           index: i,
         ));
       }

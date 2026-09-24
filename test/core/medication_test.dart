@@ -70,6 +70,37 @@ void main() {
       expect(controller.medications.single.isPrescribed, isTrue);
     });
 
+    test('falls back to a generic label without a doctorNameResolver', () {
+      final controller = MedicationController(prescriptions: [
+        AstraPrescription(
+          prescriptionId: 'rx-1',
+          doctorId: 'doc-1',
+          medicines: [MedicineItem(medicineName: 'Ibuprofen')],
+        ),
+      ]);
+
+      // AstraPrescription only carries a doctorId, not a name - it must
+      // never fabricate one like 'Dr. doc-1' out of the raw id.
+      expect(
+          controller.medications.single.prescribingDoctorName, 'Your doctor');
+    });
+
+    test('uses doctorNameResolver when one is supplied', () {
+      final controller = MedicationController(
+        prescriptions: [
+          AstraPrescription(
+            prescriptionId: 'rx-1',
+            doctorId: 'doc-1',
+            medicines: [MedicineItem(medicineName: 'Ibuprofen')],
+          ),
+        ],
+        doctorNameResolver: (id) => id == 'doc-1' ? 'Dr. Hannibal Lector' : id,
+      );
+
+      expect(controller.medications.single.prescribingDoctorName,
+          'Dr. Hannibal Lector');
+    });
+
     test('adds and removes manual medications without touching prescribed ones',
         () {
       final controller = MedicationController(prescriptions: [

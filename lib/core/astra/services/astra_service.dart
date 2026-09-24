@@ -607,7 +607,13 @@ class AstraService {
       // chunk short-circuits immediately.
       final text = data.trim();
       if (text.isEmpty) return {};
-      if (text.contains('data:')) {
+      // Anchored to the start, not a substring check: a plain JSON body
+      // can legitimately contain the text "data:" inside a field value
+      // (e.g. {"response": "Patient data: within normal range."}), which
+      // would otherwise misroute a normal reply into the SSE branch below,
+      // find no line actually starting with "data:", and silently return
+      // an empty map instead of falling through to the plain-JSON decode.
+      if (text.startsWith('data:')) {
         final buffer = StringBuffer();
         for (final rawLine in text.split('\n')) {
           final line = rawLine.trim();

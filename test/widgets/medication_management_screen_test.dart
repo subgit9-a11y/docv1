@@ -33,20 +33,23 @@ void main() {
 
   testWidgets('logging a dose updates the adherence card',
       (WidgetTester tester) async {
-    final controller = MedicationController(prescriptions: [
-      AstraPrescription(
-        prescriptionId: 'rx-1',
-        doctorId: 'doc-1',
-        medicines: [MedicineItem(medicineName: 'Ibuprofen', dose: '200mg')],
-      ),
-    ]);
+    final controller = MedicationController(
+      prescriptions: [
+        AstraPrescription(
+          prescriptionId: 'rx-1',
+          doctorId: 'doc-1',
+          medicines: [MedicineItem(medicineName: 'Ibuprofen', dose: '200mg')],
+        ),
+      ],
+      doctorNameResolver: (id) => 'Dr. Hannibal Lector',
+    );
 
     await tester.pumpWidget(
       MaterialApp(home: MedicationManagementScreen(controller: controller)),
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Prescribed by Dr. doc-1'), findsOneWidget);
+    expect(find.text('Prescribed by Dr. Hannibal Lector'), findsOneWidget);
     expect(find.text('--'), findsOneWidget);
 
     await tester.tap(find.text('Take'));
