@@ -27,12 +27,12 @@ class OslerAlert extends StatelessWidget {
       color: _getBackgroundColor(),
       borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Row(
           children: [
             if (showIcon) ...[
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AyurezeTheme.spaceSm),
                 decoration: BoxDecoration(
                   color: _getIconBackgroundColor(),
                   borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
@@ -48,21 +48,19 @@ class OslerAlert extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: _getForegroundColor(),
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: _getForegroundColor(),
+                        ),
                   ),
                   if (message != null) ...[
                     const SizedBox(height: 2),
                     Text(
                       message!,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: _getForegroundColor(),
-                        height: 1.3,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: _getForegroundColor(),
+                            height: 1.3,
+                          ),
                     ),
                   ],
                 ],

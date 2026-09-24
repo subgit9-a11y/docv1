@@ -33,11 +33,10 @@ class OslerTag extends StatelessWidget {
           ],
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: _getForegroundColor(),
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: _getForegroundColor(),
+                ),
           ),
         ],
       ),

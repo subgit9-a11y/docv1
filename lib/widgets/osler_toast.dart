@@ -48,11 +48,10 @@ class OslerToast {
             Expanded(
               child: Text(
                 message,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: textColor,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ),
           ],
@@ -62,7 +61,7 @@ class OslerToast {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd)),
         duration: duration,
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(AyurezeTheme.spaceLg),
       ),
     );
   }

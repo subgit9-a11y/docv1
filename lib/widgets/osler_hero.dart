@@ -40,7 +40,6 @@ class OslerHero extends StatelessWidget {
                 eyebrow!,
                 style: textTheme.labelSmall?.copyWith(
                   color: Colors.white,
-                  fontSize: 11,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.4,
                 ),
@@ -52,7 +51,6 @@ class OslerHero extends StatelessWidget {
             title,
             style: textTheme.headlineSmall?.copyWith(
               color: Colors.white,
-              fontSize: 24,
               height: 1.05,
               fontWeight: FontWeight.w800,
             ),
@@ -63,7 +61,6 @@ class OslerHero extends StatelessWidget {
               subtitle!,
               style: textTheme.bodyMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.78),
-                fontSize: 14,
                 height: 1.4,
               ),
             ),

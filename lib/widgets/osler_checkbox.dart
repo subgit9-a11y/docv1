@@ -46,13 +46,12 @@ class OslerCheckbox extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: isError
-                    ? AyurezeTheme.remoteRed50
-                    : AyurezeTheme.textPrimary,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: isError
+                        ? AyurezeTheme.remoteRed50
+                        : AyurezeTheme.textPrimary,
+                  ),
             ),
           ),
         ],

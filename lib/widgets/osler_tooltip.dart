@@ -23,11 +23,10 @@ class OslerTooltip extends StatelessWidget {
         color: AyurezeTheme.healingGreen100,
         borderRadius: BorderRadius.circular(AyurezeTheme.radiusSm),
       ),
-      textStyle: const TextStyle(
-        color: Colors.white,
-        fontSize: 12,
-        fontWeight: FontWeight.w600,
-      ),
+      textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
       child: child,
     );
   }

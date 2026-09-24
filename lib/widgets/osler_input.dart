@@ -39,7 +39,10 @@ class OslerInput extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 8),
         TextFormField(
@@ -51,7 +54,10 @@ class OslerInput extends StatelessWidget {
           readOnly: readOnly,
           onTap: onTap,
           validator: validator,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             hintText: hint,
             filled: true,
