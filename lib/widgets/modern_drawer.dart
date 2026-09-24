@@ -93,8 +93,9 @@ class ModernDrawer extends StatelessWidget {
                     const SizedBox(height: 6),
                     Text(
                       phone ?? "",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.74)),
+                      style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.74),
+                          fontSize: 13),
                     ),
                     const SizedBox(height: 14),
                     Container(
@@ -272,7 +273,7 @@ class ModernDrawer extends StatelessWidget {
           ),
           title: Text(
             label,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: isDestructive
                       ? AyurezeTheme.danger
                       : AyurezeTheme.textPrimary,

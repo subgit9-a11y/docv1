@@ -161,10 +161,11 @@ class _PrescriptionWorkflowProgressState
                 const SizedBox(height: 2),
                 Text(
                   _workflow.status.label,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: _workflow.status.color,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: _workflow.status.color,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
@@ -308,10 +309,11 @@ class _PrescriptionWorkflowProgressState
               children: [
                 Text(
                   task.name,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: AyurezeTheme.textPrimary,
-                      ),
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: AyurezeTheme.textPrimary,
+                  ),
                 ),
                 if (task.message != null)
                   Text(
@@ -462,9 +464,10 @@ class _PrescriptionWorkflowProgressState
                 children: [
                   Text(
                     label,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AyurezeTheme.textPrimary,
-                        ),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AyurezeTheme.textPrimary,
+                    ),
                   ),
                   if (subtitle != null)
                     Text(

@@ -109,10 +109,8 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
             Expanded(
               child: Text(
                 "No health intake data available. Patient hasn't filled Astra form yet.",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: AyurezeTheme.textSecondary),
+                style:
+                    TextStyle(color: AyurezeTheme.textSecondary, fontSize: 13),
               ),
             ),
           ],
@@ -440,8 +438,10 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                       ),
                       child: Text(
                         item,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: textColor, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500),
                       ),
                     ))
                 .toList(),
@@ -515,8 +515,10 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                 .labelSmall
                 ?.copyWith(color: AyurezeTheme.textSecondary)),
         Text(value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold, color: AyurezeTheme.textPrimary)),
+            style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: AyurezeTheme.textPrimary)),
       ],
     );
   }
@@ -603,7 +605,7 @@ class AstraFillCompactWidget extends StatelessWidget {
                 SizedBox(width: 8),
                 Text(
                   "Astra AI Summary",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold, color: AyurezeTheme.purple),
                 ),
                 Spacer(),
@@ -628,10 +630,7 @@ class AstraFillCompactWidget extends StatelessWidget {
               SizedBox(height: 8),
               Text(
                 "Symptoms: ${symptoms.join(', ')}",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: AyurezeTheme.textPrimary),
+                style: TextStyle(fontSize: 13, color: AyurezeTheme.textPrimary),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

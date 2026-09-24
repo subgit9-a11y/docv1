@@ -46,7 +46,8 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
             backgroundColor: AyurezeTheme.canvas,
             title: Text(
               getTranslated(context, AppString.drawer_callHistory).toString(),
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              style: TextStyle(
+                  fontSize: 18,
                   color: AyurezeTheme.textSecondary,
                   fontWeight: FontWeight.bold),
             ),

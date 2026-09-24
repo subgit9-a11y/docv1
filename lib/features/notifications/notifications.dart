@@ -251,9 +251,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     item.message ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AyurezeTheme.textSecondary,
-                        ),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AyurezeTheme.textSecondary,
+                    ),
                   ),
                 ],
               ),
