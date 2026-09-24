@@ -372,7 +372,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                             margin: const EdgeInsets.symmetric(horizontal: 20),
                             decoration: BoxDecoration(
                               color: AyurezeTheme.surfaceMuted,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius:
+                                  BorderRadius.circular(AyurezeTheme.radiusLg),
                               border: Border.all(color: AyurezeTheme.border),
                             ),
                             child: TabBar(
@@ -704,7 +705,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             return FullScreenWidget(
                                               child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(
+                                                        AyurezeTheme.radiusMd),
                                                 child: Image.network(
                                                   reportImages[index],
                                                   fit: BoxFit.cover,
@@ -774,7 +776,9 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                                     const Size.fromHeight(50),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(16),
+                                                      BorderRadius.circular(
+                                                          AyurezeTheme
+                                                              .radiusLg),
                                                 ),
                                               ),
                                               onPressed: () {

@@ -117,9 +117,9 @@ class _PrescriptionWorkflowProgressState
       label: 'Prescription workflow, ${_workflow.status.label}',
       child: Card(
         elevation: 2,
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(AyurezeTheme.spaceLg),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,12 +136,12 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       decoration: BoxDecoration(
         color: _workflow.status.color.withValues(alpha: 0.1),
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
+          topLeft: Radius.circular(AyurezeTheme.radiusLg),
+          topRight: Radius.circular(AyurezeTheme.radiusLg),
         ),
       ),
       child: Row(
@@ -154,20 +154,17 @@ class _PrescriptionWorkflowProgressState
               children: [
                 Text(
                   'Prescription Workflow',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: AyurezeTheme.textPrimary,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AyurezeTheme.textPrimary,
+                      ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   _workflow.status.label,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: _workflow.status.color,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: _workflow.status.color,
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
               ],
             ),
@@ -209,10 +206,11 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildPollingIndicator() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceSm, vertical: AyurezeTheme.spaceXs),
       decoration: BoxDecoration(
         color: Colors.blue.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -228,10 +226,9 @@ class _PrescriptionWorkflowProgressState
           const SizedBox(width: 4),
           Text(
             'Updating...',
-            style: TextStyle(
-              fontSize: 11,
-              color: Colors.blue,
-            ),
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: Colors.blue,
+                ),
           ),
         ],
       ),
@@ -251,7 +248,8 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildProgressBar() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceMd),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -260,17 +258,15 @@ class _PrescriptionWorkflowProgressState
             children: [
               Text(
                 '${_workflow.progress}% complete',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AyurezeTheme.textSecondary,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AyurezeTheme.textSecondary,
+                    ),
               ),
               Text(
                 '${_workflow.tasks.where((t) => t.status == WorkflowTaskStatus.completed).length}/${_workflow.tasks.length} tasks',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AyurezeTheme.textSecondary,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AyurezeTheme.textSecondary,
+                    ),
               ),
             ],
           ),
@@ -291,7 +287,7 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildTasksList() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceLg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _workflow.tasks.map((task) => _buildTaskTile(task)).toList(),
@@ -301,7 +297,7 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildTaskTile(WorkflowTask task) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: AyurezeTheme.spaceSm),
       child: Row(
         children: [
           _buildTaskIcon(task),
@@ -312,27 +308,24 @@ class _PrescriptionWorkflowProgressState
               children: [
                 Text(
                   task.name,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: AyurezeTheme.textPrimary,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: AyurezeTheme.textPrimary,
+                      ),
                 ),
                 if (task.message != null)
                   Text(
                     task.message!,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: AyurezeTheme.textSecondary,
-                    ),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AyurezeTheme.textSecondary,
+                        ),
                   ),
                 if (task.error != null)
                   Text(
                     task.error!,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.red,
-                    ),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Colors.red,
+                        ),
                   ),
               ],
             ),
@@ -385,11 +378,10 @@ class _PrescriptionWorkflowProgressState
 
     return Text(
       labels[task.status] ?? '',
-      style: TextStyle(
-        fontSize: 11,
-        color: task.color,
-        fontWeight: FontWeight.w500,
-      ),
+      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: task.color,
+            fontWeight: FontWeight.w500,
+          ),
     );
   }
 
@@ -397,11 +389,11 @@ class _PrescriptionWorkflowProgressState
     final result = _workflow.result!;
 
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.all(AyurezeTheme.spaceLg),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceMd),
       decoration: BoxDecoration(
         color: Colors.green.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
         border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
       ),
       child: Column(
@@ -470,18 +462,16 @@ class _PrescriptionWorkflowProgressState
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AyurezeTheme.textPrimary,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AyurezeTheme.textPrimary,
+                        ),
                   ),
                   if (subtitle != null)
                     Text(
                       subtitle,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: AyurezeTheme.textSecondary,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: AyurezeTheme.textSecondary,
+                          ),
                     ),
                 ],
               ),
@@ -534,10 +524,11 @@ class WorkflowStatusBadge extends StatelessWidget {
     return Semantics(
       label: 'Workflow status: ${status.label}',
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AyurezeTheme.spaceSm, vertical: AyurezeTheme.spaceXs),
         decoration: BoxDecoration(
           color: status.color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -551,11 +542,10 @@ class WorkflowStatusBadge extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 status.label,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: status.color,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: status.color,
+                    ),
               ),
             ],
           ],
