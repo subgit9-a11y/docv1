@@ -33,7 +33,7 @@ class AstraAIFloatingButton extends StatelessWidget {
     return Align(
       alignment: alignment,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Material(
           elevation: 4,
           shape: const CircleBorder(),
@@ -171,7 +171,8 @@ class AstraAIInlineButton extends StatelessWidget {
         onTap: onPressed,
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AyurezeTheme.spaceMd, vertical: AyurezeTheme.spaceSm),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -256,7 +257,7 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
     return GestureDetector(
       onTap: _checkHealth,
       child: Container(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceXs),
         decoration: BoxDecoration(
           color: _isHealthy
               ? AyurezeTheme.healingGreen50.withValues(alpha: 0.2)
@@ -281,7 +282,7 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
           color: _isHealthy
               ? AyurezeTheme.healingGreen50.withValues(alpha: 0.1)
               : Colors.orange.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -308,12 +309,12 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
               const SizedBox(width: 6),
               Text(
                 _isHealthy ? 'Astra AI' : 'Offline',
-                style: TextStyle(
-                  fontSize: 12,
-                  color:
-                      _isHealthy ? AyurezeTheme.healingGreen50 : Colors.orange,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: _isHealthy
+                          ? AyurezeTheme.healingGreen50
+                          : Colors.orange,
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
             ],
           ],
