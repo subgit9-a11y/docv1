@@ -67,6 +67,10 @@ import 'package:doctro/features/review/rate&review.dart';
 import 'package:doctro/features/cashfree/payment.dart';
 import 'package:doctro/features/errors/error_utility_screen.dart';
 import 'package:doctro/features/search/search_screen.dart';
+import 'package:doctro/features/medications/medication_controller.dart';
+import 'package:doctro/features/medications/medication_management_screen.dart';
+import 'package:doctro/features/health_records/health_records_screen.dart';
+import 'package:doctro/features/health_records/repository/health_records_repository.dart';
 
 const MethodChannel _secureWindowChannel =
     MethodChannel('doctro/secure_window');
@@ -566,6 +570,11 @@ class _MyAppState extends State<MyApp> {
                       'notAllowed': (context) => const ErrorUtilityScreen(
                           kind: ErrorUtilityKind.notAllowed),
                       'search': (context) => const SearchScreen(),
+                      'medicationManagement': (context) =>
+                          MedicationManagementScreen(
+                              controller: MedicationController()),
+                      'healthRecords': (context) => HealthRecordsScreen(
+                          repository: InMemoryHealthRecordsRepository()),
                     },
                     onUnknownRoute: (settings) => MaterialPageRoute(
                       builder: (context) => const ErrorUtilityScreen(
