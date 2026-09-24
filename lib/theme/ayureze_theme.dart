@@ -57,7 +57,10 @@ class AyurezeTheme {
   static const Color remoteRed10 = Color(0xFFFFE4E7);
 
   static const Color sunshineYellow100 = Color(0xFF422006);
-  static const Color sunshineYellow50 = Color(0xFFF59E0B);
+  // Confirmed against the real kit's own published Color Palette
+  // reference page (Yellow 50 = #EAB308) - the app had drifted to
+  // #F59E0B (Tailwind amber-500), which isn't any step of this scale.
+  static const Color sunshineYellow50 = Color(0xFFEAB308);
   static const Color sunshineYellow10 = Color(0xFFFEF9C3);
 
   static const Color caringViolet100 = Color(0xFF311065);
