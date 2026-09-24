@@ -65,6 +65,7 @@ import 'package:doctro/features/dashboard/patient_information.dart';
 import 'package:doctro/features/notifications/notifications.dart';
 import 'package:doctro/features/review/rate&review.dart';
 import 'package:doctro/features/cashfree/payment.dart';
+import 'package:doctro/features/errors/error_utility_screen.dart';
 
 const MethodChannel _secureWindowChannel =
     MethodChannel('doctro/secure_window');
@@ -555,7 +556,19 @@ class _MyAppState extends State<MyApp> {
                       'Settings': (context) => SettingScreen(),
                       'ChatHome': (context) => HomePage(),
                       'payment': (context) => PaymentScreen(),
+                      'noInternet': (context) => const ErrorUtilityScreen(
+                          kind: ErrorUtilityKind.noInternet),
+                      'internalError': (context) => const ErrorUtilityScreen(
+                          kind: ErrorUtilityKind.internalError),
+                      'maintenance': (context) => const ErrorUtilityScreen(
+                          kind: ErrorUtilityKind.maintenance),
+                      'notAllowed': (context) => const ErrorUtilityScreen(
+                          kind: ErrorUtilityKind.notAllowed),
                     },
+                    onUnknownRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => const ErrorUtilityScreen(
+                          kind: ErrorUtilityKind.notFound),
+                    ),
                   ),
                 );
               },
