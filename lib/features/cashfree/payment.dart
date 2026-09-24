@@ -95,11 +95,10 @@ class _PaymentScreen extends State<PaymentScreen> {
             backgroundColor: AyurezeTheme.canvas,
             title: Text(
               getTranslated(context, AppString.payment_title).toString(),
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-                color: AyurezeTheme.textPrimary,
-              ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AyurezeTheme.textPrimary,
+                  ),
             ),
             actions: [
               IconButton(
@@ -239,15 +238,14 @@ class _PaymentScreen extends State<PaymentScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
             color: AyurezeTheme.lightGreenSoft,
-            borderRadius: BorderRadius.circular(999),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
           ),
           child: Text(
             "${getTranslated(context, AppString.payment_total).toString()} ${paymentsRequest.length}",
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: AyurezeTheme.forestDeep,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AyurezeTheme.forestDeep,
+                ),
           ),
         ),
       ],
@@ -280,7 +278,7 @@ class _PaymentScreen extends State<PaymentScreen> {
   Widget _buildPaymentRow(Payments payment) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       decoration: AyurezeTheme.panelDecoration(),
       child: Row(
         children: [
@@ -303,30 +301,27 @@ class _PaymentScreen extends State<PaymentScreen> {
               children: [
                 Text(
                   payment.user?.name ?? "",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AyurezeTheme.textPrimary,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AyurezeTheme.textPrimary,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   "Completed payment",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AyurezeTheme.textSecondary,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AyurezeTheme.textSecondary,
+                      ),
                 ),
               ],
             ),
           ),
           Text(
             "${SharedPreferenceHelper.getString(Preferences.currency_symbol)}${payment.amount}",
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w800,
-              color: AyurezeTheme.forestDeep,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AyurezeTheme.forestDeep,
+                ),
           ),
         ],
       ),
@@ -341,17 +336,16 @@ class _PaymentScreen extends State<PaymentScreen> {
         });
       },
       child: GlassSurface(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Row(
           children: [
             Expanded(
               child: Text(
                 getTranslated(context, AppString.view_all_payment).toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AyurezeTheme.textPrimary,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AyurezeTheme.textPrimary,
+                    ),
               ),
             ),
             SvgPicture.asset(
@@ -363,11 +357,10 @@ class _PaymentScreen extends State<PaymentScreen> {
             const SizedBox(width: 10),
             Text(
               "${paymentsRequest.length}",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w800,
-                color: AyurezeTheme.forestDeep,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AyurezeTheme.forestDeep,
+                  ),
             ),
           ],
         ),
@@ -388,11 +381,10 @@ class _PaymentScreen extends State<PaymentScreen> {
         children: [
           Text(
             getTranslated(context, AppString.payment_rs_total).toString(),
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
           ),
           Text(
             "${SharedPreferenceHelper.getString(Preferences.currency_symbol)}$sum",
@@ -557,7 +549,7 @@ class _PaymentScreen extends State<PaymentScreen> {
     return GlassSurface(
       width: double.infinity,
       radius: 22,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -566,11 +558,10 @@ class _PaymentScreen extends State<PaymentScreen> {
             children: [
               Text(
                 "Ayurease Wallet",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: AyurezeTheme.textPrimary,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: AyurezeTheme.textPrimary,
+                    ),
               ),
               HugeIcon(
                   icon: AppIcons.wallet,
@@ -581,10 +572,9 @@ class _PaymentScreen extends State<PaymentScreen> {
           const SizedBox(height: 12),
           Text(
             "Available Balance",
-            style: TextStyle(
-              fontSize: 12,
-              color: AyurezeTheme.textSecondary,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AyurezeTheme.textSecondary,
+                ),
           ),
           const SizedBox(height: 4),
           Text(
@@ -666,8 +656,10 @@ class _PaymentScreen extends State<PaymentScreen> {
                   children: [
                     Text(
                       "Submit a withdrawal request for your earnings. An admin reviews and pays it out to your UPI ID or bank account - this isn't instant.",
-                      style: TextStyle(
-                          fontSize: 12, color: AyurezeTheme.textSecondary),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(color: AyurezeTheme.textSecondary),
                     ),
                     const SizedBox(height: 16),
                     TextField(
@@ -685,8 +677,8 @@ class _PaymentScreen extends State<PaymentScreen> {
                       children: [
                         Expanded(
                           child: RadioListTile<String>(
-                            title: const Text("UPI",
-                                style: TextStyle(fontSize: 12)),
+                            title: Text("UPI",
+                                style: Theme.of(context).textTheme.bodySmall),
                             value: "UPI",
                             groupValue: payoutMode,
                             contentPadding: EdgeInsets.zero,
@@ -697,8 +689,8 @@ class _PaymentScreen extends State<PaymentScreen> {
                         ),
                         Expanded(
                           child: RadioListTile<String>(
-                            title: const Text("Bank",
-                                style: TextStyle(fontSize: 12)),
+                            title: Text("Bank",
+                                style: Theme.of(context).textTheme.bodySmall),
                             value: "Bank",
                             groupValue: payoutMode,
                             contentPadding: EdgeInsets.zero,
