@@ -67,10 +67,12 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
 
   Widget _buildLoadingCard() {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd)),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Row(
           children: [
             SizedBox(
@@ -90,11 +92,13 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
 
   Widget _buildNoDataCard() {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
       color: Colors.grey.shade100,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd)),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Row(
           children: [
             HugeIcon(
@@ -105,8 +109,10 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
             Expanded(
               child: Text(
                 "No health intake data available. Patient hasn't filled Astra form yet.",
-                style:
-                    TextStyle(color: AyurezeTheme.textSecondary, fontSize: 13),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: AyurezeTheme.textSecondary),
               ),
             ),
           ],
@@ -148,12 +154,14 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
     final severityScore = _astraFillData?['severity_score'];
 
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
       elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg)),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
           gradient: LinearGradient(
             colors: [AyurezeTheme.purple.withValues(alpha: 0.05), Colors.white],
             begin: Alignment.topLeft,
@@ -166,20 +174,23 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
             // Header
             InkWell(
               onTap: () => setState(() => _isExpanded = !_isExpanded),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(AyurezeTheme.radiusLg)),
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(AyurezeTheme.spaceLg),
                 decoration: BoxDecoration(
                   color: AyurezeTheme.purple.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(AyurezeTheme.radiusLg)),
                 ),
                 child: Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8),
+                      padding: EdgeInsets.all(AyurezeTheme.spaceSm),
                       decoration: BoxDecoration(
                         color: AyurezeTheme.purple,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius:
+                            BorderRadius.circular(AyurezeTheme.radiusSm),
                       ),
                       child: HugeIcon(
                           icon: HugeIcons.strokeRoundedSparkles,
@@ -193,18 +204,20 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         children: [
                           Text(
                             "Astra AI Health Intake",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: AyurezeTheme.purple,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  color: AyurezeTheme.purple,
+                                ),
                           ),
                           if (timestamp.isNotEmpty)
                             Text(
                               "Submitted by patient",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: AyurezeTheme.textSecondary),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: AyurezeTheme.textSecondary),
                             ),
                         ],
                       ),
@@ -219,11 +232,11 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         ),
                         child: Text(
                           "Severity: $severityScore/10",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       ),
                     SizedBox(width: 8),
@@ -241,7 +254,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
             // Expandable Content
             if (_isExpanded)
               Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(AyurezeTheme.spaceLg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -351,7 +364,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
     required Color iconColor,
   }) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: AyurezeTheme.spaceLg),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -359,7 +372,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
             padding: EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: iconColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusXs),
             ),
             child: HugeIcon(icon: icon, color: iconColor, size: 18),
           ),
@@ -369,13 +382,14 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title,
-                    style: TextStyle(
-                        fontSize: 12, color: AyurezeTheme.textSecondary)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: AyurezeTheme.textSecondary)),
                 SizedBox(height: 4),
                 Text(
                   content,
-                  style: TextStyle(
-                      fontSize: 14,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AyurezeTheme.textPrimary,
                       fontWeight: FontWeight.w500),
                 ),
@@ -395,7 +409,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
     required Color textColor,
   }) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: AyurezeTheme.spaceLg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -404,8 +418,10 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
               HugeIcon(icon: icon, color: textColor, size: 18),
               SizedBox(width: 8),
               Text(title,
-                  style: TextStyle(
-                      fontSize: 12, color: AyurezeTheme.textSecondary)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: AyurezeTheme.textSecondary)),
             ],
           ),
           SizedBox(height: 8),
@@ -424,10 +440,8 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                       ),
                       child: Text(
                         item,
-                        style: TextStyle(
-                            color: textColor,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: textColor, fontWeight: FontWeight.w500),
                       ),
                     ))
                 .toList(),
@@ -439,7 +453,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
 
   Widget _buildVitalsSection(Map vitals) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: AyurezeTheme.spaceLg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -451,16 +465,18 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                   size: 18),
               SizedBox(width: 8),
               Text("Vitals",
-                  style: TextStyle(
-                      fontSize: 12, color: AyurezeTheme.textSecondary)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: AyurezeTheme.textSecondary)),
             ],
           ),
           SizedBox(height: 8),
           Container(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(AyurezeTheme.spaceMd),
             decoration: BoxDecoration(
               color: Colors.blue.shade50,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -494,12 +510,13 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
         HugeIcon(icon: icon, color: Colors.blue.shade700, size: 20),
         SizedBox(height: 4),
         Text(label,
-            style: TextStyle(fontSize: 10, color: AyurezeTheme.textSecondary)),
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall
+                ?.copyWith(color: AyurezeTheme.textSecondary)),
         Text(value,
-            style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: AyurezeTheme.textPrimary)),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold, color: AyurezeTheme.textPrimary)),
       ],
     );
   }
@@ -570,9 +587,10 @@ class AstraFillCompactWidget extends StatelessWidget {
 
     return Card(
       color: AyurezeTheme.purple.withValues(alpha: 0.08),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd)),
       child: Padding(
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.all(AyurezeTheme.spaceMd),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -585,25 +603,23 @@ class AstraFillCompactWidget extends StatelessWidget {
                 SizedBox(width: 8),
                 Text(
                   "Astra AI Summary",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AyurezeTheme.purple,
-                      fontSize: 14),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold, color: AyurezeTheme.purple),
                 ),
                 Spacer(),
                 if (severityScore != null)
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AyurezeTheme.spaceSm,
+                        vertical: AyurezeTheme.spaceXs),
                     decoration: BoxDecoration(
                       color: _getSeverityColor(severityScore),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       "$severityScore/10",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
               ],
@@ -612,7 +628,10 @@ class AstraFillCompactWidget extends StatelessWidget {
               SizedBox(height: 8),
               Text(
                 "Symptoms: ${symptoms.join(', ')}",
-                style: TextStyle(fontSize: 13, color: AyurezeTheme.textPrimary),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: AyurezeTheme.textPrimary),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
