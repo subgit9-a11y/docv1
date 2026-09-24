@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/models/conversation_model.dart';
@@ -152,11 +153,41 @@ class AstraChatBubble extends StatelessWidget {
             : Colors.blue.shade700)
         : (isUser ? Colors.white : Colors.black87);
 
-    return SelectableText(
-      message.content,
-      style: theme.textTheme.bodyMedium?.copyWith(
-        color: isUser ? Colors.white : textColor,
-        height: 1.4,
+    final baseStyle = theme.textTheme.bodyMedium?.copyWith(
+      color: isUser ? Colors.white : textColor,
+      height: 1.4,
+    );
+
+    // Only the assistant writes markdown (bold, lists, headers) - user
+    // input and system status lines are always plain text, so rendering
+    // them as markdown would just be extra cost for no visual difference.
+    if (message.role != MessageRole.assistant) {
+      return SelectableText(message.content, style: baseStyle);
+    }
+
+    return MarkdownBody(
+      data: message.content,
+      selectable: true,
+      styleSheet: MarkdownStyleSheet(
+        p: baseStyle,
+        strong: baseStyle?.copyWith(fontWeight: FontWeight.bold),
+        em: baseStyle?.copyWith(fontStyle: FontStyle.italic),
+        listBullet: baseStyle,
+        h1: baseStyle?.copyWith(
+            fontSize: 20, fontWeight: FontWeight.bold, height: 1.6),
+        h2: baseStyle?.copyWith(
+            fontSize: 18, fontWeight: FontWeight.bold, height: 1.6),
+        h3: baseStyle?.copyWith(
+            fontSize: 16, fontWeight: FontWeight.bold, height: 1.6),
+        code: baseStyle?.copyWith(
+          fontFamily: 'monospace',
+          backgroundColor: Colors.black.withValues(alpha: 0.06),
+        ),
+        blockquoteDecoration: BoxDecoration(
+          border:
+              Border(left: BorderSide(color: Colors.grey.shade400, width: 3)),
+        ),
+        blockSpacing: 8,
       ),
     );
   }
