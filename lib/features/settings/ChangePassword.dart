@@ -1,11 +1,14 @@
+import 'package:doctro/widgets/osler_hero.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 import 'view_models/change_password_view_model.dart';
 
@@ -46,8 +49,8 @@ class _ChangePasswordState extends State<ChangePassword> {
         appBar: AppBar(
           backgroundColor: AyurezeTheme.canvas,
           leading: IconButton(
-            icon: Icon(
-              AppIcons.back,
+            icon: HugeIcon(
+              icon: AppIcons.back,
               color: AyurezeTheme.forestDeep,
               size: 20,
             ),
@@ -58,11 +61,10 @@ class _ChangePasswordState extends State<ChangePassword> {
           title: Text(
             getTranslated(context, AppString.change_password_heading)
                 .toString(),
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-              color: AyurezeTheme.textPrimary,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AyurezeTheme.textPrimary,
+                ),
           ),
         ),
         body: GestureDetector(
@@ -90,59 +92,20 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   Widget _buildHero() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: AyurezeTheme.heroDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Text(
-              "Security update",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          const Text(
-            "Keep your doctor workspace protected.",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Update your password with a calmer Ayureze-style form that keeps the task focused and clear.",
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
-              fontSize: 14,
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
+    return const OslerHero(
+      eyebrow: 'Security update',
+      title: 'Keep your doctor workspace protected.',
+      subtitle:
+          'Update your password with a calmer Ayureze-style form that keeps the task focused and clear.',
     );
   }
 
   Widget _buildFormCard() {
     return Consumer<ChangePasswordViewModel>(
       builder: (context, viewModel, child) {
-        return Container(
+        return GlassSurface(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: AyurezeTheme.panelDecoration(),
+          padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -264,6 +227,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                               _confirmPassword.text,
                             );
 
+                            // Inside build() the `context` parameter shadows State.context,
+                            // so the check must be context.mounted.
+                            if (!context.mounted) return;
                             if (response != null) {
                               if (response.success == true) {
                                 OslerToast.success(context, response.data!);
@@ -288,19 +254,18 @@ class _ChangePasswordState extends State<ChangePassword> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         text,
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          color: AyurezeTheme.textPrimary,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: AyurezeTheme.textPrimary,
+            ),
       ),
     );
   }
 
   Widget _toggleIcon(bool hidden, VoidCallback onTap) {
     return IconButton(
-      icon: Icon(
-        hidden ? AppIcons.visibility : AppIcons.visibilityOff,
+      icon: HugeIcon(
+        icon: hidden ? AppIcons.visibility : AppIcons.visibilityOff,
         color: AyurezeTheme.textSecondary,
       ),
       onPressed: onTap,

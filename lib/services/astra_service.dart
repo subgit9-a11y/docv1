@@ -493,7 +493,9 @@ class AstraService {
         'user_id': userId,
         'user_type': 'doctor',
       });
-    } catch (e) {}
+    } catch (_) {
+      // Registration mirror is best-effort; the caller handles missing profile data.
+    }
   }
 
   // ============================================================
@@ -534,7 +536,7 @@ class AstraService {
       final response = await _dio.get('/api/v1/brain/health');
       return response.data;
     } catch (e) {
-      return {'AyurezeTheme.healingGreen50': 'offline'};
+      return {'status': 'offline'};
     }
   }
 }

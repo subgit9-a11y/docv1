@@ -63,12 +63,4 @@ class SettingsViewModel extends ChangeNotifier {
       return false;
     }
   }
-
-  Future<void> deleteAccount(BuildContext context) async {
-    // API logic for deleting account if exists
-  }
-
-  Future<void> logoutUser(BuildContext context) async {
-    // API/Pref clearing logic for logging out user if exists
-  }
 }

@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/theme/ayureze_date_picker.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
@@ -28,6 +29,7 @@ import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -110,7 +112,6 @@ class _ProfileScreen extends State<ProfileScreen> {
 
   //Set List Data Treatment
   List<TreatmentData> treatmentReq = [];
-  TreatmentData? _valueTreatment;
 
   //Set List Data Category
   List<CategoriesData> categoryReq = [];
@@ -118,7 +119,6 @@ class _ProfileScreen extends State<ProfileScreen> {
 
   //Set List Data Expertise
   List<Expert> expertReq = [];
-  Expert? _valueExpertise;
 
   //update user image
   File? proImage;
@@ -187,8 +187,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        child: Icon(
-                          AppIcons.back,
+                        child: HugeIcon(
+                          icon: AppIcons.back,
                           size: 20,
                           color: Colors.white,
                         ),
@@ -204,16 +204,18 @@ class _ProfileScreen extends State<ProfileScreen> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.14),
-                          borderRadius: BorderRadius.circular(999),
+                          color: Colors.white.withValues(alpha: 0.14),
+                          borderRadius:
+                              BorderRadius.circular(AyurezeTheme.radiusPill),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Profile workspace",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
                         ),
                       ),
                     ],
@@ -285,8 +287,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 child: CircleAvatar(
                                   backgroundColor: AyurezeTheme.healingGreen50,
                                   radius: 14,
-                                  child: const Icon(
-                                    Icons.add,
+                                  child: HugeIcon(
+                                    icon: AppIcons.add,
                                     color: AyurezeTheme.forestDeep,
                                   ),
                                 ),
@@ -300,21 +302,19 @@ class _ProfileScreen extends State<ProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Doctor profile",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w800,
-                                height: 1.05,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.copyWith(color: Colors.white, height: 1.05),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               "$name",
                               style: TextStyle(
                                 fontSize: width! * 0.047,
-                                color: Colors.white.withOpacity(0.88),
+                                color: Colors.white.withValues(alpha: 0.88),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -342,8 +342,9 @@ class _ProfileScreen extends State<ProfileScreen> {
                 ),
                 child: Container(
                   width: width,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: AyurezeTheme.spaceSm,
+                      vertical: AyurezeTheme.spaceSm),
                   child: Column(
                     children: [
                       Expanded(
@@ -361,7 +362,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 getTranslated(context,
                                         AppString.profile_personal_information)
                                     .toString(),
-                                style: TextStyle(fontSize: 12),
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                               content: GestureDetector(
                                 onTap: () {
@@ -404,10 +405,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                         .allow(RegExp(
                                                             "[a-zA-Z ]")),
                                                   ],
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: AyurezeTheme
-                                                          .textPrimary),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.copyWith(
+                                                          color: AyurezeTheme
+                                                              .textPrimary),
                                                   decoration: InputDecoration(
                                                     hintText: getTranslated(
                                                             context,
@@ -467,11 +470,13 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                       TextCapitalization.words,
                                                   enableInteractiveSelection:
                                                       false,
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AyurezeTheme
-                                                        .textSecondary,
-                                                  ),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium
+                                                      ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textSecondary,
+                                                      ),
                                                   controller: _pDob,
                                                   readOnly: true,
                                                   decoration: InputDecoration(
@@ -591,10 +596,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                         .allow(RegExp(
                                                             "[a-zA-Z &.,]")),
                                                   ],
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: AyurezeTheme
-                                                          .textPrimary),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.copyWith(
+                                                          color: AyurezeTheme
+                                                              .textPrimary),
                                                   decoration: InputDecoration(
                                                     hintText: getTranslated(
                                                             context,
@@ -647,7 +654,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 getTranslated(context,
                                         AppString.profile_education_information)
                                     .toString(),
-                                style: TextStyle(fontSize: 12),
+                                style: Theme.of(context).textTheme.bodySmall,
                                 textAlign: TextAlign.start,
                               ),
                               content: Form(
@@ -681,10 +688,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                 controller: _pDegree,
                                                 keyboardType:
                                                     TextInputType.text,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: AyurezeTheme
-                                                        .textPrimary),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textPrimary),
                                                 decoration: InputDecoration(
                                                   hintText: getTranslated(
                                                           context,
@@ -742,10 +751,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                 controller: _pCollege,
                                                 keyboardType:
                                                     TextInputType.text,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: AyurezeTheme
-                                                        .textPrimary),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textPrimary),
                                                 decoration: InputDecoration(
                                                   hintText: getTranslated(
                                                           context,
@@ -808,10 +819,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                   FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]"))
                                                 ],
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: AyurezeTheme
-                                                        .textPrimary),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textPrimary),
                                                 decoration: InputDecoration(
                                                   hintText: getTranslated(
                                                           context,
@@ -1000,7 +1013,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               45)),
-                                                  child: Icon(AppIcons.add,
+                                                  child: HugeIcon(
+                                                      icon: AppIcons.add,
                                                       size: width! * 0.06,
                                                       color: AyurezeTheme
                                                           .actionButtonPrimary),
@@ -1037,9 +1051,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         TextFormField(
                                           controller: _pCertificate,
                                           keyboardType: TextInputType.text,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: AyurezeTheme.textPrimary),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                  color:
+                                                      AyurezeTheme.textPrimary),
                                           decoration: InputDecoration(
                                             hintText: getTranslated(
                                                     context,
@@ -1098,9 +1115,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                             FilteringTextInputFormatter.allow(
                                                 RegExp("[0-9]"))
                                           ],
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: AyurezeTheme.textPrimary),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                  color:
+                                                      AyurezeTheme.textPrimary),
                                           decoration: InputDecoration(
                                             hintText: getTranslated(
                                                     context,
@@ -1263,7 +1283,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               45)),
-                                                  child: Icon(AppIcons.add,
+                                                  child: HugeIcon(
+                                                      icon: AppIcons.add,
                                                       size: width! * 0.06,
                                                       color: AyurezeTheme
                                                           .actionButtonPrimary),
@@ -1293,7 +1314,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 getTranslated(context,
                                         AppString.profile_other_information)
                                     .toString(),
-                                style: TextStyle(fontSize: 12),
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                               content: Form(
                                 key: _formkey,
@@ -1331,10 +1352,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                   FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]")),
                                                 ],
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: AyurezeTheme
-                                                        .textPrimary),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textPrimary),
                                                 decoration: InputDecoration(
                                                   hintText: getTranslated(
                                                           context,
@@ -1387,10 +1410,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                   FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]")),
                                                 ],
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: AyurezeTheme
-                                                        .textPrimary),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textPrimary),
                                                 decoration: InputDecoration(
                                                   hintText: getTranslated(
                                                           context,
@@ -1443,10 +1468,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                   FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]")),
                                                 ],
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: AyurezeTheme
-                                                        .textPrimary),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textPrimary),
                                                 decoration: InputDecoration(
                                                   hintText: getTranslated(
                                                           context,
@@ -1503,10 +1530,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                   FilteringTextInputFormatter
                                                       .allow(RegExp("[0-9]")),
                                                 ],
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: AyurezeTheme
-                                                        .textPrimary),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textPrimary),
                                                 decoration: InputDecoration(
                                                   hintText: getTranslated(
                                                           context,
@@ -1618,10 +1647,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                     false,
                                                 controller: _pStartTime,
                                                 readOnly: true,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: AyurezeTheme
-                                                        .textPrimary),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textPrimary),
                                                 decoration: InputDecoration(
                                                   hintText: getTranslated(
                                                           context,
@@ -1719,10 +1750,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                     false,
                                                 controller: _pEndTime,
                                                 readOnly: true,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: AyurezeTheme
-                                                        .textPrimary),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: AyurezeTheme
+                                                            .textPrimary),
                                                 decoration: InputDecoration(
                                                   hintText: getTranslated(
                                                           context,
@@ -2012,9 +2045,13 @@ class _ProfileScreen extends State<ProfileScreen> {
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .updateProfile(body);
-      Navigator.pushNamed(context, "loginHome");
+      // The preference write is a side effect, not a UI action, so it stays
+      // outside the guard. Only the context uses need mounted.
       SharedPreferenceHelper.setInt(Preferences.is_filled, 1);
-      OslerToast.success(context, response.msg!);
+      if (mounted) {
+        Navigator.pushNamed(context, "loginHome");
+        OslerToast.success(context, response.msg!);
+      }
     } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));
@@ -2111,7 +2148,9 @@ class _ProfileScreen extends State<ProfileScreen> {
             _pDob.text = rawDob;
             try {
               _selectedDate = DateFormat('dd-MM-yyyy').parse(rawDob);
-            } catch (e) {}
+            } catch (_) {
+              // Legacy date format: fall back to the raw text if it cannot be parsed.
+            }
           }
         } catch (e) {
           _pDob.text = rawDob;
@@ -2225,7 +2264,7 @@ class _ProfileScreen extends State<ProfileScreen> {
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                    leading: Icon(AppIcons.photo),
+                    leading: HugeIcon(icon: AppIcons.photo),
                     title: Text(
                       getTranslated(context, AppString.choose_image_gallery)
                           .toString(),
@@ -2235,7 +2274,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                       Navigator.of(context).pop();
                     }),
                 ListTile(
-                  leading: Icon(AppIcons.camera),
+                  leading: HugeIcon(icon: AppIcons.camera),
                   title: Text(
                     getTranslated(context, AppString.choose_image_camera)
                         .toString(),
@@ -2306,13 +2345,6 @@ class _ProfileScreen extends State<ProfileScreen> {
         for (int i = 0; i < response.expertiseData!.length; i++) {
           expertReq.add(response.expertiseData![i]);
         }
-        if (expertReq.isNotEmpty) {
-          for (int i = 0; i < expertReq.length; i++) {
-            if (expertiseId == expertReq[i].id) {
-              _valueExpertise = expertReq[i];
-            }
-          }
-        }
       });
     } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
@@ -2322,32 +2354,14 @@ class _ProfileScreen extends State<ProfileScreen> {
   }
 
   _selectDate(BuildContext context) async {
-    DateTime? newSelectedDate = await showDatePicker(
+    DateTime? newSelectedDate = await showAyurezeDatePicker(
       context: context,
       initialDate: _selectedDate != null
           ? _selectedDate!
           : DateTime.now().subtract(const Duration(days: 365 * 25)),
       firstDate: DateTime(1950, 1),
       lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            primaryColor: AyurezeTheme.healingGreen100,
-            colorScheme: ColorScheme.light(
-              primary: AyurezeTheme.healingGreen100,
-              onPrimary: Colors.white,
-              surface: AyurezeTheme.surface,
-              onSurface: AyurezeTheme.textPrimary,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                  foregroundColor: AyurezeTheme.healingGreen100),
-            ),
-            dialogTheme: DialogThemeData(backgroundColor: AyurezeTheme.surface),
-          ),
-          child: child!,
-        );
-      },
+      accentColor: AyurezeTheme.healingGreen100,
     );
     if (newSelectedDate != null) {
       _selectedDate = newSelectedDate;

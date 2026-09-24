@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/widgets/osler_tag.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 enum AppointmentStatus { pending, approved, complete, cancel, waiting }
 
@@ -52,18 +53,18 @@ class OslerStatusBadge extends StatelessWidget {
     }
   }
 
-  IconData _getIcon() {
+  List<List<dynamic>> _getIcon() {
     switch (status) {
       case AppointmentStatus.pending:
-        return Icons.schedule;
+        return HugeIcons.strokeRoundedClock01;
       case AppointmentStatus.approved:
-        return Icons.check_circle_outline;
+        return HugeIcons.strokeRoundedCheckmarkCircle02;
       case AppointmentStatus.complete:
-        return Icons.check_circle;
+        return HugeIcons.strokeRoundedCheckmarkCircle01;
       case AppointmentStatus.cancel:
-        return Icons.cancel_outlined;
+        return HugeIcons.strokeRoundedCancelCircle;
       case AppointmentStatus.waiting:
-        return Icons.hourglass_top;
+        return HugeIcons.strokeRoundedHourglass;
     }
   }
 

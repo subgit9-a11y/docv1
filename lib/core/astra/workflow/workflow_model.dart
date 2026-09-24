@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 /// Prescription Workflow Model
 ///
@@ -7,34 +9,34 @@ import 'package:flutter/material.dart';
 class PrescriptionWorkflow {
   /// Unique workflow identifier
   final String id;
-  
+
   /// Prescription ID
   final String prescriptionId;
-  
+
   /// Patient ID
   final String patientId;
-  
+
   /// Doctor ID
   final String doctorId;
-  
+
   /// Current workflow status
   final WorkflowStatus status;
-  
+
   /// Individual task statuses
   final List<WorkflowTask> tasks;
-  
+
   /// Progress percentage (0-100)
   final int progress;
-  
+
   /// Creation timestamp
   final DateTime createdAt;
-  
+
   /// Completion timestamp
   final DateTime? completedAt;
-  
+
   /// Error message if failed
   final String? error;
-  
+
   /// URLs and references generated during workflow
   final WorkflowResult? result;
 
@@ -61,8 +63,9 @@ class PrescriptionWorkflow {
       doctorId: json['doctor_id']?.toString() ?? '',
       status: WorkflowStatus.fromString(json['status']),
       tasks: (json['tasks'] as List?)
-          ?.map((t) => WorkflowTask.fromJson(t))
-          .toList() ?? [],
+              ?.map((t) => WorkflowTask.fromJson(t))
+              .toList() ??
+          [],
       progress: json['progress'] as int? ?? 0,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'])
@@ -101,16 +104,15 @@ class PrescriptionWorkflow {
   bool get isFailed => status == WorkflowStatus.failed;
 
   /// Check if workflow is in progress
-  bool get isInProgress => 
-      status == WorkflowStatus.pending ||
-      status == WorkflowStatus.inProgress;
+  bool get isInProgress =>
+      status == WorkflowStatus.pending || status == WorkflowStatus.inProgress;
 
   /// Get next pending task
-  WorkflowTask? get nextPendingTask => 
+  WorkflowTask? get nextPendingTask =>
       tasks.where((t) => t.status == WorkflowTaskStatus.pending).firstOrNull;
 
   /// Get failed task if any
-  WorkflowTask? get failedTask => 
+  WorkflowTask? get failedTask =>
       tasks.where((t) => t.status == WorkflowTaskStatus.failed).firstOrNull;
 }
 
@@ -152,18 +154,18 @@ enum WorkflowStatus {
     }
   }
 
-  IconData get icon {
+  List<List<dynamic>> get icon {
     switch (this) {
       case WorkflowStatus.pending:
-        return Icons.hourglass_empty;
+        return HugeIcons.strokeRoundedHourglass;
       case WorkflowStatus.inProgress:
-        return Icons.sync;
+        return HugeIcons.strokeRoundedRefresh01;
       case WorkflowStatus.completed:
-        return Icons.check_circle;
+        return HugeIcons.strokeRoundedCheckmarkCircle01;
       case WorkflowStatus.failed:
-        return Icons.error;
+        return AppIcons.error;
       case WorkflowStatus.cancelled:
-        return Icons.cancel;
+        return HugeIcons.strokeRoundedCancel01;
     }
   }
 
@@ -180,22 +182,22 @@ enum WorkflowStatus {
 class WorkflowTask {
   /// Task identifier
   final String id;
-  
+
   /// Task type
   final TaskType type;
-  
+
   /// Display name
   final String name;
-  
+
   /// Task status
   final WorkflowTaskStatus status;
-  
+
   /// Progress message
   final String? message;
-  
+
   /// Error if failed
   final String? error;
-  
+
   /// Task data/result
   final Map<String, dynamic>? data;
 
@@ -233,7 +235,7 @@ class WorkflowTask {
     };
   }
 
-  IconData get icon => type.icon;
+  List<List<dynamic>> get icon => type.icon;
   Color get color => status.color;
 }
 
@@ -272,26 +274,26 @@ enum TaskType {
     }
   }
 
-  IconData get icon {
+  List<List<dynamic>> get icon {
     switch (this) {
       case TaskType.generatePdf:
-        return Icons.picture_as_pdf;
+        return HugeIcons.strokeRoundedPdf01;
       case TaskType.uploadStorage:
-        return Icons.cloud_upload;
+        return HugeIcons.strokeRoundedCloudUpload;
       case TaskType.createReminder:
-        return Icons.alarm_add;
+        return HugeIcons.strokeRoundedAlarmClockPlus;
       case TaskType.sendNotification:
-        return Icons.notifications_active;
+        return HugeIcons.strokeRoundedNotification03;
       case TaskType.sendWhatsapp:
-        return Icons.message;
+        return HugeIcons.strokeRoundedMessage01;
       case TaskType.createShopifyCart:
-        return Icons.shopping_cart;
+        return HugeIcons.strokeRoundedShoppingCart01;
       case TaskType.notifyPatient:
-        return Icons.person;
+        return HugeIcons.strokeRoundedUser;
       case TaskType.sendEmail:
-        return Icons.email;
+        return AppIcons.email;
       case TaskType.updateAppointment:
-        return Icons.event;
+        return HugeIcons.strokeRoundedCalendar03;
     }
   }
 
@@ -340,25 +342,25 @@ enum WorkflowTaskStatus {
 class WorkflowResult {
   /// PDF URL
   final String? pdfUrl;
-  
+
   /// Storage URL
   final String? storageUrl;
-  
+
   /// Reminder ID
   final String? reminderId;
-  
+
   /// Notification ID
   final String? notificationId;
-  
+
   /// WhatsApp message ID
   final String? whatsappMessageId;
-  
+
   /// Shopify cart URL
   final String? shopifyCartUrl;
-  
+
   /// Shopify cart ID
   final String? shopifyCartId;
-  
+
   /// Additional data
   final Map<String, dynamic>? additionalData;
 

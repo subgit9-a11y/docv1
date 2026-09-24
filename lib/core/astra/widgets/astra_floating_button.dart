@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/context/context_builder.dart';
+import 'package:doctro/core/astra/context/patient_context.dart';
 import 'package:doctro/core/astra/navigation/app_router.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 
@@ -10,10 +12,10 @@ import 'package:doctro/theme/ayureze_theme.dart';
 class AstraFloatingButton extends StatelessWidget {
   /// Custom position override (uses default bottom-right if null)
   final Offset? position;
-  
+
   /// Whether to show a pulse animation
   final bool showPulse;
-  
+
   /// Custom size
   final double size;
 
@@ -36,7 +38,7 @@ class AstraFloatingButton extends StatelessWidget {
       // Just update screen context
       astraContext.setScreenContext('patient_details');
     }
-    
+
     // Navigate to Astra chat
     AppRouter.instance.openChat(
       patientId: patientId,
@@ -51,7 +53,7 @@ class AstraFloatingButton extends StatelessWidget {
       children: [
         // Pulse animation
         if (showPulse) _buildPulseAnimation(),
-        
+
         // Main button
         Positioned(
           right: position?.dx ?? 16,
@@ -75,8 +77,8 @@ class AstraFloatingButton extends StatelessWidget {
             height: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AyurezeTheme.healingGreen50.withOpacity(
-                0.3 * (1.5 - value) / 0.5,
+              color: AyurezeTheme.healingGreen50.withValues(
+                alpha: 0.3 * (1.5 - value) / 0.5,
               ),
             ),
           );
@@ -94,7 +96,7 @@ class AstraFloatingButton extends StatelessWidget {
       child: Material(
         elevation: 4,
         shape: const CircleBorder(),
-        color: AyurezeTheme.healingGreen50,
+        color: AyurezeTheme.healingGreenFill,
         child: InkWell(
           onTap: () => _onTap(context),
           customBorder: const CircleBorder(),
@@ -104,8 +106,8 @@ class AstraFloatingButton extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.psychology,
+                HugeIcon(
+                  icon: HugeIcons.strokeRoundedBrain01,
                   color: Colors.white,
                   size: size * 0.45,
                 ),
@@ -130,7 +132,7 @@ class AstraFloatingButton extends StatelessWidget {
     // Get current context
     final patient = PatientContextProvider.current;
     final consultation = astraContext.currentConsultation;
-    
+
     // Open Astra chat with current context
     openAstraChat(
       patientId: patient?.id,
@@ -147,13 +149,13 @@ class AstraFloatingButton extends StatelessWidget {
 class AstraFloatingButtonOverlay extends StatelessWidget {
   /// The screen content
   final Widget child;
-  
+
   /// Whether to show the floating button
   final bool showButton;
-  
+
   /// Screen context for Astra
   final String screenContext;
-  
+
   /// Current patient (if any)
   final dynamic patient;
 
@@ -191,12 +193,12 @@ class AstraFloatingButtonOverlay extends StatelessWidget {
 class AstraMiniButton extends StatelessWidget {
   /// Label text
   final String label;
-  
+
   /// On tap callback
   final VoidCallback? onTap;
-  
+
   /// Icon (optional)
-  final IconData? icon;
+  final List<List<dynamic>>? icon;
 
   const AstraMiniButton({
     super.key,
@@ -212,18 +214,20 @@ class AstraMiniButton extends StatelessWidget {
       hint: 'Double tap to chat with Astra AI',
       button: true,
       child: Material(
-        color: AyurezeTheme.healingGreen50.withOpacity(0.1),
+        color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
           onTap: onTap ?? () => AstraFloatingButton.openAstraChat(),
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AyurezeTheme.spaceMd,
+                vertical: AyurezeTheme.spaceSm),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  icon ?? Icons.psychology,
+                HugeIcon(
+                  icon: icon ?? HugeIcons.strokeRoundedBrain01,
                   size: 16,
                   color: AyurezeTheme.healingGreen50,
                 ),

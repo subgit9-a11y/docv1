@@ -47,9 +47,9 @@ class OslerCardSkeleton extends StatelessWidget {
           height: 120,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
           ),
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
           child: Row(
             children: [
               Container(

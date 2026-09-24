@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/working_hours.dart';
 import 'package:doctro/models/UpdateTiming.dart';
@@ -13,6 +14,7 @@ import 'package:doctro/network/server_error.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 
 class ScheduleTimings extends StatefulWidget {
@@ -90,8 +92,10 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
         backgroundColor: AyurezeTheme.canvas,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(AppIcons.back,
-              color: AyurezeTheme.healingGreen100, size: 20),
+          icon: HugeIcon(
+              icon: AppIcons.back,
+              color: AyurezeTheme.healingGreen100,
+              size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -123,10 +127,10 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                       children: [
                         _buildHero(context),
                         const SizedBox(height: 22),
-                        Container(
+                        GlassSurface(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                          decoration: AyurezeTheme.mutedPanelDecoration(),
+                              horizontal: AyurezeTheme.spaceLg,
+                              vertical: AyurezeTheme.spaceMd),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -179,7 +183,8 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                               decoration: AyurezeTheme.panelDecoration(),
                               child: ListTile(
                                 contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
+                                    horizontal: AyurezeTheme.spaceLg,
+                                    vertical: AyurezeTheme.spaceSm),
                                 title: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -221,11 +226,10 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                   getTranslated(
                                                           context, AppString.to)
                                                       .toString(),
-                                                  style: textTheme.bodySmall
+                                                  style: textTheme.labelSmall
                                                       ?.copyWith(
                                                     color: AyurezeTheme
                                                         .textSecondary,
-                                                    fontSize: 11,
                                                   ),
                                                 ),
                                                 const SizedBox(width: 4),
@@ -247,8 +251,9 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                     Expanded(
                                       flex: 2,
                                       child: IconButton(
-                                        icon: Icon(
-                                          Icons.edit_calendar_rounded,
+                                        icon: HugeIcon(
+                                          icon: HugeIcons
+                                              .strokeRoundedCalendarSetting01,
                                           color: AyurezeTheme.healingGreen100,
                                           size: 22,
                                         ),
@@ -432,7 +437,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                             },
                                                                             child:
                                                                                 Container(
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                                              padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceMd, vertical: AyurezeTheme.spaceSm),
                                                                               decoration: BoxDecoration(
                                                                                 color: AyurezeTheme.surface,
                                                                                 borderRadius: BorderRadius.circular(10),
@@ -447,8 +452,8 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                          Icon(
-                                                                              Icons.arrow_forward_rounded,
+                                                                          HugeIcon(
+                                                                              icon: HugeIcons.strokeRoundedArrowRight01,
                                                                               size: 16,
                                                                               color: AyurezeTheme.border),
                                                                           InkWell(
@@ -488,7 +493,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                             },
                                                                             child:
                                                                                 Container(
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                                              padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceMd, vertical: AyurezeTheme.spaceSm),
                                                                               decoration: BoxDecoration(
                                                                                 color: AyurezeTheme.surface,
                                                                                 borderRadius: BorderRadius.circular(10),
@@ -506,7 +511,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                           if (index !=
                                                                               0)
                                                                             IconButton(
-                                                                              icon: Icon(Icons.remove_circle_outline, color: AyurezeTheme.remoteRed50, size: 20),
+                                                                              icon: HugeIcon(icon: HugeIcons.strokeRoundedMinusSignCircle, color: AyurezeTheme.remoteRed50, size: 20),
                                                                               onPressed: () {
                                                                                 myState(() {
                                                                                   listDynamic.removeAt(index);
@@ -692,8 +697,8 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(999),
+              color: Colors.white.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
             ),
             child: Text(
               "Weekly availability",
@@ -716,7 +721,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
           Text(
             "Define the time slots for each day of the week to let patients know when you're available.",
             style: textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withOpacity(0.85),
+              color: Colors.white.withValues(alpha: 0.85),
               height: 1.4,
             ),
           ),
@@ -762,7 +767,9 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
       response = await RestClient(await RetroApi().dioData(context))
           .updateTimingRequest(body);
       doctorWorkingHoursFunction();
-      OslerToast.success(context, response.msg!);
+      if (mounted) {
+        OslerToast.success(context, response.msg!);
+      }
     } catch (error) {
       return BaseModel()..setException(ServerError.withError(error: error));
     }
@@ -818,7 +825,7 @@ class _SwitchScreenState extends State<SwitchScreen> {
             onChanged: toggleSwitch,
             value: isSwitched,
             activeThumbColor: Colors.white,
-            activeTrackColor: AyurezeTheme.healingGreen50,
+            activeTrackColor: AyurezeTheme.healingGreenFill,
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: AyurezeTheme.remoteRed50,
           ),

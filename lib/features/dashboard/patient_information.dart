@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
@@ -8,6 +7,7 @@ import 'package:doctro/core/localization/localization_constant.dart';
 
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/astra_fill_display.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_loader.dart';
 import 'package:doctro/widgets/osler_toast.dart';
@@ -17,10 +17,12 @@ import 'package:doctro/features/consultation/chat/constants/firestore_constants.
 import 'package:doctro/features/consultation/chat/models/user_chat.dart';
 import 'package:doctro/features/consultation/chat/pages/chat_page.dart';
 import 'package:doctro/features/consultation/chat/providers/home_provider.dart';
+import 'package:doctro/features/consultation/videoCall/video_Call.dart';
 import 'package:doctro/features/dashboard/view_models/patient_information_view_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,15 +49,10 @@ class _PatientDetailsScreenBody extends StatefulWidget {
       _PatientDetailsScreenBodyState();
 }
 
-List medicineData = [];
-List<Map<String, dynamic>> listOfMedicine = [];
-List<String> medicineReq = [];
-
 class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late HomeProvider homeProvider;
-  Map<String, String> body = {};
 
   late AnimationController _animController;
   late Animation<double> _fadeAnim;
@@ -65,7 +62,6 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    listOfMedicine.clear();
 
     _animController = AnimationController(
       vsync: this,
@@ -94,8 +90,13 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     homeProvider = Provider.of<HomeProvider>(context, listen: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
@@ -106,8 +107,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
+          icon: HugeIcon(
+            icon: HugeIcons.strokeRoundedArrowLeft01,
             color: AyurezeTheme.forestDeep,
             size: 20,
           ),
@@ -170,9 +171,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                               child: Column(
                                 children: [
                                   // Profile Card
-                                  Container(
+                                  GlassSurface(
                                     padding: const EdgeInsets.all(20),
-                                    decoration: AyurezeTheme.panelDecoration(),
                                     child: Column(
                                       children: [
                                         Row(
@@ -184,7 +184,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               onPressed: () => _showCallOptions(
                                                   context,
                                                   phoneNo,
-                                                  appointmentType),
+                                                  appointmentType,
+                                                  userId),
                                               icon: Container(
                                                 padding:
                                                     const EdgeInsets.all(10),
@@ -252,34 +253,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
 
                                             // Message dialler button
                                             IconButton(
-                                              onPressed: () {
-                                                if (body['peerId'] != null) {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChatPage(
-                                                        peerId: body['peerId']
-                                                            .toString(),
-                                                        peerAvatar:
-                                                            body['peerAvatar']
-                                                                .toString(),
-                                                        peerNickname:
-                                                            body['nickName']
-                                                                .toString(),
-                                                        token: body['token']
-                                                            .toString(),
-                                                        isNavigate: 'chatHome',
-                                                      ),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  OslerToast.info(
-                                                    context,
-                                                    "Chat is loading...",
-                                                  );
-                                                }
-                                              },
+                                              onPressed: () =>
+                                                  _openChat(context, userId),
                                               icon: Container(
                                                 padding:
                                                     const EdgeInsets.all(10),
@@ -332,13 +307,11 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                   const SizedBox(height: 14),
 
                                   // Appointment Overview Stats Panel
-                                  Container(
+                                  GlassSurface(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 16,
                                       horizontal: 12,
                                     ),
-                                    decoration:
-                                        AyurezeTheme.mutedPanelDecoration(),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
@@ -384,31 +357,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                   ),
 
                                   // Firestore stream for Chat User details
-                                  StreamBuilder<QuerySnapshot>(
-                                    stream: homeProvider
-                                        .getStreamFireStoreSpecificUser(
-                                      FirestoreConstants.pathUserCollection,
-                                      1,
-                                      userId.toString(),
-                                    ),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData &&
-                                          (snapshot.data?.docs.length ?? 0) >
-                                              0) {
-                                        UserChat userChat =
-                                            UserChat.fromDocument(
-                                          snapshot.data!.docs[0],
-                                        );
-                                        body = {
-                                          "peerId": userChat.id,
-                                          "nickName": userChat.nickname,
-                                          "peerAvatar": userChat.photoUrl,
-                                          "token": userChat.token
-                                        };
-                                      }
-                                      return const SizedBox.shrink();
-                                    },
-                                  ),
+                                  // (resolved lazily on chat-button tap to
+                                  // avoid mutating state during build)
                                 ],
                               ),
                             ),
@@ -422,7 +372,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                             margin: const EdgeInsets.symmetric(horizontal: 20),
                             decoration: BoxDecoration(
                               color: AyurezeTheme.surfaceMuted,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius:
+                                  BorderRadius.circular(AyurezeTheme.radiusLg),
                               border: Border.all(color: AyurezeTheme.border),
                             ),
                             child: TabBar(
@@ -440,12 +391,11 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                               ),
                               labelColor: AyurezeTheme.textPrimary,
                               unselectedLabelColor: AyurezeTheme.textSecondary,
-                              labelStyle: textTheme.bodyMedium?.copyWith(
+                              labelStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),
-                              unselectedLabelStyle:
-                                  textTheme.bodyMedium?.copyWith(
+                              unselectedLabelStyle: const TextStyle(
                                 fontSize: 13,
                               ),
                               tabs: [
@@ -487,12 +437,10 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                     children: [
                                       // Status Buttons / Status Bar
                                       if (!hideButton)
-                                        Container(
+                                        GlassSurface(
                                           padding: const EdgeInsets.all(16),
                                           margin:
                                               const EdgeInsets.only(bottom: 16),
-                                          decoration:
-                                              AyurezeTheme.panelDecoration(),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -596,7 +544,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_patient_name,
                                         ).toString(),
                                         value: name ?? "-",
-                                        icon: Icons.person_outline_rounded,
+                                        icon:
+                                            HugeIcons.strokeRoundedUserCircle02,
                                       ),
                                       _buildDetailTile(
                                         context,
@@ -605,7 +554,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_patient_age,
                                         ).toString(),
                                         value: age != null ? "$age yrs" : "-",
-                                        icon: Icons.cake_outlined,
+                                        icon:
+                                            HugeIcons.strokeRoundedBirthdayCake,
                                       ),
                                       _buildDetailTile(
                                         context,
@@ -615,7 +565,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               .information_patient_phone_number,
                                         ).toString(),
                                         value: phoneNo ?? "-",
-                                        icon: Icons.phone_outlined,
+                                        icon: HugeIcons.strokeRoundedCall02,
                                       ),
                                       _buildDetailTile(
                                         context,
@@ -624,7 +574,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_patient_time,
                                         ).toString(),
                                         value: time ?? "-",
-                                        icon: Icons.access_time_rounded,
+                                        icon: HugeIcons.strokeRoundedTime01,
                                       ),
                                       _buildDetailTile(
                                         context,
@@ -633,7 +583,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_patient_address,
                                         ).toString(),
                                         value: patientAddress ?? "-",
-                                        icon: Icons.location_on_outlined,
+                                        icon: HugeIcons.strokeRoundedLocation01,
                                       ),
 
                                       // Insurance Details
@@ -645,7 +595,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             AppString.policy_provider,
                                           ).toString(),
                                           value: policyInsurerName,
-                                          icon: Icons.verified_user_outlined,
+                                          icon:
+                                              HugeIcons.strokeRoundedShieldUser,
                                         ),
                                         _buildDetailTile(
                                           context,
@@ -654,8 +605,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             AppString.policy_number,
                                           ).toString(),
                                           value: policyNumber,
-                                          icon: Icons
-                                              .confirmation_number_outlined,
+                                          icon: HugeIcons.strokeRoundedTicket01,
                                         ),
                                       ] else ...[
                                         _buildDetailTile(
@@ -668,7 +618,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             context,
                                             AppString.patientIsNotInsured,
                                           ).toString(),
-                                          icon: Icons.shield_outlined,
+                                          icon: HugeIcons.strokeRoundedShield01,
                                         ),
                                       ],
                                     ],
@@ -699,7 +649,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               .information_patient_illness_information,
                                         ).toString(),
                                         content: illness ?? "None reported",
-                                        icon: Icons.healing_rounded,
+                                        icon: HugeIcons.strokeRoundedBandage,
                                       ),
                                       const SizedBox(height: 12),
                                       _buildInfoCard(
@@ -710,7 +660,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               .information_side_effect_drug,
                                         ).toString(),
                                         content: drugEffect ?? "None reported",
-                                        icon: Icons.medication_rounded,
+                                        icon: HugeIcons.strokeRoundedMedicine01,
                                       ),
                                       const SizedBox(height: 12),
                                       _buildInfoCard(
@@ -720,7 +670,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                           AppString.information_note,
                                         ).toString(),
                                         content: note ?? "No notes added",
-                                        icon: Icons.notes_rounded,
+                                        icon: HugeIcons.strokeRoundedNote01,
                                       ),
 
                                       // Report Images
@@ -754,7 +704,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             return FullScreenWidget(
                                               child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(
+                                                        AyurezeTheme.radiusMd),
                                                 child: Image.network(
                                                   reportImages[index],
                                                   fit: BoxFit.cover,
@@ -773,15 +724,14 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                   padding: const EdgeInsets.all(20),
                                   child: Column(
                                     children: [
-                                      Container(
+                                      GlassSurface(
                                         width: double.infinity,
                                         padding: const EdgeInsets.all(20),
-                                        decoration:
-                                            AyurezeTheme.panelDecoration(),
                                         child: Column(
                                           children: [
-                                            Icon(
-                                              Icons.auto_awesome,
+                                            HugeIcon(
+                                              icon: HugeIcons
+                                                  .strokeRoundedSparkles,
                                               size: 40,
                                               color: AyurezeTheme.forestDeep,
                                             ),
@@ -806,8 +756,9 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                             ),
                                             const SizedBox(height: 18),
                                             ElevatedButton.icon(
-                                              icon: const Icon(
-                                                Icons.auto_awesome,
+                                              icon: const HugeIcon(
+                                                icon: HugeIcons
+                                                    .strokeRoundedSparkles,
                                                 color: Colors.white,
                                               ),
                                               label: const Text(
@@ -824,7 +775,9 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                                     const Size.fromHeight(50),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(16),
+                                                      BorderRadius.circular(
+                                                          AyurezeTheme
+                                                              .radiusLg),
                                                 ),
                                               ),
                                               onPressed: () {
@@ -871,6 +824,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     BuildContext context,
     String? phoneNo,
     String? appointmentType,
+    int? userId,
   ) {
     showModalBottomSheet(
       context: context,
@@ -885,7 +839,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                  leading: Icon(AppIcons.call, color: AyurezeTheme.forestDeep),
+                  leading: HugeIcon(
+                      icon: AppIcons.call, color: AyurezeTheme.forestDeep),
                   title: Text(
                     getTranslated(context, "call_text").toString(),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -906,8 +861,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                 ),
                 if (appointmentType == 'video')
                   ListTile(
-                    leading: Icon(
-                      Icons.videocam_rounded,
+                    leading: HugeIcon(
+                      icon: HugeIcons.strokeRoundedVideo01,
                       color: AyurezeTheme.forestDeep,
                     ),
                     title: Text(
@@ -922,7 +877,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                           ) ==
                           true) {
                         Navigator.of(context).pop();
-                        _addVideoOverlay(context);
+                        _addVideoOverlay(context, userId);
                       } else {
                         Navigator.of(context).pop();
                       }
@@ -971,15 +926,14 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     BuildContext context, {
     required String label,
     required String value,
-    required IconData icon,
+    required List<List<dynamic>> icon,
   }) {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Container(
+      child: GlassSurface(
         padding: const EdgeInsets.all(14),
-        decoration: AyurezeTheme.panelDecoration(),
         child: Row(
           children: [
             Container(
@@ -988,7 +942,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                 color: AyurezeTheme.surfaceMuted,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, size: 20, color: AyurezeTheme.forestDeep),
+              child: HugeIcon(
+                  icon: icon, size: 20, color: AyurezeTheme.forestDeep),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -1024,20 +979,19 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     BuildContext context, {
     required String title,
     required String content,
-    required IconData icon,
+    required List<List<dynamic>> icon,
   }) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Container(
+    return GlassSurface(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      decoration: AyurezeTheme.panelDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, size: 20, color: AyurezeTheme.forestDeep),
+              HugeIcon(icon: icon, size: 20, color: AyurezeTheme.forestDeep),
               const SizedBox(width: 8),
               Text(
                 title,
@@ -1061,8 +1015,58 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     );
   }
 
-  void _addVideoOverlay(BuildContext context) {
-    final vm = Provider.of<PatientInformationViewModel>(context, listen: false);
-    OslerToast.warning(context, "Video Call feature is currently unavailable.");
+  void _addVideoOverlay(BuildContext context, int? userId) {
+    if (userId == null) {
+      OslerToast.info(context, "Patient details are still loading...");
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoCall(
+          id: userId,
+          callEnd: false,
+          flag: "OutGoing",
+        ),
+      ),
+    );
+  }
+
+  /// Resolve the patient's Firestore chat user lazily and open the chat.
+  /// Avoids mutating widget state during build.
+  Future<void> _openChat(BuildContext context, int? userId) async {
+    if (userId == null) {
+      OslerToast.info(context, "Chat is loading...");
+      return;
+    }
+    OslerToast.info(context, "Opening chat...");
+    try {
+      final doc = await homeProvider.getFirestoreUserOnce(
+        FirestoreConstants.pathUserCollection,
+        userId.toString(),
+      );
+      if (!context.mounted) return;
+      if (doc == null || !doc.exists) {
+        OslerToast.info(context, "Chat is loading...");
+        return;
+      }
+      final userChat = UserChat.fromDocument(doc);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatPage(
+            peerId: userChat.id.toString(),
+            peerAvatar: userChat.photoUrl.toString(),
+            peerNickname: userChat.nickname.toString(),
+            token: userChat.token.toString(),
+            isNavigate: 'chatHome',
+          ),
+        ),
+      );
+    } catch (e) {
+      if (context.mounted) {
+        OslerToast.info(context, "Chat is loading...");
+      }
+    }
   }
 }

@@ -154,7 +154,9 @@ void main() {
     test('should extract error list from response', () {
       final ex = AstraApiException(
         'Error',
-        responseData: {'errors': ['Error 1', 'Error 2']},
+        responseData: {
+          'errors': ['Error 1', 'Error 2']
+        },
       );
 
       expect(ex.errorList, ['Error 1', 'Error 2']);

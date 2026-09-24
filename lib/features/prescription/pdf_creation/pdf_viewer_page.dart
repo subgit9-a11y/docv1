@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfViewerPage extends StatelessWidget {
@@ -20,8 +21,8 @@ class PdfViewerPage extends StatelessWidget {
         backgroundColor: AyurezeTheme.canvas,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
-            AppIcons.back,
+          icon: HugeIcon(
+            icon: AppIcons.back,
             color: AyurezeTheme.healingGreen100,
             size: 20,
           ),

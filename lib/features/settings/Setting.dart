@@ -1,13 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:doctro/core/constants/prefConstatnt.dart';
+import 'package:doctro/core/constants/preferences.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/theme_provider.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:provider/provider.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/widgets/osler_modal.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:doctro/widgets/osler_tooltip.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
+import 'package:hugeicons/hugeicons.dart';
 
 import 'ChangePassword.dart';
 import 'changeLanguage.dart';
@@ -48,19 +55,16 @@ class _SettingScreenState extends State<SettingScreen> {
         appBar: AppBar(
           backgroundColor: AyurezeTheme.canvas,
           leading: IconButton(
-            icon: Icon(
-              AppIcons.back,
-              color: AyurezeTheme.forestDeep,
-              size: 20,
-            ),
+            icon: HugeIcon(
+                icon: AppIcons.back, color: AyurezeTheme.forestDeep, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
             getTranslated(context, AppString.drawer_setting).toString(),
-            style: TextStyle(
-              color: AyurezeTheme.textPrimary,
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
+            style: AyurezeTheme.font(
+              20,
+              FontWeight.w800,
+              AyurezeTheme.textPrimary,
             ),
           ),
         ),
@@ -71,153 +75,194 @@ class _SettingScreenState extends State<SettingScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeroCard(),
+                  ScreenEntrance(index: 0, child: _buildHeroCard()),
                   const SizedBox(height: 18),
-                  _buildSection(
-                    title: getTranslated(context, AppString.settings_appearance)
-                        .toString(),
-                    items: [
-                      _buildToggleItem(
-                        icon: AppIcons.settings,
-                        title: getTranslated(
-                          context,
-                          AppString.settings_dark_mode,
-                        ).toString(),
-                        value: viewModel.isDarkMode,
-                        color: const Color(0xFF7E8D9B),
-                        onChanged: (val) async {
-                          viewModel.setDarkMode(val);
-                          await context.read<ThemeProvider>().setDarkMode(val);
-                          OslerToast.success(
-                              context, "Dark mode: ${val ? 'ON' : 'OFF'}");
-                        },
-                      ),
-                      _buildNavigationItem(
-                        icon: AppIcons.language2,
-                        title: getTranslated(
-                          context,
-                          AppString.drawer_change_language,
-                        ).toString(),
-                        color: const Color(0xFFE0B65A),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeLanguage()),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  _buildSection(
-                    title: getTranslated(
-                      context,
-                      AppString.settings_notifications_section,
-                    ).toString(),
-                    items: [
-                      _buildToggleItem(
-                        icon: AppIcons.notifications,
-                        title: getTranslated(
-                          context,
-                          AppString.settings_push_notifications,
-                        ).toString(),
-                        value: viewModel.isNotificationEnabled,
-                        color: const Color(0xFFE37C61),
-                        onChanged: (val) {
-                          viewModel.setNotificationEnabled(val);
-                        },
-                      ),
-                      _buildToggleItem(
-                        icon: AppIcons.videoCall,
-                        title: getTranslated(context, AppString.video_call)
-                            .toString(),
-                        subtitle: getTranslated(
-                          context,
-                          AppString.settings_video_call_desc,
-                        ).toString(),
-                        value: viewModel.isCallEnable,
-                        color: const Color(0xFF84A98C),
-                        onChanged: (val) async {
-                          bool success =
-                              await viewModel.updateVCall(context, val);
-                          if (success) {
+                  ScreenEntrance(
+                    index: 1,
+                    child: _buildSection(
+                      title: getTranslated(
+                        context,
+                        AppString.settings_appearance,
+                      ).toString(),
+                      items: [
+                        _buildToggleItem(
+                          icon: AppIcons.settings,
+                          title: getTranslated(
+                            context,
+                            AppString.settings_dark_mode,
+                          ).toString(),
+                          value: viewModel.isDarkMode,
+                          color: const Color(0xFF7E8D9B),
+                          onChanged: (val) async {
+                            viewModel.setDarkMode(val);
+                            await context.read<ThemeProvider>().setDarkMode(
+                                  val,
+                                );
+                            // Inside build() the `context` parameter shadows State.context,
+                            // so the check must be context.mounted.
+                            if (!context.mounted) return;
                             OslerToast.success(
-                                context, "Call settings updated!");
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  _buildSection(
-                    title: getTranslated(
-                      context,
-                      AppString.settings_security_section,
-                    ).toString(),
-                    items: [
-                      _buildNavigationItem(
-                        icon: AppIcons.password,
-                        title: getTranslated(
-                          context,
-                          AppString.drawer_change_password,
-                        ).toString(),
-                        color: const Color(0xFF5B7F6A),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangePassword()),
+                              context,
+                              "Dark mode: ${val ? 'ON' : 'OFF'}",
+                            );
+                          },
                         ),
-                      ),
-                    ],
+                        _buildNavigationItem(
+                          icon: AppIcons.language2,
+                          title: getTranslated(
+                            context,
+                            AppString.drawer_change_language,
+                          ).toString(),
+                          color: const Color(0xFFE0B65A),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangeLanguage(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 18),
-                  _buildSection(
-                    title: getTranslated(
-                      context,
-                      AppString.settings_support_section,
-                    ).toString(),
-                    items: [
-                      _buildNavigationItem(
-                        icon: Icons.support_agent_outlined,
-                        title: "Contact Support",
-                        color: const Color(0xFF7AA6D8),
-                        onTap: () {
-                          OslerToast.info(
-                              context, "Support ticket system coming soon");
-                        },
-                      ),
-                      _buildNavigationItem(
-                        icon: Icons.privacy_tip_outlined,
-                        title: getTranslated(
-                          context,
-                          AppString.settings_privacy_policy,
-                        ).toString(),
-                        color: const Color(0xFF84A98C),
-                        onTap: () {},
-                      ),
-                      _buildNavigationItem(
-                        icon: Icons.description_outlined,
-                        title: getTranslated(
-                          context,
-                          AppString.settings_terms_conditions,
-                        ).toString(),
-                        color: const Color(0xFF9A8F6A),
-                        onTap: () {},
-                      ),
-                    ],
+                  ScreenEntrance(
+                    index: 2,
+                    child: _buildSection(
+                      title: getTranslated(
+                        context,
+                        AppString.settings_notifications_section,
+                      ).toString(),
+                      items: [
+                        _buildToggleItem(
+                          icon: AppIcons.notifications,
+                          title: getTranslated(
+                            context,
+                            AppString.settings_push_notifications,
+                          ).toString(),
+                          value: viewModel.isNotificationEnabled,
+                          color: const Color(0xFFE37C61),
+                          onChanged: (val) {
+                            viewModel.setNotificationEnabled(val);
+                          },
+                        ),
+                        _buildToggleItem(
+                          icon: AppIcons.videoCall,
+                          title: getTranslated(
+                            context,
+                            AppString.video_call,
+                          ).toString(),
+                          subtitle: getTranslated(
+                            context,
+                            AppString.settings_video_call_desc,
+                          ).toString(),
+                          value: viewModel.isCallEnable,
+                          color: const Color(0xFF84A98C),
+                          onChanged: (val) async {
+                            bool success = await viewModel.updateVCall(
+                              context,
+                              val,
+                            );
+                            // Inside build() the `context` parameter shadows State.context,
+                            // so the check must be context.mounted.
+                            if (!context.mounted) return;
+                            if (success) {
+                              OslerToast.success(
+                                context,
+                                "Call settings updated!",
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  ScreenEntrance(
+                    index: 3,
+                    child: _buildSection(
+                      title: getTranslated(
+                        context,
+                        AppString.settings_security_section,
+                      ).toString(),
+                      items: [
+                        _buildNavigationItem(
+                          icon: AppIcons.password,
+                          title: getTranslated(
+                            context,
+                            AppString.drawer_change_password,
+                          ).toString(),
+                          color: const Color(0xFF5B7F6A),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangePassword(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  ScreenEntrance(
+                    index: 4,
+                    child: _buildSection(
+                      title: getTranslated(
+                        context,
+                        AppString.settings_support_section,
+                      ).toString(),
+                      items: [
+                        _buildNavigationItem(
+                          icon: AppIcons.help,
+                          title: "Contact Support",
+                          color: const Color(0xFF7AA6D8),
+                          onTap: () {
+                            OslerToast.info(
+                              context,
+                              "Support ticket system coming soon",
+                            );
+                          },
+                        ),
+                        _buildNavigationItem(
+                          icon: AppIcons.privacy,
+                          title: getTranslated(
+                            context,
+                            AppString.settings_privacy_policy,
+                          ).toString(),
+                          color: const Color(0xFF84A98C),
+                          onTap: () {},
+                        ),
+                        _buildNavigationItem(
+                          icon: AppIcons.terms,
+                          title: getTranslated(
+                            context,
+                            AppString.settings_terms_conditions,
+                          ).toString(),
+                          color: const Color(0xFF9A8F6A),
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 22),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () => _showDeleteAccountDialog(viewModel),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AyurezeTheme.danger,
-                        side: BorderSide(color: AyurezeTheme.danger),
-                      ),
-                      child: Text(
-                        getTranslated(
-                                context, AppString.settings_delete_account)
-                            .toString(),
+                  ScreenEntrance(
+                    index: 5,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          HapticFeedback.mediumImpact();
+                          _showDeleteAccountDialog();
+                        },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AyurezeTheme.danger,
+                          side: BorderSide(color: AyurezeTheme.danger),
+                        ),
+                        child: Text(
+                          getTranslated(
+                            context,
+                            AppString.settings_delete_account,
+                          ).toString(),
+                        ),
                       ),
                     ),
                   ),
@@ -231,6 +276,14 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   Widget _buildHeroCard() {
+    final name = SharedPreferenceHelper.getString(Preferences.name);
+    final specialization = SharedPreferenceHelper.getStringOrNull(
+      Preferences.specialization,
+    );
+    final avatarUrl = SharedPreferenceHelper.getString(Preferences.image);
+    final hasAvatar = avatarUrl.isNotEmpty && avatarUrl != 'N_A';
+    final hasName = name.isNotEmpty && name != 'N_A';
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
@@ -238,37 +291,103 @@ class _SettingScreenState extends State<SettingScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Text(
-              "Workspace controls",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
+          Row(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.4),
+                    width: 1.5,
+                  ),
+                ),
+                child: ClipOval(
+                  child: hasAvatar
+                      ? CachedNetworkImage(
+                          imageUrl: avatarUrl,
+                          fit: BoxFit.cover,
+                          placeholder: (_, __) => const HugeIcon(
+                            icon: HugeIcons.strokeRoundedUserCircle,
+                            color: Colors.white,
+                          ),
+                          errorWidget: (_, __, ___) => const HugeIcon(
+                            icon: HugeIcons.strokeRoundedUserCircle,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const HugeIcon(
+                          icon: HugeIcons.strokeRoundedUserCircle,
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                ),
               ),
-            ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      hasName ? "Dr. $name" : "Doctor",
+                      style: AyurezeTheme.font(
+                        17,
+                        FontWeight.w800,
+                        Colors.white,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (specialization != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        specialization,
+                        style: AyurezeTheme.font(
+                          13,
+                          FontWeight.w500,
+                          Colors.white.withValues(alpha: 0.78),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
+                ),
+                child: Text(
+                  "Workspace",
+                  style: AyurezeTheme.font(11, FontWeight.w700, Colors.white),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 14),
-          const Text(
+          const SizedBox(height: 18),
+          Text(
             "Tune how your Ayureze desk behaves day to day.",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
+            style: AyurezeTheme.font(
+              22,
+              FontWeight.w800,
+              Colors.white,
               height: 1.05,
-              fontWeight: FontWeight.w800,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             "Appearance, patient call controls, account security, and support live here.",
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
-              fontSize: 14,
+            style: AyurezeTheme.font(
+              14,
+              FontWeight.w500,
+              Colors.white.withValues(alpha: 0.78),
               height: 1.4,
             ),
           ),
@@ -277,10 +396,7 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  Widget _buildSection({
-    required String title,
-    required List<Widget> items,
-  }) {
+  Widget _buildSection({required String title, required List<Widget> items}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -288,16 +404,15 @@ class _SettingScreenState extends State<SettingScreen> {
           padding: const EdgeInsets.only(left: 4, bottom: 10),
           child: Text(
             title.toUpperCase(),
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w800,
-              color: AyurezeTheme.textSecondary,
+            style: AyurezeTheme.font(
+              12,
+              FontWeight.w800,
+              AyurezeTheme.textSecondary,
               letterSpacing: 1.1,
             ),
           ),
         ),
-        Container(
-          decoration: AyurezeTheme.panelDecoration(),
+        GlassSurface(
           child: Column(
             children: List.generate(items.length, (index) {
               return Column(
@@ -320,7 +435,7 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   Widget _buildToggleItem({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String title,
     String? subtitle,
     required bool value,
@@ -328,95 +443,104 @@ class _SettingScreenState extends State<SettingScreen> {
     required ValueChanged<bool> onChanged,
   }) {
     return ListTile(
+      // Tapping anywhere in the row toggles it too, not just the switch
+      // itself - a larger, more forgiving tap target.
+      onTap: () {
+        HapticFeedback.selectionClick();
+        onChanged(!value);
+      },
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      leading: OslerTooltip(
-        message: title,
-        child: _iconBadge(icon, color),
-      ),
+      leading: OslerTooltip(message: title, child: _iconBadge(icon, color)),
       title: Text(
         title,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w700,
-          color: AyurezeTheme.textPrimary,
-        ),
+        style: AyurezeTheme.font(15, FontWeight.w700, AyurezeTheme.textPrimary),
       ),
       subtitle: subtitle != null
           ? Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
                 subtitle,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AyurezeTheme.textSecondary,
+                style: AyurezeTheme.font(
+                  12,
+                  FontWeight.w500,
+                  AyurezeTheme.textSecondary,
                 ),
               ),
             )
           : null,
       trailing: Switch.adaptive(
         value: value,
-        activeColor: AyurezeTheme.forestDeep,
+        activeThumbColor: AyurezeTheme.forestDeep,
         activeTrackColor: AyurezeTheme.healingGreen50,
-        onChanged: onChanged,
+        onChanged: (val) {
+          HapticFeedback.selectionClick();
+          onChanged(val);
+        },
       ),
     );
   }
 
   Widget _buildNavigationItem({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String title,
     required Color color,
     required VoidCallback onTap,
   }) {
-    return ListTile(
-      onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      leading: OslerTooltip(
-        message: title,
-        child: _iconBadge(icon, color),
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w700,
-          color: AyurezeTheme.textPrimary,
+    return AnimatedTapScale(
+      // Dummy tap: only here to drive the press-in scale. The real tap
+      // (with haptic) stays solely on ListTile's onTap below, so this
+      // doesn't double-fire the callback.
+      pressedScale: 0.99,
+      onTap: () {},
+      child: ListTile(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        leading: OslerTooltip(message: title, child: _iconBadge(icon, color)),
+        title: Text(
+          title,
+          style: AyurezeTheme.font(
+            15,
+            FontWeight.w700,
+            AyurezeTheme.textPrimary,
+          ),
         ),
-      ),
-      trailing: Icon(
-        Icons.arrow_forward_ios_rounded,
-        size: 14,
-        color: AyurezeTheme.textSecondary,
+        trailing: HugeIcon(
+          icon: HugeIcons.strokeRoundedArrowRight01,
+          size: 14,
+          color: AyurezeTheme.textSecondary,
+        ),
       ),
     );
   }
 
-  Widget _iconBadge(IconData icon, Color color) {
+  Widget _iconBadge(List<List<dynamic>> icon, Color color) {
     return Container(
       width: 42,
       height: 42,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.16),
+        color: color.withValues(alpha: 0.16),
         borderRadius: BorderRadius.circular(14),
       ),
-      child: Icon(icon, color: color, size: 22),
+      child: HugeIcon(icon: icon, color: color, size: 22),
     );
   }
 
-  void _showDeleteAccountDialog(SettingsViewModel viewModel) {
+  void _showDeleteAccountDialog() {
+    // Self-service deletion has no backend endpoint yet, so this dialog must
+    // not claim the account has been deleted or that removal is in progress.
+    // Telling the user their data was erased when nothing happened is a
+    // correctness problem, not just a copy problem - health data is involved.
     OslerModal.show(
       context: context,
-      title: "Delete Account?",
+      title: "Delete Account",
       message:
-          "This action is permanent and cannot be undone. All your data will be removed from our servers.",
-      primaryText: "Cancel",
-      secondaryText: "Delete",
+          "Account deletion isn't available in the app yet. To request permanent "
+          "deletion of your account and data, please contact our support team.",
+      primaryText: "Close",
       primaryAction: () => Navigator.pop(context),
-      secondaryAction: () {
-        viewModel.deleteAccount(context);
-        Navigator.pop(context);
-        OslerToast.success(context, "Request submitted to admin");
-      },
       isDanger: true,
     );
   }

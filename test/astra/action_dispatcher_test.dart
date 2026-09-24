@@ -21,8 +21,14 @@ void main() {
     test('should extract actions from JSON - actions array', () {
       final response = {
         'actions': [
-          {'type': 'openPatient', 'params': {'id': '123'}},
-          {'type': 'openPrescription', 'params': {'id': '456'}},
+          {
+            'type': 'openPatient',
+            'params': {'id': '123'}
+          },
+          {
+            'type': 'openPrescription',
+            'params': {'id': '456'}
+          },
         ],
       };
 

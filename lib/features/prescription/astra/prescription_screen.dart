@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/services/astra_api_service.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
@@ -162,8 +163,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
       builder: (context) {
         return AlertDialog(
           backgroundColor: AyurezeTheme.surface,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl)),
           title: Text(
             "Edit Dosage",
             style: textTheme.titleMedium?.copyWith(
@@ -363,8 +364,10 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
         ),
         backgroundColor: AyurezeTheme.canvas,
         leading: IconButton(
-          icon: Icon(AppIcons.back,
-              color: AyurezeTheme.healingGreen100, size: 20),
+          icon: HugeIcon(
+              icon: AppIcons.back,
+              color: AyurezeTheme.healingGreen100,
+              size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         elevation: 0,
@@ -394,7 +397,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                           decoration: InputDecoration(
                             labelText: "Diagnosis",
                             hintText: "Enter clinical diagnosis",
-                            suffixIcon: Icon(Icons.medical_services_rounded,
+                            suffixIcon: HugeIcon(
+                                icon: HugeIcons.strokeRoundedStethoscope02,
                                 color: AyurezeTheme.healingGreen100),
                           ),
                         ),
@@ -415,8 +419,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                           return OslerCard(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: AyurezeTheme.spaceSm),
                               child: ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: noShopify
@@ -442,7 +446,9 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                                     if (noShopify)
                                       Tooltip(
                                         message: "Not available for Auto-Cart",
-                                        child: Icon(Icons.warning_amber_rounded,
+                                        child: HugeIcon(
+                                            icon:
+                                                HugeIcons.strokeRoundedAlert01,
                                             color:
                                                 AyurezeTheme.sunshineYellow50,
                                             size: 20),
@@ -460,7 +466,9 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                                     Row(
                                       children: [
                                         IconButton(
-                                          icon: Icon(Icons.edit_rounded,
+                                          icon: HugeIcon(
+                                              icon:
+                                                  HugeIcons.strokeRoundedEdit02,
                                               size: 18,
                                               color:
                                                   AyurezeTheme.healingGreen100),
@@ -511,7 +519,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                                   ],
                                 ),
                                 trailing: IconButton(
-                                  icon: Icon(AppIcons.delete,
+                                  icon: HugeIcon(
+                                      icon: AppIcons.delete,
                                       color: AyurezeTheme.remoteRed50),
                                   onPressed: () =>
                                       setState(() => _medicines.removeAt(idx)),
@@ -523,18 +532,20 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                         const SizedBox(height: 16),
                         ElevatedButton.icon(
                           onPressed: _showSearchSheet,
-                          icon: Icon(AppIcons.add, size: 18),
+                          icon: HugeIcon(icon: AppIcons.add, size: 18),
                           label: const Text("Add Medicine"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 48),
-                            backgroundColor: AyurezeTheme.healingGreen10,
-                            foregroundColor: AyurezeTheme.healingGreen100,
+                            // Dark-aware: healingGreen10 is light-only, so this
+                            // button stayed pale with dark text in dark mode.
+                            backgroundColor: AyurezeTheme.surfaceMuted,
+                            foregroundColor: AyurezeTheme.textPrimary,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                               side: BorderSide(
                                   color: AyurezeTheme.healingGreen50
-                                      .withOpacity(0.3)),
+                                      .withValues(alpha: 0.3)),
                             ),
                           ),
                         ),
@@ -552,7 +563,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                           width: double.infinity,
                           decoration: AyurezeTheme.panelDecoration(),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(28),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radius2xl),
                             child: DoctorSignaturePad(
                               onChanged: (bytes) {
                                 setState(() {
@@ -567,8 +579,10 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
                           child: TextButton.icon(
                             onPressed: () =>
                                 setState(() => _signatureBytes = null),
-                            icon: Icon(Icons.clear_rounded,
-                                size: 16, color: AyurezeTheme.textSecondary),
+                            icon: HugeIcon(
+                                icon: HugeIcons.strokeRoundedCancel01,
+                                size: 16,
+                                color: AyurezeTheme.textSecondary),
                             label: Text(
                               "Clear Signature",
                               style: textTheme.bodySmall
@@ -697,7 +711,7 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       child: Column(
         children: [
           Row(
@@ -719,8 +733,10 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
               else
                 TextButton.icon(
                   onPressed: _syncShopify,
-                  icon: Icon(Icons.sync_rounded,
-                      size: 16, color: AyurezeTheme.healingGreen100),
+                  icon: HugeIcon(
+                      icon: HugeIcons.strokeRoundedReload,
+                      size: 16,
+                      color: AyurezeTheme.healingGreen100),
                   label: Text("Sync Shopify",
                       style: textTheme.labelLarge
                           ?.copyWith(color: AyurezeTheme.healingGreen100)),
@@ -732,8 +748,8 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
             controller: _searchController,
             decoration: InputDecoration(
               hintText: "Type medicine name",
-              prefixIcon:
-                  Icon(AppIcons.search, color: AyurezeTheme.healingGreen100),
+              prefixIcon: HugeIcon(
+                  icon: AppIcons.search, color: AyurezeTheme.healingGreen100),
             ),
             onChanged: _onSearchChanged,
           ),
@@ -760,7 +776,8 @@ class _SearchMedicineSheetState extends State<SearchMedicineSheet> {
                           style: textTheme.bodySmall
                               ?.copyWith(color: AyurezeTheme.textSecondary),
                         ),
-                        trailing: Icon(Icons.add_circle_rounded,
+                        trailing: HugeIcon(
+                            icon: HugeIcons.strokeRoundedAddCircle,
                             color: AyurezeTheme.healingGreen50),
                         onTap: () => widget.onSelect(item),
                       );

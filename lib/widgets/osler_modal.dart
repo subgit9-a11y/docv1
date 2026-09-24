@@ -1,5 +1,6 @@
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 /// OslerModal — Animated, modern dialog system for the Ayureze app.
 /// Supports danger, info, and confirmation modes.
@@ -38,7 +39,7 @@ class OslerModal {
         return AlertDialog(
           backgroundColor: AyurezeTheme.surface,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radius2xl),
           ),
           contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
           titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
@@ -57,10 +58,10 @@ class OslerModal {
                         : AyurezeTheme.healingGreen10),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    isDanger
-                        ? Icons.warning_amber_rounded
-                        : Icons.check_circle_outline_rounded,
+                  child: HugeIcon(
+                    icon: isDanger
+                        ? HugeIcons.strokeRoundedAlert01
+                        : HugeIcons.strokeRoundedCheckmarkCircle02,
                     color: isDanger
                         ? AyurezeTheme.remoteRed50
                         : AyurezeTheme.healingGreen50,
@@ -83,11 +84,10 @@ class OslerModal {
           content: Text(
             message,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              height: 1.5,
-              color: AyurezeTheme.textSecondary,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  height: 1.5,
+                  color: AyurezeTheme.textSecondary,
+                ),
           ),
           actionsAlignment: MainAxisAlignment.center,
           actionsPadding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
@@ -107,7 +107,8 @@ class OslerModal {
                           : AyurezeTheme.border,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius:
+                          BorderRadius.circular(AyurezeTheme.radiusMd),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
@@ -129,17 +130,17 @@ class OslerModal {
                       : AyurezeTheme.healingGreen100,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   elevation: 0,
                 ),
                 child: Text(
                   primaryText,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
             ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/suggestions/suggestion_model.dart';
 import 'package:doctro/core/astra/navigation/app_router.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
@@ -10,22 +12,22 @@ import 'package:doctro/theme/ayureze_theme.dart';
 class AISuggestionsCard extends StatelessWidget {
   /// List of suggestions to display
   final List<AISuggestion> suggestions;
-  
+
   /// Title for the card
   final String title;
-  
+
   /// Maximum number of suggestions to show (0 = show all)
   final int maxVisible;
-  
+
   /// Callback when a suggestion is tapped
   final void Function(AISuggestion)? onSuggestionTap;
-  
+
   /// Callback when a suggestion is dismissed
   final void Function(AISuggestion)? onDismiss;
-  
+
   /// Whether to show the card header
   final bool showHeader;
-  
+
   /// Whether to show expand/collapse
   final bool collapsible;
 
@@ -49,11 +51,12 @@ class AISuggestionsCard extends StatelessWidget {
       label: 'AI Suggestions, ${activeSuggestions.length} items',
       child: Card(
         elevation: 1,
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.symmetric(
+            horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
           side: BorderSide(
-            color: AyurezeTheme.healingGreen50.withOpacity(0.3),
+            color: AyurezeTheme.healingGreen50.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -72,16 +75,16 @@ class AISuggestionsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 12, 8, 8),
       decoration: BoxDecoration(
-        color: AyurezeTheme.healingGreen50.withOpacity(0.1),
+        color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
+          topLeft: Radius.circular(AyurezeTheme.radiusMd),
+          topRight: Radius.circular(AyurezeTheme.radiusMd),
         ),
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.psychology,
+          HugeIcon(
+            icon: HugeIcons.strokeRoundedBrain01,
             size: 18,
             color: AyurezeTheme.healingGreen50,
           ),
@@ -104,10 +107,10 @@ class AISuggestionsCard extends StatelessWidget {
 
   Widget _buildCollapsibleButton(BuildContext context) {
     if (!collapsible) return const SizedBox.shrink();
-    
+
     return IconButton(
-      icon: Icon(
-        Icons.expand_more,
+      icon: HugeIcon(
+        icon: HugeIcons.strokeRoundedArrowDown01,
         color: AyurezeTheme.textSecondary,
         size: 20,
       ),
@@ -121,18 +124,16 @@ class AISuggestionsCard extends StatelessWidget {
   }
 
   Widget _buildSuggestionsList(List<AISuggestion> suggestions) {
-    final visible = maxVisible > 0 
-        ? suggestions.take(maxVisible).toList() 
-        : suggestions;
-    final hidden = maxVisible > 0 
-        ? suggestions.skip(maxVisible).toList() 
+    final visible =
+        maxVisible > 0 ? suggestions.take(maxVisible).toList() : suggestions;
+    final hidden = maxVisible > 0
+        ? suggestions.skip(maxVisible).toList()
         : <AISuggestion>[];
 
     return Column(
       children: [
         ...visible.map((s) => _buildSuggestionTile(s)),
-        if (hidden.isNotEmpty)
-          _buildMoreIndicator(hidden.length),
+        if (hidden.isNotEmpty) _buildMoreIndicator(hidden.length),
       ],
     );
   }
@@ -174,11 +175,11 @@ class AISuggestionsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: suggestion.color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        color: suggestion.color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusSm),
       ),
-      child: Icon(
-        suggestion.icon,
+      child: HugeIcon(
+        icon: suggestion.icon,
         size: 16,
         color: suggestion.color,
       ),
@@ -220,7 +221,7 @@ class AISuggestionsCard extends StatelessWidget {
       margin: const EdgeInsets.only(left: 8),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: suggestion.priorityColor.withOpacity(0.1),
+        color: suggestion.priorityColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
@@ -236,8 +237,8 @@ class AISuggestionsCard extends StatelessWidget {
 
   Widget _buildDismissButton(AISuggestion suggestion) {
     return IconButton(
-      icon: Icon(
-        Icons.close,
+      icon: HugeIcon(
+        icon: AppIcons.close,
         size: 16,
         color: AyurezeTheme.textSecondary,
       ),
@@ -255,12 +256,13 @@ class AISuggestionsCard extends StatelessWidget {
         onSuggestionTap?.call(suggestions.first);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.expand_more,
+            HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowDown01,
               size: 16,
               color: AyurezeTheme.textSecondary,
             ),
@@ -343,21 +345,21 @@ class AISuggestionBadge extends StatelessWidget {
       button: true,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
-            color: suggestion.color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(16),
+            color: suggestion.color.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
             border: Border.all(
-              color: suggestion.color.withOpacity(0.3),
+              color: suggestion.color.withValues(alpha: 0.3),
             ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                suggestion.icon,
+              HugeIcon(
+                icon: suggestion.icon,
                 size: 14,
                 color: suggestion.color,
               ),
@@ -398,14 +400,14 @@ class AISuggestionDot extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: (color ?? Colors.green).withOpacity(0.1),
+          color: (color ?? Colors.green).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.auto_awesome,
+            HugeIcon(
+              icon: HugeIcons.strokeRoundedSparkles,
               size: 10,
               color: color ?? Colors.green,
             ),

@@ -30,4 +30,17 @@ class HomeProvider {
         .where(FirestoreConstants.userId, isEqualTo: textSearch)
         .snapshots();
   }
+
+  /// One-shot fetch of a single Firestore user document by id.
+  /// Returns null when no matching user is found.
+  Future<DocumentSnapshot?> getFirestoreUserOnce(
+      String pathCollection, String? userId) async {
+    if (userId == null || userId.isEmpty) return null;
+    final result = await firebaseFirestore
+        .collection(pathCollection)
+        .limit(1)
+        .where(FirestoreConstants.userId, isEqualTo: userId)
+        .get();
+    return result.docs.isNotEmpty ? result.docs.first : null;
+  }
 }

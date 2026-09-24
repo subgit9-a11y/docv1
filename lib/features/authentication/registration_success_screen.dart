@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/features/dashboard/login_home.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
@@ -107,11 +108,12 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen>
                       Text(
                         widget.subtitle ??
                             "Your professional account has been successfully created and secured.",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: AyurezeTheme.textSecondary,
-                          height: 1.5,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: AyurezeTheme.textSecondary,
+                                  height: 1.5,
+                                  fontWeight: FontWeight.normal,
+                                ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 40),
@@ -138,7 +140,7 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen>
       width: 100,
       height: 100,
       decoration: BoxDecoration(
-        color: AyurezeTheme.healingGreen50.withOpacity(0.1),
+        color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
         shape: BoxShape.circle,
       ),
       child: Center(
@@ -146,18 +148,18 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen>
           width: 70,
           height: 70,
           decoration: BoxDecoration(
-            color: AyurezeTheme.healingGreen50,
+            color: AyurezeTheme.healingGreenFill,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: AyurezeTheme.healingGreen50.withOpacity(0.3),
+                color: AyurezeTheme.healingGreen50.withValues(alpha: 0.3),
                 blurRadius: 15,
                 spreadRadius: 2,
               ),
             ],
           ),
-          child: const Icon(
-            Icons.check_rounded,
+          child: const HugeIcon(
+            icon: HugeIcons.strokeRoundedTick01,
             color: Colors.white,
             size: 40,
           ),
@@ -169,17 +171,17 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen>
   Widget _buildDetailCard() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AyurezeTheme.space2xl),
       decoration: BoxDecoration(
         color: AyurezeTheme.surface,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
         border: Border.all(color: AyurezeTheme.border),
       ),
       child: Column(
         children: [
           _buildDetailRow("YOUR DOCTOR ID", widget.doctorId, isPrimary: true),
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
+            padding: EdgeInsets.symmetric(vertical: AyurezeTheme.spaceLg),
             child: Divider(height: 1),
           ),
           _buildDetailRow("FULL NAME", widget.doctorName),
@@ -199,12 +201,11 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen>
       children: [
         Text(
           label,
-          style: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w800,
-            color: AyurezeTheme.textSecondary,
-            letterSpacing: 0.5,
-          ),
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AyurezeTheme.textSecondary,
+                letterSpacing: 0.5,
+              ),
         ),
         const SizedBox(width: 20),
         Expanded(

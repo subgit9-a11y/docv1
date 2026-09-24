@@ -74,5 +74,9 @@
 		<array>
 			<string>ayureze</string>
 		</array>
+		<key>NSCameraUsageDescription</key>
+		<string>Ayureze needs camera access for video consultations with patients.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Ayureze needs microphone access for video and voice consultations with patients.</string>
 	</dict>
 </plist>

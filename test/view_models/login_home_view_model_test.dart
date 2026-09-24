@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:doctro/features/dashboard/view_models/login_home_view_model.dart';
-import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

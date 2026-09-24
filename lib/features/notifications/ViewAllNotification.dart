@@ -8,7 +8,9 @@ import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class ViewAllNotification extends StatefulWidget {
   const ViewAllNotification({super.key});
@@ -40,8 +42,8 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
       appBar: AppBar(
         backgroundColor: AyurezeTheme.canvas,
         leading: IconButton(
-          icon: Icon(
-            AppIcons.back,
+          icon: HugeIcon(
+            icon: AppIcons.back,
             color: AyurezeTheme.forestDeep,
             size: 20,
           ),
@@ -49,11 +51,10 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
         ),
         title: Text(
           getTranslated(context, AppString.notification_heading).toString(),
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AyurezeTheme.textPrimary,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AyurezeTheme.textPrimary,
+              ),
         ),
       ),
       body: FutureBuilder(
@@ -84,37 +85,39 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.14),
-                          borderRadius: BorderRadius.circular(999),
+                          color: Colors.white.withValues(alpha: 0.14),
+                          borderRadius:
+                              BorderRadius.circular(AyurezeTheme.radiusPill),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Full inbox",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
                         ),
                       ),
                       const SizedBox(height: 14),
-                      const Text(
+                      Text(
                         "Every patient notification, in one scroll.",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          height: 1.05,
-                          fontWeight: FontWeight.w800,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                                color: Colors.white,
+                                height: 1.05,
+                                fontWeight: FontWeight.w800),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 18),
                 if (patientNotification.isEmpty)
-                  Container(
+                  GlassSurface(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 36),
-                    decoration: AyurezeTheme.panelDecoration(),
                     child: Column(
                       children: [
                         Image.asset("assets/images/no-data.png", height: 88),
@@ -180,8 +183,8 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                     width: 58,
                     height: 58,
                     color: AyurezeTheme.surfaceMuted,
-                    child: Icon(
-                      AppIcons.profile,
+                    child: HugeIcon(
+                      icon: AppIcons.profile,
                       color: AyurezeTheme.textSecondary,
                     ),
                   );
@@ -198,19 +201,18 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                       Expanded(
                         child: Text(
                           item.user?.name ?? "",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: AyurezeTheme.textPrimary,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    color: AyurezeTheme.textPrimary,
+                                  ),
                         ),
                       ),
                       Text(
                         date,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AyurezeTheme.textSecondary,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AyurezeTheme.textSecondary,
+                            ),
                       ),
                     ],
                   ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 /// AI Suggestion Model
 ///
@@ -7,31 +9,31 @@ import 'package:flutter/material.dart';
 class AISuggestion {
   /// Unique identifier
   final String id;
-  
+
   /// Suggestion type
   final SuggestionType type;
-  
+
   /// Suggestion title
   final String title;
-  
+
   /// Detailed description
   final String? description;
-  
+
   /// Priority level
   final SuggestionPriority priority;
-  
+
   /// Associated action (optional)
   final SuggestionAction? action;
-  
+
   /// Category for grouping
   final String? category;
-  
+
   /// Additional metadata
   final Map<String, dynamic>? metadata;
-  
+
   /// Timestamp when suggestion was generated
   final DateTime? generatedAt;
-  
+
   /// Whether the suggestion has been dismissed
   bool isDismissed;
 
@@ -51,18 +53,19 @@ class AISuggestion {
   /// Create from JSON
   factory AISuggestion.fromJson(Map<String, dynamic> json) {
     return AISuggestion(
-      id: json['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id: json['id']?.toString() ??
+          DateTime.now().millisecondsSinceEpoch.toString(),
       type: SuggestionType.fromString(json['type']),
       title: json['title'] ?? 'Suggestion',
       description: json['description'],
       priority: SuggestionPriority.fromString(json['priority']),
-      action: json['action'] != null 
-          ? SuggestionAction.fromJson(json['action']) 
+      action: json['action'] != null
+          ? SuggestionAction.fromJson(json['action'])
           : null,
       category: json['category'],
       metadata: json['metadata'],
-      generatedAt: json['generated_at'] != null 
-          ? DateTime.tryParse(json['generated_at']) 
+      generatedAt: json['generated_at'] != null
+          ? DateTime.tryParse(json['generated_at'])
           : null,
     );
   }
@@ -110,7 +113,7 @@ class AISuggestion {
   }
 
   /// Get icon for this suggestion type
-  IconData get icon => type.icon;
+  List<List<dynamic>> get icon => type.icon;
 
   /// Get color for this suggestion type
   Color get color => type.color;
@@ -169,34 +172,34 @@ enum SuggestionType {
     }
   }
 
-  IconData get icon {
+  List<List<dynamic>> get icon {
     switch (this) {
       case SuggestionType.followUp:
-        return Icons.calendar_today;
+        return HugeIcons.strokeRoundedCalendar01;
       case SuggestionType.reminder:
-        return Icons.alarm;
+        return HugeIcons.strokeRoundedAlarmClock;
       case SuggestionType.payment:
-        return Icons.payment;
+        return AppIcons.payment;
       case SuggestionType.medication:
-        return Icons.medication;
+        return HugeIcons.strokeRoundedMedicine01;
       case SuggestionType.healthTip:
-        return Icons.lightbulb;
+        return HugeIcons.strokeRoundedIdea01;
       case SuggestionType.labTest:
-        return Icons.science;
+        return HugeIcons.strokeRoundedTestTube01;
       case SuggestionType.referral:
-        return Icons.person_add;
+        return HugeIcons.strokeRoundedUserAdd01;
       case SuggestionType.vitalAlert:
-        return Icons.monitor_heart;
+        return HugeIcons.strokeRoundedPulse01;
       case SuggestionType.drugInteraction:
-        return Icons.warning;
+        return AppIcons.warning;
       case SuggestionType.duplicateMedicine:
-        return Icons.copy;
+        return HugeIcons.strokeRoundedCopy01;
       case SuggestionType.alternative:
-        return Icons.swap_horiz;
+        return HugeIcons.strokeRoundedArrowDataTransferHorizontal;
       case SuggestionType.appointmentReminder:
-        return Icons.event;
+        return HugeIcons.strokeRoundedCalendar03;
       case SuggestionType.general:
-        return Icons.tips_and_updates;
+        return HugeIcons.strokeRoundedIdea01;
     }
   }
 
@@ -299,7 +302,7 @@ enum SuggestionPriority {
 class SuggestionAction {
   /// Action type
   final String type;
-  
+
   /// Action parameters
   final Map<String, dynamic> params;
 
@@ -336,7 +339,7 @@ class AISuggestionGroup {
   });
 
   /// Get non-dismissed suggestions
-  List<AISuggestion> get activeSuggestions => 
+  List<AISuggestion> get activeSuggestions =>
       suggestions.where((s) => !s.isDismissed).toList();
 
   /// Check if has any active suggestions

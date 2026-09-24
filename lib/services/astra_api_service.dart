@@ -59,21 +59,23 @@ class AstraApiService {
 
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        // Prefer Firebase token when available
-        User? user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          String? token = await user.getIdToken();
-          if (token != null) {
-            options.headers['Authorization'] = 'Bearer $token';
-          }
-        }
-
-        // Fallback to app auth token (doctor login token)
-        if (options.headers['Authorization'] == null) {
-          final String appToken =
-              SharedPreferenceHelper.getString(Preferences.auth_token);
-          if (appToken.isNotEmpty && appToken != 'N_A') {
-            options.headers['Authorization'] = 'Bearer $appToken';
+        // Prefer the Astra-issued session token (from /auth/login) once we
+        // have one: most Astra endpoints (e.g. /auth/user) validate that
+        // token specifically and reject a raw Firebase ID token, even
+        // though a Firebase user stays signed in for the whole session.
+        final String appToken =
+            SharedPreferenceHelper.getString(Preferences.auth_token);
+        if (appToken.isNotEmpty && appToken != 'N_A') {
+          options.headers['Authorization'] = 'Bearer $appToken';
+        } else {
+          // No Astra session token yet (e.g. the /auth/login exchange call
+          // itself) - fall back to the Firebase ID token.
+          User? user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            String? token = await user.getIdToken();
+            if (token != null) {
+              options.headers['Authorization'] = 'Bearer $token';
+            }
           }
         }
         // Set default content type for JSON requests
@@ -149,17 +151,33 @@ class AstraApiService {
     }
   }
 
-  /// Get dynamic Agora RTC video token for consultations
-  Future<Map<String, dynamic>> getVideoToken({
-    required String channel,
-    String uid = "0",
-    String role = "publisher",
-    int expiry = 3600,
+  /// Get a dynamic Agora RTC video token for a consultation with [toId]
+  /// (the other party's user id). Hits the live `/video/generate-token`
+  /// route - confirmed against the deployed backend; the previous
+  /// `/video/token` (GET, channel/uid/role query params) 404s, it was
+  /// never mounted in the backend's main.py.
+  Future<Map<String, dynamic>> generateVideoToken({
+    required String toId,
+    int uid = 0,
   }) async {
     try {
-      final path =
-          'api/v1/video/token?channel=$channel&uid=$uid&role=$role&expiry=$expiry';
-      final response = await _getWithDnsFallback(path);
+      final response = await _dio.post(
+        '/api/v1/video/generate-token',
+        data: {'to_id': toId, 'uid': uid},
+      );
+      return response.data;
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  /// Get the Agora App ID needed to initialize the RTC engine, before a
+  /// token can be requested. NOT secret - the App Certificate (used to
+  /// sign tokens) is what must stay server-side. Requires the backend to
+  /// expose `GET /api/v1/video/config`; see the app's video-calling notes.
+  Future<Map<String, dynamic>> getVideoConfig() async {
+    try {
+      final response = await _dio.get('/api/v1/video/config');
       return response.data;
     } catch (e) {
       throw _handleError(e);
@@ -222,12 +240,18 @@ class AstraApiService {
     }
   }
 
-  /// Request withdrawal
+  /// Request withdrawal. `amount` is a query parameter on this endpoint,
+  /// not a body field - confirmed against the live backend, which returns
+  /// a 422 "amount: Field required" validation error if it's sent in the
+  /// JSON body instead.
   Future<Map<String, dynamic>> requestWithdraw(
-      String doctorId, Map<String, dynamic> data) async {
+      String doctorId, num amount, Map<String, dynamic> payoutDetails) async {
     try {
-      final response =
-          await _dio.post('/api/v1/api/doctors/$doctorId/withdraw', data: data);
+      final response = await _dio.post(
+        '/api/v1/api/doctors/$doctorId/withdraw',
+        queryParameters: {'amount': amount},
+        data: {'payout_details': payoutDetails},
+      );
       return response.data;
     } catch (e) {
       throw _handleError(e);
@@ -451,7 +475,7 @@ class AstraApiService {
     }
   }
 
-  /// Check workflow AyurezeTheme.healingGreen50
+  /// Check workflow status
   Future<Map<String, dynamic>> checkWorkflowStatus(
       String prescriptionId) async {
     try {
@@ -478,11 +502,10 @@ class AstraApiService {
     }
   }
 
-  /// Check Shopify sync AyurezeTheme.healingGreen50
+  /// Check Shopify sync status
   Future<Map<String, dynamic>> getShopifyStatus() async {
     try {
-      final response =
-          await _dio.get('/api/v1/shopify/AyurezeTheme.healingGreen50');
+      final response = await _dio.get('/api/v1/shopify/status');
       return response.data;
     } catch (e) {
       return {'error': e.toString(), 'connected': false};
@@ -589,7 +612,7 @@ class AstraApiService {
     }
   }
 
-  /// Get draft order AyurezeTheme.healingGreen50
+  /// Get draft order status
   Future<Map<String, dynamic>> getDraftOrderStatus(String draftOrderId) async {
     try {
       final response =
@@ -870,13 +893,12 @@ class AstraApiService {
     }
   }
 
-  /// Update order AyurezeTheme.healingGreen50
+  /// Update order status
   Future<Map<String, dynamic>> updateOrderStatus(
       Map<String, dynamic> data) async {
     try {
-      final response = await _dio.patch(
-          '/api/v1/orders/prescription/AyurezeTheme.healingGreen50',
-          data: data);
+      final response =
+          await _dio.patch('/api/v1/orders/prescription/status', data: data);
       return response.data;
     } catch (e) {
       throw _handleError(e);
@@ -944,14 +966,13 @@ class AstraApiService {
     }
   }
 
-  /// Get notification service AyurezeTheme.healingGreen50
+  /// Get notification service status
   Future<Map<String, dynamic>> getNotificationServiceStatus() async {
     try {
-      final response = await _dio
-          .get('/api/v1/notifications/service-AyurezeTheme.healingGreen50');
+      final response = await _dio.get('/api/v1/notifications/service-status');
       return response.data;
     } catch (e) {
-      return {'AyurezeTheme.healingGreen50': 'unknown'};
+      return {'status': 'unknown'};
     }
   }
 
@@ -1053,14 +1074,13 @@ class AstraApiService {
     }
   }
 
-  /// Get AI Agent AyurezeTheme.healingGreen50
+  /// Get AI Agent status
   Future<Map<String, dynamic>> getAiAgentStatus() async {
     try {
-      final response =
-          await _dio.get('/api/v1/api/ai-agent/AyurezeTheme.healingGreen50');
+      final response = await _dio.get('/api/v1/api/ai-agent/status');
       return response.data;
     } catch (e) {
-      return {'AyurezeTheme.healingGreen50': 'offline'};
+      return {'status': 'offline'};
     }
   }
 
@@ -1094,7 +1114,7 @@ class AstraApiService {
       final response = await _getWithDnsFallback('/api/v1/brain/health');
       return response.data;
     } catch (e) {
-      return {'AyurezeTheme.healingGreen50': 'offline'};
+      return {'status': 'offline'};
     }
   }
 

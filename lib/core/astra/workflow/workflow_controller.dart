@@ -9,7 +9,7 @@ import 'package:doctro/core/astra/utils/astra_logger.dart';
 /// Manages prescription workflow state and polling.
 class WorkflowController extends ChangeNotifier {
   static final WorkflowController _instance = WorkflowController._internal();
-  
+
   factory WorkflowController() => _instance;
   WorkflowController._internal();
 
@@ -17,13 +17,13 @@ class WorkflowController extends ChangeNotifier {
 
   PrescriptionWorkflow? _currentWorkflow;
   PrescriptionWorkflow? get currentWorkflow => _currentWorkflow;
-  
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  
+
   String? _error;
   String? get error => _error;
-  
+
   bool get isInProgress => _currentWorkflow?.isInProgress ?? false;
   bool get isComplete => _currentWorkflow?.isComplete ?? false;
   bool get isFailed => _currentWorkflow?.isFailed ?? false;
@@ -49,7 +49,8 @@ class WorkflowController extends ChangeNotifier {
       _error = null;
       notifyListeners();
 
-      AstraLogger.i('Starting prescription workflow', tag: 'WorkflowController');
+      AstraLogger.i('Starting prescription workflow',
+          tag: 'WorkflowController');
 
       final workflow = await _service.startPrescriptionWorkflow(
         prescriptionId: prescriptionId,
@@ -72,7 +73,8 @@ class WorkflowController extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       _error = e.toString();
-      AstraLogger.e('Failed to start workflow', error: e, tag: 'WorkflowController');
+      AstraLogger.e('Failed to start workflow',
+          error: e, tag: 'WorkflowController');
       notifyListeners();
       return null;
     }
@@ -84,29 +86,28 @@ class WorkflowController extends ChangeNotifier {
 
   void _startPolling() {
     if (_currentWorkflow == null) return;
-    
+
     _pollSubscription?.cancel();
-    _pollSubscription = _service
-        .pollWorkflowStatus(_currentWorkflow!.id)
-        .listen(
-          (workflow) {
-            _currentWorkflow = workflow;
-            notifyListeners();
-            
-            if (workflow.isComplete || workflow.isFailed) {
-              _pollSubscription?.cancel();
-              AstraLogger.i(
-                'Workflow ${workflow.isComplete ? 'completed' : 'failed'}',
-                tag: 'WorkflowController',
-              );
-            }
-          },
-          onError: (e) {
-            _error = e.toString();
-            _pollSubscription?.cancel();
-            notifyListeners();
-          },
-        );
+    _pollSubscription =
+        _service.pollWorkflowStatus(_currentWorkflow!.id).listen(
+      (workflow) {
+        _currentWorkflow = workflow;
+        notifyListeners();
+
+        if (workflow.isComplete || workflow.isFailed) {
+          _pollSubscription?.cancel();
+          AstraLogger.i(
+            'Workflow ${workflow.isComplete ? 'completed' : 'failed'}',
+            tag: 'WorkflowController',
+          );
+        }
+      },
+      onError: (e) {
+        _error = e.toString();
+        _pollSubscription?.cancel();
+        notifyListeners();
+      },
+    );
   }
 
   void stopPolling() {
@@ -121,7 +122,7 @@ class WorkflowController extends ChangeNotifier {
   /// Retry failed workflow
   Future<void> retryWorkflow() async {
     if (_currentWorkflow == null) return;
-    
+
     final failedTask = _currentWorkflow!.failedTask;
     if (failedTask == null) return;
 

@@ -4,16 +4,16 @@
 class AstraException implements Exception {
   /// Error message
   final String message;
-  
+
   /// Error code for programmatic handling
   final String? code;
-  
+
   /// HTTP status code if applicable
   final int? statusCode;
-  
+
   /// Original error/exception
   final dynamic originalError;
-  
+
   /// Stack trace if available
   final StackTrace? stackTrace;
 
@@ -28,17 +28,17 @@ class AstraException implements Exception {
   @override
   String toString() {
     final buffer = StringBuffer('AstraException');
-    
+
     if (code != null) {
       buffer.write('[$code]');
     }
-    
+
     if (statusCode != null) {
       buffer.write('[HTTP $statusCode]');
     }
-    
+
     buffer.write(': $message');
-    
+
     return buffer.toString();
   }
 
@@ -52,11 +52,12 @@ class AstraException implements Exception {
     if (error is AstraException) {
       return error;
     }
-    
+
     return AstraException(
       message ?? error.toString(),
       code: code,
-      statusCode: statusCode ?? (error is HttpException ? error.statusCode : null),
+      statusCode:
+          statusCode ?? (error is HttpException ? error.statusCode : null),
       originalError: error,
     );
   }
@@ -96,9 +97,8 @@ class AstraTimeoutException extends AstraNetworkException {
 
   @override
   String toString() {
-    final durationStr = timeoutDuration != null 
-        ? ' after ${timeoutDuration!.inSeconds}s' 
-        : '';
+    final durationStr =
+        timeoutDuration != null ? ' after ${timeoutDuration!.inSeconds}s' : '';
     return 'AstraTimeoutException: $message$durationStr';
   }
 }
@@ -214,16 +214,16 @@ class AstraApiException extends AstraException {
   @override
   String toString() {
     final buffer = StringBuffer('AstraApiException');
-    
+
     if (code != null) buffer.write('[$code]');
     if (statusCode != null) buffer.write('[$statusCode]');
-    
+
     buffer.write(': $message');
-    
+
     if (errors != null && errors!.isNotEmpty) {
       buffer.write('\n  Errors: ${errors!.join(', ')}');
     }
-    
+
     return buffer.toString();
   }
 }
@@ -248,14 +248,14 @@ class AstraValidationException extends AstraException {
   @override
   String toString() {
     final buffer = StringBuffer('AstraValidationException: $message');
-    
+
     if (fieldErrors != null && fieldErrors!.isNotEmpty) {
       buffer.write('\n  Field Errors:');
       fieldErrors!.forEach((field, errors) {
         buffer.write('\n    $field: ${errors.join(', ')}');
       });
     }
-    
+
     return buffer.toString();
   }
 }
@@ -277,13 +277,13 @@ class AstraStreamException extends AstraException {
   @override
   String toString() {
     final buffer = StringBuffer('AstraStreamException: $message');
-    
+
     if (attemptCount != null) {
       buffer.write(' (attempt $attemptCount)');
     }
-    
+
     buffer.write(' reconnectable: $isReconnectable');
-    
+
     return buffer.toString();
   }
 }
@@ -323,11 +323,11 @@ class AstraActionException extends AstraException {
   @override
   String toString() {
     final buffer = StringBuffer('AstraActionException: $message');
-    
+
     if (actionType != null) {
       buffer.write(' (type: $actionType)');
     }
-    
+
     return buffer.toString();
   }
 }

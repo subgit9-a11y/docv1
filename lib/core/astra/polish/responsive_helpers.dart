@@ -131,8 +131,8 @@ class AstraMasterDetailLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWide = AstraResponsive.isDesktop(context) || 
-                   AstraResponsive.isTablet(context);
+    final isWide =
+        AstraResponsive.isDesktop(context) || AstraResponsive.isTablet(context);
 
     if (isWide && detail != null && showDetail) {
       return Row(
@@ -180,7 +180,8 @@ class AstraResponsiveGrid extends StatelessWidget {
       spacing: spacing,
       runSpacing: runSpacing,
       children: children.map((child) {
-        final availableWidth = MediaQuery.of(context).size.width - (spacing * (columns + 1));
+        final availableWidth =
+            MediaQuery.of(context).size.width - (spacing * (columns + 1));
         final itemWidth = availableWidth / columns;
         return SizedBox(
           width: itemWidth,
@@ -209,11 +210,12 @@ class AstraResponsiveText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = AstraResponsive.responsive(
-      context,
-      phone: phoneStyle,
-      tablet: tabletStyle,
-      desktop: desktopStyle,
-    ) ?? const TextStyle();
+          context,
+          phone: phoneStyle,
+          tablet: tabletStyle,
+          desktop: desktopStyle,
+        ) ??
+        const TextStyle();
 
     return Text(text, style: style);
   }

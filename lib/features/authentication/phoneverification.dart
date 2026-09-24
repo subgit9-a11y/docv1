@@ -1,4 +1,5 @@
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
@@ -72,14 +73,18 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded,
-              color: AyurezeTheme.forestDeep, size: 20),
+          icon: HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowLeft01,
+              color: AyurezeTheme.forestDeep,
+              size: 20),
           onPressed: () => Navigator.pushNamed(context, 'SignIn'),
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AyurezeTheme.space2xl,
+              vertical: AyurezeTheme.spaceLg),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 500),
@@ -92,15 +97,17 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                     children: [
                       const SizedBox(height: 20),
                       Container(
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
                         decoration: BoxDecoration(
-                          color: AyurezeTheme.healingGreen10,
+                          // Dark-aware: the pale-mint constant made the
+                          // forestDeep icon 2.36:1 in dark mode.
+                          color: AyurezeTheme.surfaceMuted,
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
-                          Icons.mark_email_read_outlined,
+                        child: HugeIcon(
+                          icon: HugeIcons.strokeRoundedMailOpen01,
                           size: 48,
-                          color: AyurezeTheme.forestDeep,
+                          color: AyurezeTheme.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -137,11 +144,12 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                             color: Colors.white,
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radiusMd),
                             color: AyurezeTheme.forestDeep,
                             border: Border.all(
-                              color:
-                                  AyurezeTheme.healingGreen50.withOpacity(.3),
+                              color: AyurezeTheme.healingGreen50
+                                  .withValues(alpha: .3),
                             ),
                           ),
                         ),
@@ -153,7 +161,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                             color: AyurezeTheme.textPrimary,
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radiusMd),
                             color: AyurezeTheme.surface,
                             border: Border.all(
                               color: AyurezeTheme.forestDeep,
@@ -169,7 +178,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                             color: AyurezeTheme.textPrimary,
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radiusMd),
                             color: AyurezeTheme.surface,
                             border: Border.all(
                               color: AyurezeTheme.border,
@@ -224,6 +234,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .otpVerifyRequest(body);
+      if (!mounted) return BaseModel()..data = response;
       if (response.success == true) {
         _saveUserData(response);
 
@@ -264,6 +275,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       response = await RestClient(await RetroApi().dioData(context))
           .resentOtpRequest(id);
 
+      if (!mounted) return BaseModel()..data = response;
       Navigator.pushNamed(context, 'SignIn');
       OslerToast.success(context, response.msg!);
     } catch (error) {
@@ -293,6 +305,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     try {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       authProvider.handleSignIn();
-    } catch (e) {}
+    } catch (_) {
+      // Sign-in state sync is best-effort; navigator already moved on.
+    }
   }
 }

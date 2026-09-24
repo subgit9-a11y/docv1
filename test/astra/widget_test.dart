@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/models/conversation_model.dart';
 import 'package:doctro/core/astra/actions/action_models.dart';
 import 'package:doctro/core/astra/widgets/astra_chat_bubble.dart';
+
+Finder _findHugeIcon(List<List<dynamic>> icon) => find
+    .byWidgetPredicate((widget) => widget is HugeIcon && widget.icon == icon);
 
 void main() {
   group('AstraChatBubble Widget', () {
@@ -57,7 +61,8 @@ void main() {
       expect(find.text('System notification'), findsOneWidget);
     });
 
-    testWidgets('should display streaming indicator when sending', (tester) async {
+    testWidgets('should display streaming indicator when sending',
+        (tester) async {
       final message = AstraMessage.streaming(
         content: 'Thinking...',
         progress: 0.5,
@@ -97,7 +102,7 @@ void main() {
         ),
       );
 
-      expect(find.byIcon(Icons.error_outline), findsOneWidget);
+      expect(_findHugeIcon(HugeIcons.strokeRoundedAlertCircle), findsOneWidget);
       expect(find.text('Network error'), findsOneWidget);
     });
 
@@ -162,7 +167,7 @@ void main() {
       );
 
       // Find and tap the action button
-      await tester.tap(find.byIcon(Icons.person));
+      await tester.tap(_findHugeIcon(HugeIcons.strokeRoundedUser));
       await tester.pump();
 
       expect(tappedAction, 'openPatient');

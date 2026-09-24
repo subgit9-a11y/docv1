@@ -1,18 +1,19 @@
 import 'dart:async';
+import 'package:hugeicons/hugeicons.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doctro/features/consultation/chat/constants/colors.dart';
 import 'package:doctro/features/consultation/chat/constants/firestore_constants.dart';
 import 'package:doctro/features/consultation/chat/providers/auth_provider.dart';
 import 'package:doctro/features/consultation/chat/providers/home_provider.dart';
 import 'package:doctro/features/consultation/chat/utils/debouncer.dart';
 import 'package:doctro/features/consultation/chat/utils/utilities.dart';
-import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/features/dashboard/login_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,12 +62,16 @@ class HomePageState extends State<HomePage> {
     if (authProvider.getUserFirebaseId()?.isNotEmpty == true) {
       currentUserId = authProvider.getUserFirebaseId()!;
     }
+
+    listScrollController.addListener(scrollListener);
   }
 
   @override
   void dispose() {
-    super.dispose();
+    listScrollController.removeListener(scrollListener);
+    listScrollController.dispose();
     btnClearController.close();
+    super.dispose();
   }
 
   void scrollListener() {
@@ -102,11 +107,11 @@ class HomePageState extends State<HomePage> {
                   MaterialPageRoute(
                       builder: (context) => LoginHomeScreen(chat: "")));
             },
-            child: Icon(Icons.arrow_back)),
-        backgroundColor: Colors.white,
+            child: HugeIcon(icon: HugeIcons.strokeRoundedArrowLeft01)),
+        backgroundColor: AyurezeTheme.surface,
         title: Text(
           getTranslated(context, AppString.chats).toString(),
-          style: TextStyle(color: ColorConstants.primaryColor),
+          style: TextStyle(color: AyurezeTheme.forestDeep),
         ),
         centerTitle: true,
         foregroundColor: AyurezeTheme.textPrimary,
@@ -131,7 +136,9 @@ class HomePageState extends State<HomePage> {
                             return ListView.builder(
                               padding: const EdgeInsets.all(10),
                               itemBuilder: (context, index) => buildItem(
-                                  context, snapshot.data?.docs[index]),
+                                  context,
+                                  snapshot.data?.docs[index],
+                                  index % 8),
                               itemCount: snapshot.data?.docs.length,
                               controller: listScrollController,
                             );
@@ -145,7 +152,7 @@ class HomePageState extends State<HomePage> {
                         } else {
                           return Center(
                             child: CircularProgressIndicator(
-                              color: ColorConstants.themeColor,
+                              color: AyurezeTheme.healingGreen50,
                             ),
                           );
                         }
@@ -164,16 +171,18 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildItem(BuildContext context, DocumentSnapshot? document) {
+  Widget buildItem(
+      BuildContext context, DocumentSnapshot? document, int index) {
     if (document != null) {
       UserChat userChat = UserChat.fromDocument(document);
       if (currentUserId == null && userChat.id == currentUserId) {
         return const SizedBox.shrink();
       } else {
-        return Container(
+        final item = Container(
           margin: const EdgeInsets.only(bottom: 10, left: 5, right: 5),
           child: TextButton(
             onPressed: () {
+              HapticFeedback.selectionClick();
               if (Utilities.isKeyboardShowing()) {
                 Utilities.closeKeyboard(context);
               }
@@ -193,7 +202,7 @@ class HomePageState extends State<HomePage> {
             },
             style: ButtonStyle(
               backgroundColor:
-                  WidgetStateProperty.all<Color>(ColorConstants.greyColor2),
+                  WidgetStateProperty.all<Color>(AyurezeTheme.surfaceMuted),
               shape: WidgetStateProperty.all<OutlinedBorder>(
                 const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -219,7 +228,7 @@ class HomePageState extends State<HomePage> {
                               height: 50,
                               child: Center(
                                 child: CircularProgressIndicator(
-                                  color: ColorConstants.themeColor,
+                                  color: AyurezeTheme.healingGreen50,
                                   value: loadingProgress.expectedTotalBytes !=
                                               null &&
                                           loadingProgress.expectedTotalBytes !=
@@ -232,17 +241,17 @@ class HomePageState extends State<HomePage> {
                             );
                           },
                           errorBuilder: (context, object, stackTrace) {
-                            return Icon(
-                              Icons.account_circle,
+                            return HugeIcon(
+                              icon: HugeIcons.strokeRoundedUserCircle,
                               size: 50,
-                              color: ColorConstants.greyColor,
+                              color: AyurezeTheme.textSecondary,
                             );
                           },
                         )
-                      : Icon(
-                          Icons.account_circle,
+                      : HugeIcon(
+                          icon: HugeIcons.strokeRoundedUserCircle,
                           size: 50,
-                          color: ColorConstants.greyColor,
+                          color: AyurezeTheme.textSecondary,
                         ),
                 ),
                 Flexible(
@@ -256,8 +265,7 @@ class HomePageState extends State<HomePage> {
                           child: Text(
                             userChat.nickname,
                             maxLines: 1,
-                            style:
-                                TextStyle(color: ColorConstants.primaryColor),
+                            style: TextStyle(color: AyurezeTheme.forestDeep),
                           ),
                         ),
                         Container(
@@ -266,8 +274,7 @@ class HomePageState extends State<HomePage> {
                           child: Text(
                             userChat.content,
                             maxLines: 1,
-                            style:
-                                TextStyle(color: ColorConstants.primaryColor),
+                            style: TextStyle(color: AyurezeTheme.forestDeep),
                           ),
                         )
                       ],
@@ -278,6 +285,8 @@ class HomePageState extends State<HomePage> {
             ),
           ),
         );
+
+        return ScreenEntrance(index: index, child: item);
       }
     } else {
       return const SizedBox.shrink();

@@ -1,4 +1,5 @@
 import 'package:doctro/core/constants/app_string.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
@@ -134,7 +135,7 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                           hintStyle: TextStyle(
                                             fontSize: width * 0.045,
                                             color: AyurezeTheme.textSecondary
-                                                .withOpacity(0.3),
+                                                .withValues(alpha: 0.3),
                                           ),
                                         ),
                                         textAlign: TextAlign.left,
@@ -189,10 +190,12 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                                       AppString
                                                           .cancel_appointment_heading)
                                                   .toString(),
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color:
-                                                      AyurezeTheme.textPrimary),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium
+                                                  ?.copyWith(
+                                                      color: AyurezeTheme
+                                                          .textPrimary),
                                             ),
                                           ),
                                           Text(
@@ -215,7 +218,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                               viewModel.searchResult.length,
                                           itemBuilder: (context, i) {
                                             return _buildAppointmentCard(
-                                                viewModel.searchResult[i]);
+                                                viewModel.searchResult[i],
+                                                i % 8);
                                           },
                                         )
                                       : SizedBox(
@@ -236,8 +240,10 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                       reverse: true,
                                       scrollDirection: Axis.vertical,
                                       itemBuilder: (context, index) {
-                                        return _buildAppointmentCard(viewModel
-                                            .cancelAppointmentReq[index]);
+                                        return _buildAppointmentCard(
+                                            viewModel
+                                                .cancelAppointmentReq[index],
+                                            index % 8);
                                       }),
                             ],
                           ),
@@ -251,8 +257,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
     );
   }
 
-  Widget _buildAppointmentCard(AppointmentCancel appointment) {
-    return Column(
+  Widget _buildAppointmentCard(AppointmentCancel appointment, int index) {
+    final card = Column(
       children: [
         Row(
           children: [
@@ -263,8 +269,10 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                       EdgeInsets.only(left: width * 0.06, right: width * 0.02),
                   child: Text(
                     DateUtil().formattedDate(DateTime.parse(appointment.date!)),
-                    style:
-                        TextStyle(fontSize: 14, color: AyurezeTheme.forestDeep),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: AyurezeTheme.forestDeep),
                   ),
                 ),
                 Container(
@@ -272,8 +280,10 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                       EdgeInsets.only(left: width * 0.06, right: width * 0.02),
                   child: Text(
                     appointment.time!,
-                    style:
-                        TextStyle(fontSize: 14, color: AyurezeTheme.forestDeep),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: AyurezeTheme.forestDeep),
                   ),
                 )
               ],
@@ -311,19 +321,21 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                               ),
                               child: Text(
                                 appointment.patientName!,
-                                style: TextStyle(fontSize: 16.0),
+                                style: Theme.of(context).textTheme.titleMedium,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
                             ),
                             trailing: Container(
                                 child: Text(
-                              SharedPreferenceHelper.getString(
-                                      Preferences.currency_symbol) +
+                              (SharedPreferenceHelper.getStringOrNull(
+                                          Preferences.currency_symbol) ??
+                                      '') +
                                   appointment.amount.toString(),
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: AyurezeTheme.textSecondary),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(color: AyurezeTheme.textSecondary),
                             )),
                             subtitle: Column(
                               children: <Widget>[
@@ -331,18 +343,23 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                     alignment: AlignmentDirectional.topStart,
                                     child: Text(
                                       "${getTranslated(context, AppString.home_age_data)}:${appointment.age}",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: AyurezeTheme.textSecondary),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                              color:
+                                                  AyurezeTheme.textSecondary),
                                     )),
                                 Container(
                                   width: width * 0.6,
                                   alignment: AlignmentDirectional.topStart,
                                   child: Text(
                                     appointment.patientAddress!,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: AyurezeTheme.textSecondary),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                            color: AyurezeTheme.textSecondary),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                   ),
@@ -357,6 +374,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
         ),
       ],
     );
+
+    return ScreenEntrance(index: index, child: card);
   }
 }
 

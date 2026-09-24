@@ -7,6 +7,7 @@ import 'package:doctro/features/consultation/chat/models/message_chat.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:doctro/core/config/env.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -74,12 +75,18 @@ class ChatProvider {
 
   void sendNotification(String content, String token, String userId, int type,
       String userImage, String userName) async {
+    // Resolve the FCM server key from env (preferred) or compile-time flag.
+    final String serverKey = Env.firebaseServerKey;
+    if (token.isEmpty || serverKey.isEmpty) {
+      // Cannot send push without a valid server key / recipient token.
+      return;
+    }
     try {
       final response = await http.post(
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': "key=enter_your_firebase_server_key",
+          'Authorization': 'key=$serverKey',
         },
         body: jsonEncode(
           <String, dynamic>{

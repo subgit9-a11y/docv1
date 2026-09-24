@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/astra/utils/astra_config.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
 import 'package:doctro/core/astra/utils/astra_exception.dart';
-import 'package:doctro/network/apis.dart';
 
 /// Astra Service
 ///
@@ -18,9 +18,10 @@ import 'package:doctro/network/apis.dart';
 class AstraService {
   static final AstraService _instance = AstraService._internal();
   late Dio _dio;
-  
-  /// Base URL for Astra API
-  final String baseUrl = Apis.astraBaseUrl;
+
+  /// Base URL for Astra API (includes the /api/v1/ prefix every endpoint
+  /// below is actually served under - AstraConfig.baseUrl alone 404s).
+  final String baseUrl = AstraConfig.apiBaseUrl;
 
   factory AstraService() => _instance;
 
@@ -58,7 +59,8 @@ class AstraService {
       final adapter = _dio.httpClientAdapter as IOHttpClientAdapter;
       adapter.createHttpClient = () {
         final client = HttpClient();
-        client.connectionTimeout = Duration(seconds: AstraConfig.connectTimeoutSeconds);
+        client.connectionTimeout =
+            Duration(seconds: AstraConfig.connectTimeoutSeconds);
         client.badCertificateCallback = (cert, host, port) {
           return AstraConfig.isTrustedHost(host);
         };
@@ -72,26 +74,27 @@ class AstraService {
   // ============================================================
 
   Future<void> _onRequest(
-    Options options,
+    RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
     final startTime = DateTime.now();
 
-    // Add Firebase Auth token if available
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      String? token = await user.getIdToken();
-      if (token != null) {
-        options.headers['Authorization'] = 'Bearer $token';
-      }
-    }
-
-    // Fallback to app auth token
-    if (options.headers['Authorization'] == null) {
-      final String appToken =
-          SharedPreferenceHelper.getString(Preferences.auth_token);
-      if (appToken.isNotEmpty && appToken != 'N_A') {
-        options.headers['Authorization'] = 'Bearer $appToken';
+    // Prefer the Astra-issued session token (from /auth/login) once we have
+    // one: most Astra endpoints validate that token specifically and reject
+    // a raw Firebase ID token, even though a Firebase user stays signed in
+    // for the whole session (see the identical pattern in astra_api_service.dart).
+    final String appToken =
+        SharedPreferenceHelper.getString(Preferences.auth_token);
+    if (appToken.isNotEmpty && appToken != 'N_A') {
+      options.headers['Authorization'] = 'Bearer $appToken';
+    } else {
+      // No Astra session token yet - fall back to the Firebase ID token.
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        String? token = await user.getIdToken();
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
       }
     }
 
@@ -122,9 +125,8 @@ class AstraService {
 
   void _onResponse(Response response, ResponseInterceptorHandler handler) {
     final startTime = response.requestOptions.extra['_startTime'] as DateTime?;
-    final duration = startTime != null
-        ? DateTime.now().difference(startTime)
-        : null;
+    final duration =
+        startTime != null ? DateTime.now().difference(startTime) : null;
 
     AstraLogger.logResponse(
       '${response.requestOptions.baseUrl}${response.requestOptions.path}',
@@ -139,12 +141,8 @@ class AstraService {
   // ERROR INTERCEPTOR
   // ============================================================
 
-  Future<void> _onError(DioException error, ErrorInterceptorHandler handler) async {
-    final startTime = error.requestOptions.extra['_startTime'] as DateTime?;
-    final duration = startTime != null
-        ? DateTime.now().difference(startTime)
-        : null;
-
+  Future<void> _onError(
+      DioException error, ErrorInterceptorHandler handler) async {
     AstraLogger.logApiError(
       '${error.requestOptions.baseUrl}${error.requestOptions.path}',
       error,
@@ -185,16 +183,16 @@ class AstraService {
     try {
       final Uri uri = Uri.parse('${options.baseUrl}${options.path}');
       final String host = uri.host;
-      
+
       final addresses = await InternetAddress.lookup(
         host,
         type: InternetAddressType.IPv4,
       );
-      
+
       if (addresses.isEmpty) return null;
 
       final String ipBaseUrl = '${uri.scheme}://${addresses.first.address}';
-      
+
       final fallbackDio = Dio(BaseOptions(
         baseUrl: ipBaseUrl,
         connectTimeout: Duration(seconds: AstraConfig.connectTimeoutSeconds),
@@ -204,7 +202,8 @@ class AstraService {
 
       // Copy over the auth headers
       if (options.headers['Authorization'] != null) {
-        fallbackDio.options.headers['Authorization'] = options.headers['Authorization'];
+        fallbackDio.options.headers['Authorization'] =
+            options.headers['Authorization'];
       }
       fallbackDio.options.headers['X-Role'] = AstraConfig.roleDoctor;
       fallbackDio.options.headers['Content-Type'] = 'application/json';
@@ -214,7 +213,8 @@ class AstraService {
         final adapter = fallbackDio.httpClientAdapter as IOHttpClientAdapter;
         adapter.createHttpClient = () {
           final client = HttpClient();
-          client.connectionTimeout = Duration(seconds: AstraConfig.connectTimeoutSeconds);
+          client.connectionTimeout =
+              Duration(seconds: AstraConfig.connectTimeoutSeconds);
           client.badCertificateCallback = (_, __, ___) => true;
           return client;
         };
@@ -273,30 +273,38 @@ class AstraService {
 
       await for (final chunk in stream) {
         buffer += utf8.decode(chunk);
-        
+
         // Process complete events
         final lines = buffer.split('\n');
         buffer = lines.removeLast(); // Keep incomplete line in buffer
 
-        for (final line in lines) {
-          if (line.trim().isEmpty) continue;
-          
+        for (final rawLine in lines) {
+          if (rawLine.trim().isEmpty) continue;
+
+          // Strip a leading SSE "data: " prefix if present, so a JSON
+          // payload the backend sends this way (e.g. {"error": "..."})
+          // still gets decoded as JSON below rather than treated as
+          // literal text.
+          final line = rawLine.startsWith('data:')
+              ? rawLine.substring(5).trim()
+              : rawLine;
+          if (line.isEmpty) continue;
+
           // Try to parse as JSON
           try {
-            final json = jsonDecode(line);
-            yield ChatStreamEvent.data(json as Map<String, dynamic>);
-          } catch (e) {
-            // Not JSON, might be progress text
-            if (line.startsWith('data:')) {
-              final data = line.substring(5).trim();
-              if (data.isNotEmpty) {
-                yield ChatStreamEvent.data({'text': data});
-              }
+            final json = jsonDecode(line) as Map<String, dynamic>;
+            if (json['error'] != null) {
+              yield ChatStreamEvent.error(json['error'].toString());
+            } else {
+              yield ChatStreamEvent.data(json);
             }
+          } catch (e) {
+            // Not JSON - progress/plain text chunk.
+            yield ChatStreamEvent.data({'text': line});
           }
         }
       }
-      
+
       yield ChatStreamEvent.done();
     } on DioException catch (e) {
       yield ChatStreamEvent.error(_formatError(e));
@@ -328,7 +336,8 @@ class AstraService {
   /// Get prescription by ID
   Future<Map<String, dynamic>> getPrescription(String prescriptionId) async {
     try {
-      final url = AstraConfig.prescriptionGet.replaceAll('{id}', prescriptionId);
+      final url =
+          AstraConfig.prescriptionGet.replaceAll('{id}', prescriptionId);
       final response = await _getWithRetry(url);
       return _parseResponse(response);
     } catch (e) {
@@ -344,8 +353,7 @@ class AstraService {
         patientId,
       );
       final response = await _getWithRetry(url);
-      final data = _parseResponse(response);
-      return data is List ? data : [];
+      return _parseList(response);
     } catch (e) {
       throw _handleError(e);
     }
@@ -375,8 +383,7 @@ class AstraService {
     try {
       final url = AstraConfig.patientSearch.replaceAll('{term}', searchTerm);
       final response = await _getWithRetry(url);
-      final data = _parseResponse(response);
-      return data is List ? data : [];
+      return _parseList(response);
     } catch (e) {
       throw _handleError(e);
     }
@@ -585,12 +592,78 @@ class AstraService {
   }
 
   Map<String, dynamic> _parseResponse(dynamic response) {
-    if (response == null) return {};
-    if (response is Map<String, dynamic>) return response;
-    if (response is Response && response.data is Map<String, dynamic>) {
-      return response.data;
+    dynamic data = response;
+    if (data is Response) data = data.data;
+    if (data == null) return {};
+    if (data is Map<String, dynamic>) return data;
+    if (data is String) {
+      // brain/chat replies as SSE ("data: {...}" per chunk, blank-line
+      // separated) even for this plain, non-streaming POST, and/or with a
+      // Content-Type that stops Dio auto-decoding JSON, leaving `data` as a
+      // raw string - decode it manually rather than silently losing the
+      // whole body. There can be one chunk (e.g. a single error) or many
+      // (a real answer streamed one token at a time), so every "data:"
+      // line's content/text field is collected and concatenated; an error
+      // chunk short-circuits immediately.
+      final text = data.trim();
+      if (text.isEmpty) return {};
+      // Anchored to the start, not a substring check: a plain JSON body
+      // can legitimately contain the text "data:" inside a field value
+      // (e.g. {"response": "Patient data: within normal range."}), which
+      // would otherwise misroute a normal reply into the SSE branch below,
+      // find no line actually starting with "data:", and silently return
+      // an empty map instead of falling through to the plain-JSON decode.
+      if (text.startsWith('data:')) {
+        final buffer = StringBuffer();
+        for (final rawLine in text.split('\n')) {
+          final line = rawLine.trim();
+          if (!line.startsWith('data:')) continue;
+          final payload = line.substring(5).trim();
+          if (payload.isEmpty) continue;
+          try {
+            final json = jsonDecode(payload);
+            if (json is Map<String, dynamic>) {
+              if (json['error'] != null) {
+                return {'error': json['error']};
+              }
+              buffer.write(
+                json['content']?.toString() ?? json['text']?.toString() ?? '',
+              );
+            }
+          } catch (_) {
+            // Not JSON - ignore this chunk.
+          }
+        }
+        if (buffer.isNotEmpty) return {'response': buffer.toString()};
+        return {};
+      }
+      try {
+        final decoded = jsonDecode(text);
+        if (decoded is Map<String, dynamic>) return decoded;
+      } catch (_) {
+        // Not JSON - fall through to empty map below.
+      }
     }
     return {};
+  }
+
+  /// Parse a response that is expected to be a JSON list.
+  /// Accepts a raw list, a [Response] whose data is a list, or a map that
+  /// wraps the list under common keys (data/results/items).
+  List<dynamic> _parseList(dynamic response) {
+    dynamic data = response;
+    if (response is Response) {
+      data = response.data;
+    }
+    if (data is List) return List<dynamic>.from(data);
+    if (data is Map) {
+      for (final key in ['data', 'results', 'items', 'prescriptions']) {
+        if (data[key] is List) {
+          return List<dynamic>.from(data[key]);
+        }
+      }
+    }
+    return [];
   }
 
   AstraException _handleError(dynamic error) {
@@ -599,7 +672,7 @@ class AstraService {
 
       if (error.response != null) {
         final data = error.response?.data;
-        
+
         // Try to extract error message from response
         if (data is Map && data.containsKey('detail')) {
           message = data['detail'].toString();

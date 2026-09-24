@@ -1,3 +1,4 @@
+import 'package:doctro/widgets/osler_hero.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/date_util.dart';
@@ -9,10 +10,14 @@ import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
 import 'package:doctro/network/server_error.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -55,19 +60,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
-            AppIcons.back,
+          icon: HugeIcon(
+            icon: AppIcons.back,
             color: AyurezeTheme.forestDeep,
             size: 20,
           ),
         ),
         title: Text(
           getTranslated(context, AppString.notification_heading).toString(),
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AyurezeTheme.textPrimary,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AyurezeTheme.textPrimary,
+              ),
         ),
         actions: [
           IconButton(
@@ -77,7 +81,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             icon: SvgPicture.asset(
               "assets/icons/dMenuBar.svg",
               height: 16,
-              color: AyurezeTheme.forestDeep,
+              colorFilter:
+                  ColorFilter.mode(AyurezeTheme.forestDeep, BlendMode.srcIn),
             ),
           ),
         ],
@@ -105,26 +110,48 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 );
               }
 
-              return SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: AyurezeTheme.screenPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildHero(),
-                    const SizedBox(height: 18),
-                    if (patientNotification.isEmpty)
-                      _buildEmptyState()
-                    else ...[
-                      ...patientNotification
-                          .take(patientNotification.length > 6
-                              ? 6
-                              : patientNotification.length)
-                          .map((item) => _buildNotificationCard(item)),
-                      if (patientNotification.length >= 6) _buildViewAllCard(),
-                    ],
-                  ],
-                ),
+              return Stack(
+                children: [
+                  Positioned(
+                    top: -60,
+                    right: -80,
+                    child: GlassBlob(
+                        size: 220, color: AyurezeTheme.healingGreen50),
+                  ),
+                  Positioned(
+                    bottom: 120,
+                    left: -90,
+                    child: GlassBlob(
+                        size: 220, color: AyurezeTheme.sunshineYellow50),
+                  ),
+                  SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: AyurezeTheme.screenPadding,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ScreenEntrance(index: 0, child: _buildHero()),
+                        const SizedBox(height: 18),
+                        if (patientNotification.isEmpty)
+                          ScreenEntrance(index: 1, child: _buildEmptyState())
+                        else ...[
+                          ...patientNotification
+                              .take(patientNotification.length > 6
+                                  ? 6
+                                  : patientNotification.length)
+                              .toList()
+                              .asMap()
+                              .entries
+                              .map((e) =>
+                                  _buildNotificationCard(e.value, e.key % 8)),
+                          if (patientNotification.length >= 6)
+                            ScreenEntrance(
+                                index: 6, child: _buildViewAllCard()),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
               );
             },
           ),
@@ -134,56 +161,19 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Widget _buildHero() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: AyurezeTheme.heroDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Text(
-              "Inbox",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          const Text(
-            "Keep patient alerts visible and calm.",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Recent appointment and patient notifications stay grouped here in the same Ayureze desk language.",
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
-              fontSize: 14,
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
+    return const OslerHero(
+      eyebrow: 'Inbox',
+      title: 'Keep patient alerts visible and calm.',
+      subtitle:
+          'Recent appointment and patient notifications stay grouped here in the same Ayureze desk language.',
     );
   }
 
-  Widget _buildNotificationCard(NotificationData item) {
+  Widget _buildNotificationCard(NotificationData item, int index) {
     final date = DateUtil().formattedDate(DateTime.parse(item.createdAt!));
-    return InkWell(
+    final card = InkWell(
       onTap: () {
+        HapticFeedback.selectionClick();
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -223,8 +213,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     width: 58,
                     height: 58,
                     color: AyurezeTheme.surfaceMuted,
-                    child: Icon(
-                      AppIcons.profile,
+                    child: HugeIcon(
+                      icon: AppIcons.profile,
                       color: AyurezeTheme.textSecondary,
                     ),
                   );
@@ -241,19 +231,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       Expanded(
                         child: Text(
                           item.user?.name ?? "",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: AyurezeTheme.textPrimary,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    color: AyurezeTheme.textPrimary,
+                                  ),
                         ),
                       ),
                       Text(
                         date,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AyurezeTheme.textSecondary,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AyurezeTheme.textSecondary,
+                            ),
                       ),
                     ],
                   ),
@@ -274,40 +263,43 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
       ),
     );
+
+    return ScreenEntrance(index: index, child: card);
   }
 
   Widget _buildViewAllCard() {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, "ViewAllNotification"),
-      child: Container(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        Navigator.pushNamed(context, "ViewAllNotification");
+      },
+      child: GlassSurface(
         padding: const EdgeInsets.all(16),
-        decoration: AyurezeTheme.mutedPanelDecoration(),
         child: Row(
           children: [
             Expanded(
               child: Text(
                 getTranslated(context, AppString.notification_view_all)
                     .toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AyurezeTheme.textPrimary,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AyurezeTheme.textPrimary,
+                    ),
               ),
             ),
             SvgPicture.asset(
               'assets/icons/longArrow.svg',
               height: 12,
-              color: AyurezeTheme.forestDeep,
+              colorFilter:
+                  ColorFilter.mode(AyurezeTheme.forestDeep, BlendMode.srcIn),
             ),
             const SizedBox(width: 10),
             Text(
               "${patientNotification.length}",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w800,
-                color: AyurezeTheme.forestDeep,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AyurezeTheme.forestDeep,
+                  ),
             ),
           ],
         ),
@@ -316,10 +308,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Widget _buildEmptyState() {
-    return Container(
+    return GlassSurface(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 36),
-      decoration: AyurezeTheme.panelDecoration(),
       child: Column(
         children: [
           Image.asset("assets/images/no-data.png", height: 88),

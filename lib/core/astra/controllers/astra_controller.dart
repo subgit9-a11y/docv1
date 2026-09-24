@@ -17,26 +17,26 @@ import 'package:doctro/core/astra/utils/astra_exception.dart';
 /// Handles message sending, streaming, action dispatching, and state management.
 class AstraController extends ChangeNotifier {
   static final AstraController _instance = AstraController._internal();
-  
+
   final AstraRepository _repository = AstraRepository();
   final ActionDispatcher _actionDispatcher = ActionDispatcher.instance;
-  
+
   bool _initialized = false;
   bool _isLoading = false;
   bool _isStreaming = false;
   bool _isBrainHealthy = false;
-  
+
   String? _currentUserId;
   String? _sessionId;
   String? _currentPatientId;
   ConversationContext? _currentContext;
-  
+
   List<AstraMessage> _messages = [];
   List<AstraNavigationAction> _pendingActions = [];
   AstraMessage? _streamingMessage;
-  
+
   String? _errorMessage;
-  
+
   StreamSubscription<ChatStreamEvent>? _streamSubscription;
 
   factory AstraController() => _instance;
@@ -51,21 +51,26 @@ class AstraController extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isStreaming => _isStreaming;
   bool get isBrainHealthy => _isBrainHealthy;
-  
+
   String? get currentUserId => _currentUserId;
   String? get sessionId => _sessionId;
   String? get currentPatientId => _currentPatientId;
   ConversationContext? get currentContext => _currentContext;
-  
+
   List<AstraMessage> get messages => List.unmodifiable(_messages);
-  List<AstraNavigationAction> get pendingActions => List.unmodifiable(_pendingActions);
+  List<AstraNavigationAction> get pendingActions =>
+      List.unmodifiable(_pendingActions);
   AstraMessage? get streamingMessage => _streamingMessage;
-  
+
   String? get errorMessage => _errorMessage;
-  
-  /// Get user ID from preferences
+
+  /// Get doctor ID from preferences. `Preferences.userId` is a stale key -
+  /// nothing in the app ever writes it; the login flow sets
+  /// `Preferences.doctorId`, which is what DoctorContext.fromPreferences()
+  /// also prefers.
   String get doctorId {
-    return SharedPreferenceHelper.getString(Preferences.userId);
+    return SharedPreferenceHelper.getStringOrNull(Preferences.doctorId) ??
+        SharedPreferenceHelper.getString(Preferences.userId);
   }
 
   // ============================================================
@@ -79,16 +84,16 @@ class AstraController extends ChangeNotifier {
     String? appointmentId,
   }) async {
     if (_initialized) return;
-    
+
     try {
       AstraLogger.i('Initializing AstraController');
-      
+
       // Initialize repository
       await _repository.initialize();
-      
+
       // Set current user
       _currentUserId = doctorId.isNotEmpty ? doctorId : null;
-      
+
       // Set context if patient is provided
       if (patientId != null) {
         _currentPatientId = patientId;
@@ -100,21 +105,22 @@ class AstraController extends ChangeNotifier {
           screenContext: 'patient_details',
         );
       }
-      
+
       // Load conversation history
       if (_currentUserId != null) {
         _messages = await _repository.getConversationHistory(_currentUserId!);
       }
-      
+
       // Check brain health
       await _checkBrainHealth();
-      
+
       _initialized = true;
       notifyListeners();
-      
+
       AstraLogger.i('AstraController initialized successfully');
     } catch (e, st) {
-      AstraLogger.e('Failed to initialize AstraController', error: e, stackTrace: st);
+      AstraLogger.e('Failed to initialize AstraController',
+          error: e, stackTrace: st);
       _errorMessage = 'Failed to initialize: $e';
       _initialized = true; // Prevent retry loops
       notifyListeners();
@@ -177,20 +183,20 @@ class AstraController extends ChangeNotifier {
     if (!_initialized) {
       await initialize();
     }
-    
+
     if (text.trim().isEmpty) return;
-    
+
     // Check if user ID is available
     if (_currentUserId == null || _currentUserId!.isEmpty) {
       _currentUserId = doctorId;
     }
-    
+
     if (_currentUserId == null) {
       _errorMessage = 'User not authenticated';
       notifyListeners();
       return;
     }
-    
+
     try {
       _isLoading = true;
       _errorMessage = null;
@@ -199,7 +205,7 @@ class AstraController extends ChangeNotifier {
       // Create user message
       final userMessage = AstraMessage.user(content: text);
       _messages.add(userMessage);
-      
+
       // Save to history
       await _repository.saveMessage(_currentUserId!, userMessage);
       notifyListeners();
@@ -212,16 +218,25 @@ class AstraController extends ChangeNotifier {
         context: _currentContext,
       );
 
+      // A 200 response can still carry a backend-side failure (e.g. the AI
+      // engine itself is degraded) as {"error": "..."} rather than an HTTP
+      // error status - without this check it silently became a blank
+      // assistant bubble, since none of _parseAssistantResponse's expected
+      // content keys are present.
+      if (response['error'] != null) {
+        throw AstraException(response['error'].toString());
+      }
+
       // Parse and add assistant response
       final assistantMessage = _parseAssistantResponse(response);
       _messages.add(assistantMessage);
-      
+
       // Save to history
       await _repository.saveMessage(_currentUserId!, assistantMessage);
-      
+
       // Extract and store pending actions
       _pendingActions = _actionDispatcher.extractActions(response);
-      
+
       // Check brain health after successful request
       await _checkBrainHealth();
 
@@ -242,19 +257,19 @@ class AstraController extends ChangeNotifier {
     if (!_initialized) {
       await initialize();
     }
-    
+
     if (text.trim().isEmpty) return;
-    
+
     if (_currentUserId == null || _currentUserId!.isEmpty) {
       _currentUserId = doctorId;
     }
-    
+
     if (_currentUserId == null) {
       _errorMessage = 'User not authenticated';
       notifyListeners();
       return;
     }
-    
+
     try {
       _isStreaming = true;
       _errorMessage = null;
@@ -264,7 +279,7 @@ class AstraController extends ChangeNotifier {
       final userMessage = AstraMessage.user(content: text);
       _messages.add(userMessage);
       await _repository.saveMessage(_currentUserId!, userMessage);
-      
+
       // Create streaming message placeholder
       _streamingMessage = AstraMessage.streaming(content: '');
       _messages.add(_streamingMessage!);
@@ -283,24 +298,25 @@ class AstraController extends ChangeNotifier {
         switch (event.type) {
           case ChatStreamEventType.data:
             final data = event.data as Map<String, dynamic>;
-            final textChunk = data['text']?.toString() ?? data['content']?.toString() ?? '';
+            final textChunk =
+                data['text']?.toString() ?? data['content']?.toString() ?? '';
             fullResponse += textChunk;
-            
+
             // Update streaming message
             _streamingMessage = AstraMessage.streaming(
               content: fullResponse,
               progress: _estimateProgress(fullResponse),
             );
-            
+
             // Find any actions in the stream
             final newActions = _actionDispatcher.extractActions(data);
             if (newActions.isNotEmpty) {
               actions.addAll(newActions);
             }
-            
+
             notifyListeners();
             break;
-            
+
           case ChatStreamEventType.progress:
             _streamingMessage = AstraMessage.streaming(
               content: fullResponse,
@@ -308,22 +324,22 @@ class AstraController extends ChangeNotifier {
             );
             notifyListeners();
             break;
-            
+
           case ChatStreamEventType.done:
             // Finalize the streaming message
             _messages.remove(_streamingMessage);
-            
+
             final assistantMessage = AstraMessage.assistant(
               content: fullResponse,
               action: actions.isNotEmpty ? actions.first : null,
             );
             _messages.add(assistantMessage);
             await _repository.saveMessage(_currentUserId!, assistantMessage);
-            
+
             _pendingActions = actions;
             _streamingMessage = null;
             break;
-            
+
           case ChatStreamEventType.error:
             _messages.remove(_streamingMessage);
             _messages.add(AstraMessage.system(
@@ -353,12 +369,12 @@ class AstraController extends ChangeNotifier {
   void cancelStream() {
     _streamSubscription?.cancel();
     _streamSubscription = null;
-    
+
     if (_streamingMessage != null) {
       _messages.remove(_streamingMessage);
       _streamingMessage = null;
     }
-    
+
     _isStreaming = false;
     notifyListeners();
   }
@@ -374,15 +390,15 @@ class AstraController extends ChangeNotifier {
       notifyListeners();
 
       final result = await _actionDispatcher.dispatch(action);
-      
+
       // Remove from pending if successful
       if (result.success) {
         _pendingActions.remove(action);
       }
-      
+
       _isLoading = false;
       notifyListeners();
-      
+
       return result;
     } catch (e, st) {
       AstraLogger.e('Execute action failed', error: e, stackTrace: st);
@@ -401,9 +417,11 @@ class AstraController extends ChangeNotifier {
   /// Execute first high priority action
   Future<void> executeFirstHighPriorityAction() async {
     final highPriority = _pendingActions
-        .where((a) => a.priority == ActionPriority.high || a.priority == ActionPriority.critical)
+        .where((a) =>
+            a.priority == ActionPriority.high ||
+            a.priority == ActionPriority.critical)
         .toList();
-    
+
     if (highPriority.isNotEmpty) {
       await executeAction(highPriority.first);
     }
@@ -438,7 +456,7 @@ class AstraController extends ChangeNotifier {
   /// Load conversation from history
   Future<void> loadConversation() async {
     if (_currentUserId == null) return;
-    
+
     try {
       _messages = await _repository.getConversationHistory(_currentUserId!);
       notifyListeners();
@@ -476,17 +494,19 @@ class AstraController extends ChangeNotifier {
 
       _isLoading = false;
       notifyListeners();
-      
+
       return result;
     } catch (e, st) {
-      AstraLogger.e('Generate prescription draft failed', error: e, stackTrace: st);
+      AstraLogger.e('Generate prescription draft failed',
+          error: e, stackTrace: st);
       _handleError(AstraException('Failed to generate prescription: $e'));
       return null;
     }
   }
 
   /// Analyze medication safety
-  Future<Map<String, dynamic>?> analyzeMedications(List<String> medicines) async {
+  Future<Map<String, dynamic>?> analyzeMedications(
+      List<String> medicines) async {
     try {
       _isLoading = true;
       notifyListeners();
@@ -495,7 +515,7 @@ class AstraController extends ChangeNotifier {
 
       _isLoading = false;
       notifyListeners();
-      
+
       return result;
     } catch (e, st) {
       AstraLogger.e('Analyze medications failed', error: e, stackTrace: st);
@@ -533,11 +553,12 @@ class AstraController extends ChangeNotifier {
   void _handleNetworkError(AstraNetworkException e, String originalMessage) {
     _isLoading = false;
     _isStreaming = false;
-    
+
     if (e.isConnectionError) {
       _errorMessage = 'You are offline. Message has been queued.';
       _messages.add(AstraMessage.system(
-        content: '📡 Offline: Your message has been saved and will be sent when you\'re back online.',
+        content:
+            '📡 Offline: Your message has been saved and will be sent when you\'re back online.',
       ));
     } else {
       _errorMessage = e.message;
@@ -546,7 +567,7 @@ class AstraController extends ChangeNotifier {
         isError: true,
       ));
     }
-    
+
     notifyListeners();
   }
 
@@ -554,12 +575,12 @@ class AstraController extends ChangeNotifier {
     _isLoading = false;
     _isStreaming = false;
     _errorMessage = e.message;
-    
+
     _messages.add(AstraMessage.system(
       content: '❌ ${e.message}',
       isError: true,
     ));
-    
+
     notifyListeners();
   }
 

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
@@ -15,6 +16,7 @@ import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:doctro/widgets/osler_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 
 class RateAndReviewRoutesScreen extends StatefulWidget {
@@ -91,8 +93,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
         backgroundColor: AyurezeTheme.canvas,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
-            AppIcons.menu,
+          icon: HugeIcon(
+            icon: AppIcons.menu,
             color: AyurezeTheme.healingGreen100,
           ),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
@@ -186,8 +188,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(999),
+              color: Colors.white.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
             ),
             child: Text(
               "Patient Feedback",
@@ -210,7 +212,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
           Text(
             "Read patient reviews, ratings and consultation feedback.",
             style: textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withOpacity(0.85),
+              color: Colors.white.withValues(alpha: 0.85),
               height: 1.4,
             ),
           ),
@@ -220,8 +222,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
   }
 
   Widget _buildSearchCard(BuildContext context) {
-    return Container(
-      decoration: AyurezeTheme.panelDecoration(),
+    return GlassSurface(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
       child: TextField(
         controller: _search,
@@ -232,8 +233,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
           hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AyurezeTheme.textSecondary,
               ),
-          suffixIcon: Icon(
-            AppIcons.search,
+          suffixIcon: HugeIcon(
+            icon: AppIcons.search,
             color: AyurezeTheme.healingGreen100,
           ),
         ),
@@ -254,7 +255,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
             child:
                 item.user?.fullImage != null && item.user!.fullImage!.isNotEmpty
                     ? Image.network(
@@ -266,7 +267,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
                           width: 56,
                           height: 56,
                           color: AyurezeTheme.surfaceMuted,
-                          child: Icon(AppIcons.profile,
+                          child: HugeIcon(
+                              icon: AppIcons.profile,
                               color: AyurezeTheme.textSecondary),
                         ),
                       )
@@ -274,7 +276,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
                         width: 56,
                         height: 56,
                         color: AyurezeTheme.surfaceMuted,
-                        child: Icon(AppIcons.profile,
+                        child: HugeIcon(
+                            icon: AppIcons.profile,
                             color: AyurezeTheme.textSecondary),
                       ),
           ),
@@ -297,8 +300,8 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
                     ),
                     RatingBarIndicator(
                       rating: (item.rate ?? 0).toDouble(),
-                      itemBuilder: (context, index) => Icon(
-                        Icons.star_rounded,
+                      itemBuilder: (context, index) => HugeIcon(
+                        icon: HugeIcons.strokeRoundedStar,
                         color: AyurezeTheme.sunshineYellow50,
                       ),
                       itemCount: 5,
@@ -333,10 +336,9 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
 
   Widget _buildEmptyState(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Container(
+    return GlassSurface(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 40),
-      decoration: AyurezeTheme.panelDecoration(),
       child: Column(
         children: [
           Image.asset("assets/images/no-data.png", height: 96),

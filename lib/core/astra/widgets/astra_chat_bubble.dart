@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/models/conversation_model.dart';
-import 'package:doctro/core/astra/actions/action_models.dart';
 import 'package:doctro/core/astra/utils/astra_config.dart';
+import 'package:doctro/theme/ayureze_theme.dart';
 
 /// Astra Chat Bubble Widget
 ///
@@ -10,12 +13,13 @@ import 'package:doctro/core/astra/utils/astra_config.dart';
 class AstraChatBubble extends StatelessWidget {
   /// The message to display
   final AstraMessage message;
-  
+
   /// Whether this message is from the current user
   final bool isUser;
-  
+
   /// Callback when action is tapped
-  final void Function(String actionType, Map<String, dynamic>? params)? onActionTap;
+  final void Function(String actionType, Map<String, dynamic>? params)?
+      onActionTap;
 
   const AstraChatBubble({
     super.key,
@@ -26,11 +30,11 @@ class AstraChatBubble extends StatelessWidget {
 
   /// Get accessibility label for screen readers
   String get _accessibilityLabel {
-    final role = message.role == MessageRole.user 
-        ? 'You' 
+    final role = message.role == MessageRole.user
+        ? 'You'
         : (message.role == MessageRole.system ? 'System' : 'Astra AI');
-    final status = message.status == MessageStatus.sending 
-        ? 'Sending' 
+    final status = message.status == MessageStatus.sending
+        ? 'Sending'
         : (message.status == MessageStatus.failed ? 'Failed' : '');
     return '$role message: ${message.content}. $status'.trim();
   }
@@ -38,7 +42,7 @@ class AstraChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Semantics(
       label: _accessibilityLabel,
       child: Align(
@@ -54,7 +58,7 @@ class AstraChatBubble extends StatelessWidget {
             bottom: 4,
           ),
           child: Column(
-            crossAxisAlignment: 
+            crossAxisAlignment:
                 isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
               // Message content
@@ -62,8 +66,8 @@ class AstraChatBubble extends StatelessWidget {
                 label: 'Message content',
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+                    horizontal: AyurezeTheme.spaceLg,
+                    vertical: AyurezeTheme.spaceMd,
                   ),
                   decoration: BoxDecoration(
                     color: _getBackgroundColor(),
@@ -75,7 +79,7 @@ class AstraChatBubble extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
@@ -86,20 +90,19 @@ class AstraChatBubble extends StatelessWidget {
                     children: [
                       // Message text
                       _buildMessageContent(theme),
-                      
+
                       // Streaming indicator
-                      if (message.status == MessageStatus.sending && 
+                      if (message.status == MessageStatus.sending &&
                           message.role == MessageRole.assistant)
                         _buildStreamingIndicator(),
-                      
+
                       // Action button
-                      if (message.action != null)
-                        _buildActionButton(theme),
+                      if (message.action != null) _buildActionButton(theme),
                     ],
                   ),
                 ),
               ),
-              
+
               // Timestamp
               Semantics(
                 label: 'Sent at ${_formatTime(message.createdAt)}',
@@ -108,14 +111,13 @@ class AstraChatBubble extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
                   child: Text(
                     _formatTime(message.createdAt),
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: theme.textTheme.labelSmall?.copyWith(
                       color: Colors.grey,
-                      fontSize: 11,
                     ),
                   ),
                 ),
               ),
-              
+
               // Error indicator
               if (message.status == MessageStatus.failed)
                 _buildErrorIndicator(theme),
@@ -132,28 +134,60 @@ class AstraChatBubble extends StatelessWidget {
           ? Colors.red.shade50
           : Colors.blue.shade50;
     }
-    
+
     if (message.status == MessageStatus.failed) {
       return Colors.red.shade50;
     }
-    
+
     return isUser
-        ? AstraConfig.enableLogging ? Colors.green.shade100 : Colors.grey.shade200
+        ? AstraConfig.enableLogging
+            ? Colors.green.shade100
+            : Colors.grey.shade200
         : Colors.white;
   }
 
   Widget _buildMessageContent(ThemeData theme) {
     final textColor = message.role == MessageRole.system
-        ? (message.status == MessageStatus.failed 
-            ? Colors.red.shade700 
+        ? (message.status == MessageStatus.failed
+            ? Colors.red.shade700
             : Colors.blue.shade700)
         : (isUser ? Colors.white : Colors.black87);
-    
-    return SelectableText(
-      message.content,
-      style: theme.textTheme.bodyMedium?.copyWith(
-        color: isUser ? Colors.white : textColor,
-        height: 1.4,
+
+    final baseStyle = theme.textTheme.bodyMedium?.copyWith(
+      color: isUser ? Colors.white : textColor,
+      height: 1.4,
+    );
+
+    // Only the assistant writes markdown (bold, lists, headers) - user
+    // input and system status lines are always plain text, so rendering
+    // them as markdown would just be extra cost for no visual difference.
+    if (message.role != MessageRole.assistant) {
+      return SelectableText(message.content, style: baseStyle);
+    }
+
+    return MarkdownBody(
+      data: message.content,
+      selectable: true,
+      styleSheet: MarkdownStyleSheet(
+        p: baseStyle,
+        strong: baseStyle?.copyWith(fontWeight: FontWeight.bold),
+        em: baseStyle?.copyWith(fontStyle: FontStyle.italic),
+        listBullet: baseStyle,
+        h1: baseStyle?.copyWith(
+            fontSize: 20, fontWeight: FontWeight.bold, height: 1.6),
+        h2: baseStyle?.copyWith(
+            fontSize: 18, fontWeight: FontWeight.bold, height: 1.6),
+        h3: baseStyle?.copyWith(
+            fontSize: 16, fontWeight: FontWeight.bold, height: 1.6),
+        code: baseStyle?.copyWith(
+          fontFamily: 'monospace',
+          backgroundColor: Colors.black.withValues(alpha: 0.06),
+        ),
+        blockquoteDecoration: BoxDecoration(
+          border:
+              Border(left: BorderSide(color: Colors.grey.shade400, width: 3)),
+        ),
+        blockSpacing: 8,
       ),
     );
   }
@@ -191,7 +225,7 @@ class AstraChatBubble extends StatelessWidget {
   Widget _buildActionButton(ThemeData theme) {
     final action = message.action!;
     final actionLabel = action.description ?? _getActionLabel(action.type.name);
-    
+
     return Semantics(
       label: 'Action button: $actionLabel',
       hint: 'Double tap to open ${_getActionLabel(action.type.name)}',
@@ -203,20 +237,20 @@ class AstraChatBubble extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
+              horizontal: AyurezeTheme.spaceLg,
+              vertical: AyurezeTheme.spaceSm,
             ),
             decoration: BoxDecoration(
-              color: AstraConfig.enableLogging 
-                  ? Colors.green.shade100 
+              color: AstraConfig.enableLogging
+                  ? Colors.green.shade100
                   : Colors.grey.shade100,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  _getActionIcon(action.type.name),
+                HugeIcon(
+                  icon: _getActionIcon(action.type.name),
                   size: 16,
                   color: Colors.green.shade700,
                 ),
@@ -230,8 +264,8 @@ class AstraChatBubble extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 4),
-                Icon(
-                  Icons.arrow_forward_ios,
+                HugeIcon(
+                  icon: HugeIcons.strokeRoundedArrowRight01,
                   size: 12,
                   color: Colors.green.shade700,
                 ),
@@ -249,16 +283,15 @@ class AstraChatBubble extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.error_outline,
+          HugeIcon(
+            icon: HugeIcons.strokeRoundedAlertCircle,
             size: 14,
             color: Colors.red.shade400,
           ),
           const SizedBox(width: 4),
           Text(
             message.errorMessage ?? 'Failed to send',
-            style: TextStyle(
-              fontSize: 11,
+            style: theme.textTheme.labelSmall?.copyWith(
               color: Colors.red.shade400,
             ),
           ),
@@ -267,32 +300,32 @@ class AstraChatBubble extends StatelessWidget {
     );
   }
 
-  IconData _getActionIcon(String actionType) {
+  List<List<dynamic>> _getActionIcon(String actionType) {
     switch (actionType) {
       case 'openPatient':
-        return Icons.person;
+        return HugeIcons.strokeRoundedUser;
       case 'openPrescription':
-        return Icons.description;
+        return HugeIcons.strokeRoundedFile01;
       case 'openCart':
-        return Icons.shopping_cart;
+        return HugeIcons.strokeRoundedShoppingCart01;
       case 'openPayment':
-        return Icons.payment;
+        return AppIcons.payment;
       case 'openNotifications':
-        return Icons.notifications;
+        return AppIcons.notifications;
       case 'openChat':
-        return Icons.chat;
+        return AppIcons.chat;
       case 'openVideoCall':
-        return Icons.videocam;
+        return HugeIcons.strokeRoundedVideo01;
       case 'openAppointment':
-        return Icons.calendar_today;
+        return HugeIcons.strokeRoundedCalendar01;
       case 'openReminders':
-        return Icons.alarm;
+        return HugeIcons.strokeRoundedAlarmClock;
       case 'openReport':
-        return Icons.assessment;
+        return HugeIcons.strokeRoundedChartLine;
       case 'goBack':
-        return Icons.arrow_back;
+        return HugeIcons.strokeRoundedArrowLeft01;
       default:
-        return Icons.touch_app;
+        return HugeIcons.strokeRoundedCursor02;
     }
   }
 

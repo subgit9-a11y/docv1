@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/workflow/workflow_model.dart';
 import 'package:doctro/core/astra/workflow/workflow_service.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
@@ -10,22 +12,22 @@ import 'package:doctro/theme/ayureze_theme.dart';
 class PrescriptionWorkflowProgress extends StatefulWidget {
   /// Initial workflow data
   final PrescriptionWorkflow workflow;
-  
+
   /// Callback when workflow completes
   final void Function(PrescriptionWorkflow)? onComplete;
-  
+
   /// Callback when workflow fails
   final void Function(String error)? onError;
-  
+
   /// Whether to auto-poll status updates
   final bool autoPoll;
-  
+
   /// Poll interval for status updates
   final Duration pollInterval;
-  
+
   /// Callback to open PDF (if generated)
   final VoidCallback? onOpenPdf;
-  
+
   /// Callback to open Shopify cart (if created)
   final VoidCallback? onOpenCart;
 
@@ -41,14 +43,14 @@ class PrescriptionWorkflowProgress extends StatefulWidget {
   });
 
   @override
-  State<PrescriptionWorkflowProgress> createState() => 
+  State<PrescriptionWorkflowProgress> createState() =>
       _PrescriptionWorkflowProgressState();
 }
 
-class _PrescriptionWorkflowProgressState 
+class _PrescriptionWorkflowProgressState
     extends State<PrescriptionWorkflowProgress> {
   final WorkflowService _service = WorkflowService();
-  
+
   late PrescriptionWorkflow _workflow;
   bool _isPolling = false;
 
@@ -56,7 +58,7 @@ class _PrescriptionWorkflowProgressState
   void initState() {
     super.initState();
     _workflow = widget.workflow;
-    
+
     if (widget.autoPoll && _workflow.isInProgress) {
       _startPolling();
     }
@@ -87,10 +89,10 @@ class _PrescriptionWorkflowProgressState
 
     try {
       final updated = await _service.getWorkflowStatus(_workflow.id);
-      
+
       if (mounted) {
         setState(() => _workflow = updated);
-        
+
         if (updated.isComplete) {
           _isPolling = false;
           widget.onComplete?.call(updated);
@@ -115,9 +117,9 @@ class _PrescriptionWorkflowProgressState
       label: 'Prescription workflow, ${_workflow.status.label}',
       child: Card(
         elevation: 2,
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(AyurezeTheme.spaceLg),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,12 +136,12 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       decoration: BoxDecoration(
-        color: _workflow.status.color.withOpacity(0.1),
+        color: _workflow.status.color.withValues(alpha: 0.1),
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
+          topLeft: Radius.circular(AyurezeTheme.radiusLg),
+          topRight: Radius.circular(AyurezeTheme.radiusLg),
         ),
       ),
       child: Row(
@@ -152,11 +154,9 @@ class _PrescriptionWorkflowProgressState
               children: [
                 Text(
                   'Prescription Workflow',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: AyurezeTheme.textPrimary,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AyurezeTheme.textPrimary,
+                      ),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -189,16 +189,16 @@ class _PrescriptionWorkflowProgressState
         ),
       );
     }
-    
+
     return Container(
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: _workflow.status.color.withOpacity(0.2),
+        color: _workflow.status.color.withValues(alpha: 0.2),
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        _workflow.status.icon,
+      child: HugeIcon(
+        icon: _workflow.status.icon,
         color: _workflow.status.color,
         size: 24,
       ),
@@ -207,10 +207,11 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildPollingIndicator() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceSm, vertical: AyurezeTheme.spaceXs),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.blue.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -226,10 +227,9 @@ class _PrescriptionWorkflowProgressState
           const SizedBox(width: 4),
           Text(
             'Updating...',
-            style: TextStyle(
-              fontSize: 11,
-              color: Colors.blue,
-            ),
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: Colors.blue,
+                ),
           ),
         ],
       ),
@@ -239,7 +239,7 @@ class _PrescriptionWorkflowProgressState
   Widget _buildRetryButton() {
     return TextButton.icon(
       onPressed: _retryWorkflow,
-      icon: const Icon(Icons.refresh, size: 16),
+      icon: HugeIcon(icon: AppIcons.refresh, size: 16),
       label: const Text('Retry'),
       style: TextButton.styleFrom(
         foregroundColor: Colors.red,
@@ -249,7 +249,8 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildProgressBar() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceMd),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -258,17 +259,15 @@ class _PrescriptionWorkflowProgressState
             children: [
               Text(
                 '${_workflow.progress}% complete',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AyurezeTheme.textSecondary,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AyurezeTheme.textSecondary,
+                    ),
               ),
               Text(
                 '${_workflow.tasks.where((t) => t.status == WorkflowTaskStatus.completed).length}/${_workflow.tasks.length} tasks',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AyurezeTheme.textSecondary,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AyurezeTheme.textSecondary,
+                    ),
               ),
             ],
           ),
@@ -289,7 +288,7 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildTasksList() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceLg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _workflow.tasks.map((task) => _buildTaskTile(task)).toList(),
@@ -299,7 +298,7 @@ class _PrescriptionWorkflowProgressState
 
   Widget _buildTaskTile(WorkflowTask task) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: AyurezeTheme.spaceSm),
       child: Row(
         children: [
           _buildTaskIcon(task),
@@ -319,18 +318,16 @@ class _PrescriptionWorkflowProgressState
                 if (task.message != null)
                   Text(
                     task.message!,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: AyurezeTheme.textSecondary,
-                    ),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AyurezeTheme.textSecondary,
+                        ),
                   ),
                 if (task.error != null)
                   Text(
                     task.error!,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.red,
-                    ),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Colors.red,
+                        ),
                   ),
               ],
             ),
@@ -352,19 +349,19 @@ class _PrescriptionWorkflowProgressState
         ),
       );
     }
-    
+
     return Container(
       width: 24,
       height: 24,
       decoration: BoxDecoration(
-        color: task.color.withOpacity(0.2),
+        color: task.color.withValues(alpha: 0.2),
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        task.status == WorkflowTaskStatus.completed
-            ? Icons.check
+      child: HugeIcon(
+        icon: task.status == WorkflowTaskStatus.completed
+            ? AppIcons.check
             : (task.status == WorkflowTaskStatus.failed
-                ? Icons.close
+                ? AppIcons.close
                 : task.icon),
         size: 14,
         color: task.color,
@@ -380,27 +377,26 @@ class _PrescriptionWorkflowProgressState
       WorkflowTaskStatus.failed: 'Failed',
       WorkflowTaskStatus.skipped: 'Skipped',
     };
-    
+
     return Text(
       labels[task.status] ?? '',
-      style: TextStyle(
-        fontSize: 11,
-        color: task.color,
-        fontWeight: FontWeight.w500,
-      ),
+      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: task.color,
+            fontWeight: FontWeight.w500,
+          ),
     );
   }
 
   Widget _buildResults() {
     final result = _workflow.result!;
-    
+
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.all(AyurezeTheme.spaceLg),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceMd),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.green.withOpacity(0.3)),
+        color: Colors.green.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
+        border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -415,31 +411,31 @@ class _PrescriptionWorkflowProgressState
           const SizedBox(height: 12),
           if (result.pdfUrl != null)
             _buildResultItem(
-              icon: Icons.picture_as_pdf,
+              icon: HugeIcons.strokeRoundedPdf01,
               label: 'PDF Generated',
               onTap: widget.onOpenPdf,
             ),
           if (result.shopifyCartUrl != null)
             _buildResultItem(
-              icon: Icons.shopping_cart,
+              icon: HugeIcons.strokeRoundedShoppingCart01,
               label: 'Shopify Cart Created',
               onTap: widget.onOpenCart,
             ),
           if (result.notificationId != null)
             _buildResultItem(
-              icon: Icons.notifications,
+              icon: AppIcons.notifications,
               label: 'Notification Sent',
               subtitle: 'Patient notified',
             ),
           if (result.whatsappMessageId != null)
             _buildResultItem(
-              icon: Icons.message,
+              icon: HugeIcons.strokeRoundedMessage01,
               label: 'WhatsApp Sent',
               subtitle: 'Message delivered',
             ),
           if (result.reminderId != null)
             _buildResultItem(
-              icon: Icons.alarm,
+              icon: HugeIcons.strokeRoundedAlarmClock,
               label: 'Reminder Set',
               subtitle: 'Medication reminder created',
             ),
@@ -449,7 +445,7 @@ class _PrescriptionWorkflowProgressState
   }
 
   Widget _buildResultItem({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String label,
     String? subtitle,
     VoidCallback? onTap,
@@ -460,7 +456,7 @@ class _PrescriptionWorkflowProgressState
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Row(
           children: [
-            Icon(icon, size: 18, color: Colors.green.shade700),
+            HugeIcon(icon: icon, size: 18, color: Colors.green.shade700),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
@@ -476,17 +472,16 @@ class _PrescriptionWorkflowProgressState
                   if (subtitle != null)
                     Text(
                       subtitle,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: AyurezeTheme.textSecondary,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: AyurezeTheme.textSecondary,
+                          ),
                     ),
                 ],
               ),
             ),
             if (onTap != null)
-              Icon(
-                Icons.arrow_forward_ios,
+              HugeIcon(
+                icon: HugeIcons.strokeRoundedArrowRight01,
                 size: 14,
                 color: AyurezeTheme.textSecondary,
               ),
@@ -499,7 +494,7 @@ class _PrescriptionWorkflowProgressState
   Future<void> _retryWorkflow() async {
     final failedTask = _workflow.failedTask;
     if (failedTask == null) return;
-    
+
     try {
       final updated = await _service.retryTask(_workflow.id, failedTask.id);
       if (mounted) {
@@ -532,16 +527,17 @@ class WorkflowStatusBadge extends StatelessWidget {
     return Semantics(
       label: 'Workflow status: ${status.label}',
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AyurezeTheme.spaceSm, vertical: AyurezeTheme.spaceXs),
         decoration: BoxDecoration(
-          color: status.color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
+          color: status.color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              status.icon,
+            HugeIcon(
+              icon: status.icon,
               size: 14,
               color: status.color,
             ),
@@ -549,11 +545,10 @@ class WorkflowStatusBadge extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 status.label,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: status.color,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: status.color,
+                    ),
               ),
             ],
           ],

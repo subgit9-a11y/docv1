@@ -42,7 +42,7 @@ class _RestClient implements RestClient {
     try {
       _value = LoginResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -69,7 +69,7 @@ class _RestClient implements RestClient {
     try {
       _value = Register.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -96,7 +96,7 @@ class _RestClient implements RestClient {
     try {
       _value = TodayAppointment.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -124,7 +124,7 @@ class _RestClient implements RestClient {
     try {
       _value = AppointmentDetails.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -151,7 +151,7 @@ class _RestClient implements RestClient {
     try {
       _value = AppointmentHistory.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -178,7 +178,7 @@ class _RestClient implements RestClient {
     try {
       _value = Workinghours.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -205,7 +205,7 @@ class _RestClient implements RestClient {
     try {
       _value = Hospitals.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -232,7 +232,7 @@ class _RestClient implements RestClient {
     try {
       _value = DoctorProfile.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -259,7 +259,7 @@ class _RestClient implements RestClient {
     try {
       _value = Review.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -286,7 +286,7 @@ class _RestClient implements RestClient {
     try {
       _value = Payment.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -313,7 +313,7 @@ class _RestClient implements RestClient {
     try {
       _value = OtpVerify.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -340,7 +340,7 @@ class _RestClient implements RestClient {
     try {
       _value = UpdateProfile.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -367,7 +367,7 @@ class _RestClient implements RestClient {
     try {
       _value = Treatment.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -395,7 +395,7 @@ class _RestClient implements RestClient {
     try {
       _value = Categories.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -423,7 +423,7 @@ class _RestClient implements RestClient {
     try {
       _value = Expertise.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -450,7 +450,7 @@ class _RestClient implements RestClient {
     try {
       _value = AddPrescription.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -477,7 +477,7 @@ class _RestClient implements RestClient {
     try {
       _value = Setting.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -504,7 +504,7 @@ class _RestClient implements RestClient {
     try {
       _value = ImageUpload.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -534,7 +534,7 @@ class _RestClient implements RestClient {
     try {
       _value = DoctorStatusChange.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -561,7 +561,7 @@ class _RestClient implements RestClient {
     try {
       _value = CancelAppointment.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -588,7 +588,7 @@ class _RestClient implements RestClient {
     try {
       _value = FinanceDetails.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -615,7 +615,7 @@ class _RestClient implements RestClient {
     try {
       _value = UpdateTiming.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -642,7 +642,7 @@ class _RestClient implements RestClient {
     try {
       _value = ChangePasswordModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -669,7 +669,7 @@ class _RestClient implements RestClient {
     try {
       _value = ForgotPassword.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -696,7 +696,7 @@ class _RestClient implements RestClient {
     try {
       _value = Notifications.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -723,7 +723,7 @@ class _RestClient implements RestClient {
     try {
       _value = AllMedicines.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -751,7 +751,7 @@ class _RestClient implements RestClient {
     try {
       _value = ResentOtp.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -780,7 +780,7 @@ class _RestClient implements RestClient {
     try {
       _value = VideoCallHistoryAddModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -807,7 +807,7 @@ class _RestClient implements RestClient {
     try {
       _value = VideoCallHistoryShowModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -834,7 +834,7 @@ class _RestClient implements RestClient {
     try {
       _value = VideoCallModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -861,7 +861,7 @@ class _RestClient implements RestClient {
     try {
       _value = UpdateProfile.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;

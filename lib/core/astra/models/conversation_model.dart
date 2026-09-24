@@ -1,16 +1,18 @@
 /// Astra Conversation Models
 ///
 /// Models for managing conversations with Astra Brain.
+library;
+
 import 'package:doctro/core/astra/actions/action_models.dart';
 
 /// Message role enumeration
 enum MessageRole {
   /// Message sent by the user (doctor)
   user,
-  
+
   /// Message received from Astra AI
   assistant,
-  
+
   /// System message (info, errors, etc.)
   system,
 }
@@ -19,13 +21,13 @@ enum MessageRole {
 enum MessageStatus {
   /// Message is being sent/streaming
   sending,
-  
+
   /// Message sent successfully
   sent,
-  
+
   /// Message delivery failed
   failed,
-  
+
   /// Message received/streamed completely
   received,
 }
@@ -34,28 +36,28 @@ enum MessageStatus {
 class AstraMessage {
   /// Unique message ID
   final String id;
-  
+
   /// Message content/text
   final String content;
-  
+
   /// Message role (user/assistant/system)
   final MessageRole role;
-  
+
   /// Timestamp when message was created
   final DateTime createdAt;
-  
+
   /// Message status
   final MessageStatus status;
-  
+
   /// Associated action if any
   final AstraNavigationAction? action;
-  
+
   /// Associated metadata
   final Map<String, dynamic>? metadata;
-  
+
   /// Error message if status is failed
   final String? errorMessage;
-  
+
   /// Streaming progress (0.0 to 1.0) during streaming
   final double? streamProgress;
 
@@ -197,8 +199,9 @@ class AstraMessage {
         (s) => s.name == json['status'],
         orElse: () => MessageStatus.sent,
       ),
-      action: json['action'] != null 
-          ? AstraNavigationAction.fromJson(json['action'] as Map<String, dynamic>)
+      action: json['action'] != null
+          ? AstraNavigationAction.fromJson(
+              json['action'] as Map<String, dynamic>)
           : null,
       metadata: json['metadata'] as Map<String, dynamic>?,
       errorMessage: json['errorMessage'] as String?,
@@ -247,19 +250,19 @@ class AstraMessage {
 class ConversationContext {
   /// Patient ID if applicable
   final String? patientId;
-  
+
   /// Patient name if applicable
   final String? patientName;
-  
+
   /// Appointment ID if applicable
   final String? appointmentId;
-  
+
   /// Prescription ID if applicable
   final String? prescriptionId;
-  
+
   /// Current screen context
   final String? screenContext;
-  
+
   /// Doctor ID
   final String? doctorId;
 

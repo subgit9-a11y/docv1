@@ -37,7 +37,7 @@ class OslerOverlayLoader extends StatelessWidget {
       color: Colors.black54,
       child: Center(
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AyurezeTheme.space2xl),
           decoration: BoxDecoration(
             color: AyurezeTheme.surface,
             borderRadius: BorderRadius.circular(20),
@@ -50,11 +50,10 @@ class OslerOverlayLoader extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   message!,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AyurezeTheme.textPrimary,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AyurezeTheme.textPrimary,
+                      ),
                 ),
               ],
             ],

@@ -1,5 +1,9 @@
 import 'dart:async';
+import 'package:doctro/core/constants/app_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 
+import 'package:doctro/widgets/glass_surface.dart';
+import 'package:doctro/widgets/osler_hero.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/core/constants/common_function.dart';
@@ -91,11 +95,10 @@ class _PaymentScreen extends State<PaymentScreen> {
             backgroundColor: AyurezeTheme.canvas,
             title: Text(
               getTranslated(context, AppString.payment_title).toString(),
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-                color: AyurezeTheme.textPrimary,
-              ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AyurezeTheme.textPrimary,
+                  ),
             ),
             actions: [
               IconButton(
@@ -105,7 +108,8 @@ class _PaymentScreen extends State<PaymentScreen> {
                 icon: SvgPicture.asset(
                   "assets/icons/dMenuBar.svg",
                   height: 16,
-                  color: AyurezeTheme.forestDeep,
+                  colorFilter: ColorFilter.mode(
+                      AyurezeTheme.forestDeep, BlendMode.srcIn),
                 ),
               ),
             ],
@@ -121,41 +125,57 @@ class _PaymentScreen extends State<PaymentScreen> {
                 );
               }
 
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: AyurezeTheme.screenPadding,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHero(),
-                      const SizedBox(height: 18),
-                      _buildWalletCard(),
-                      const SizedBox(height: 18),
-                      _buildSearchCard(),
-                      const SizedBox(height: 18),
-                      if (paymentsRequest.isEmpty)
-                        _buildEmptyState()
-                      else ...[
-                        _buildHeaderSummary(),
-                        const SizedBox(height: 12),
-                        ..._buildPaymentItems(),
-                        if (!_searching() &&
-                            !_paymentRequest &&
-                            paymentsRequest.length > 5) ...[
-                          const SizedBox(height: 10),
-                          _buildViewAllCard(),
-                        ],
-                        const SizedBox(height: 14),
-                        _buildTotalBar(),
-                      ],
-                    ],
+              return Stack(
+                children: [
+                  Positioned(
+                    top: -60,
+                    right: -80,
+                    child: GlassBlob(
+                        size: 220, color: AyurezeTheme.healingGreen50),
                   ),
-                ),
+                  Positioned(
+                    bottom: 120,
+                    left: -90,
+                    child: GlassBlob(
+                        size: 220, color: AyurezeTheme.sunshineYellow50),
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: AyurezeTheme.screenPadding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildHero(),
+                          const SizedBox(height: 18),
+                          _buildWalletCard(),
+                          const SizedBox(height: 18),
+                          _buildSearchCard(),
+                          const SizedBox(height: 18),
+                          if (paymentsRequest.isEmpty)
+                            _buildEmptyState()
+                          else ...[
+                            _buildHeaderSummary(),
+                            const SizedBox(height: 12),
+                            ..._buildPaymentItems(),
+                            if (!_searching() &&
+                                !_paymentRequest &&
+                                paymentsRequest.length > 5) ...[
+                              const SizedBox(height: 10),
+                              _buildViewAllCard(),
+                            ],
+                            const SizedBox(height: 14),
+                            _buildTotalBar(),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               );
             },
           ),
@@ -165,55 +185,16 @@ class _PaymentScreen extends State<PaymentScreen> {
   }
 
   Widget _buildHero() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: AyurezeTheme.heroDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: const Text(
-              "Billing overview",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          const Text(
-            "Track patient payments in one calm ledger.",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              height: 1.05,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Search the ledger, review incoming totals, and keep the financial side of the clinic tidy.",
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.78),
-              fontSize: 14,
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
+    return const OslerHero(
+      eyebrow: 'Billing overview',
+      title: 'Track patient payments in one calm ledger.',
+      subtitle:
+          'Search the ledger, review incoming totals, and keep the financial side of the clinic tidy.',
     );
   }
 
   Widget _buildSearchCard() {
-    return Container(
-      decoration: AyurezeTheme.panelDecoration(),
+    return GlassSurface(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
       child: Row(
         children: [
@@ -233,7 +214,8 @@ class _PaymentScreen extends State<PaymentScreen> {
           SvgPicture.asset(
             'assets/icons/dSearch.svg',
             height: 20,
-            color: AyurezeTheme.forestDeep,
+            colorFilter:
+                ColorFilter.mode(AyurezeTheme.forestDeep, BlendMode.srcIn),
           ),
         ],
       ),
@@ -256,15 +238,14 @@ class _PaymentScreen extends State<PaymentScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
             color: AyurezeTheme.lightGreenSoft,
-            borderRadius: BorderRadius.circular(999),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
           ),
           child: Text(
             "${getTranslated(context, AppString.payment_total).toString()} ${paymentsRequest.length}",
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: AyurezeTheme.forestDeep,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AyurezeTheme.forestDeep,
+                ),
           ),
         ),
       ],
@@ -297,7 +278,7 @@ class _PaymentScreen extends State<PaymentScreen> {
   Widget _buildPaymentRow(Payments payment) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       decoration: AyurezeTheme.panelDecoration(),
       child: Row(
         children: [
@@ -308,8 +289,8 @@ class _PaymentScreen extends State<PaymentScreen> {
               color: AyurezeTheme.surfaceMuted,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(
-              Icons.payments_outlined,
+            child: HugeIcon(
+              icon: HugeIcons.strokeRoundedMoney03,
               color: AyurezeTheme.forestDeep,
             ),
           ),
@@ -320,30 +301,27 @@ class _PaymentScreen extends State<PaymentScreen> {
               children: [
                 Text(
                   payment.user?.name ?? "",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AyurezeTheme.textPrimary,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AyurezeTheme.textPrimary,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   "Completed payment",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AyurezeTheme.textSecondary,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AyurezeTheme.textSecondary,
+                      ),
                 ),
               ],
             ),
           ),
           Text(
             "${SharedPreferenceHelper.getString(Preferences.currency_symbol)}${payment.amount}",
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w800,
-              color: AyurezeTheme.forestDeep,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AyurezeTheme.forestDeep,
+                ),
           ),
         ],
       ),
@@ -357,34 +335,32 @@ class _PaymentScreen extends State<PaymentScreen> {
           _paymentRequest = true;
         });
       },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: AyurezeTheme.mutedPanelDecoration(),
+      child: GlassSurface(
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Row(
           children: [
             Expanded(
               child: Text(
                 getTranslated(context, AppString.view_all_payment).toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AyurezeTheme.textPrimary,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AyurezeTheme.textPrimary,
+                    ),
               ),
             ),
             SvgPicture.asset(
               'assets/icons/longArrow.svg',
               height: 12,
-              color: AyurezeTheme.forestDeep,
+              colorFilter:
+                  ColorFilter.mode(AyurezeTheme.forestDeep, BlendMode.srcIn),
             ),
             const SizedBox(width: 10),
             Text(
               "${paymentsRequest.length}",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w800,
-                color: AyurezeTheme.forestDeep,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AyurezeTheme.forestDeep,
+                  ),
             ),
           ],
         ),
@@ -405,11 +381,10 @@ class _PaymentScreen extends State<PaymentScreen> {
         children: [
           Text(
             getTranslated(context, AppString.payment_rs_total).toString(),
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
           ),
           Text(
             "${SharedPreferenceHelper.getString(Preferences.currency_symbol)}$sum",
@@ -425,10 +400,9 @@ class _PaymentScreen extends State<PaymentScreen> {
   }
 
   Widget _buildEmptyState() {
-    return Container(
+    return GlassSurface(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 36),
-      decoration: AyurezeTheme.panelDecoration(),
       child: Column(
         children: [
           Image.asset("assets/images/no-data.png", height: 88),
@@ -446,6 +420,7 @@ class _PaymentScreen extends State<PaymentScreen> {
 
   Future<void> logoutUser() async {
     await SharedPreferenceHelper.clearPref();
+    if (!mounted) return;
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (BuildContext context) => SignIn()),
@@ -565,18 +540,16 @@ class _PaymentScreen extends State<PaymentScreen> {
               double.tryParse(stats['withdrawn_amount'].toString()) ?? 0.0;
         });
       }
-    } catch (e) {}
+    } catch (_) {
+      // Stats are supplementary; a parse failure must not block the payout screen.
+    }
   }
 
   Widget _buildWalletCard() {
-    return Container(
+    return GlassSurface(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AyurezeTheme.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AyurezeTheme.border, width: 1.5),
-      ),
+      radius: 22,
+      padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -585,22 +558,23 @@ class _PaymentScreen extends State<PaymentScreen> {
             children: [
               Text(
                 "Ayurease Wallet",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: AyurezeTheme.textPrimary,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: AyurezeTheme.textPrimary,
+                    ),
               ),
-              Icon(Icons.wallet, color: AyurezeTheme.forestDeep, size: 24),
+              HugeIcon(
+                  icon: AppIcons.wallet,
+                  color: AyurezeTheme.forestDeep,
+                  size: 24),
             ],
           ),
           const SizedBox(height: 12),
           Text(
             "Available Balance",
-            style: TextStyle(
-              fontSize: 12,
-              color: AyurezeTheme.textSecondary,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AyurezeTheme.textSecondary,
+                ),
           ),
           const SizedBox(height: 4),
           Text(
@@ -616,7 +590,7 @@ class _PaymentScreen extends State<PaymentScreen> {
             children: [
               Expanded(
                 child: OslerButton(
-                  text: "Instant Self Payout",
+                  text: "Request Payout",
                   onPressed: availableBalance <= 0
                       ? null
                       : () => _showWithdrawDialog(),
@@ -635,6 +609,11 @@ class _PaymentScreen extends State<PaymentScreen> {
   }
 
   void _showWithdrawDialog() {
+    // The builders below shadow `context` with the dialog's own, and the modal
+    // is popped before the request returns. Toasts must therefore target the
+    // screen's context: the dialog's is already unmounted by then, so guarding
+    // on it would silently swallow every message.
+    final BuildContext parentContext = context;
     final TextEditingController amountController =
         TextEditingController(text: availableBalance.toInt().toString());
     final TextEditingController upiController = TextEditingController();
@@ -666,7 +645,7 @@ class _PaymentScreen extends State<PaymentScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               title: Text(
-                "Instant Self Payout",
+                "Request Payout",
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
                     color: AyurezeTheme.textPrimary),
@@ -676,9 +655,11 @@ class _PaymentScreen extends State<PaymentScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Withdraw your earnings instantly to your bank account or UPI ID. (1 request per day, max ₹3000 instant limit, Tuesdays and Saturdays only).",
-                      style: TextStyle(
-                          fontSize: 12, color: AyurezeTheme.textSecondary),
+                      "Submit a withdrawal request for your earnings. An admin reviews and pays it out to your UPI ID or bank account - this isn't instant.",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(color: AyurezeTheme.textSecondary),
                     ),
                     const SizedBox(height: 16),
                     TextField(
@@ -696,8 +677,8 @@ class _PaymentScreen extends State<PaymentScreen> {
                       children: [
                         Expanded(
                           child: RadioListTile<String>(
-                            title: const Text("UPI",
-                                style: TextStyle(fontSize: 12)),
+                            title: Text("UPI",
+                                style: Theme.of(context).textTheme.bodySmall),
                             value: "UPI",
                             groupValue: payoutMode,
                             contentPadding: EdgeInsets.zero,
@@ -708,8 +689,8 @@ class _PaymentScreen extends State<PaymentScreen> {
                         ),
                         Expanded(
                           child: RadioListTile<String>(
-                            title: const Text("Bank",
-                                style: TextStyle(fontSize: 12)),
+                            title: Text("Bank",
+                                style: Theme.of(context).textTheme.bodySmall),
                             value: "Bank",
                             groupValue: payoutMode,
                             contentPadding: EdgeInsets.zero,
@@ -779,30 +760,34 @@ class _PaymentScreen extends State<PaymentScreen> {
                                 SharedPreferenceHelper.getString(
                                     Preferences.doctorId);
                             final response = await AstraApiService()
-                                .requestWithdraw(doctorId, {
-                              "amount": amount,
-                              "payout_details": payoutDetails
-                            });
+                                .requestWithdraw(
+                                    doctorId, amount, payoutDetails);
 
                             if (response["success"] == true) {
-                              OslerToast.success(
-                                  context,
-                                  response["message"] ??
-                                      "Payout triggered successfully!");
+                              if (parentContext.mounted) {
+                                OslerToast.success(
+                                    parentContext,
+                                    response["message"] ??
+                                        "Withdrawal request submitted for admin review.");
+                              }
                             } else {
-                              OslerToast.error(context,
-                                  response["error"] ?? "Withdrawal failed.");
+                              if (parentContext.mounted) {
+                                OslerToast.error(parentContext,
+                                    response["error"] ?? "Withdrawal failed.");
+                              }
                             }
                           } catch (e) {
-                            OslerToast.error(
-                                context, "Failed to connect to API.");
+                            if (parentContext.mounted) {
+                              OslerToast.error(
+                                  parentContext, "Failed to connect to API.");
+                            }
                           } finally {
                             setState(() => isWithdrawing = false);
                             loadWalletStats();
                           }
                         },
                   child: Text(
-                    "Withdraw",
+                    "Submit Request",
                     style: TextStyle(
                         color: isFormValid && !isWithdrawing
                             ? AyurezeTheme.forestDeep

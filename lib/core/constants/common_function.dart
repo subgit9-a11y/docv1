@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
+import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -14,7 +15,7 @@ class CommonFunction {
       builder: (BuildContext context) {
         return Dialog(
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -46,18 +47,20 @@ class CommonFunction {
 
   //Check Internet Connection Data
   static Future<bool> checkNetwork() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile) {
+    final connectivityResults = await Connectivity().checkConnectivity();
+    // connectivity_plus 6.x returns a list (a device can be on Wi-Fi and VPN at
+    // once), so treat any non-none transport as having a network path.
+    final hasConnection = connectivityResults.any(
+      (result) => result != ConnectivityResult.none,
+    );
+    if (hasConnection) {
       return true;
-    } else if (connectivityResult == ConnectivityResult.wifi) {
-      return true;
-    } else {
-      Fluttertoast.showToast(
-        msg: "No Internet",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-      );
-      return false;
     }
+    Fluttertoast.showToast(
+      msg: "No Internet",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+    );
+    return false;
   }
 }

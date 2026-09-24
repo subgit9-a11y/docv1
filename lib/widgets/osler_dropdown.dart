@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class OslerDropdown extends StatelessWidget {
   final String label;
@@ -8,7 +9,7 @@ class OslerDropdown extends StatelessWidget {
   final List<String> items;
   final ValueChanged<String?> onChanged;
   final String? Function(String?)? validator;
-  final IconData? prefixIcon;
+  final List<List<dynamic>>? prefixIcon;
 
   const OslerDropdown({
     super.key,
@@ -28,7 +29,10 @@ class OslerDropdown extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
@@ -40,19 +44,21 @@ class OslerDropdown extends StatelessWidget {
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
             prefixIcon: prefixIcon != null
-                ? Icon(prefixIcon,
-                    size: 20, color: AyurezeTheme.healingGreen100)
+                ? HugeIcon(
+                    icon: prefixIcon!,
+                    size: 20,
+                    color: AyurezeTheme.healingGreen100)
                 : null,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
               borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
               borderSide: const BorderSide(color: Colors.transparent),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
               borderSide:
                   BorderSide(color: AyurezeTheme.healingGreen50, width: 2),
             ),

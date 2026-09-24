@@ -3,8 +3,6 @@ import 'package:doctro/features/consultation/videoCall/VideoCall/overlay_service
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/network/api_header.dart';
-import 'package:doctro/models/doctor_profile.dart';
-import 'package:doctro/models/setting.dart';
 import 'package:doctro/models/video_call_history_add_model.dart';
 import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
@@ -47,72 +45,53 @@ class VideoCallViewModel extends ChangeNotifier {
   Future<void> init(
       BuildContext context, bool callEnd, int? id, String? flag) async {
     isDisposed = false;
-    await settingRequest(context, callEnd, id, flag);
+    await _fetchAgoraConfigAndToken(context, callEnd, id, flag);
   }
 
-  Future<BaseModel<Setting>> settingRequest(
+  /// Notify listeners only while the view model is still alive.
+  /// Agora callbacks fire on background threads, so guard against
+  /// notifications after dispose().
+  void _safeNotify() {
+    if (isDisposed) return;
+    notifyListeners();
+  }
+
+  /// Fetches the Agora App ID and an RTC token, then starts the engine.
+  /// `doctorProfile()`/`settingRequest()` (the previous sources for these)
+  /// and the old `/video/token` route are all dead legacy endpoints (404
+  /// on the live backend) - the App ID and token now both come from live
+  /// Astra endpoints, the same way regardless of who placed the call.
+  Future<void> _fetchAgoraConfigAndToken(
       BuildContext context, bool callEnd, int? id, String? flag) async {
-    Setting response;
     try {
-      response =
-          await RestClient(await RetroApi().dioData(context)).settingRequest();
-      appId = response.data?.agoraAppId;
-      if (flag != "OutGoing") {
-        await doctorProfile(context, callEnd, id, flag);
-      } else {
-        await agoraTokenGenerateDoctor(context, id, callEnd, flag);
-      }
-      notifyListeners();
-    } catch (error, stacktrace) {
-      logger.e("Exception occur: $error stackTrace: $stacktrace");
-      return BaseModel()..setException(ServerError.withError(error: error));
-    }
-    return BaseModel()..data = response;
-  }
+      doctorId = int.tryParse(
+          SharedPreferenceHelper.getStringOrNull(Preferences.doctorId) ?? '');
 
-  Future<BaseModel<DoctorProfile>> doctorProfile(
-      BuildContext context, bool callEnd, int? id, String? flag) async {
-    DoctorProfile response;
-    try {
-      response =
-          await RestClient(await RetroApi().dioData(context)).doctorProfile();
-      if (response.success == true) {
-        token = response.data?.agoraToken;
-        channelName = response.data?.channelName;
-        doctorId = response.data?.id;
-        await initAgora(context, callEnd, id, flag);
-      }
-      notifyListeners();
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
-    }
-    return BaseModel()..data = response;
-  }
+      final configResponse = await AstraApiService().getVideoConfig();
+      appId = configResponse['app_id'] as String?;
+      if (!context.mounted) return;
 
-  Future<void> agoraTokenGenerateDoctor(
-      BuildContext context, int? id, bool callEnd, String? flag) async {
-    final String channel = "call_$id";
-    try {
-      final response = await AstraApiService().getVideoToken(
-        channel: channel,
-        uid: "0",
-        role: "publisher",
-      );
-
-      if (response['success'] == true) {
-        channelName = response['channel'];
-        token = response['token'];
+      final tokenResponse =
+          await AstraApiService().generateVideoToken(toId: '$id', uid: 0);
+      if (tokenResponse['success'] == true) {
+        final data = tokenResponse['data'] as Map<String, dynamic>?;
+        token = data?['token'] as String?;
+        channelName = data?['cn'] as String?;
+        if (!context.mounted) return;
         await initAgora(context, callEnd, id, flag);
         notifyListeners();
       } else {
+        if (!context.mounted) return;
         OslerToast.error(
             context, "Failed to call the patient! Unable to connect!");
-        if (context.mounted) Navigator.pop(context);
+        Navigator.pop(context);
       }
-    } catch (error) {
+    } catch (error, stacktrace) {
+      logger.e("Exception occur: $error stackTrace: $stacktrace");
+      if (!context.mounted) return;
       OslerToast.error(
           context, "Failed to call the patient! Unable to connect!");
-      if (context.mounted) Navigator.pop(context);
+      Navigator.pop(context);
     }
   }
 
@@ -146,7 +125,7 @@ class VideoCallViewModel extends ChangeNotifier {
         RtcEngineEventHandler(
           onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
             localUserJoined = true;
-            notifyListeners();
+            _safeNotify();
           },
           onUserJoined:
               (RtcConnection connection, int remoteUidParam, int elapsed) {
@@ -154,16 +133,19 @@ class VideoCallViewModel extends ChangeNotifier {
             callTime = DateFormat('h:mm a').format(now);
             callDate = DateFormat('yyyy-MM-dd').format(now);
             remoteUid = remoteUidParam;
-            notifyListeners();
+            _safeNotify();
           },
           onUserOffline: (RtcConnection connection, int remoteUidParam,
               UserOfflineReasonType reason) {
             remoteUid = null;
             engine?.leaveChannel();
-            OslerToast.info(context, "Call Ended");
-            notifyListeners();
+            if (!isDisposed && context.mounted) {
+              OslerToast.info(context, "Call Ended");
+            }
+            _safeNotify();
           },
           onLeaveChannel: (RtcConnection connection, RtcStats details) {
+            if (isDisposed) return;
             if (flag == "OutGoing") {
               callDuration = details.duration;
               OverlayService().removeVideosOverlay(
@@ -191,7 +173,7 @@ class VideoCallViewModel extends ChangeNotifier {
                 }
               }
             }
-            notifyListeners();
+            _safeNotify();
           },
         ),
       );
@@ -261,11 +243,11 @@ class VideoCallViewModel extends ChangeNotifier {
       if (isEngineInitialized) {
         engine?.leaveChannel();
       }
-      notifyListeners();
+      _safeNotify();
     } catch (e) {
       logger.e(e);
     }
-    if (context.mounted) Navigator.pop(context);
+    if (!isDisposed && context.mounted) Navigator.pop(context);
   }
 
   @override

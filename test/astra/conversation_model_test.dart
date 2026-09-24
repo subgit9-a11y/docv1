@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:doctro/core/astra/models/conversation_model.dart';
-import 'package:doctro/core/astra/actions/action_models.dart';
 
 void main() {
   group('AstraMessage', () {
@@ -30,14 +29,16 @@ void main() {
     });
 
     test('should create error system message', () {
-      final message = AstraMessage.system(content: 'Error occurred', isError: true);
+      final message =
+          AstraMessage.system(content: 'Error occurred', isError: true);
 
       expect(message.status, MessageStatus.failed);
       expect(message.errorMessage, 'Error occurred');
     });
 
     test('should create streaming message', () {
-      final message = AstraMessage.streaming(content: 'Typing...', progress: 0.5);
+      final message =
+          AstraMessage.streaming(content: 'Typing...', progress: 0.5);
 
       expect(message.status, MessageStatus.sending);
       expect(message.role, MessageRole.assistant);

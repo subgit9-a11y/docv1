@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
@@ -10,28 +9,28 @@ import 'package:doctro/core/astra/utils/astra_logger.dart';
 class DoctorContext {
   /// Doctor's unique identifier
   final String id;
-  
+
   /// Doctor's full name
   final String name;
-  
+
   /// Doctor's email
   final String? email;
-  
+
   /// Doctor's phone number
   final String? phone;
-  
+
   /// Doctor's specialization
   final String? specialization;
-  
+
   /// Doctor's registration/license number
   final String? licenseNumber;
-  
+
   /// Profile image URL
   final String? profileImageUrl;
-  
+
   /// Clinic/hospital name
   final String? clinicName;
-  
+
   /// Clinic address
   final String? clinicAddress;
 
@@ -49,19 +48,56 @@ class DoctorContext {
 
   /// Create from shared preferences
   factory DoctorContext.fromPreferences() {
-    final id = SharedPreferenceHelper.getString(Preferences.userId);
-    final name = SharedPreferenceHelper.getString(Preferences.userName);
-    final email = SharedPreferenceHelper.getString(Preferences.email);
-    final phone = SharedPreferenceHelper.getString(Preferences.phone);
-    final specialization = SharedPreferenceHelper.getString(Preferences.specialization);
-    
+    final id = _firstNonEmpty([
+      SharedPreferenceHelper.getString(Preferences.doctorId),
+      SharedPreferenceHelper.getString(Preferences.uniqueId),
+      SharedPreferenceHelper.getString(Preferences.userId),
+    ]);
+    final name = _firstNonEmpty([
+      SharedPreferenceHelper.getString(Preferences.name),
+      SharedPreferenceHelper.getString(Preferences.user_name),
+    ]);
+    final email = _firstNonEmpty([
+      SharedPreferenceHelper.getString(Preferences.email),
+      SharedPreferenceHelper.getString(Preferences.user_email),
+    ]);
+    final phone = SharedPreferenceHelper.getString(Preferences.phone_no);
+    final specialization =
+        SharedPreferenceHelper.getString(Preferences.specialization);
+    final image = SharedPreferenceHelper.getString(Preferences.image);
+
     return DoctorContext(
       id: id.isNotEmpty ? id : 'unknown',
       name: name.isNotEmpty ? name : 'Unknown Doctor',
       email: email.isNotEmpty ? email : null,
       phone: phone.isNotEmpty ? phone : null,
       specialization: specialization.isNotEmpty ? specialization : null,
+      profileImageUrl: image.isNotEmpty ? image : null,
     );
+  }
+
+  /// Create from a serialized map (inverse of [toJson]).
+  factory DoctorContext.fromJson(Map<String, dynamic> json) {
+    return DoctorContext(
+      id: (json['id'] ?? 'unknown').toString(),
+      name: (json['name'] ?? 'Unknown Doctor').toString(),
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
+      specialization: json['specialization'] as String?,
+      licenseNumber: json['license_number'] as String?,
+      profileImageUrl: json['profile_image_url'] as String?,
+      clinicName: json['clinic_name'] as String?,
+      clinicAddress: json['clinic_address'] as String?,
+    );
+  }
+
+  /// First value that is neither empty nor the "N_A" sentinel returned by
+  /// [SharedPreferenceHelper.getString] for keys that were never written.
+  static String _firstNonEmpty(List<String> values) {
+    for (final value in values) {
+      if (value.isNotEmpty && value != 'N_A') return value;
+    }
+    return '';
   }
 
   /// Convert to JSON for API calls

@@ -6,6 +6,7 @@ import 'package:doctro/features/consultation/chat/models/user_chat.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -108,7 +109,7 @@ class AuthProvider extends ChangeNotifier {
 
     try {
       GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId: Platform.isIOS
+        clientId: (!kIsWeb && Platform.isIOS)
             ? '298839588168-up4rcmclffgne2hnlemg7n4e29qtovn2.apps.googleusercontent.com'
             : '298839588168-6ut75u7g4rqc8grmujtcl4m7obnq3oml.apps.googleusercontent.com',
         serverClientId:
@@ -191,7 +192,11 @@ class AuthProvider extends ChangeNotifier {
         return null;
       }
     } catch (e) {
-      if (e is Exception && e.toString().contains("PlatformException")) {}
+      // The UI only ever shows a generic message for this branch, so the
+      // real cause (e.g. "ApiException: 10" - the app's signing certificate
+      // SHA-1 isn't registered for this OAuth client) would otherwise never
+      // surface anywhere.
+      debugPrint('Google Sign-In failed: $e');
       if (e.toString().contains("sign_in_canceled") ||
           e.toString().contains("cancel")) {
         _status = Status.authenticateCanceled;
@@ -205,7 +210,26 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> handleSignOut() async {
     _status = Status.uninitialized;
-    await firebaseAuth.signOut();
-    await GoogleSignIn().disconnect();
+    notifyListeners();
+
+    // Clear all locally cached session state so the app doesn't
+    // auto-login again on next launch.
+    try {
+      await SharedPreferenceHelper.clearPref();
+    } catch (e) {
+      // Best-effort: continue to sign out of Firebase/Google regardless.
+    }
+
+    try {
+      await firebaseAuth.signOut();
+    } catch (e) {
+      // Ignore sign-out failures; prefs are already cleared.
+    }
+
+    try {
+      await GoogleSignIn().disconnect();
+    } catch (e) {
+      // disconnect() throws when there was no signed-in Google account.
+    }
   }
 }

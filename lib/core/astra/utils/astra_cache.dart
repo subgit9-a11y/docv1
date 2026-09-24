@@ -9,7 +9,7 @@ class AstraCache {
 
   // LRU Cache for AI responses
   final _responseCache = _LRUCache<String, CachedResponse>(maxSize: 100);
-  
+
   // Message debouncing
   Timer? _debounceTimer;
   final Map<String, Completer<void>> _pendingMessages = {};
@@ -26,24 +26,26 @@ class AstraCache {
   CachedResponse? get(String key) {
     final cached = _responseCache.get(key);
     if (cached == null) return null;
-    
-    if (DateTime.now().difference(cached.timestamp) > 
+
+    if (DateTime.now().difference(cached.timestamp) >
         Duration(minutes: _maxCacheAgeMinutes)) {
       _responseCache.remove(key);
       return null;
     }
-    
+
     return cached;
   }
 
   /// Cache a response with optional TTL
   void set(String key, dynamic response, {int? ttlMinutes}) {
-    _responseCache.set(key, CachedResponse(
-      data: response,
-      timestamp: DateTime.now(),
-      ttlMinutes: ttlMinutes,
-    ));
-    
+    _responseCache.set(
+        key,
+        CachedResponse(
+          data: response,
+          timestamp: DateTime.now(),
+          ttlMinutes: ttlMinutes,
+        ));
+
     // Cleanup if needed
     _maybeCleanup();
   }
@@ -66,7 +68,8 @@ class AstraCache {
   // ============================================================
 
   /// Debounce rapid message sends
-  Future<void> debounceMessage(String messageId, {
+  Future<void> debounceMessage(
+    String messageId, {
     Duration delay = const Duration(milliseconds: 300),
   }) async {
     if (_pendingMessages.containsKey(messageId)) {
@@ -107,28 +110,29 @@ class AstraCache {
 
   void _maybeCleanup() {
     final now = DateTime.now();
-    if (_lastCleanup != null && 
+    if (_lastCleanup != null &&
         now.difference(_lastCleanup!) < const Duration(minutes: 5)) {
       return;
     }
-    
+
     _cleanup();
     _lastCleanup = now;
   }
 
   void _cleanup() {
     final keysToRemove = <String>[];
-    
+
     for (final entry in _responseCache.entries) {
       final cached = entry.value;
       final age = DateTime.now().difference(cached.timestamp);
-      final maxAge = Duration(minutes: cached.ttlMinutes ?? _maxCacheAgeMinutes);
-      
+      final maxAge =
+          Duration(minutes: cached.ttlMinutes ?? _maxCacheAgeMinutes);
+
       if (age > maxAge) {
         keysToRemove.add(entry.key);
       }
     }
-    
+
     for (final key in keysToRemove) {
       _responseCache.remove(key);
     }
@@ -194,7 +198,7 @@ class _LRUCache<K, V> {
       final oldest = _order.removeAt(0);
       _cache.remove(oldest);
     }
-    
+
     _cache[key] = value;
     _order.add(key);
   }

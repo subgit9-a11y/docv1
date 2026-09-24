@@ -1,14 +1,20 @@
+import 'dart:ui' show ImageFilter;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:doctro/core/astra/widgets/astra_floating_button.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:doctro/widgets/osler_skeleton.dart';
 import 'package:doctro/features/dashboard/patient_information.dart';
 import 'package:doctro/features/dashboard/view_models/login_home_view_model.dart';
+import 'package:doctro/theme/app_motion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:provider/provider.dart';
 
 class LoginHomeScreen extends StatelessWidget {
@@ -57,21 +63,14 @@ class _LoginHomeViewState extends State<_LoginHomeView>
       curve: Curves.easeOut,
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.08),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeOutCubic,
-    ));
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(
+      CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
+    );
 
-    _scaleAnimation = Tween<double>(
-      begin: 0.95,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeOutBack,
-    ));
+    _scaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(
+      CurvedAnimation(parent: _animController, curve: Curves.easeOutBack),
+    );
 
     _animController.forward();
   }
@@ -92,373 +91,451 @@ class _LoginHomeViewState extends State<_LoginHomeView>
       key: _scaffoldKey,
       backgroundColor: AyurezeTheme.canvas,
       drawer: const ModernDrawer(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AyurezeTheme.healingGreenFill,
+        tooltip: 'Ask Astra AI',
+        onPressed: () => AstraFloatingButton.openAstraChat(),
+        child: HugeIcon(
+          icon: HugeIcons.strokeRoundedBrain01,
+          color: Colors.white,
+        ),
+      ),
       body: Consumer<LoginHomeViewModel>(
         builder: (context, viewModel, _) {
           return RefreshIndicator(
             color: AyurezeTheme.healingGreen50,
             backgroundColor: AyurezeTheme.surface,
             onRefresh: () => viewModel.fetchAppointments(context),
-            child: SafeArea(
-              child: CustomScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                slivers: [
-                  // App Bar / Header
-                  SliverToBoxAdapter(
-                    child: FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: SlideTransition(
-                        position: _slideAnimation,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () =>
-                                    _scaffoldKey.currentState?.openDrawer(),
-                                child: Container(
-                                  width: 48,
-                                  height: 48,
-                                  decoration: BoxDecoration(
-                                    color: AyurezeTheme.surface,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: AyurezeTheme.border,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: AyurezeTheme.shadow,
-                                        blurRadius: 8,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: (viewModel.dFullImage != null &&
-                                          viewModel.dFullImage!.isNotEmpty)
-                                      ? ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(24),
-                                          child: CachedNetworkImage(
-                                            imageUrl: viewModel.dFullImage!,
-                                            fit: BoxFit.cover,
-                                            placeholder: (_, __) => Icon(
-                                              Icons.person_rounded,
-                                              color: AyurezeTheme.forestDeep,
-                                            ),
-                                            errorWidget: (_, __, ___) => Icon(
-                                              Icons.person_rounded,
-                                              color: AyurezeTheme.forestDeep,
+            child: Stack(
+              children: [
+                // Soft gradient blobs for the glass panels below to refract.
+                Positioned(
+                  top: -60,
+                  right: -70,
+                  child:
+                      GlassBlob(size: 220, color: AyurezeTheme.healingGreen50),
+                ),
+                Positioned(
+                  top: 380,
+                  left: -90,
+                  child: GlassBlob(
+                      size: 240, color: AyurezeTheme.sunshineYellow50),
+                ),
+                Positioned(
+                  bottom: -80,
+                  right: -60,
+                  child: GlassBlob(
+                      size: 220, color: AyurezeTheme.connectivityBlue50),
+                ),
+                SafeArea(
+                  child: CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      // App Bar / Header
+                      SliverToBoxAdapter(
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: SlideTransition(
+                            position: _slideAnimation,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () =>
+                                        _scaffoldKey.currentState?.openDrawer(),
+                                    child: ClipOval(
+                                      child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaX: 12, sigmaY: 12),
+                                        child: Container(
+                                          width: 48,
+                                          height: 48,
+                                          decoration: BoxDecoration(
+                                            color: (AyurezeTheme.surface)
+                                                .withValues(alpha: 0.5),
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Colors.white
+                                                  .withValues(alpha: 0.35),
                                             ),
                                           ),
-                                        )
-                                      : Icon(
-                                          Icons.menu_rounded,
-                                          color: AyurezeTheme.forestDeep,
+                                          child: (viewModel.dFullImage !=
+                                                      null &&
+                                                  viewModel
+                                                      .dFullImage!.isNotEmpty)
+                                              ? ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    24,
+                                                  ),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        viewModel.dFullImage!,
+                                                    fit: BoxFit.cover,
+                                                    placeholder: (_, __) =>
+                                                        HugeIcon(
+                                                      icon: HugeIcons
+                                                          .strokeRoundedUserCircle,
+                                                      color: AyurezeTheme
+                                                          .forestDeep,
+                                                    ),
+                                                    errorWidget: (_, __, ___) =>
+                                                        HugeIcon(
+                                                      icon: HugeIcons
+                                                          .strokeRoundedUserCircle,
+                                                      color: AyurezeTheme
+                                                          .forestDeep,
+                                                    ),
+                                                  ),
+                                                )
+                                              : HugeIcon(
+                                                  icon: HugeIcons
+                                                      .strokeRoundedMenu01,
+                                                  color:
+                                                      AyurezeTheme.forestDeep,
+                                                ),
                                         ),
-                                ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 14),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          getTranslated(
+                                            context,
+                                            AppString.dashboard_welcome,
+                                          ).toString(),
+                                          style: textTheme.bodyMedium?.copyWith(
+                                            color: AyurezeTheme.textSecondary,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Dr. ${viewModel.dName ?? 'Doctor'}",
+                                          style: textTheme.titleLarge?.copyWith(
+                                            color: AyurezeTheme.textPrimary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, 'notifications');
+                                    },
+                                    icon: ClipOval(
+                                      child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaX: 12, sigmaY: 12),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: (AyurezeTheme.surface)
+                                                .withValues(alpha: 0.5),
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Colors.white
+                                                  .withValues(alpha: 0.35),
+                                            ),
+                                          ),
+                                          child: HugeIcon(
+                                            icon: HugeIcons
+                                                .strokeRoundedNotification02,
+                                            color: AyurezeTheme.textPrimary,
+                                            size: 22,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 14),
-                              Expanded(
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Hero Banner Card
+                      SliverToBoxAdapter(
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: ScaleTransition(
+                            scale: _scaleAnimation,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 12, 20, 16),
+                              child: Container(
+                                width: double.infinity,
+                                padding:
+                                    const EdgeInsets.all(AyurezeTheme.spaceXl),
+                                decoration: AyurezeTheme.heroDecoration(),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      getTranslated(context, "welcome")
-                                          .toString(),
-                                      style: textTheme.bodyMedium?.copyWith(
-                                        color: AyurezeTheme.textSecondary,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white.withValues(
+                                              alpha: 0.18,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              999,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "Clinical Dashboard",
+                                            style:
+                                                textTheme.bodySmall?.copyWith(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        HugeIcon(
+                                          icon: HugeIcons.strokeRoundedHealth,
+                                          color: Colors.white.withValues(
+                                            alpha: 0.9,
+                                          ),
+                                          size: 24,
+                                        ),
+                                      ],
                                     ),
+                                    const SizedBox(height: 14),
                                     Text(
-                                      "Dr. ${viewModel.dName ?? 'Doctor'}",
-                                      style: textTheme.titleLarge?.copyWith(
-                                        color: AyurezeTheme.textPrimary,
+                                      getTranslated(
+                                        context,
+                                        AppString.today_appointment_heading,
+                                      ).toString(),
+                                      style: textTheme.headlineMedium?.copyWith(
+                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      "Manage your consultations & patient health records seamlessly.",
+                                      style: textTheme.bodyMedium?.copyWith(
+                                        color: Colors.white
+                                            .withValues(alpha: 0.85),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, 'notifications');
-                                },
-                                icon: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: AyurezeTheme.surface,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: AyurezeTheme.border,
-                                    ),
-                                  ),
-                                  child: Icon(
-                                    Icons.notifications_none_rounded,
-                                    color: AyurezeTheme.textPrimary,
-                                    size: 22,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
 
-                  // Hero Banner Card
-                  SliverToBoxAdapter(
-                    child: FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: ScaleTransition(
-                        scale: _scaleAnimation,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-                          child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(20),
-                            decoration: AyurezeTheme.heroDecoration(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                      // Quick Stats Row (Responsive)
+                      SliverToBoxAdapter(
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AyurezeTheme.spaceXl),
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                final isWide = constraints.maxWidth > 500;
+                                // getString falls back to the literal 'N_A'
+                                // sentinel when the key was never written (e.g.
+                                // the settings fetch that populates it failed),
+                                // which rendered as "N_A0" here. Fall back to
+                                // nothing rather than propagate the sentinel.
+                                final currencySymbol =
+                                    SharedPreferenceHelper.getStringOrNull(
+                                          Preferences.currency_symbol,
+                                        ) ??
+                                        '';
+
+                                // A fixed tile height, not an aspect ratio: the card
+                                // stacks an icon, a value and a label, so its content
+                                // height is constant while a ratio-derived height
+                                // shrank below that on narrow phones and in the
+                                // 4-column branch, overflowing every card.
+                                return GridView(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: isWide ? 4 : 2,
+                                    mainAxisSpacing: 12,
+                                    crossAxisSpacing: 12,
+                                    mainAxisExtent: 120,
+                                  ),
                                   children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                        vertical: 4,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.18),
-                                        borderRadius:
-                                            BorderRadius.circular(999),
-                                      ),
-                                      child: Text(
-                                        "Clinical Dashboard",
-                                        style: textTheme.labelLarge?.copyWith(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
-                                      ),
+                                    _buildStatCard(
+                                      context,
+                                      index: 0,
+                                      title: getTranslated(
+                                        context,
+                                        AppString.information_amount,
+                                      ).toString(),
+                                      value:
+                                          "$currencySymbol${viewModel.totalEarnings.toStringAsFixed(0)}",
+                                      icon: HugeIcons.strokeRoundedWallet02,
+                                      color: AyurezeTheme.healingGreen50,
                                     ),
-                                    const Spacer(),
-                                    Icon(
-                                      Icons.health_and_safety_rounded,
-                                      color: Colors.white.withOpacity(0.9),
-                                      size: 24,
+                                    _buildStatCard(
+                                      context,
+                                      index: 1,
+                                      title: "Patients",
+                                      value: "${viewModel.patientCount}",
+                                      icon: HugeIcons.strokeRoundedUserGroup,
+                                      color: AyurezeTheme.connectivityBlue50,
+                                    ),
+                                    _buildStatCard(
+                                      context,
+                                      index: 2,
+                                      title: "Today",
+                                      value:
+                                          "${viewModel.todayAppointments.length}",
+                                      icon: HugeIcons.strokeRoundedCalendar01,
+                                      color: AyurezeTheme.sunshineYellow50,
+                                    ),
+                                    _buildStatCard(
+                                      context,
+                                      index: 3,
+                                      title: "Reviews",
+                                      value: "${viewModel.reviewCount}",
+                                      icon: HugeIcons.strokeRoundedStar,
+                                      color: AyurezeTheme.caringViolet50,
                                     ),
                                   ],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Search Bar
+                      SliverToBoxAdapter(
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                            child: GlassSurface(
+                              radius: 20,
+                              child: TextField(
+                                controller: _searchController,
+                                onChanged: (text) =>
+                                    viewModel.onSearchTextChanged(text),
+                                style: textTheme.bodyLarge?.copyWith(
+                                  color: AyurezeTheme.textPrimary,
                                 ),
-                                const SizedBox(height: 14),
-                                Text(
-                                  getTranslated(
-                                    context,
-                                    "today_appointment_schedule",
-                                  ).toString(),
-                                  style: textTheme.headlineMedium?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                decoration: InputDecoration(
+                                  hintText: "Search patient by name...",
+                                  hintStyle: textTheme.bodyMedium?.copyWith(
+                                    color: AyurezeTheme.textSecondary,
                                   ),
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  "Manage your consultations & patient health records seamlessly.",
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    color: Colors.white.withOpacity(0.85),
+                                  prefixIcon: HugeIcon(
+                                    icon: HugeIcons.strokeRoundedSearch01,
+                                    color: AyurezeTheme.forestDeep,
                                   ),
+                                  suffixIcon: _searchController.text.isNotEmpty
+                                      ? IconButton(
+                                          icon: HugeIcon(
+                                            icon:
+                                                HugeIcons.strokeRoundedCancel01,
+                                            color: AyurezeTheme.textSecondary,
+                                          ),
+                                          onPressed: () {
+                                            _searchController.clear();
+                                            viewModel.onSearchTextChanged('');
+                                            setState(() {});
+                                          },
+                                        )
+                                      : null,
+                                  filled: false,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 14,
+                                  ),
+                                  border: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
 
-                  // Quick Stats Row (Responsive)
-                  SliverToBoxAdapter(
-                    child: FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final isWide = constraints.maxWidth > 500;
-                            final currencySymbol =
-                                SharedPreferenceHelper.getString(
-                              Preferences.currency_symbol,
-                            );
-
-                            return GridView.count(
-                              crossAxisCount: isWide ? 4 : 2,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              mainAxisSpacing: 12,
-                              crossAxisSpacing: 12,
-                              childAspectRatio: isWide ? 1.8 : 1.5,
-                              children: [
-                                _buildStatCard(
-                                  context,
-                                  title: getTranslated(
+                      // Custom Segmented Tab Bar
+                      SliverToBoxAdapter(
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AyurezeTheme.spaceXl),
+                            child: GlassSurface(
+                              radius: 18,
+                              padding:
+                                  const EdgeInsets.all(AyurezeTheme.spaceXs),
+                              child: Row(
+                                children: [
+                                  _buildTabItem(
                                     context,
-                                    AppString.information_amount,
-                                  ).toString(),
-                                  value:
-                                      "$currencySymbol${viewModel.totalEarnings.toStringAsFixed(0)}",
-                                  icon: Icons.account_balance_wallet_rounded,
-                                  color: AyurezeTheme.healingGreen50,
-                                ),
-                                _buildStatCard(
-                                  context,
-                                  title: "Patients",
-                                  value: "${viewModel.patientCount}",
-                                  icon: Icons.people_alt_rounded,
-                                  color: AyurezeTheme.connectivityBlue50,
-                                ),
-                                _buildStatCard(
-                                  context,
-                                  title: "Today",
-                                  value:
-                                      "${viewModel.todayAppointments.length}",
-                                  icon: Icons.calendar_today_rounded,
-                                  color: AyurezeTheme.sunshineYellow50,
-                                ),
-                                _buildStatCard(
-                                  context,
-                                  title: "Reviews",
-                                  value: "${viewModel.reviewCount}",
-                                  icon: Icons.star_rounded,
-                                  color: AyurezeTheme.caringViolet50,
-                                ),
-                              ],
-                            );
-                          },
+                                    index: 0,
+                                    label:
+                                        "Today (${_getTabListCount(viewModel, 0)})",
+                                  ),
+                                  _buildTabItem(
+                                    context,
+                                    index: 1,
+                                    label:
+                                        "Tomorrow (${_getTabListCount(viewModel, 1)})",
+                                  ),
+                                  _buildTabItem(
+                                    context,
+                                    index: 2,
+                                    label:
+                                        "Upcoming (${_getTabListCount(viewModel, 2)})",
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+
+                      const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
+                      // Appointments List Section
+                      if (viewModel.isLoading)
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: AyurezeTheme.spaceXl),
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) => const OslerCardSkeleton(),
+                              childCount: 4,
+                            ),
+                          ),
+                        )
+                      else
+                        _buildAppointmentSliverList(context, viewModel),
+
+                      const SliverToBoxAdapter(child: SizedBox(height: 32)),
+                    ],
                   ),
-
-                  // Search Bar
-                  SliverToBoxAdapter(
-                    child: FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-                        child: TextField(
-                          controller: _searchController,
-                          onChanged: (text) =>
-                              viewModel.onSearchTextChanged(text),
-                          style: textTheme.bodyLarge?.copyWith(
-                            color: AyurezeTheme.textPrimary,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: "Search patient by name...",
-                            hintStyle: textTheme.bodyMedium?.copyWith(
-                              color: AyurezeTheme.textSecondary,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.search_rounded,
-                              color: AyurezeTheme.forestDeep,
-                            ),
-                            suffixIcon: _searchController.text.isNotEmpty
-                                ? IconButton(
-                                    icon: Icon(
-                                      Icons.clear_rounded,
-                                      color: AyurezeTheme.textSecondary,
-                                    ),
-                                    onPressed: () {
-                                      _searchController.clear();
-                                      viewModel.onSearchTextChanged('');
-                                      setState(() {});
-                                    },
-                                  )
-                                : null,
-                            filled: true,
-                            fillColor: AyurezeTheme.surface,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 14,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                color: AyurezeTheme.border,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                color: AyurezeTheme.healingGreen50,
-                                width: 1.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // Custom Segmented Tab Bar
-                  SliverToBoxAdapter(
-                    child: FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: AyurezeTheme.surfaceMuted,
-                            borderRadius: BorderRadius.circular(18),
-                            border: Border.all(color: AyurezeTheme.border),
-                          ),
-                          child: Row(
-                            children: [
-                              _buildTabItem(
-                                context,
-                                index: 0,
-                                label:
-                                    "Today (${_getTabListCount(viewModel, 0)})",
-                              ),
-                              _buildTabItem(
-                                context,
-                                index: 1,
-                                label:
-                                    "Tomorrow (${_getTabListCount(viewModel, 1)})",
-                              ),
-                              _buildTabItem(
-                                context,
-                                index: 2,
-                                label:
-                                    "Upcoming (${_getTabListCount(viewModel, 2)})",
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
-
-                  // Appointments List Section
-                  if (viewModel.isLoading)
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) => const OslerCardSkeleton(),
-                          childCount: 4,
-                        ),
-                      ),
-                    )
-                  else
-                    _buildAppointmentSliverList(context, viewModel),
-
-                  const SliverToBoxAdapter(child: SizedBox(height: 32)),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
@@ -468,16 +545,16 @@ class _LoginHomeViewState extends State<_LoginHomeView>
 
   Widget _buildStatCard(
     BuildContext context, {
+    required int index,
     required String title,
     required String value,
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required Color color,
   }) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Container(
+    final card = GlassSurface(
       padding: const EdgeInsets.all(14),
-      decoration: AyurezeTheme.panelDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -487,10 +564,10 @@ class _LoginHomeViewState extends State<_LoginHomeView>
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.14),
+                  color: color.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(icon, size: 18, color: color),
+                child: HugeIcon(icon: icon, size: 18, color: color),
               ),
               const Spacer(),
             ],
@@ -507,9 +584,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
           ),
           Text(
             title,
-            style: textTheme.bodyMedium?.copyWith(
+            style: textTheme.bodySmall?.copyWith(
               color: AyurezeTheme.textSecondary,
-              fontSize: 12,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -517,6 +593,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
         ],
       ),
     );
+
+    return ScreenEntrance(index: index, child: card);
   }
 
   Widget _buildTabItem(
@@ -547,7 +625,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       color: AyurezeTheme.shadow,
                       blurRadius: 6,
                       offset: const Offset(0, 2),
-                    )
+                    ),
                   ]
                 : [],
           ),
@@ -598,22 +676,30 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     }
 
     if (items == null || items.isEmpty) {
+      final showError = vm.hasError && !isSearching;
       return SliverToBoxAdapter(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
-          child: Container(
+          padding: const EdgeInsets.symmetric(
+              horizontal: AyurezeTheme.spaceXl,
+              vertical: AyurezeTheme.space3xl),
+          child: GlassSurface(
             padding: const EdgeInsets.all(28),
-            decoration: AyurezeTheme.mutedPanelDecoration(),
             child: Column(
               children: [
-                Icon(
-                  Icons.event_available_rounded,
+                HugeIcon(
+                  icon: showError
+                      ? HugeIcons.strokeRoundedCloudOff
+                      : HugeIcons.strokeRoundedCalendarCheck01,
                   size: 48,
-                  color: AyurezeTheme.forestDeep.withOpacity(0.5),
+                  color: showError
+                      ? AyurezeTheme.remoteRed50
+                      : AyurezeTheme.forestDeep.withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  "No Appointments Found",
+                  showError
+                      ? "Couldn't Load Appointments"
+                      : "No Appointments Found",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AyurezeTheme.textPrimary,
                         fontWeight: FontWeight.bold,
@@ -621,13 +707,16 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  isSearching
-                      ? "No patient matching '${_searchController.text}'"
-                      : "There are no appointments scheduled for this section.",
+                  showError
+                      ? vm.errorMessage
+                      : isSearching
+                          ? "No patient matching '${_searchController.text}'"
+                          : "There are no appointments scheduled for this section.",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AyurezeTheme.textSecondary,
-                      ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: AyurezeTheme.textSecondary),
                 ),
               ],
             ),
@@ -637,20 +726,19 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     }
 
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceXl),
       sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            final item = items[index];
-            return _buildAppointmentCard(context, item);
-          },
-          childCount: items.length,
-        ),
+        delegate: SliverChildBuilderDelegate((context, index) {
+          final item = items[index];
+          // Cap the stagger so a long list doesn't push later cards'
+          // entrance animation minutes into the future.
+          return _buildAppointmentCard(context, item, index % 8);
+        }, childCount: items.length),
       ),
     );
   }
 
-  Widget _buildAppointmentCard(BuildContext context, dynamic item) {
+  Widget _buildAppointmentCard(BuildContext context, dynamic item, int index) {
     final textTheme = Theme.of(context).textTheme;
     final String? imageUrl = item.user?.fullImage;
     final String patientName = item.patientName ?? "Patient";
@@ -658,12 +746,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     final String appointmentDate = item.date ?? "";
     final String address = item.patientAddress ?? "In-Clinic Consultation";
 
-    return Padding(
+    final card = Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
+            HapticFeedback.selectionClick();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -671,9 +760,9 @@ class _LoginHomeViewState extends State<_LoginHomeView>
               ),
             );
           },
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
             decoration: AyurezeTheme.panelDecoration(),
             child: Row(
               children: [
@@ -733,8 +822,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(
-                            Icons.access_time_rounded,
+                          HugeIcon(
+                            icon: HugeIcons.strokeRoundedTime01,
                             size: 14,
                             color: AyurezeTheme.forestDeep,
                           ),
@@ -760,9 +849,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       const SizedBox(height: 4),
                       Text(
                         address,
-                        style: textTheme.bodyMedium?.copyWith(
+                        style: textTheme.bodySmall?.copyWith(
                           color: AyurezeTheme.textSecondary,
-                          fontSize: 12,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -780,8 +868,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                     shape: BoxShape.circle,
                     border: Border.all(color: AyurezeTheme.border),
                   ),
-                  child: Icon(
-                    Icons.chevron_right_rounded,
+                  child: HugeIcon(
+                    icon: HugeIcons.strokeRoundedArrowRight01,
                     color: AyurezeTheme.forestDeep,
                     size: 22,
                   ),
@@ -792,5 +880,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
         ),
       ),
     );
+
+    return ScreenEntrance(index: index, child: card);
   }
 }

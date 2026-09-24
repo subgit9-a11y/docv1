@@ -11,3 +11,8 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+
+# app/debug.keystore is the exception: it is a fixed, non-production debug key
+# checked in deliberately so every build (local and CI) signs with the same
+# certificate. See the signingConfigs comment in app/build.gradle.
+!app/debug.keystore

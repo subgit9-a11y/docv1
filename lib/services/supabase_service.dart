@@ -1,7 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
-import 'dart:typed_data';
 
 class SupabaseService {
   SupabaseClient get _client {
@@ -91,7 +91,9 @@ class SupabaseService {
         'signature_url': signatureUrl,
         'updated_at': DateTime.now().toIso8601String(),
       }).eq('unique_id', doctorId);
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('updateSignatureUrl failed for $doctorId: $e');
+    }
   }
 
   /// Log document verification metadata in Supabase
@@ -109,6 +111,8 @@ class SupabaseService {
         'wasabi_url': wasabiUrl,
         'uploaded_at': DateTime.now().toIso8601String(),
       });
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('logVerificationDocument failed for $doctorId: $e');
+    }
   }
 }

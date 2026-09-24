@@ -13,13 +13,13 @@ import 'package:doctro/core/astra/utils/astra_exception.dart';
 /// Handles caching, offline queue, and data transformation.
 class AstraRepository {
   static final AstraRepository _instance = AstraRepository._internal();
-  
+
   final AstraService _service = AstraService();
-  
+
   Box<dynamic>? _cacheBox;
   Box<dynamic>? _conversationBox;
   Box<dynamic>? _offlineQueueBox;
-  
+
   bool _initialized = false;
 
   factory AstraRepository() => _instance;
@@ -32,18 +32,19 @@ class AstraRepository {
 
   Future<void> initialize() async {
     if (_initialized) return;
-    
+
     try {
       await Hive.initFlutter();
-      
+
       _cacheBox = await Hive.openBox(AstraConfig.offlineBoxName);
       _conversationBox = await Hive.openBox(AstraConfig.conversationBoxName);
       _offlineQueueBox = await Hive.openBox('astra_offline_queue');
-      
+
       _initialized = true;
       AstraLogger.i('AstraRepository initialized successfully');
     } catch (e, st) {
-      AstraLogger.e('Failed to initialize AstraRepository', error: e, stackTrace: st);
+      AstraLogger.e('Failed to initialize AstraRepository',
+          error: e, stackTrace: st);
       // Continue without caching if initialization fails
       _initialized = true; // Prevent repeated init attempts
     }
@@ -69,12 +70,12 @@ class AstraRepository {
       };
 
       final response = await _service.chat(data);
-      
+
       // Cache successful response
       if (AstraConfig.enableCaching && _cacheBox != null) {
         await _cacheMessage(userId, message, response);
       }
-      
+
       return response;
     } catch (e) {
       // If offline and caching enabled, return cached response
@@ -84,7 +85,7 @@ class AstraRepository {
           AstraLogger.w('Using cached response due to network error');
           return cached;
         }
-        
+
         // Queue for later
         await _queueOfflineMessage(
           userId: userId,
@@ -262,19 +263,19 @@ class AstraRepository {
   /// Save conversation message
   Future<void> saveMessage(String userId, AstraMessage message) async {
     if (_conversationBox == null || !AstraConfig.enableCaching) return;
-    
+
     try {
       final key = 'conversation_$userId';
-      final List<dynamic> messages = 
+      final List<dynamic> messages =
           jsonDecode(_conversationBox!.get(key, defaultValue: '[]') as String);
-      
+
       messages.add(message.toJson());
-      
+
       // Limit history size
       if (messages.length > AstraConfig.maxLocalHistoryMessages) {
         messages.removeAt(0);
       }
-      
+
       await _conversationBox!.put(key, jsonEncode(messages));
     } catch (e, st) {
       AstraLogger.e('Failed to save message', error: e, stackTrace: st);
@@ -288,21 +289,21 @@ class AstraRepository {
     String? beforeMessageId,
   }) async {
     if (_conversationBox == null) return [];
-    
+
     try {
       final key = 'conversation_$userId';
       final String? data = _conversationBox!.get(key) as String?;
-      
+
       if (data == null || data.isEmpty) return [];
-      
+
       final List<dynamic> messages = jsonDecode(data);
       var allMessages = messages
           .map((m) => AstraMessage.fromJson(m as Map<String, dynamic>))
           .toList();
-      
+
       // Sort by createdAt descending (newest first)
       allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      
+
       // Find pagination starting point
       if (beforeMessageId != null) {
         final index = allMessages.indexWhere((m) => m.id == beforeMessageId);
@@ -310,16 +311,17 @@ class AstraRepository {
           allMessages = allMessages.sublist(index + 1);
         }
       }
-      
+
       // Apply limit
       if (limit > 0 && allMessages.length > limit) {
         allMessages = allMessages.sublist(0, limit);
       }
-      
+
       // Return in chronological order for display
       return allMessages.reversed.toList();
     } catch (e, st) {
-      AstraLogger.e('Failed to get conversation history', error: e, stackTrace: st);
+      AstraLogger.e('Failed to get conversation history',
+          error: e, stackTrace: st);
       return [];
     }
   }
@@ -327,12 +329,13 @@ class AstraRepository {
   /// Clear conversation history
   Future<void> clearConversationHistory(String userId) async {
     if (_conversationBox == null) return;
-    
+
     try {
       final key = 'conversation_$userId';
       await _conversationBox!.delete(key);
     } catch (e, st) {
-      AstraLogger.e('Failed to clear conversation history', error: e, stackTrace: st);
+      AstraLogger.e('Failed to clear conversation history',
+          error: e, stackTrace: st);
     }
   }
 
@@ -346,7 +349,7 @@ class AstraRepository {
     String? recentSymptoms,
   }) async {
     if (_cacheBox == null) return;
-    
+
     try {
       final key = 'context_$patientId';
       final data = {
@@ -364,7 +367,7 @@ class AstraRepository {
   /// Get cached context
   Map<String, dynamic>? getCachedContext(String patientId) {
     if (_cacheBox == null) return null;
-    
+
     try {
       final key = 'context_$patientId';
       final String? data = _cacheBox!.get(key) as String?;
@@ -387,7 +390,7 @@ class AstraRepository {
     Map<String, dynamic> response,
   ) async {
     if (_cacheBox == null) return;
-    
+
     try {
       final key = _generateCacheKey(userId, message);
       final data = {
@@ -405,22 +408,22 @@ class AstraRepository {
     String message,
   ) async {
     if (_cacheBox == null) return null;
-    
+
     try {
       final key = _generateCacheKey(userId, message);
       final String? data = _cacheBox!.get(key) as String?;
-      
+
       if (data == null) return null;
-      
+
       final Map<String, dynamic> cached = jsonDecode(data);
       final timestamp = DateTime.parse(cached['timestamp']);
-      
+
       // Check if cache is still valid (1 hour)
       if (DateTime.now().difference(timestamp).inHours > 1) {
         await _cacheBox!.delete(key);
         return null;
       }
-      
+
       return cached['response'] as Map<String, dynamic>;
     } catch (e) {
       return null;
@@ -443,25 +446,26 @@ class AstraRepository {
     ConversationContext? context,
   }) async {
     if (_offlineQueueBox == null || !AstraConfig.enableOfflineQueue) return;
-    
+
     try {
       final queue = _getOfflineQueue();
-      
+
       // Check queue size limit
       if (queue.length >= AstraConfig.maxOfflineQueueSize) {
         queue.removeAt(0); // Remove oldest
       }
-      
+
       queue.add({
         'user_id': userId,
         'message': message,
         'context': context?.toMetadata(),
         'timestamp': DateTime.now().toIso8601String(),
       });
-      
+
       await _offlineQueueBox!.put('queue', jsonEncode(queue));
     } catch (e, st) {
-      AstraLogger.e('Failed to queue offline message', error: e, stackTrace: st);
+      AstraLogger.e('Failed to queue offline message',
+          error: e, stackTrace: st);
     }
   }
 
@@ -478,14 +482,14 @@ class AstraRepository {
   /// Get and clear offline queue
   Future<List<Map<String, dynamic>>> flushOfflineQueue() async {
     if (_offlineQueueBox == null) return [];
-    
+
     try {
       final queue = _getOfflineQueue()
           .map((e) => Map<String, dynamic>.from(e as Map))
           .toList();
-      
+
       await _offlineQueueBox!.delete('queue');
-      
+
       return queue;
     } catch (e, st) {
       AstraLogger.e('Failed to flush offline queue', error: e, stackTrace: st);

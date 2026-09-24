@@ -6,6 +6,7 @@ import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:doctro/widgets/osler_skeleton.dart';
 import 'package:doctro/features/appointments/view_models/appointment_history_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 
 class AppointmentHistory extends StatelessWidget {
@@ -67,8 +68,10 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded,
-              color: AyurezeTheme.textPrimary, size: 20),
+          icon: HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowLeft01,
+              color: AyurezeTheme.textPrimary,
+              size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -79,8 +82,10 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
         actions: [
           IconButton(
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-            icon: Icon(Icons.menu_rounded,
-                color: AyurezeTheme.forestDeep, size: 22),
+            icon: HugeIcon(
+                icon: HugeIcons.strokeRoundedMenu01,
+                color: AyurezeTheme.forestDeep,
+                size: 22),
           ),
         ],
       ),
@@ -161,14 +166,13 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(999),
+              color: Colors.white.withValues(alpha: 0.14),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
             ),
             child: Text(
               "Patient Visits",
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: Colors.white,
-                    fontSize: 11,
                   ),
             ),
           ),
@@ -185,7 +189,7 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
           Text(
             "Track all your scheduled and completed appointments at a glance.",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withOpacity(0.78),
+                  color: Colors.white.withValues(alpha: 0.78),
                 ),
           ),
         ],
@@ -202,13 +206,15 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: AyurezeTheme.healingGreen10,
+              // Dark-aware surface, and a matching icon weight: the previous
+              // pale-mint circle with a healingGreen50 icon was 2.36:1.
+              color: AyurezeTheme.surfaceMuted,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.calendar_today_outlined,
+            child: HugeIcon(
+              icon: HugeIcons.strokeRoundedCalendar01,
               size: 36,
-              color: AyurezeTheme.healingGreen50,
+              color: AyurezeTheme.textSecondary,
             ),
           ),
           const SizedBox(height: 20),
@@ -294,7 +300,7 @@ class _AppointmentCardState extends State<_AppointmentCard>
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOut,
             margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
             decoration: AyurezeTheme.panelDecoration(),
             child: Row(
               children: [
@@ -309,7 +315,8 @@ class _AppointmentCardState extends State<_AppointmentCard>
                       width: 58,
                       height: 58,
                       color: AyurezeTheme.surfaceMuted,
-                      child: Icon(AppIcons.profile,
+                      child: HugeIcon(
+                          icon: AppIcons.profile,
                           color: AyurezeTheme.textSecondary),
                     ),
                   ),
@@ -326,8 +333,8 @@ class _AppointmentCardState extends State<_AppointmentCard>
                               appt.user?.name ?? 'Patient',
                               style: Theme.of(context)
                                   .textTheme
-                                  .titleMedium
-                                  ?.copyWith(fontSize: 15),
+                                  .bodyLarge
+                                  ?.copyWith(fontWeight: FontWeight.w700),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -336,15 +343,18 @@ class _AppointmentCardState extends State<_AppointmentCard>
                                 horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
                               color: statusBg,
-                              borderRadius: BorderRadius.circular(999),
+                              borderRadius: BorderRadius.circular(
+                                  AyurezeTheme.radiusPill),
                             ),
                             child: Text(
                               appt.status ?? 'Pending',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                                color: statusColor,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: statusColor,
+                                  ),
                             ),
                           ),
                         ],
@@ -352,8 +362,10 @@ class _AppointmentCardState extends State<_AppointmentCard>
                       const SizedBox(height: 6),
                       Row(
                         children: [
-                          Icon(Icons.schedule_rounded,
-                              size: 14, color: AyurezeTheme.textSecondary),
+                          HugeIcon(
+                              icon: HugeIcons.strokeRoundedClock01,
+                              size: 14,
+                              color: AyurezeTheme.textSecondary),
                           const SizedBox(width: 4),
                           Text(
                             '${appt.appointmentDate ?? ''} • ${appt.slotTime ?? ''}',
@@ -365,15 +377,14 @@ class _AppointmentCardState extends State<_AppointmentCard>
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            Icon(Icons.medical_services_outlined,
-                                size: 14, color: AyurezeTheme.textSecondary),
+                            HugeIcon(
+                                icon: HugeIcons.strokeRoundedStethoscope,
+                                size: 14,
+                                color: AyurezeTheme.textSecondary),
                             const SizedBox(width: 4),
                             Text(
                               appt.appointmentType.toString(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontSize: 12),
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
                         ),
@@ -382,8 +393,8 @@ class _AppointmentCardState extends State<_AppointmentCard>
                   ),
                 ),
                 const SizedBox(width: 8),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
+                HugeIcon(
+                  icon: HugeIcons.strokeRoundedArrowRight01,
                   size: 14,
                   color: AyurezeTheme.textSecondary,
                 ),

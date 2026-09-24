@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class OslerChatBubble extends StatelessWidget {
   final String message;
@@ -22,7 +23,8 @@ class OslerChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceXs),
       child: Row(
         mainAxisAlignment:
             isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
@@ -36,7 +38,9 @@ class OslerChatBubble extends StatelessWidget {
           ],
           Flexible(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AyurezeTheme.spaceLg,
+                  vertical: AyurezeTheme.spaceMd),
               decoration: BoxDecoration(
                 color: isMe
                     ? AyurezeTheme.healingGreen50
@@ -53,11 +57,10 @@ class OslerChatBubble extends StatelessWidget {
                 children: [
                   Text(
                     message,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: isMe ? Colors.white : AyurezeTheme.textPrimary,
-                      height: 1.4,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: isMe ? Colors.white : AyurezeTheme.textPrimary,
+                          height: 1.4,
+                        ),
                   ),
                   if (time != null) ...[
                     const SizedBox(height: 4),
@@ -75,8 +78,10 @@ class OslerChatBubble extends StatelessWidget {
                         ),
                         if (isMe) ...[
                           const SizedBox(width: 4),
-                          Icon(
-                            isRead ? Icons.done_all : Icons.done,
+                          HugeIcon(
+                            icon: isRead
+                                ? HugeIcons.strokeRoundedTick02
+                                : HugeIcons.strokeRoundedTick01,
                             size: 14,
                             color: isRead
                                 ? AyurezeTheme.connectivityBlue50

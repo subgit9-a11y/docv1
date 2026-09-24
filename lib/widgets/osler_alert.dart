@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 
 enum OslerAlertType { success, error, warning, info }
@@ -23,19 +25,20 @@ class OslerAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: _getBackgroundColor(),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Row(
           children: [
             if (showIcon) ...[
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AyurezeTheme.spaceSm),
                 decoration: BoxDecoration(
                   color: _getIconBackgroundColor(),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
                 ),
-                child: Icon(_getIcon(), color: _getIconColor(), size: 20),
+                child: HugeIcon(
+                    icon: _getIcon(), color: _getIconColor(), size: 20),
               ),
               const SizedBox(width: 12),
             ],
@@ -45,21 +48,19 @@ class OslerAlert extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: _getForegroundColor(),
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: _getForegroundColor(),
+                        ),
                   ),
                   if (message != null) ...[
                     const SizedBox(height: 2),
                     Text(
                       message!,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: _getForegroundColor(),
-                        height: 1.3,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: _getForegroundColor(),
+                            height: 1.3,
+                          ),
                     ),
                   ],
                 ],
@@ -68,8 +69,10 @@ class OslerAlert extends StatelessWidget {
             if (onDismiss != null) ...[
               GestureDetector(
                 onTap: onDismiss,
-                child:
-                    Icon(Icons.close, color: _getForegroundColor(), size: 18),
+                child: HugeIcon(
+                    icon: AppIcons.close,
+                    color: _getForegroundColor(),
+                    size: 18),
               ),
             ],
           ],
@@ -107,13 +110,13 @@ class OslerAlert extends StatelessWidget {
   Color _getIconBackgroundColor() {
     switch (type) {
       case OslerAlertType.success:
-        return AyurezeTheme.healingGreen50.withOpacity(0.2);
+        return AyurezeTheme.healingGreen50.withValues(alpha: 0.2);
       case OslerAlertType.error:
-        return AyurezeTheme.remoteRed50.withOpacity(0.2);
+        return AyurezeTheme.remoteRed50.withValues(alpha: 0.2);
       case OslerAlertType.warning:
-        return AyurezeTheme.sunshineYellow50.withOpacity(0.2);
+        return AyurezeTheme.sunshineYellow50.withValues(alpha: 0.2);
       case OslerAlertType.info:
-        return AyurezeTheme.connectivityBlue50.withOpacity(0.2);
+        return AyurezeTheme.connectivityBlue50.withValues(alpha: 0.2);
     }
   }
 
@@ -130,16 +133,16 @@ class OslerAlert extends StatelessWidget {
     }
   }
 
-  IconData _getIcon() {
+  List<List<dynamic>> _getIcon() {
     switch (type) {
       case OslerAlertType.success:
-        return Icons.check_circle_outline;
+        return HugeIcons.strokeRoundedCheckmarkCircle02;
       case OslerAlertType.error:
-        return Icons.error_outline;
+        return HugeIcons.strokeRoundedAlertCircle;
       case OslerAlertType.warning:
-        return Icons.warning_amber_outlined;
+        return HugeIcons.strokeRoundedAlert02;
       case OslerAlertType.info:
-        return Icons.info_outline;
+        return HugeIcons.strokeRoundedInformationCircle;
     }
   }
 }

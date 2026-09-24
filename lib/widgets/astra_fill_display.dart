@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/services/astra_api_service.dart';
 
@@ -66,10 +67,12 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
 
   Widget _buildLoadingCard() {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd)),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Row(
           children: [
             SizedBox(
@@ -89,15 +92,19 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
 
   Widget _buildNoDataCard() {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
       color: Colors.grey.shade100,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd)),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Row(
           children: [
-            Icon(Icons.info_outline,
-                color: AyurezeTheme.textSecondary, size: 20),
+            HugeIcon(
+                icon: HugeIcons.strokeRoundedInformationCircle,
+                color: AyurezeTheme.textSecondary,
+                size: 20),
             SizedBox(width: 12),
             Expanded(
               child: Text(
@@ -137,25 +144,24 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
     final hasBp = _astraFillData?['history_of_blood_pressure'] == true;
 
     // Legacy support handles
-    final rawSymptoms =
-        _astraFillData?['extracted_symptoms'] ?? _astraFillData?['symptoms'];
-    final List<String> symptoms = rawSymptoms is List
-        ? List<String>.from(rawSymptoms)
-        : (rawSymptoms != null ? [rawSymptoms.toString()] : []);
     final currentMedications = _astraFillData?['current_medications'] ?? [];
+    final vitals = _astraFillData?['vitals'];
+    final medicalHistory = _astraFillData?['medical_history'];
     final timestamp =
         _astraFillData?['created_at'] ?? _astraFillData?['timestamp'] ?? '';
     final severityScore = _astraFillData?['severity_score'];
 
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
       elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg)),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
           gradient: LinearGradient(
-            colors: [AyurezeTheme.purple.withOpacity(0.05), Colors.white],
+            colors: [AyurezeTheme.purple.withValues(alpha: 0.05), Colors.white],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -166,23 +172,28 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
             // Header
             InkWell(
               onTap: () => setState(() => _isExpanded = !_isExpanded),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(AyurezeTheme.radiusLg)),
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(AyurezeTheme.spaceLg),
                 decoration: BoxDecoration(
-                  color: AyurezeTheme.purple.withOpacity(0.1),
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                  color: AyurezeTheme.purple.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(AyurezeTheme.radiusLg)),
                 ),
                 child: Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8),
+                      padding: EdgeInsets.all(AyurezeTheme.spaceSm),
                       decoration: BoxDecoration(
                         color: AyurezeTheme.purple,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius:
+                            BorderRadius.circular(AyurezeTheme.radiusSm),
                       ),
-                      child: Icon(Icons.auto_awesome,
-                          color: Colors.white, size: 20),
+                      child: HugeIcon(
+                          icon: HugeIcons.strokeRoundedSparkles,
+                          color: Colors.white,
+                          size: 20),
                     ),
                     SizedBox(width: 12),
                     Expanded(
@@ -191,18 +202,20 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         children: [
                           Text(
                             "Astra AI Health Intake",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: AyurezeTheme.purple,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  color: AyurezeTheme.purple,
+                                ),
                           ),
                           if (timestamp.isNotEmpty)
                             Text(
                               "Submitted by patient",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: AyurezeTheme.textSecondary),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: AyurezeTheme.textSecondary),
                             ),
                         ],
                       ),
@@ -217,18 +230,18 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         ),
                         child: Text(
                           "Severity: $severityScore/10",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       ),
                     SizedBox(width: 8),
-                    Icon(
-                      _isExpanded
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
+                    HugeIcon(
+                      icon: _isExpanded
+                          ? HugeIcons.strokeRoundedArrowUp01
+                          : HugeIcons.strokeRoundedArrowDown01,
                       color: AyurezeTheme.purple,
                     ),
                   ],
@@ -239,14 +252,14 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
             // Expandable Content
             if (_isExpanded)
               Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(AyurezeTheme.spaceLg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Chief Complaint
                     if (chiefComplaint.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.report_problem_outlined,
+                        icon: HugeIcons.strokeRoundedAlertDiamond,
                         title: "Primary Complaint",
                         content: chiefComplaint.toString(),
                         iconColor: AyurezeTheme.warning,
@@ -256,7 +269,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                     if (severityDetails.toString().isNotEmpty ||
                         timing.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.timeline,
+                        icon: HugeIcons.strokeRoundedChartLine,
                         title: "Pattern & Severity",
                         content:
                             "${severityDetails.toString().isNotEmpty ? 'Severity: $severityDetails\n' : ''}"
@@ -267,7 +280,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                     // Duration
                     if (duration.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.schedule,
+                        icon: HugeIcons.strokeRoundedClock01,
                         title: "Duration",
                         content: duration.toString(),
                         iconColor: Colors.blue,
@@ -279,7 +292,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         bowelDetails.toString().isNotEmpty ||
                         micturitionDetails.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.self_improvement,
+                        icon: HugeIcons.strokeRoundedYoga01,
                         title: "Lifestyle & Ashtavidha Pariksha",
                         content: "${sleepDetails.toString().isNotEmpty ? '• Sleep: $sleepDetails\n' : ''}"
                                 "${appetiteDetails.toString().isNotEmpty ? '• Appetite: $appetiteDetails\n' : ''}"
@@ -295,7 +308,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                         hasBp ||
                         pastHistory.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.history,
+                        icon: HugeIcons.strokeRoundedClock05,
                         title: "Medical History",
                         content: "${hasDiabetes ? '⚠️ Diabetes\n' : ''}"
                                 "${hasThyroid ? '⚠️ Thyroid\n' : ''}"
@@ -308,7 +321,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                     // Previous Treatment
                     if (previousTreatment.toString().isNotEmpty)
                       _buildSection(
-                        icon: Icons.medication_liquid,
+                        icon: HugeIcons.strokeRoundedMedicineBottle01,
                         title: "Previous Treatment",
                         content: previousTreatment.toString(),
                         iconColor: Colors.teal,
@@ -318,12 +331,21 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                     if (currentMedications != null &&
                         (currentMedications as List).isNotEmpty)
                       _buildChipsSection(
-                        icon: Icons.medication_outlined,
+                        icon: HugeIcons.strokeRoundedMedicine02,
                         title: "Current Medications",
                         items: List<String>.from(currentMedications),
                         chipColor: AyurezeTheme.healingGreen10,
                         textColor: AyurezeTheme.healingGreen100,
                       ),
+
+                    // Vitals
+                    if (vitals is Map && vitals.isNotEmpty)
+                      _buildVitalsSection(vitals.cast<String, dynamic>()),
+
+                    // Structured medical history
+                    if (medicalHistory is Map && medicalHistory.isNotEmpty)
+                      _buildMedicalHistorySection(
+                          medicalHistory.cast<String, dynamic>()),
                   ],
                 ),
               ),
@@ -334,23 +356,23 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
   }
 
   Widget _buildSection({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String title,
     required String content,
     required Color iconColor,
   }) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: AyurezeTheme.spaceLg),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: iconColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
+              color: iconColor.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusXs),
             ),
-            child: Icon(icon, color: iconColor, size: 18),
+            child: HugeIcon(icon: icon, color: iconColor, size: 18),
           ),
           SizedBox(width: 12),
           Expanded(
@@ -358,13 +380,14 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title,
-                    style: TextStyle(
-                        fontSize: 12, color: AyurezeTheme.textSecondary)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: AyurezeTheme.textSecondary)),
                 SizedBox(height: 4),
                 Text(
                   content,
-                  style: TextStyle(
-                      fontSize: 14,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AyurezeTheme.textPrimary,
                       fontWeight: FontWeight.w500),
                 ),
@@ -377,24 +400,26 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
   }
 
   Widget _buildChipsSection({
-    required IconData icon,
+    required List<List<dynamic>> icon,
     required String title,
     required List<String> items,
     required Color chipColor,
     required Color textColor,
   }) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: AyurezeTheme.spaceLg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, color: textColor, size: 18),
+              HugeIcon(icon: icon, color: textColor, size: 18),
               SizedBox(width: 8),
               Text(title,
-                  style: TextStyle(
-                      fontSize: 12, color: AyurezeTheme.textSecondary)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: AyurezeTheme.textSecondary)),
             ],
           ),
           SizedBox(height: 8),
@@ -408,7 +433,8 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
                       decoration: BoxDecoration(
                         color: chipColor,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: textColor.withOpacity(0.3)),
+                        border:
+                            Border.all(color: textColor.withValues(alpha: 0.3)),
                       ),
                       child: Text(
                         item,
@@ -427,45 +453,49 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
 
   Widget _buildVitalsSection(Map vitals) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: AyurezeTheme.spaceLg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.monitor_heart_outlined,
-                  color: AyurezeTheme.danger, size: 18),
+              HugeIcon(
+                  icon: HugeIcons.strokeRoundedPulse02,
+                  color: AyurezeTheme.danger,
+                  size: 18),
               SizedBox(width: 8),
               Text("Vitals",
-                  style: TextStyle(
-                      fontSize: 12, color: AyurezeTheme.textSecondary)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: AyurezeTheme.textSecondary)),
             ],
           ),
           SizedBox(height: 8),
           Container(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(AyurezeTheme.spaceMd),
             decoration: BoxDecoration(
               color: Colors.blue.shade50,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 if (vitals['blood_pressure'] != null)
                   _buildVitalItem("BP", vitals['blood_pressure'].toString(),
-                      Icons.favorite),
+                      HugeIcons.strokeRoundedFavouriteCircle),
                 if (vitals['heart_rate'] != null)
-                  _buildVitalItem(
-                      "HR", "${vitals['heart_rate']} bpm", Icons.monitor_heart),
+                  _buildVitalItem("HR", "${vitals['heart_rate']} bpm",
+                      HugeIcons.strokeRoundedPulse01),
                 if (vitals['temperature'] != null)
-                  _buildVitalItem(
-                      "Temp", "${vitals['temperature']}°F", Icons.thermostat),
+                  _buildVitalItem("Temp", "${vitals['temperature']}°F",
+                      HugeIcons.strokeRoundedTemperature),
                 if (vitals['oxygen_saturation'] != null ||
                     vitals['spo2'] != null)
                   _buildVitalItem(
                       "SpO2",
                       "${vitals['oxygen_saturation'] ?? vitals['spo2']}%",
-                      Icons.air),
+                      HugeIcons.strokeRoundedWind),
               ],
             ),
           ),
@@ -474,13 +504,16 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
     );
   }
 
-  Widget _buildVitalItem(String label, String value, IconData icon) {
+  Widget _buildVitalItem(String label, String value, List<List<dynamic>> icon) {
     return Column(
       children: [
-        Icon(icon, color: Colors.blue.shade700, size: 20),
+        HugeIcon(icon: icon, color: Colors.blue.shade700, size: 20),
         SizedBox(height: 4),
         Text(label,
-            style: TextStyle(fontSize: 10, color: AyurezeTheme.textSecondary)),
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall
+                ?.copyWith(color: AyurezeTheme.textSecondary)),
         Text(value,
             style: TextStyle(
                 fontSize: 13,
@@ -519,7 +552,7 @@ class _AstraFillDisplayWidgetState extends State<AstraFillDisplayWidget> {
     if (conditions.isEmpty) return SizedBox.shrink();
 
     return _buildChipsSection(
-      icon: Icons.history,
+      icon: HugeIcons.strokeRoundedClock05,
       title: "Medical History",
       items: conditions,
       chipColor: AyurezeTheme.surfaceMuted,
@@ -555,38 +588,40 @@ class AstraFillCompactWidget extends StatelessWidget {
     final severityScore = astraFillData?['severity_score'];
 
     return Card(
-      color: AyurezeTheme.purple.withOpacity(0.08),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: AyurezeTheme.purple.withValues(alpha: 0.08),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd)),
       child: Padding(
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.all(AyurezeTheme.spaceMd),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(Icons.auto_awesome, color: AyurezeTheme.purple, size: 18),
+                HugeIcon(
+                    icon: HugeIcons.strokeRoundedSparkles,
+                    color: AyurezeTheme.purple,
+                    size: 18),
                 SizedBox(width: 8),
                 Text(
                   "Astra AI Summary",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AyurezeTheme.purple,
-                      fontSize: 14),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold, color: AyurezeTheme.purple),
                 ),
                 Spacer(),
                 if (severityScore != null)
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AyurezeTheme.spaceSm,
+                        vertical: AyurezeTheme.spaceXs),
                     decoration: BoxDecoration(
                       color: _getSeverityColor(severityScore),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       "$severityScore/10",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
               ],
