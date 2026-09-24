@@ -162,7 +162,7 @@ class ChatPageState extends State<ChatPage> {
       builder: (context) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
           child: Container(
             height: 150,
             width: 200,
@@ -261,7 +261,8 @@ class ChatPageState extends State<ChatPage> {
                     width: 200,
                     decoration: BoxDecoration(
                         color: AyurezeTheme.border,
-                        borderRadius: BorderRadius.circular(8)),
+                        borderRadius:
+                            BorderRadius.circular(AyurezeTheme.radiusSm)),
                     margin: EdgeInsets.only(
                         bottom: isLastMessageRight(index) ? 20 : 10, right: 10),
                     child: Text(
@@ -287,7 +288,7 @@ class ChatPageState extends State<ChatPage> {
                           },
                           style: ButtonStyle(
                               padding: WidgetStateProperty.all<EdgeInsets>(
-                                  const EdgeInsets.all(0))),
+                                  EdgeInsets.zero)),
                           child: Material(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
@@ -411,7 +412,8 @@ class ChatPageState extends State<ChatPage> {
                           width: 200,
                           decoration: BoxDecoration(
                               color: AyurezeTheme.forestDeep,
-                              borderRadius: BorderRadius.circular(8)),
+                              borderRadius:
+                                  BorderRadius.circular(AyurezeTheme.radiusSm)),
                           margin: const EdgeInsets.only(left: 10),
                           child: Text(
                             messageChat.content,
@@ -434,7 +436,7 @@ class ChatPageState extends State<ChatPage> {
                                 style: ButtonStyle(
                                     padding:
                                         WidgetStateProperty.all<EdgeInsets>(
-                                            const EdgeInsets.all(0))),
+                                            EdgeInsets.zero)),
                                 child: Material(
                                   child: Image.network(
                                     messageChat.content,
@@ -660,7 +662,8 @@ class ChatPageState extends State<ChatPage> {
           Material(
             color: AyurezeTheme.surface,
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              margin:
+                  const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceSm),
               child: IconButton(
                 icon: HugeIcon(icon: AppIcons.send),
                 onPressed: () {
