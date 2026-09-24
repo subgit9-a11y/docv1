@@ -391,12 +391,11 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                               ),
                               labelColor: AyurezeTheme.textPrimary,
                               unselectedLabelColor: AyurezeTheme.textSecondary,
-                              labelStyle: textTheme.bodyMedium?.copyWith(
+                              labelStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),
-                              unselectedLabelStyle:
-                                  textTheme.bodyMedium?.copyWith(
+                              unselectedLabelStyle: const TextStyle(
                                 fontSize: 13,
                               ),
                               tabs: [

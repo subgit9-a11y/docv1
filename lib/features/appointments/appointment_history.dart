@@ -167,13 +167,12 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.14),
-              borderRadius: BorderRadius.circular(999),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
             ),
             child: Text(
               "Patient Visits",
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: Colors.white,
-                    fontSize: 11,
                   ),
             ),
           ),
@@ -301,7 +300,7 @@ class _AppointmentCardState extends State<_AppointmentCard>
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOut,
             margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
             decoration: AyurezeTheme.panelDecoration(),
             child: Row(
               children: [
@@ -334,8 +333,8 @@ class _AppointmentCardState extends State<_AppointmentCard>
                               appt.user?.name ?? 'Patient',
                               style: Theme.of(context)
                                   .textTheme
-                                  .titleMedium
-                                  ?.copyWith(fontSize: 15),
+                                  .bodyLarge
+                                  ?.copyWith(fontWeight: FontWeight.w700),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -344,15 +343,18 @@ class _AppointmentCardState extends State<_AppointmentCard>
                                 horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
                               color: statusBg,
-                              borderRadius: BorderRadius.circular(999),
+                              borderRadius: BorderRadius.circular(
+                                  AyurezeTheme.radiusPill),
                             ),
                             child: Text(
                               appt.status ?? 'Pending',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                                color: statusColor,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: statusColor,
+                                  ),
                             ),
                           ),
                         ],
@@ -382,10 +384,7 @@ class _AppointmentCardState extends State<_AppointmentCard>
                             const SizedBox(width: 4),
                             Text(
                               appt.appointmentType.toString(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontSize: 12),
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
                         ),
