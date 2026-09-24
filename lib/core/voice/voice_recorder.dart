@@ -268,11 +268,10 @@ class _VoiceRecorderState extends State<VoiceRecorder>
           const SizedBox(width: 4),
           Text(
             '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade600,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey.shade600,
+                  fontWeight: FontWeight.w500,
+                ),
           ),
         ],
       ),
@@ -296,10 +295,9 @@ class _VoiceRecorderState extends State<VoiceRecorder>
           const SizedBox(width: 4),
           Text(
             'Transcribing...',
-            style: TextStyle(
-              fontSize: 12,
-              color: AyurezeTheme.textSecondary,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AyurezeTheme.textSecondary,
+                ),
           ),
         ],
       ),

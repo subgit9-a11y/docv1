@@ -140,7 +140,8 @@ class _VoicePlayerState extends State<VoicePlayer> {
     return Semantics(
       label: _isPlaying ? 'Playing audio. Tap to pause' : 'Paused. Tap to play',
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AyurezeTheme.spaceMd, vertical: AyurezeTheme.spaceSm),
         decoration: BoxDecoration(
           color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
@@ -165,10 +166,10 @@ class _VoicePlayerState extends State<VoicePlayer> {
     return Semantics(
       label: _isPlaying ? 'Playing audio' : 'Paused',
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
         decoration: BoxDecoration(
           color: AyurezeTheme.surface,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
           border: Border.all(color: AyurezeTheme.border),
         ),
         child: Column(
@@ -334,10 +335,9 @@ class _VoicePlayerState extends State<VoicePlayer> {
     final durationStr = _formatDuration(_duration);
     return Text(
       durationStr,
-      style: TextStyle(
-        fontSize: 12,
-        color: AyurezeTheme.textSecondary,
-      ),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AyurezeTheme.textSecondary,
+          ),
     );
   }
 
@@ -348,17 +348,18 @@ class _VoicePlayerState extends State<VoicePlayer> {
       initialValue: _playbackSpeed,
       onSelected: _setSpeed,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AyurezeTheme.spaceSm, vertical: AyurezeTheme.spaceXs),
         decoration: BoxDecoration(
           color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               '${_playbackSpeed}x',
-              style: const TextStyle(fontSize: 12),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             const HugeIcon(icon: HugeIcons.strokeRoundedArrowDown01, size: 16),
           ],
