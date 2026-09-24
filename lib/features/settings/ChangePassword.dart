@@ -61,11 +61,10 @@ class _ChangePasswordState extends State<ChangePassword> {
           title: Text(
             getTranslated(context, AppString.change_password_heading)
                 .toString(),
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-              color: AyurezeTheme.textPrimary,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AyurezeTheme.textPrimary,
+                ),
           ),
         ),
         body: GestureDetector(
@@ -106,7 +105,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       builder: (context, viewModel, child) {
         return GlassSurface(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -255,11 +254,10 @@ class _ChangePasswordState extends State<ChangePassword> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         text,
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          color: AyurezeTheme.textPrimary,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: AyurezeTheme.textPrimary,
+            ),
       ),
     );
   }

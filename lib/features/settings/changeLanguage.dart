@@ -108,11 +108,10 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
         ),
         title: Text(
           getTranslated(context, AppString.chang_language).toString(),
-          style: TextStyle(
-            color: AyurezeTheme.textPrimary,
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: AyurezeTheme.textPrimary,
+                fontWeight: FontWeight.w800,
+              ),
         ),
       ),
       body: FutureBuilder(
@@ -178,11 +177,13 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                               controlAffinity: ListTileControlAffinity.trailing,
                               title: Text(
                                 Language.languageList()[index].name,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  color: AyurezeTheme.textPrimary,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: AyurezeTheme.textPrimary,
+                                    ),
                               ),
                             ),
                           ),
