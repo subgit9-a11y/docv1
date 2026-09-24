@@ -19,7 +19,7 @@ class ModernDrawer extends StatelessWidget {
     final String? dName =
         SharedPreferenceHelper.getStringOrNull(Preferences.name);
     final String dFullImage =
-        SharedPreferenceHelper.getString(Preferences.image);
+        SharedPreferenceHelper.getStringOrNull(Preferences.image) ?? '';
     final String? phone =
         SharedPreferenceHelper.getStringOrNull(Preferences.phone_no);
 
@@ -161,6 +161,35 @@ class ModernDrawer extends StatelessWidget {
                             .toString(),
                         () => Navigator.popAndPushNamed(
                             context, 'notifications')),
+                    _sectionHeader(context, "Health Tools"),
+                    _drawerItem(
+                        context,
+                        HugeIcons.strokeRoundedSearch01,
+                        "Search",
+                        () => Navigator.popAndPushNamed(context, 'search')),
+                    _drawerItem(
+                        context,
+                        HugeIcons.strokeRoundedMedicine01,
+                        "My Medications",
+                        () => Navigator.popAndPushNamed(
+                            context, 'medicationManagement')),
+                    _drawerItem(
+                        context,
+                        HugeIcons.strokeRoundedFolderLibrary,
+                        "Health Records",
+                        () => Navigator.popAndPushNamed(
+                            context, 'healthRecords')),
+                    _drawerItem(
+                        context,
+                        HugeIcons.strokeRoundedUserGroup,
+                        "Community & Resource",
+                        () => Navigator.popAndPushNamed(context, 'community')),
+                    _drawerItem(
+                        context,
+                        HugeIcons.strokeRoundedTarget02,
+                        "Health Assessment",
+                        () => Navigator.popAndPushNamed(
+                            context, 'healthAssessment')),
                     _sectionHeader(context, "Office & Finances"),
                     _drawerItem(
                         context,
