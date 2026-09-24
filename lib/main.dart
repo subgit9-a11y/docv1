@@ -71,6 +71,8 @@ import 'package:doctro/features/medications/medication_controller.dart';
 import 'package:doctro/features/medications/medication_management_screen.dart';
 import 'package:doctro/features/health_records/health_records_screen.dart';
 import 'package:doctro/features/health_records/repository/health_records_repository.dart';
+import 'package:doctro/features/community/community_controller.dart';
+import 'package:doctro/features/community/community_screen.dart';
 
 const MethodChannel _secureWindowChannel =
     MethodChannel('doctro/secure_window');
@@ -575,6 +577,8 @@ class _MyAppState extends State<MyApp> {
                               controller: MedicationController()),
                       'healthRecords': (context) => HealthRecordsScreen(
                           repository: InMemoryHealthRecordsRepository()),
+                      'community': (context) =>
+                          CommunityScreen(controller: CommunityController()),
                     },
                     onUnknownRoute: (settings) => MaterialPageRoute(
                       builder: (context) => const ErrorUtilityScreen(
