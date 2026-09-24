@@ -35,22 +35,22 @@ class AyurezeTheme {
   // as accents and foregrounds but unsafe as page/card backgrounds. For
   // backgrounds, borders and body text use the getters below (surface,
   // surfaceMuted, canvas, border, textPrimary, textSecondary).
-  static const Color healingGreen100 = Color(
-    0xFF0F2916,
-  ); // Deep Botanical Forest Green
-  static const Color healingGreen50 = Color(
-    0xFF10B981,
-  ); // Premium Healing Emerald Green
-  static const Color healingGreen10 = Color(
-    0xFFE6F7F0,
-  ); // Soft Sage Mint Accent
+  //
+  // Pixel-verified against the real Osler UI Kit (Figma community file,
+  // strangehelix.bio) source PDFs: healingGreen50 is the kit's actual
+  // primary brand green (a lime, not the emerald this app had drifted to -
+  // #10B981 never once appeared across ~25 sampled kit screens, while
+  // #84CC16 was the dominant accent on nearly every one).
+  static const Color healingGreen100 = Color(0xFF1A2E05); // kit green-950
+  static const Color healingGreen50 = Color(0xFF84CC16); // kit green-500
+  static const Color healingGreen10 = Color(0xFFECFCCB); // kit green-100
 
   // Fill for filled controls that carry a white glyph or label (FAB,
-  // checkbox, circular play/AI buttons). healingGreen50 is the brand
-  // emerald but only reaches 2.54:1 against white, which fails both WCAG AA
-  // for text (4.5:1) and the UI-component threshold (3:1). This darker
-  // shade keeps the same hue at 5.48:1, so white content is legible.
-  static const Color healingGreenFill = Color(0xFF047857);
+  // checkbox, circular play/AI buttons). healingGreen50 is a bright lime
+  // and only reaches 1.98:1 against white, which fails both WCAG AA for
+  // text (4.5:1) and the UI-component threshold (3:1). green-700 from the
+  // same kit scale reaches 4.99:1, so white content is legible.
+  static const Color healingGreenFill = Color(0xFF4D7C0F); // kit green-700
 
   static const Color remoteRed100 = Color(0xFF4C050B);
   static const Color remoteRed50 = Color(0xFFF43F5E);
@@ -173,7 +173,7 @@ class AyurezeTheme {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: healingGreen100,
       brightness: Brightness.light,
-      primary: healingGreen50,
+      primary: healingGreenFill,
       secondary: oslerGray50,
       surface: lightSurface,
     ).copyWith(
@@ -353,7 +353,7 @@ class AyurezeTheme {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: healingGreen100,
       brightness: Brightness.dark,
-      primary: healingGreen50,
+      primary: healingGreenFill,
       secondary: oslerGray50,
       surface: darkSurface,
     ).copyWith(
@@ -413,7 +413,7 @@ class AyurezeTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: healingGreen50,
+          backgroundColor: healingGreenFill,
           foregroundColor: Colors.white,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),

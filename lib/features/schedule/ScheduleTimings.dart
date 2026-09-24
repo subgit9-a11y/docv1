@@ -825,7 +825,7 @@ class _SwitchScreenState extends State<SwitchScreen> {
             onChanged: toggleSwitch,
             value: isSwitched,
             activeThumbColor: Colors.white,
-            activeTrackColor: AyurezeTheme.healingGreen50,
+            activeTrackColor: AyurezeTheme.healingGreenFill,
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: AyurezeTheme.remoteRed50,
           ),

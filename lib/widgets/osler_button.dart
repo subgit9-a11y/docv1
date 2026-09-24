@@ -97,7 +97,7 @@ class OslerButton extends StatelessWidget {
   Color _getBackgroundColor() {
     switch (style) {
       case OslerButtonStyle.primary:
-        return AyurezeTheme.healingGreen50;
+        return AyurezeTheme.healingGreenFill;
       case OslerButtonStyle.secondary:
         return AyurezeTheme.healingGreen10;
       case OslerButtonStyle.outline:
@@ -107,7 +107,8 @@ class OslerButton extends StatelessWidget {
   }
 
   Color _getForegroundColor(Color bgColor) {
-    if (bgColor == AyurezeTheme.healingGreen50 ||
+    if (bgColor == AyurezeTheme.healingGreenFill ||
+        bgColor == AyurezeTheme.healingGreen50 ||
         bgColor == AyurezeTheme.healingGreen100 ||
         bgColor == AyurezeTheme.oslerGray50) {
       return Colors.white;

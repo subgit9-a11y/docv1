@@ -162,7 +162,7 @@ class AstraErrorState extends StatelessWidget {
                     icon: HugeIcon(icon: AppIcons.refresh, size: 18),
                     label: const Text('Retry'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AyurezeTheme.healingGreen50,
+                      backgroundColor: AyurezeTheme.healingGreenFill,
                       foregroundColor: Colors.white,
                     ),
                   ),
