@@ -563,7 +563,7 @@ class AyurezeTheme {
   static const LinearGradient auroraGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF0F2916), Color(0xFF0F7A55), Color(0xFF10B981)],
+    colors: [healingGreen100, healingGreenFill, healingGreen50],
     stops: [0.0, 0.55, 1.0],
   );
 }
