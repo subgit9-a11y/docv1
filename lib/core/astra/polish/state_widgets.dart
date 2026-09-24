@@ -38,10 +38,10 @@ class AstraLoadingState extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               message!,
-              style: TextStyle(
-                color: AyurezeTheme.textSecondary,
-                fontSize: 14,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AyurezeTheme.textSecondary,
+                    fontWeight: FontWeight.normal,
+                  ),
             ),
           ],
         ],
@@ -116,7 +116,7 @@ class AstraErrorState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AyurezeTheme.space2xl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -197,7 +197,7 @@ class AstraEmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AyurezeTheme.space2xl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -313,7 +313,8 @@ class AstraOfflineBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: const EdgeInsets.symmetric(
+          vertical: AyurezeTheme.spaceSm, horizontal: AyurezeTheme.spaceLg),
       color: Colors.orange.shade700,
       child: SafeArea(
         bottom: false,
