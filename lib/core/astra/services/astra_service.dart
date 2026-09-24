@@ -597,15 +597,40 @@ class AstraService {
     if (data == null) return {};
     if (data is Map<String, dynamic>) return data;
     if (data is String) {
-      // Some endpoints (e.g. brain/chat) reply with an SSE-style "data: "
-      // prefix even on a plain, non-streaming POST, and/or a Content-Type
-      // that stops Dio auto-decoding JSON, leaving `data` as a raw string -
-      // decode it manually rather than silently losing the whole body.
-      var text = data.trim();
-      if (text.startsWith('data:')) {
-        text = text.substring(5).trim();
-      }
+      // brain/chat replies as SSE ("data: {...}" per chunk, blank-line
+      // separated) even for this plain, non-streaming POST, and/or with a
+      // Content-Type that stops Dio auto-decoding JSON, leaving `data` as a
+      // raw string - decode it manually rather than silently losing the
+      // whole body. There can be one chunk (e.g. a single error) or many
+      // (a real answer streamed one token at a time), so every "data:"
+      // line's content/text field is collected and concatenated; an error
+      // chunk short-circuits immediately.
+      final text = data.trim();
       if (text.isEmpty) return {};
+      if (text.contains('data:')) {
+        final buffer = StringBuffer();
+        for (final rawLine in text.split('\n')) {
+          final line = rawLine.trim();
+          if (!line.startsWith('data:')) continue;
+          final payload = line.substring(5).trim();
+          if (payload.isEmpty) continue;
+          try {
+            final json = jsonDecode(payload);
+            if (json is Map<String, dynamic>) {
+              if (json['error'] != null) {
+                return {'error': json['error']};
+              }
+              buffer.write(
+                json['content']?.toString() ?? json['text']?.toString() ?? '',
+              );
+            }
+          } catch (_) {
+            // Not JSON - ignore this chunk.
+          }
+        }
+        if (buffer.isNotEmpty) return {'response': buffer.toString()};
+        return {};
+      }
       try {
         final decoded = jsonDecode(text);
         if (decoded is Map<String, dynamic>) return decoded;
