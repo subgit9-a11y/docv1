@@ -275,7 +275,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                   const EdgeInsets.fromLTRB(20, 12, 20, 16),
                               child: Container(
                                 width: double.infinity,
-                                padding: const EdgeInsets.all(20),
+                                padding:
+                                    const EdgeInsets.all(AyurezeTheme.spaceXl),
                                 decoration: AyurezeTheme.heroDecoration(),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,9 +299,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                           child: Text(
                                             "Clinical Dashboard",
                                             style:
-                                                textTheme.labelLarge?.copyWith(
+                                                textTheme.bodySmall?.copyWith(
                                               color: Colors.white,
-                                              fontSize: 12,
                                             ),
                                           ),
                                         ),
@@ -346,7 +346,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                         child: FadeTransition(
                           opacity: _fadeAnimation,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AyurezeTheme.spaceXl),
                             child: LayoutBuilder(
                               builder: (context, constraints) {
                                 final isWide = constraints.maxWidth > 500;
@@ -480,10 +481,12 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                         child: FadeTransition(
                           opacity: _fadeAnimation,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AyurezeTheme.spaceXl),
                             child: GlassSurface(
                               radius: 18,
-                              padding: const EdgeInsets.all(4),
+                              padding:
+                                  const EdgeInsets.all(AyurezeTheme.spaceXs),
                               child: Row(
                                 children: [
                                   _buildTabItem(
@@ -516,7 +519,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       // Appointments List Section
                       if (viewModel.isLoading)
                         SliverPadding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: AyurezeTheme.spaceXl),
                           sliver: SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) => const OslerCardSkeleton(),
@@ -580,9 +584,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
           ),
           Text(
             title,
-            style: textTheme.bodyMedium?.copyWith(
+            style: textTheme.bodySmall?.copyWith(
               color: AyurezeTheme.textSecondary,
-              fontSize: 12,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -676,7 +679,9 @@ class _LoginHomeViewState extends State<_LoginHomeView>
       final showError = vm.hasError && !isSearching;
       return SliverToBoxAdapter(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AyurezeTheme.spaceXl,
+              vertical: AyurezeTheme.space3xl),
           child: GlassSurface(
             padding: const EdgeInsets.all(28),
             child: Column(
@@ -721,7 +726,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     }
 
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceXl),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           final item = items[index];
@@ -755,9 +760,9 @@ class _LoginHomeViewState extends State<_LoginHomeView>
               ),
             );
           },
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
             decoration: AyurezeTheme.panelDecoration(),
             child: Row(
               children: [
@@ -844,9 +849,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                       const SizedBox(height: 4),
                       Text(
                         address,
-                        style: textTheme.bodyMedium?.copyWith(
+                        style: textTheme.bodySmall?.copyWith(
                           color: AyurezeTheme.textSecondary,
-                          fontSize: 12,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
