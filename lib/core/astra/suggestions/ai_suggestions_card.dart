@@ -51,9 +51,10 @@ class AISuggestionsCard extends StatelessWidget {
       label: 'AI Suggestions, ${activeSuggestions.length} items',
       child: Card(
         elevation: 1,
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.symmetric(
+            horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
           side: BorderSide(
             color: AyurezeTheme.healingGreen50.withValues(alpha: 0.3),
             width: 1,
@@ -76,8 +77,8 @@ class AISuggestionsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
+          topLeft: Radius.circular(AyurezeTheme.radiusMd),
+          topRight: Radius.circular(AyurezeTheme.radiusMd),
         ),
       ),
       child: Row(
@@ -175,7 +176,7 @@ class AISuggestionsCard extends StatelessWidget {
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: suggestion.color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusSm),
       ),
       child: HugeIcon(
         icon: suggestion.icon,
@@ -255,7 +256,8 @@ class AISuggestionsCard extends StatelessWidget {
         onSuggestionTap?.call(suggestions.first);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -343,12 +345,12 @@ class AISuggestionBadge extends StatelessWidget {
       button: true,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
             color: suggestion.color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
             border: Border.all(
               color: suggestion.color.withValues(alpha: 0.3),
             ),
