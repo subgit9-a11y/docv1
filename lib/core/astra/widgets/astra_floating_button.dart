@@ -220,7 +220,9 @@ class AstraMiniButton extends StatelessWidget {
           onTap: onTap ?? () => AstraFloatingButton.openAstraChat(),
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AyurezeTheme.spaceMd,
+                vertical: AyurezeTheme.spaceSm),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

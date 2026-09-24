@@ -4,6 +4,7 @@ import 'package:doctro/core/constants/app_icons.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/models/conversation_model.dart';
 import 'package:doctro/core/astra/utils/astra_config.dart';
+import 'package:doctro/theme/ayureze_theme.dart';
 
 /// Astra Chat Bubble Widget
 ///
@@ -65,8 +66,8 @@ class AstraChatBubble extends StatelessWidget {
                 label: 'Message content',
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+                    horizontal: AyurezeTheme.spaceLg,
+                    vertical: AyurezeTheme.spaceMd,
                   ),
                   decoration: BoxDecoration(
                     color: _getBackgroundColor(),
@@ -110,9 +111,8 @@ class AstraChatBubble extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
                   child: Text(
                     _formatTime(message.createdAt),
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: theme.textTheme.labelSmall?.copyWith(
                       color: Colors.grey,
-                      fontSize: 11,
                     ),
                   ),
                 ),
@@ -237,8 +237,8 @@ class AstraChatBubble extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
+              horizontal: AyurezeTheme.spaceLg,
+              vertical: AyurezeTheme.spaceSm,
             ),
             decoration: BoxDecoration(
               color: AstraConfig.enableLogging
@@ -291,8 +291,7 @@ class AstraChatBubble extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             message.errorMessage ?? 'Failed to send',
-            style: TextStyle(
-              fontSize: 11,
+            style: theme.textTheme.labelSmall?.copyWith(
               color: Colors.red.shade400,
             ),
           ),

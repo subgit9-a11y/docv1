@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:doctro/core/astra/utils/astra_logger.dart';
+import 'package:doctro/theme/ayureze_theme.dart';
 
 /// Connection Monitor
 ///
@@ -168,7 +169,8 @@ class ConnectionStatusBanner extends StatelessWidget {
 
         return Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          padding: const EdgeInsets.symmetric(
+              vertical: AyurezeTheme.spaceSm, horizontal: AyurezeTheme.spaceLg),
           color: Colors.orange.shade700,
           child: SafeArea(
             bottom: false,

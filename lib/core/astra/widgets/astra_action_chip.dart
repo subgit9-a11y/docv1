@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/core/astra/actions/action_models.dart';
+import 'package:doctro/theme/ayureze_theme.dart';
 
 /// Astra Action Chip Widget
 ///
@@ -41,13 +42,13 @@ class AstraActionChip extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: isLoading ? null : () => onTap?.call(action),
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
               color: _getBackgroundColor(),
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
               border: Border.all(
                 color: _getBorderColor(),
                 width: isSelected ? 2 : 1,
@@ -61,11 +62,11 @@ class AstraActionChip extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   action.description ?? _getDefaultDescription(),
-                  style: TextStyle(
-                    color: _getTextColor(),
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                    fontSize: 14,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: _getTextColor(),
+                        fontWeight:
+                            isSelected ? FontWeight.w600 : FontWeight.w500,
+                      ),
                 ),
                 if (action.priority == ActionPriority.high ||
                     action.priority == ActionPriority.critical) ...[
