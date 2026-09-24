@@ -55,7 +55,9 @@ class _VideoCallState extends State<VideoCall> {
           alignment: Alignment.bottomCenter,
           child: Container(
             margin: const EdgeInsets.only(bottom: 30),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AyurezeTheme.spaceXl,
+                vertical: AyurezeTheme.spaceMd),
             decoration: BoxDecoration(
               color: AyurezeTheme.surfaceDark.withValues(alpha: 0.72),
               borderRadius: BorderRadius.circular(30),
@@ -258,7 +260,8 @@ class _VideoCallState extends State<VideoCall> {
                         child: Center(
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
+                                horizontal: AyurezeTheme.spaceLg,
+                                vertical: AyurezeTheme.spaceSm),
                             decoration: BoxDecoration(
                               color: AyurezeTheme.surfaceDark
                                   .withValues(alpha: 0.7),
@@ -313,7 +316,8 @@ class _VideoCallState extends State<VideoCall> {
                             width: 120,
                             height: 160,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius:
+                                  BorderRadius.circular(AyurezeTheme.radiusLg),
                               border: Border.all(
                                   color: AyurezeTheme.border
                                       .withValues(alpha: 0.5),

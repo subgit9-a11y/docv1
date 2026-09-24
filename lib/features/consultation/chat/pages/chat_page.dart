@@ -517,9 +517,8 @@ class ChatPageState extends State<ChatPage> {
                         DateFormat('dd MMM kk:mm').format(
                             DateTime.fromMillisecondsSinceEpoch(
                                 safeIntOrNull(messageChat.timestamp)!)),
-                        style: TextStyle(
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AyurezeTheme.textSecondary,
-                            fontSize: 12,
                             fontStyle: FontStyle.italic),
                       ),
                     )
@@ -649,7 +648,10 @@ class ChatPageState extends State<ChatPage> {
               onSubmitted: (value) {
                 onSendMessage(textEditingController.text, TypeMessage.text);
               },
-              style: TextStyle(color: AyurezeTheme.forestDeep, fontSize: 15),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(color: AyurezeTheme.forestDeep),
               controller: textEditingController,
               decoration: InputDecoration.collapsed(
                 hintText:

@@ -44,7 +44,7 @@ class _LoadingViewState extends State<LoadingView>
               padding: const EdgeInsets.all(28),
               decoration: BoxDecoration(
                 color: AyurezeTheme.surface.withValues(alpha: 0.85),
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
                 border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
                 boxShadow: [
                   BoxShadow(

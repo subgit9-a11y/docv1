@@ -173,19 +173,16 @@ class _AstraChatPageState extends State<AstraChatPage> {
             children: [
               Text(
                 'Astra AI',
-                style: TextStyle(
-                  color: AyurezeTheme.textPrimary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: AyurezeTheme.textPrimary,
+                    ),
               ),
               if (widget.patientName != null)
                 Text(
                   widget.patientName!,
-                  style: TextStyle(
-                    color: AyurezeTheme.textSecondary,
-                    fontSize: 12,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AyurezeTheme.textSecondary,
+                      ),
                 ),
             ],
           ),
@@ -231,7 +228,8 @@ class _AstraChatPageState extends State<AstraChatPage> {
     return Consumer<AstraController>(
       builder: (context, controller, _) {
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
           color: controller.isBrainHealthy
               ? AyurezeTheme.healingGreen50.withValues(alpha: 0.1)
               : Colors.orange.withValues(alpha: 0.1),
@@ -251,12 +249,11 @@ class _AstraChatPageState extends State<AstraChatPage> {
                 controller.isBrainHealthy
                     ? 'Astra Brain is online'
                     : 'Astra Brain is offline',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: controller.isBrainHealthy
-                      ? AyurezeTheme.healingGreen50
-                      : Colors.orange,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: controller.isBrainHealthy
+                          ? AyurezeTheme.healingGreen50
+                          : Colors.orange,
+                    ),
               ),
               const Spacer(),
               if (controller.errorMessage != null)
@@ -295,7 +292,8 @@ class _AstraChatPageState extends State<AstraChatPage> {
 
         return ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AyurezeTheme.spaceLg, vertical: AyurezeTheme.spaceSm),
           itemCount: controller.messages.length,
           itemBuilder: (context, index) {
             final message = controller.messages[index];
@@ -314,12 +312,12 @@ class _AstraChatPageState extends State<AstraChatPage> {
     return Center(
       child: ScreenEntrance(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(AyurezeTheme.space3xl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AyurezeTheme.space2xl),
                 decoration: BoxDecoration(
                   color: AyurezeTheme.healingGreen50.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
@@ -333,20 +331,17 @@ class _AstraChatPageState extends State<AstraChatPage> {
               const SizedBox(height: 24),
               Text(
                 'Chat with Astra AI',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AyurezeTheme.textPrimary,
-                ),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: AyurezeTheme.textPrimary,
+                    ),
               ),
               const SizedBox(height: 12),
               Text(
                 'Ask questions about patients, prescriptions, or get AI-powered assistance for your consultations.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AyurezeTheme.textSecondary,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AyurezeTheme.textSecondary,
+                    ),
               ),
               const SizedBox(height: 24),
               // Quick action chips
@@ -387,7 +382,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
         }
 
         return Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AyurezeTheme.spaceMd),
           decoration: BoxDecoration(
             color: AyurezeTheme.surface,
             border: Border(
@@ -399,11 +394,10 @@ class _AstraChatPageState extends State<AstraChatPage> {
             children: [
               Text(
                 'Suggested Actions',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AyurezeTheme.textSecondary,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AyurezeTheme.textSecondary,
+                    ),
               ),
               const SizedBox(height: 8),
               AstraActionChipList(
@@ -423,7 +417,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
     return Consumer<AstraController>(
       builder: (context, controller, _) {
         return Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AyurezeTheme.spaceMd),
           decoration: BoxDecoration(
             // Input tray must follow the theme: a hardcoded white here left
             // white-on-white text in dark mode.
@@ -479,23 +473,26 @@ class _AstraChatPageState extends State<AstraChatPage> {
                       hintText: 'Ask Astra AI...',
                       hintStyle: TextStyle(color: AyurezeTheme.textSecondary),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius:
+                            BorderRadius.circular(AyurezeTheme.radiusXl),
                         borderSide: BorderSide(color: AyurezeTheme.border),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius:
+                            BorderRadius.circular(AyurezeTheme.radiusXl),
                         borderSide: BorderSide(color: AyurezeTheme.border),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius:
+                            BorderRadius.circular(AyurezeTheme.radiusXl),
                         borderSide: BorderSide(
                           color: AyurezeTheme.healingGreen50,
                           width: 2,
                         ),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
+                        horizontal: AyurezeTheme.spaceLg,
+                        vertical: AyurezeTheme.spaceMd,
                       ),
                     ),
                     textInputAction: TextInputAction.send,
