@@ -68,7 +68,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
         title: Text(
           getTranslated(context, AppString.notification_heading).toString(),
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w800,
                 color: AyurezeTheme.textPrimary,
               ),
