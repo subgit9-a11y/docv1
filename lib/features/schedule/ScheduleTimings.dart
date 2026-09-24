@@ -129,7 +129,8 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                         const SizedBox(height: 22),
                         GlassSurface(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
+                              horizontal: AyurezeTheme.spaceLg,
+                              vertical: AyurezeTheme.spaceMd),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -182,7 +183,8 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                               decoration: AyurezeTheme.panelDecoration(),
                               child: ListTile(
                                 contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
+                                    horizontal: AyurezeTheme.spaceLg,
+                                    vertical: AyurezeTheme.spaceSm),
                                 title: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -224,11 +226,10 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                   getTranslated(
                                                           context, AppString.to)
                                                       .toString(),
-                                                  style: textTheme.bodySmall
+                                                  style: textTheme.labelSmall
                                                       ?.copyWith(
                                                     color: AyurezeTheme
                                                         .textSecondary,
-                                                    fontSize: 11,
                                                   ),
                                                 ),
                                                 const SizedBox(width: 4),
@@ -436,7 +437,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                             },
                                                                             child:
                                                                                 Container(
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                                              padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceMd, vertical: AyurezeTheme.spaceSm),
                                                                               decoration: BoxDecoration(
                                                                                 color: AyurezeTheme.surface,
                                                                                 borderRadius: BorderRadius.circular(10),
@@ -492,7 +493,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                             },
                                                                             child:
                                                                                 Container(
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                                              padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceMd, vertical: AyurezeTheme.spaceSm),
                                                                               decoration: BoxDecoration(
                                                                                 color: AyurezeTheme.surface,
                                                                                 borderRadius: BorderRadius.circular(10),
@@ -697,7 +698,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(999),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
             ),
             child: Text(
               "Weekly availability",
