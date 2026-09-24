@@ -51,11 +51,10 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
         ),
         title: Text(
           getTranslated(context, AppString.notification_heading).toString(),
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AyurezeTheme.textPrimary,
-          ),
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AyurezeTheme.textPrimary,
+              ),
         ),
       ),
       body: FutureBuilder(
@@ -87,26 +86,29 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                         ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.14),
-                          borderRadius: BorderRadius.circular(999),
+                          borderRadius:
+                              BorderRadius.circular(AyurezeTheme.radiusPill),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Full inbox",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
                         ),
                       ),
                       const SizedBox(height: 14),
-                      const Text(
+                      Text(
                         "Every patient notification, in one scroll.",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          height: 1.05,
-                          fontWeight: FontWeight.w800,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                                color: Colors.white,
+                                height: 1.05,
+                                fontWeight: FontWeight.w800),
                       ),
                     ],
                   ),
@@ -199,19 +201,18 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                       Expanded(
                         child: Text(
                           item.user?.name ?? "",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: AyurezeTheme.textPrimary,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    color: AyurezeTheme.textPrimary,
+                                  ),
                         ),
                       ),
                       Text(
                         date,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AyurezeTheme.textSecondary,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AyurezeTheme.textSecondary,
+                            ),
                       ),
                     ],
                   ),
@@ -220,10 +221,9 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                     item.message ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AyurezeTheme.textSecondary,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AyurezeTheme.textSecondary,
+                        ),
                   ),
                 ],
               ),

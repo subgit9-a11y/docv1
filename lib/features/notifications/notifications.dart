@@ -68,11 +68,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
         title: Text(
           getTranslated(context, AppString.notification_heading).toString(),
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AyurezeTheme.textPrimary,
-          ),
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AyurezeTheme.textPrimary,
+              ),
         ),
         actions: [
           IconButton(
@@ -232,19 +231,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       Expanded(
                         child: Text(
                           item.user?.name ?? "",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: AyurezeTheme.textPrimary,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    color: AyurezeTheme.textPrimary,
+                                  ),
                         ),
                       ),
                       Text(
                         date,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AyurezeTheme.textSecondary,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AyurezeTheme.textSecondary,
+                            ),
                       ),
                     ],
                   ),
@@ -253,10 +251,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     item.message ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AyurezeTheme.textSecondary,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AyurezeTheme.textSecondary,
+                        ),
                   ),
                 ],
               ),
@@ -283,11 +280,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               child: Text(
                 getTranslated(context, AppString.notification_view_all)
                     .toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AyurezeTheme.textPrimary,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AyurezeTheme.textPrimary,
+                    ),
               ),
             ),
             SvgPicture.asset(
@@ -299,11 +295,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             const SizedBox(width: 10),
             Text(
               "${patientNotification.length}",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w800,
-                color: AyurezeTheme.forestDeep,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AyurezeTheme.forestDeep,
+                  ),
             ),
           ],
         ),
