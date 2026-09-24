@@ -137,18 +137,22 @@ class _CreateAccountState extends State<CreateAccount> {
                           Text(
                             getTranslated(context, AppString.register_heading)
                                 .toString(),
-                            style: const TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white,
-                                letterSpacing: -0.5),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge
+                                ?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                    letterSpacing: -0.5),
                           ),
                           const SizedBox(height: 10),
                           Text(
                             "Join the world's most advanced Ayurveda platform",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white.withValues(alpha: 0.8)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Colors.white.withValues(alpha: 0.8)),
                           ),
                         ],
                       ),
@@ -374,10 +378,12 @@ class _CreateAccountState extends State<CreateAccount> {
                             getTranslated(context,
                                     AppString.register_all_ready_account)
                                 .toString(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: AyurezeTheme.textSecondary),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: AyurezeTheme.textSecondary),
                           ),
                           TextButton(
                             onPressed: () =>
@@ -385,10 +391,12 @@ class _CreateAccountState extends State<CreateAccount> {
                             child: Text(
                               getTranslated(context, AppString.register_sign_in)
                                   .toString(),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w800,
-                                  color: AyurezeTheme.healingGreen100),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.w800,
+                                      color: AyurezeTheme.healingGreen100),
                             ),
                           ),
                         ],
@@ -398,8 +406,10 @@ class _CreateAccountState extends State<CreateAccount> {
                     Text(
                       getTranslated(context, AppString.register_description)
                           .toString(),
-                      style: TextStyle(
-                          fontSize: 11, color: AyurezeTheme.textSecondary),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(color: AyurezeTheme.textSecondary),
                       textAlign: TextAlign.center,
                     ),
                   ],
