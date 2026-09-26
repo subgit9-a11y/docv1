@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:doctro/widgets/osler_card.dart';
+import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:doctro/features/appointments/view_models/cancel_appointment_view_model.dart';
@@ -159,9 +160,7 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                         ),
                       ]))),
               body: viewModel.isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(
-                          color: AyurezeTheme.healingGreenFill))
+                  ? const OslerLoadingView()
                   : GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {

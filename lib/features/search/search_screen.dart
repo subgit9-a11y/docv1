@@ -3,6 +3,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/widgets/osler_tag.dart';
+import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:doctro/features/search/models/search_result.dart';
 import 'package:doctro/features/search/search_filter.dart';
 
@@ -296,44 +297,14 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AyurezeTheme.space3xl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 96,
-              height: 96,
-              decoration: const BoxDecoration(
-                color: AyurezeTheme.oslerGray10,
-                shape: BoxShape.circle,
-              ),
-              child: const HugeIcon(
-                icon: HugeIcons.strokeRoundedSearchRemove,
-                color: AyurezeTheme.oslerGray100,
-                size: 40,
-              ),
-            ),
-            const SizedBox(height: AyurezeTheme.spaceLg),
-            Text(
-              query.isEmpty ? 'Start Searching' : 'Woops, Not Found',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: AyurezeTheme.spaceSm),
-            Text(
-              query.isEmpty
-                  ? 'Search symptoms, medications, doctors and more.'
-                  : 'Unfortunately, the key you entered cannot be found. '
-                      'Please try another keyword or check again.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AyurezeTheme.textSecondary,
-                  ),
-            ),
-          ],
-        ),
-      ),
+    return OslerStateView(
+      icon: HugeIcons.strokeRoundedSearchRemove,
+      tone: OslerStateTone.muted,
+      title: query.isEmpty ? 'Start Searching' : 'Woops, Not Found',
+      message: query.isEmpty
+          ? 'Search symptoms, medications, doctors and more.'
+          : 'Unfortunately, the key you entered cannot be found. '
+              'Please try another keyword or check again.',
     );
   }
 }

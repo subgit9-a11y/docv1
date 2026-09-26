@@ -6,6 +6,7 @@ import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_card.dart';
 import 'package:doctro/widgets/osler_input.dart';
 import 'package:doctro/widgets/osler_tag.dart';
+import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:doctro/features/medications/medication_controller.dart';
 import 'package:doctro/features/medications/models/medication.dart';
 import 'package:doctro/features/medications/models/medication_dose_log.dart';
@@ -286,41 +287,13 @@ class _EmptyMedications extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AyurezeTheme.space3xl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 96,
-              height: 96,
-              decoration: const BoxDecoration(
-                color: AyurezeTheme.healingGreen10,
-                shape: BoxShape.circle,
-              ),
-              child: const HugeIcon(
-                icon: HugeIcons.strokeRoundedMedicine01,
-                color: AyurezeTheme.healingGreen100,
-                size: 40,
-              ),
-            ),
-            const SizedBox(height: AyurezeTheme.spaceLg),
-            Text('No Medications!',
-                style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: AyurezeTheme.spaceSm),
-            Text(
-              'You have 0 medications. Kindly setup a new one manually or scan with AI.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AyurezeTheme.textSecondary,
-                  ),
-            ),
-            const SizedBox(height: AyurezeTheme.spaceLg),
-            OslerButton(text: 'Add Medication', onPressed: onAdd),
-          ],
-        ),
-      ),
+    return OslerStateView(
+      icon: HugeIcons.strokeRoundedMedicine01,
+      title: 'No Medications!',
+      message:
+          'You have 0 medications. Kindly setup a new one manually or scan with AI.',
+      actionLabel: 'Add Medication',
+      onAction: onAdd,
     );
   }
 }

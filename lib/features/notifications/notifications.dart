@@ -1,4 +1,5 @@
 import 'package:doctro/widgets/osler_hero.dart';
+import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:doctro/core/constants/app_icons.dart';
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/core/constants/date_util.dart';
@@ -104,10 +105,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             future: loadData,
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
-                return Center(
-                  child:
-                      CircularProgressIndicator(color: AyurezeTheme.forestDeep),
-                );
+                return const OslerLoadingView();
               }
 
               return Stack(

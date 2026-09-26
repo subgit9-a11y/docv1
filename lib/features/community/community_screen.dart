@@ -5,6 +5,7 @@ import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_card.dart';
 import 'package:doctro/widgets/osler_input.dart';
+import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:doctro/widgets/osler_tag.dart';
 import 'package:doctro/features/community/community_controller.dart';
 import 'package:doctro/features/community/community_filter.dart';
@@ -199,14 +200,11 @@ class _CommunityFeedTab extends StatelessWidget {
         ),
         Expanded(
           child: posts.isEmpty
-              ? Center(
-                  child: Text(
-                    'No posts yet in this category.',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: AyurezeTheme.textSecondary),
-                  ),
+              ? OslerStateView(
+                  icon: HugeIcons.strokeRoundedMessage01,
+                  tone: OslerStateTone.muted,
+                  title: 'No Posts Yet',
+                  message: 'No posts yet in this category.',
                 )
               : ListView.separated(
                   padding: const EdgeInsets.fromLTRB(
@@ -336,14 +334,11 @@ class _ResourceTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (workshops.isEmpty) {
-      return Center(
-        child: Text(
-          'No workshops available right now.',
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: AyurezeTheme.textSecondary),
-        ),
+      return OslerStateView(
+        icon: HugeIcons.strokeRoundedCalendar01,
+        tone: OslerStateTone.muted,
+        title: 'No Workshops',
+        message: 'No workshops available right now.',
       );
     }
     return ListView.separated(

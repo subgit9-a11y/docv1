@@ -10,6 +10,7 @@ import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:doctro/widgets/osler_skeleton.dart';
+import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:doctro/features/dashboard/patient_information.dart';
 import 'package:doctro/features/dashboard/view_models/login_home_view_model.dart';
 import 'package:doctro/theme/app_motion.dart';
@@ -695,41 +696,19 @@ class _LoginHomeViewState extends State<_LoginHomeView>
               vertical: AyurezeTheme.space3xl),
           child: GlassSurface(
             padding: const EdgeInsets.all(AyurezeTheme.space2xl),
-            child: Column(
-              children: [
-                HugeIcon(
-                  icon: showError
-                      ? HugeIcons.strokeRoundedCloudOff
-                      : HugeIcons.strokeRoundedCalendarCheck01,
-                  size: 48,
-                  color: showError
-                      ? AyurezeTheme.remoteRed50
-                      : AyurezeTheme.forestDeep.withValues(alpha: 0.5),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  showError
-                      ? "Couldn't Load Appointments"
-                      : "No Appointments Found",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AyurezeTheme.textPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  showError
-                      ? vm.errorMessage
-                      : isSearching
-                          ? "No patient matching '${_searchController.text}'"
-                          : "There are no appointments scheduled for this section.",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: AyurezeTheme.textSecondary),
-                ),
-              ],
+            child: OslerStateView(
+              icon: showError
+                  ? HugeIcons.strokeRoundedCloudOff
+                  : HugeIcons.strokeRoundedCalendarCheck01,
+              tone: showError ? OslerStateTone.error : OslerStateTone.neutral,
+              title: showError
+                  ? "Couldn't Load Appointments"
+                  : "No Appointments Found",
+              message: showError
+                  ? vm.errorMessage
+                  : isSearching
+                      ? "No patient matching '${_searchController.text}'"
+                      : "There are no appointments scheduled for this section.",
             ),
           ),
         ),

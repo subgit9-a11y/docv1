@@ -10,6 +10,7 @@ import 'package:doctro/network/server_error.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/glass_surface.dart';
 import 'package:flutter/material.dart';
+import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class ViewAllNotification extends StatefulWidget {
@@ -61,9 +62,7 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
         future: loadData,
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return Center(
-              child: CircularProgressIndicator(color: AyurezeTheme.forestDeep),
-            );
+            return const OslerLoadingView();
           }
 
           return SingleChildScrollView(

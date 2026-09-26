@@ -3,7 +3,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/widgets/osler_card.dart';
-import 'package:doctro/widgets/osler_loader.dart';
+import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:doctro/widgets/osler_tag.dart';
 import 'package:doctro/features/health_records/models/appointment_summary.dart';
 import 'package:doctro/features/health_records/models/health_document.dart';
@@ -73,7 +73,7 @@ class _HealthRecordsScreenState extends State<HealthRecordsScreen> {
           future: _future,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return const Center(child: OslerLoader());
+              return const OslerLoadingView();
             }
             final data = snapshot.data!;
             return TabBarView(
@@ -113,7 +113,9 @@ class _MedicationsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (medications.isEmpty) {
-      return const _EmptyTab(message: 'No current medications on record.');
+      return const _EmptyTab(
+          message: 'No current medications on record.',
+          icon: HugeIcons.strokeRoundedMedicine01);
     }
     return ListView.separated(
       padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
@@ -171,7 +173,9 @@ class _MedicalHistoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (entries.isEmpty) {
-      return const _EmptyTab(message: 'No medical history on record.');
+      return const _EmptyTab(
+          message: 'No medical history on record.',
+          icon: HugeIcons.strokeRoundedStethoscope02);
     }
     return ListView.separated(
       padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
@@ -248,7 +252,9 @@ class _AppointmentsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (appointments.isEmpty) {
-      return const _EmptyTab(message: 'No appointments on record.');
+      return const _EmptyTab(
+          message: 'No appointments on record.',
+          icon: HugeIcons.strokeRoundedCalendar01);
     }
     return ListView.separated(
       padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
@@ -310,7 +316,9 @@ class _DocumentsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (documents.isEmpty) {
-      return const _EmptyTab(message: 'No health documents on record.');
+      return const _EmptyTab(
+          message: 'No health documents on record.',
+          icon: HugeIcons.strokeRoundedFile01);
     }
     return GridView.builder(
       padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
@@ -355,23 +363,16 @@ class _DocumentsTab extends StatelessWidget {
 
 class _EmptyTab extends StatelessWidget {
   final String message;
+  final List<List<dynamic>> icon;
 
-  const _EmptyTab({required this.message});
+  const _EmptyTab({required this.message, required this.icon});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AyurezeTheme.space3xl),
-        child: Text(
-          message,
-          textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: AyurezeTheme.textSecondary),
-        ),
-      ),
+    return OslerStateView(
+      icon: icon,
+      title: 'Nothing Here Yet',
+      message: message,
     );
   }
 }
