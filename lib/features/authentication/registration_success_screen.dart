@@ -96,12 +96,9 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen>
                     children: [
                       Text(
                         "Welcome, Dr. ${widget.doctorName}!",
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: AyurezeTheme.textPrimary,
-                          letterSpacing: -1,
-                        ),
+                        style: AyurezeTheme.font(
+                            28, FontWeight.w800, AyurezeTheme.textPrimary,
+                            letterSpacing: -1),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 12),
@@ -211,11 +208,10 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen>
         Expanded(
           child: Text(
             value,
-            style: TextStyle(
-              fontSize: isPrimary ? 18 : 14,
-              fontWeight:
-                  isPrimary || isStatus ? FontWeight.bold : FontWeight.w600,
-              color: isStatus
+            style: AyurezeTheme.font(
+              isPrimary ? 18 : 14,
+              isPrimary || isStatus ? FontWeight.w800 : FontWeight.w500,
+              isStatus
                   ? AyurezeTheme.warning
                   : (isPrimary
                       ? AyurezeTheme.healingGreen100

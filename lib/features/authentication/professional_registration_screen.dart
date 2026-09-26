@@ -693,7 +693,7 @@ class _ProfessionalRegistrationScreenState
         width: double.infinity,
         decoration: BoxDecoration(
           color: AyurezeTheme.surface,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
           border: Border.all(
               color: AyurezeTheme.healingGreen50.withValues(alpha: 0.35),
               width: 2),
@@ -706,12 +706,12 @@ class _ProfessionalRegistrationScreenState
         ),
         child: file != null
             ? ClipRRect(
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
                 child: Image.file(file, fit: BoxFit.cover),
               )
             : url != null && url.isNotEmpty
                 ? ClipRRect(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
                     child: Image.network(url, fit: BoxFit.cover),
                   )
                 : Column(
@@ -880,7 +880,7 @@ class _ProfessionalRegistrationScreenState
         // Dark-aware: healingGreen10 is a light-only constant, so it left a
         // pale card behind dark-mode text.
         color: AyurezeTheme.surfaceMuted,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
         border: Border.all(
             color: AyurezeTheme.healingGreen50.withValues(alpha: 0.35)),
       ),

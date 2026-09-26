@@ -180,7 +180,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
     final textTheme = Theme.of(context).textTheme;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(AyurezeTheme.space2xl),
       decoration: AyurezeTheme.heroDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

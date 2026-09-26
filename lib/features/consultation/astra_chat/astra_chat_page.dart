@@ -156,7 +156,7 @@ class _AstraChatPageState extends State<AstraChatPage> {
         children: [
           // Astra Brain icon
           Container(
-            padding: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(AyurezeTheme.spaceSm),
             decoration: BoxDecoration(
               color: AyurezeTheme.healingGreen50.withValues(alpha: 0.2),
               shape: BoxShape.circle,

@@ -136,7 +136,8 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
                   )
                 else
                   SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
+                    padding: const EdgeInsets.fromLTRB(AyurezeTheme.spaceXl, 0,
+                        AyurezeTheme.spaceXl, AyurezeTheme.space2xl),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (ctx, i) => _AppointmentCard(
@@ -158,7 +159,7 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
   Widget _buildHeroCard(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(AyurezeTheme.space2xl),
       decoration: AyurezeTheme.heroDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -305,7 +306,7 @@ class _AppointmentCardState extends State<_AppointmentCard>
             child: Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
                   child: Image.network(
                     appt.user?.fullImage ?? '',
                     width: 58,

@@ -122,14 +122,15 @@ class _CreateAccountState extends State<CreateAccount> {
           GestureDetector(
             onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
+              padding: const EdgeInsets.fromLTRB(AyurezeTheme.spaceXl, 0,
+                  AyurezeTheme.spaceXl, AyurezeTheme.space2xl),
               child: Form(
                 key: _formkey,
                 child: Column(
                   children: [
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(22),
+                      padding: const EdgeInsets.all(AyurezeTheme.space2xl),
                       decoration: AyurezeTheme.heroDecoration(),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +160,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     ),
                     const SizedBox(height: 20),
                     GlassSurface(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
                       child: Column(
                         children: [
                           OslerInput(
