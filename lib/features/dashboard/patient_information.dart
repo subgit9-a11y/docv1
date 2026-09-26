@@ -172,7 +172,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                 children: [
                                   // Profile Card
                                   GlassSurface(
-                                    padding: const EdgeInsets.all(20),
+                                    padding: const EdgeInsets.all(
+                                        AyurezeTheme.spaceXl),
                                     child: Column(
                                       children: [
                                         Row(
@@ -187,8 +188,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                                   appointmentType,
                                                   userId),
                                               icon: Container(
-                                                padding:
-                                                    const EdgeInsets.all(10),
+                                                padding: const EdgeInsets.all(
+                                                    AyurezeTheme.spaceMd),
                                                 decoration: BoxDecoration(
                                                   color:
                                                       AyurezeTheme.surfaceMuted,
@@ -223,7 +224,9 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               ),
                                               child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(50),
+                                                    BorderRadius.circular(
+                                                        AyurezeTheme
+                                                            .radiusPill),
                                                 child: (fullImage != null &&
                                                         fullImage.isNotEmpty)
                                                     ? CachedNetworkImage(
@@ -256,8 +259,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                               onPressed: () =>
                                                   _openChat(context, userId),
                                               icon: Container(
-                                                padding:
-                                                    const EdgeInsets.all(10),
+                                                padding: const EdgeInsets.all(
+                                                    AyurezeTheme.spaceMd),
                                                 decoration: BoxDecoration(
                                                   color:
                                                       AyurezeTheme.surfaceMuted,
@@ -380,7 +383,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                               controller: _tabController,
                               indicator: BoxDecoration(
                                 color: AyurezeTheme.surface,
-                                borderRadius: BorderRadius.circular(14),
+                                borderRadius: BorderRadius.circular(
+                                    AyurezeTheme.radiusLg),
                                 boxShadow: [
                                   BoxShadow(
                                     color: AyurezeTheme.shadow,
@@ -391,13 +395,10 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                               ),
                               labelColor: AyurezeTheme.textPrimary,
                               unselectedLabelColor: AyurezeTheme.textSecondary,
-                              labelStyle: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                              ),
-                              unselectedLabelStyle: const TextStyle(
-                                fontSize: 13,
-                              ),
+                              labelStyle: AyurezeTheme.font(13, FontWeight.w700,
+                                  AyurezeTheme.textPrimary),
+                              unselectedLabelStyle: AyurezeTheme.font(13,
+                                  FontWeight.w500, AyurezeTheme.textSecondary),
                               tabs: [
                                 Tab(
                                   text: getTranslated(
@@ -430,7 +431,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                               children: [
                                 // Tab 1: Patient Information
                                 SingleChildScrollView(
-                                  padding: const EdgeInsets.all(20),
+                                  padding: const EdgeInsets.all(
+                                      AyurezeTheme.spaceXl),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -438,9 +440,10 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                       // Status Buttons / Status Bar
                                       if (!hideButton)
                                         GlassSurface(
-                                          padding: const EdgeInsets.all(16),
-                                          margin:
-                                              const EdgeInsets.only(bottom: 16),
+                                          padding: const EdgeInsets.all(
+                                              AyurezeTheme.spaceLg),
+                                          margin: const EdgeInsets.only(
+                                              bottom: AyurezeTheme.spaceLg),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -497,8 +500,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                         )
                                       else
                                         Container(
-                                          margin:
-                                              const EdgeInsets.only(bottom: 16),
+                                          margin: const EdgeInsets.only(
+                                              bottom: AyurezeTheme.spaceLg),
                                           child: Row(
                                             children: [
                                               Expanded(
@@ -627,7 +630,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
 
                                 // Tab 2: Illness Information & Astra Fill
                                 SingleChildScrollView(
-                                  padding: const EdgeInsets.all(20),
+                                  padding: const EdgeInsets.all(
+                                      AyurezeTheme.spaceXl),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -721,12 +725,14 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
 
                                 // Tab 3: Prescription
                                 SingleChildScrollView(
-                                  padding: const EdgeInsets.all(20),
+                                  padding: const EdgeInsets.all(
+                                      AyurezeTheme.spaceXl),
                                   child: Column(
                                     children: [
                                       GlassSurface(
                                         width: double.infinity,
-                                        padding: const EdgeInsets.all(20),
+                                        padding: const EdgeInsets.all(
+                                            AyurezeTheme.spaceXl),
                                         child: Column(
                                           children: [
                                             HugeIcon(
@@ -903,19 +909,17 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
       children: [
         Text(
           label,
-          style: textTheme.bodyMedium?.copyWith(
+          style: textTheme.bodySmall?.copyWith(
             color: AyurezeTheme.textSecondary,
-            fontSize: 12,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           value,
           textAlign: TextAlign.center,
-          style: textTheme.titleMedium?.copyWith(
+          style: textTheme.bodyLarge?.copyWith(
             color: AyurezeTheme.textPrimary,
             fontWeight: FontWeight.bold,
-            fontSize: 14,
           ),
         ),
       ],
@@ -931,16 +935,16 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
       child: GlassSurface(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceMd),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AyurezeTheme.spaceSm),
               decoration: BoxDecoration(
                 color: AyurezeTheme.surfaceMuted,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
               ),
               child: HugeIcon(
                   icon: icon, size: 20, color: AyurezeTheme.forestDeep),
@@ -952,9 +956,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                 children: [
                   Text(
                     label,
-                    style: textTheme.bodyMedium?.copyWith(
+                    style: textTheme.bodySmall?.copyWith(
                       color: AyurezeTheme.textSecondary,
-                      fontSize: 12,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -963,7 +966,6 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                     style: textTheme.titleMedium?.copyWith(
                       color: AyurezeTheme.textPrimary,
                       fontWeight: FontWeight.bold,
-                      fontSize: 15,
                     ),
                   ),
                 ],
@@ -985,7 +987,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
 
     return GlassSurface(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
