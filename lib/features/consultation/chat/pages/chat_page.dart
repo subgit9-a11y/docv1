@@ -167,10 +167,11 @@ class ChatPageState extends State<ChatPage> {
             height: 150,
             width: 200,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
                 color: AyurezeTheme.surface),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
+              padding: const EdgeInsets.fromLTRB(
+                  AyurezeTheme.spaceXl, AyurezeTheme.spaceXs, 0, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,15 +186,18 @@ class ChatPageState extends State<ChatPage> {
                       height: MediaQuery.of(context).size.height * 0.06,
                       color: AyurezeTheme.surface,
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(
+                            AyurezeTheme.spaceXl, 0, 0, 0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             getTranslated(
                                     context, AppString.choose_image_camera)
                                 .toString(),
-                            style: TextStyle(
-                                color: AyurezeTheme.textPrimary, fontSize: 18),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: AyurezeTheme.textPrimary),
                           ),
                         ),
                       ),
@@ -209,15 +213,18 @@ class ChatPageState extends State<ChatPage> {
                       height: MediaQuery.of(context).size.height * 0.06,
                       color: AyurezeTheme.surface,
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(
+                            AyurezeTheme.spaceXl, 0, 0, 0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             getTranslated(
                                     context, AppString.choose_image_gallery)
                                 .toString(),
-                            style: TextStyle(
-                                color: AyurezeTheme.textPrimary, fontSize: 18),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: AyurezeTheme.textPrimary),
                           ),
                         ),
                       ),
@@ -257,7 +264,9 @@ class ChatPageState extends State<ChatPage> {
           children: <Widget>[
             messageChat.type == TypeMessage.text
                 ? Container(
-                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AyurezeTheme.spaceLg,
+                        vertical: AyurezeTheme.spaceMd),
                     width: 200,
                     decoration: BoxDecoration(
                         color: AyurezeTheme.border,
@@ -408,7 +417,9 @@ class ChatPageState extends State<ChatPage> {
                       : Container(width: 35),
                   messageChat.type == TypeMessage.text
                       ? Container(
-                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: AyurezeTheme.spaceLg,
+                              vertical: AyurezeTheme.spaceMd),
                           width: 200,
                           decoration: BoxDecoration(
                               color: AyurezeTheme.forestDeep,
@@ -693,7 +704,7 @@ class ChatPageState extends State<ChatPage> {
 
                   if (listMessage.isNotEmpty) {
                     return ListView.builder(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(AyurezeTheme.spaceMd),
                       itemBuilder: (context, index) =>
                           buildItem(index, snapshot.data?.docs[index]),
                       itemCount: snapshot.data?.docs.length,
