@@ -173,162 +173,15 @@ class _ProfileScreen extends State<ProfileScreen> {
       backgroundColor: AyurezeTheme.canvas,
       appBar: PreferredSize(
         preferredSize: Size(width! * 0.3, 220),
-        child: SafeArea(
-          top: true,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(AyurezeTheme.spaceLg,
-                AyurezeTheme.spaceSm, AyurezeTheme.spaceLg, 0),
-            child: Container(
-              decoration: AyurezeTheme.heroDecoration(),
-              padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        child: HugeIcon(
-                          icon: AppIcons.back,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                        onTap: () {
-                          if (_currentStep == 0) Navigator.pop(context);
-                          if (_currentStep == 1) cancel();
-                          if (_currentStep == 2) cancel();
-                        },
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AyurezeTheme.spaceSm,
-                          vertical: AyurezeTheme.spaceXs,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.14),
-                          borderRadius:
-                              BorderRadius.circular(AyurezeTheme.radiusPill),
-                        ),
-                        child: Text(
-                          "Profile workspace",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall
-                              ?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 90,
-                        width: 90,
-                        child: Stack(
-                          children: [
-                            proImage != null
-                                ? Container(
-                                    width: 82,
-                                    height: 82,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: AyurezeTheme.healingGreen50,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          AyurezeTheme.radiusPill),
-                                      child: Image.file(
-                                        proImage!,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  )
-                                : Container(
-                                    width: 82,
-                                    height: 82,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: AyurezeTheme.healingGreen50,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          SharedPreferenceHelper.getString(
-                                              Preferences.image),
-                                      imageBuilder: (context, imageProvider) =>
-                                          CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        child: CircleAvatar(
-                                          radius: 36,
-                                          backgroundImage: imageProvider,
-                                        ),
-                                      ),
-                                      placeholder: (context, url) =>
-                                          const CircularProgressIndicator(
-                                        color: AyurezeTheme.healingGreen50,
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset("images/no_image.png"),
-                                    ),
-                                  ),
-                            Positioned(
-                              top: 56,
-                              left: 58,
-                              child: GestureDetector(
-                                onTap: () {
-                                  chooseProfileImage();
-                                },
-                                child: CircleAvatar(
-                                  backgroundColor: AyurezeTheme.healingGreen50,
-                                  radius: 14,
-                                  child: HugeIcon(
-                                    icon: AppIcons.add,
-                                    color: AyurezeTheme.forestDeep,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Doctor profile",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(color: Colors.white, height: 1.05),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              "$name",
-                              style: TextStyle(
-                                fontSize: width! * 0.047,
-                                color: Colors.white.withValues(alpha: 0.88),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+        child: _ProfileHeader(
+          width: width!,
+          proImage: proImage,
+          onBack: () {
+            if (_currentStep == 0) Navigator.pop(context);
+            if (_currentStep == 1) cancel();
+            if (_currentStep == 2) cancel();
+          },
+          onChooseImage: chooseProfileImage,
         ),
       ),
       body: FutureBuilder(
@@ -366,284 +219,17 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     .toString(),
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
-                              content: GestureDetector(
-                                onTap: () {
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                },
-                                child: Form(
-                                  key: _step1,
-                                  child: SingleChildScrollView(
-                                    child: Container(
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.only(
-                                                top: width! * 0.01),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_doctor_name)
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: width! * 0.04,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                TextFormField(
-                                                  controller: _pName,
-                                                  enableInteractiveSelection:
-                                                      false,
-                                                  keyboardType:
-                                                      TextInputType.name,
-                                                  inputFormatters: [
-                                                    FilteringTextInputFormatter
-                                                        .allow(RegExp(
-                                                            "[a-zA-Z ]")),
-                                                  ],
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                          color: AyurezeTheme
-                                                              .textPrimary),
-                                                  decoration: InputDecoration(
-                                                    hintText: getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .profile_enter_name_hint)
-                                                        .toString(),
-                                                    hintStyle: TextStyle(
-                                                        fontSize:
-                                                            width! * 0.035,
-                                                        color: AyurezeTheme
-                                                            .textSecondary),
-                                                  ),
-                                                  validator: (String? value) {
-                                                    if (value!.isEmpty) {
-                                                      return getTranslated(
-                                                              context,
-                                                              AppString
-                                                                  .please_enter_profile_valid_name)
-                                                          .toString();
-                                                    } else if (value
-                                                        .trim()
-                                                        .isEmpty) {
-                                                      return getTranslated(
-                                                              context,
-                                                              AppString
-                                                                  .please_enter_valid_name)
-                                                          .toString();
-                                                    }
-                                                    return null;
-                                                  },
-                                                  onSaved: (String? name) {},
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.only(
-                                                top: width! * 0.01),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_date_of_birth)
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: width! * 0.04,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                TextFormField(
-                                                  textCapitalization:
-                                                      TextCapitalization.words,
-                                                  enableInteractiveSelection:
-                                                      false,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium
-                                                      ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textSecondary,
-                                                      ),
-                                                  controller: _pDob,
-                                                  readOnly: true,
-                                                  decoration: InputDecoration(
-                                                    hintText: getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .profile_date_of_birth_hint)
-                                                        .toString(),
-                                                    hintStyle: TextStyle(
-                                                      fontSize: width! * 0.04,
-                                                      color: AyurezeTheme
-                                                          .textSecondary,
-                                                    ),
-                                                  ),
-                                                  validator: (String? value) {
-                                                    if (value!.isEmpty) {
-                                                      return getTranslated(
-                                                              context,
-                                                              AppString
-                                                                  .please_enter_birth_date)
-                                                          .toString();
-                                                    }
-                                                    return null;
-                                                  },
-                                                  onTap: () {
-                                                    _selectDate(context);
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox.shrink(),
-                                          Divider(
-                                            height: 4,
-                                          ),
-                                          Container(
-                                            alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.only(
-                                                top: width! * 0.02),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_gender)
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: width! * 0.038,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                StatefulBuilder(
-                                                  builder: (context, myState) {
-                                                    return OslerDropdown(
-                                                      label: '',
-                                                      hint: getTranslated(
-                                                              context,
-                                                              AppString
-                                                                  .profile_gender_hint)
-                                                          .toString(),
-                                                      value: _genderSelect,
-                                                      items: gender,
-                                                      onChanged: (value) {
-                                                        myState(() {
-                                                          _genderSelect = value;
-                                                        });
-                                                      },
-                                                      validator: (value) {
-                                                        if (_genderSelect ==
-                                                            null) {
-                                                          return getTranslated(
-                                                                  context,
-                                                                  AppString
-                                                                      .please_enter_profile_valid_name)
-                                                              .toString();
-                                                        }
-                                                        return null;
-                                                      },
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            alignment: Alignment.topLeft,
-                                            margin: EdgeInsets.only(
-                                                top: width! * 0.02),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_description)
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: width! * 0.04,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                TextFormField(
-                                                  controller: _pDesc,
-                                                  enableInteractiveSelection:
-                                                      false,
-                                                  keyboardType:
-                                                      TextInputType.name,
-                                                  inputFormatters: [
-                                                    FilteringTextInputFormatter
-                                                        .allow(RegExp(
-                                                            "[a-zA-Z &.,]")),
-                                                  ],
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                          color: AyurezeTheme
-                                                              .textPrimary),
-                                                  decoration: InputDecoration(
-                                                    hintText: getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .profile_description_hint)
-                                                        .toString(),
-                                                    hintStyle: TextStyle(
-                                                        fontSize:
-                                                            width! * 0.035,
-                                                        color: AyurezeTheme
-                                                            .textSecondary),
-                                                  ),
-                                                  validator: (String? value) {
-                                                    if (value!.isEmpty) {
-                                                      return getTranslated(
-                                                              context,
-                                                              AppString
-                                                                  .please_enter_description)
-                                                          .toString();
-                                                    } else if (value
-                                                        .trim()
-                                                        .isEmpty) {
-                                                      return getTranslated(
-                                                              context,
-                                                              AppString
-                                                                  .please_enter_valid_description)
-                                                          .toString();
-                                                    }
-                                                    return null;
-                                                  },
-                                                  onSaved: (String? name) {},
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                              content: _ProfileStep1PersonalInfo(
+                                formKey: _step1,
+                                width: width!,
+                                nameController: _pName,
+                                dobController: _pDob,
+                                descriptionController: _pDesc,
+                                genderValue: _genderSelect,
+                                genderOptions: gender,
+                                onGenderChanged: (value) =>
+                                    _genderSelect = value,
+                                onDobTap: () => _selectDate(context),
                               ),
                               isActive: _currentStep >= 0,
                               state: _currentStep >= 0
@@ -2403,6 +1989,420 @@ class _ProfileScreen extends State<ProfileScreen> {
     if (_currentStep > 0) {
       setState(() => _currentStep -= 1);
     }
+  }
+}
+
+/// Step 1 of the profile Stepper: name, date of birth, gender and
+/// description. Extracted out of [_ProfileScreen]'s build method as a
+/// structural-only split - no behavior or styling changed.
+///
+/// The gender dropdown keeps its own local state (mirroring the
+/// `StatefulBuilder` this replaced) so picking a value only rebuilds this
+/// widget, not the whole step; [onGenderChanged] still writes the choice
+/// back to [_ProfileScreen]'s field for validation and submission.
+class _ProfileStep1PersonalInfo extends StatefulWidget {
+  final GlobalKey<FormState> formKey;
+  final double width;
+  final TextEditingController nameController;
+  final TextEditingController dobController;
+  final TextEditingController descriptionController;
+  final String? genderValue;
+  final List<String> genderOptions;
+  final ValueChanged<String?> onGenderChanged;
+  final VoidCallback onDobTap;
+
+  const _ProfileStep1PersonalInfo({
+    required this.formKey,
+    required this.width,
+    required this.nameController,
+    required this.dobController,
+    required this.descriptionController,
+    required this.genderValue,
+    required this.genderOptions,
+    required this.onGenderChanged,
+    required this.onDobTap,
+  });
+
+  @override
+  State<_ProfileStep1PersonalInfo> createState() =>
+      _ProfileStep1PersonalInfoState();
+}
+
+class _ProfileStep1PersonalInfoState extends State<_ProfileStep1PersonalInfo> {
+  late String? _genderSelect = widget.genderValue;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = widget.width;
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Form(
+        key: widget.formKey,
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(top: width * 0.01),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getTranslated(context, AppString.profile_doctor_name)
+                            .toString(),
+                        style: TextStyle(
+                            fontSize: width * 0.04,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      TextFormField(
+                        controller: widget.nameController,
+                        enableInteractiveSelection: false,
+                        keyboardType: TextInputType.name,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp("[a-zA-Z ]")),
+                        ],
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: AyurezeTheme.textPrimary),
+                        decoration: InputDecoration(
+                          hintText: getTranslated(
+                                  context, AppString.profile_enter_name_hint)
+                              .toString(),
+                          hintStyle: TextStyle(
+                              fontSize: width * 0.035,
+                              color: AyurezeTheme.textSecondary),
+                        ),
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return getTranslated(context,
+                                    AppString.please_enter_profile_valid_name)
+                                .toString();
+                          } else if (value.trim().isEmpty) {
+                            return getTranslated(
+                                    context, AppString.please_enter_valid_name)
+                                .toString();
+                          }
+                          return null;
+                        },
+                        onSaved: (String? name) {},
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(top: width * 0.01),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getTranslated(context, AppString.profile_date_of_birth)
+                            .toString(),
+                        style: TextStyle(
+                            fontSize: width * 0.04,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      TextFormField(
+                        textCapitalization: TextCapitalization.words,
+                        enableInteractiveSelection: false,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: AyurezeTheme.textSecondary,
+                                ),
+                        controller: widget.dobController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          hintText: getTranslated(
+                                  context, AppString.profile_date_of_birth_hint)
+                              .toString(),
+                          hintStyle: TextStyle(
+                            fontSize: width * 0.04,
+                            color: AyurezeTheme.textSecondary,
+                          ),
+                        ),
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return getTranslated(
+                                    context, AppString.please_enter_birth_date)
+                                .toString();
+                          }
+                          return null;
+                        },
+                        onTap: widget.onDobTap,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox.shrink(),
+                Divider(
+                  height: 4,
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(top: width * 0.02),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getTranslated(context, AppString.profile_gender)
+                            .toString(),
+                        style: TextStyle(
+                            fontSize: width * 0.038,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      OslerDropdown(
+                        label: '',
+                        hint: getTranslated(
+                                context, AppString.profile_gender_hint)
+                            .toString(),
+                        value: _genderSelect,
+                        items: widget.genderOptions,
+                        onChanged: (value) {
+                          setState(() => _genderSelect = value);
+                          widget.onGenderChanged(value);
+                        },
+                        validator: (value) {
+                          if (_genderSelect == null) {
+                            return getTranslated(context,
+                                    AppString.please_enter_profile_valid_name)
+                                .toString();
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(top: width * 0.02),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getTranslated(context, AppString.profile_description)
+                            .toString(),
+                        style: TextStyle(
+                            fontSize: width * 0.04,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      TextFormField(
+                        controller: widget.descriptionController,
+                        enableInteractiveSelection: false,
+                        keyboardType: TextInputType.name,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp("[a-zA-Z &.,]")),
+                        ],
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: AyurezeTheme.textPrimary),
+                        decoration: InputDecoration(
+                          hintText: getTranslated(
+                                  context, AppString.profile_description_hint)
+                              .toString(),
+                          hintStyle: TextStyle(
+                              fontSize: width * 0.035,
+                              color: AyurezeTheme.textSecondary),
+                        ),
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return getTranslated(
+                                    context, AppString.please_enter_description)
+                                .toString();
+                          } else if (value.trim().isEmpty) {
+                            return getTranslated(context,
+                                    AppString.please_enter_valid_description)
+                                .toString();
+                          }
+                          return null;
+                        },
+                        onSaved: (String? name) {},
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The profile screen's app bar: back/cancel control, avatar (with a
+/// pending local pick taking priority over the saved network image) and
+/// the doctor's name. Extracted out of [_ProfileScreen]'s 2000+ line build
+/// method as a structural-only split - no behavior or styling changed.
+class _ProfileHeader extends StatelessWidget {
+  final double width;
+  final File? proImage;
+  final VoidCallback onBack;
+  final VoidCallback onChooseImage;
+
+  const _ProfileHeader({
+    required this.width,
+    required this.proImage,
+    required this.onBack,
+    required this.onChooseImage,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: true,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(AyurezeTheme.spaceLg,
+            AyurezeTheme.spaceSm, AyurezeTheme.spaceLg, 0),
+        child: Container(
+          decoration: AyurezeTheme.heroDecoration(),
+          padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    child: HugeIcon(
+                      icon: AppIcons.back,
+                      size: 20,
+                      color: Colors.white,
+                    ),
+                    onTap: onBack,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AyurezeTheme.spaceSm,
+                      vertical: AyurezeTheme.spaceXs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.14),
+                      borderRadius:
+                          BorderRadius.circular(AyurezeTheme.radiusPill),
+                    ),
+                    child: Text(
+                      "Profile workspace",
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 18),
+              Row(
+                children: [
+                  SizedBox(
+                    height: 90,
+                    width: 90,
+                    child: Stack(
+                      children: [
+                        proImage != null
+                            ? Container(
+                                width: 82,
+                                height: 82,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: AyurezeTheme.healingGreen50,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      AyurezeTheme.radiusPill),
+                                  child: Image.file(
+                                    proImage!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                width: 82,
+                                height: 82,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: AyurezeTheme.healingGreen50,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: SharedPreferenceHelper.getString(
+                                      Preferences.image),
+                                  imageBuilder: (context, imageProvider) =>
+                                      CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                      radius: 36,
+                                      backgroundImage: imageProvider,
+                                    ),
+                                  ),
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(
+                                    color: AyurezeTheme.healingGreen50,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset("images/no_image.png"),
+                                ),
+                              ),
+                        Positioned(
+                          top: 56,
+                          left: 58,
+                          child: GestureDetector(
+                            onTap: onChooseImage,
+                            child: CircleAvatar(
+                              backgroundColor: AyurezeTheme.healingGreen50,
+                              radius: 14,
+                              child: HugeIcon(
+                                icon: AppIcons.add,
+                                color: AyurezeTheme.forestDeep,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Doctor profile",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(color: Colors.white, height: 1.05),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          "$name",
+                          style: TextStyle(
+                            fontSize: width * 0.047,
+                            color: Colors.white.withValues(alpha: 0.88),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
