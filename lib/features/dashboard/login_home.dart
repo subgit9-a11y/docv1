@@ -138,7 +138,11 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                           child: SlideTransition(
                             position: _slideAnimation,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                              padding: const EdgeInsets.fromLTRB(
+                                  AyurezeTheme.spaceXl,
+                                  AyurezeTheme.spaceLg,
+                                  AyurezeTheme.spaceXl,
+                                  AyurezeTheme.spaceSm),
                               child: Row(
                                 children: [
                                   GestureDetector(
@@ -167,7 +171,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                               ? ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(
-                                                    24,
+                                                    AyurezeTheme.radiusXl,
                                                   ),
                                                   child: CachedNetworkImage(
                                                     imageUrl:
@@ -237,7 +241,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                         filter: ImageFilter.blur(
                                             sigmaX: 12, sigmaY: 12),
                                         child: Container(
-                                          padding: const EdgeInsets.all(10),
+                                          padding: const EdgeInsets.all(
+                                              AyurezeTheme.spaceMd),
                                           decoration: BoxDecoration(
                                             color: (AyurezeTheme.surface)
                                                 .withValues(alpha: 0.5),
@@ -271,8 +276,11 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                           child: ScaleTransition(
                             scale: _scaleAnimation,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 12, 20, 16),
+                              padding: const EdgeInsets.fromLTRB(
+                                  AyurezeTheme.spaceXl,
+                                  AyurezeTheme.spaceMd,
+                                  AyurezeTheme.spaceXl,
+                                  AyurezeTheme.spaceLg),
                               child: Container(
                                 width: double.infinity,
                                 padding:
@@ -285,15 +293,15 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                                       children: [
                                         Container(
                                           padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 4,
+                                            horizontal: AyurezeTheme.spaceSm,
+                                            vertical: AyurezeTheme.spaceXs,
                                           ),
                                           decoration: BoxDecoration(
                                             color: Colors.white.withValues(
                                               alpha: 0.18,
                                             ),
                                             borderRadius: BorderRadius.circular(
-                                              999,
+                                              AyurezeTheme.radiusPill,
                                             ),
                                           ),
                                           child: Text(
@@ -428,9 +436,13 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                         child: FadeTransition(
                           opacity: _fadeAnimation,
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                            padding: const EdgeInsets.fromLTRB(
+                                AyurezeTheme.spaceXl,
+                                AyurezeTheme.spaceXl,
+                                AyurezeTheme.spaceXl,
+                                AyurezeTheme.spaceLg),
                             child: GlassSurface(
-                              radius: 20,
+                              radius: AyurezeTheme.radiusXl,
                               child: TextField(
                                 controller: _searchController,
                                 onChanged: (text) =>
@@ -554,7 +566,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     final textTheme = Theme.of(context).textTheme;
 
     final card = GlassSurface(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -562,10 +574,10 @@ class _LoginHomeViewState extends State<_LoginHomeView>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(6),
+                padding: const EdgeInsets.all(AyurezeTheme.spaceSm),
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
                 ),
                 child: HugeIcon(icon: icon, size: 18, color: color),
               ),
@@ -615,10 +627,10 @@ class _LoginHomeViewState extends State<_LoginHomeView>
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),
           curve: Curves.easeInOut,
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: AyurezeTheme.spaceMd),
           decoration: BoxDecoration(
             color: isSelected ? AyurezeTheme.surface : Colors.transparent,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
@@ -637,7 +649,6 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                   ? AyurezeTheme.textPrimary
                   : AyurezeTheme.textSecondary,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-              fontSize: 13,
             ),
           ),
         ),
@@ -683,7 +694,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
               horizontal: AyurezeTheme.spaceXl,
               vertical: AyurezeTheme.space3xl),
           child: GlassSurface(
-            padding: const EdgeInsets.all(28),
+            padding: const EdgeInsets.all(AyurezeTheme.space2xl),
             child: Column(
               children: [
                 HugeIcon(
@@ -747,7 +758,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
     final String address = item.patientAddress ?? "In-Clinic Consultation";
 
     final card = Padding(
-      padding: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
