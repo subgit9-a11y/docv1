@@ -7,9 +7,10 @@ import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:doctro/features/search/models/search_result.dart';
 import 'package:doctro/features/search/search_filter.dart';
 
-/// The kit's global "Search Screen": a category-filterable, match-ranked
-/// search over the app's own features (symptom checker, medications,
-/// doctors, consultations) rather than a single-purpose in-page search box.
+/// The kit's global "Search Screen": a category-filterable search over the
+/// app's own real destinations (health tools, medications, the doctor's own
+/// profile, consultation history), each result opening the actual screen on
+/// tap - rather than a single-purpose in-page search box.
 class SearchScreen extends StatefulWidget {
   /// Overridable for tests; defaults to the app's own feature index.
   final List<SearchResult> results;
@@ -18,34 +19,46 @@ class SearchScreen extends StatefulWidget {
 
   static const _defaultIndex = <SearchResult>[
     SearchResult(
-      title: 'AI Symptom Checker',
-      subtitle: 'Analyze your symptoms with Osler AI',
+      title: 'Health Assessment',
+      subtitle: 'Run a guided health assessment',
       category: SearchResultCategory.resources,
       matchPercent: 99,
+      routeName: 'healthAssessment',
     ),
     SearchResult(
-      title: 'My Symptoms',
-      subtitle: 'Track symptoms you have logged',
+      title: 'Health Records',
+      subtitle: 'Medications, history, appointments and documents',
       category: SearchResultCategory.resources,
-      matchPercent: 76,
+      matchPercent: 88,
+      routeName: 'healthRecords',
     ),
     SearchResult(
-      title: 'Medication Reminders',
+      title: 'Community & Resource',
+      subtitle: 'Posts and workshops from the health community',
+      category: SearchResultCategory.resources,
+      matchPercent: 70,
+      routeName: 'community',
+    ),
+    SearchResult(
+      title: 'My Medications',
       subtitle: 'Manage dosage schedules and refills',
       category: SearchResultCategory.medication,
       matchPercent: 68,
+      routeName: 'medicationManagement',
     ),
     SearchResult(
-      title: 'Find a Doctor',
-      subtitle: 'Browse doctors by specialization',
+      title: 'My Profile',
+      subtitle: 'View and edit your professional profile',
       category: SearchResultCategory.doctor,
       matchPercent: 54,
+      routeName: 'profile',
     ),
     SearchResult(
-      title: 'Book Consultation',
-      subtitle: 'Schedule a virtual appointment',
+      title: 'Consultation History',
+      subtitle: 'Review past video consultations',
       category: SearchResultCategory.consultation,
       matchPercent: 42,
+      routeName: 'VideoCallHistory',
     ),
   ];
 
@@ -225,53 +238,59 @@ class _ResultTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
-      decoration: BoxDecoration(
-        color: AyurezeTheme.surface,
-        borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
-        border: Border.all(color: AyurezeTheme.border),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AyurezeTheme.healingGreen10,
-              borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
+    return InkWell(
+      borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
+      onTap: result.routeName == null
+          ? null
+          : () => Navigator.of(context).pushNamed(result.routeName!),
+      child: Container(
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
+        decoration: BoxDecoration(
+          color: AyurezeTheme.surface,
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
+          border: Border.all(color: AyurezeTheme.border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: AyurezeTheme.healingGreen10,
+                borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
+              ),
+              child: HugeIcon(
+                icon: _iconFor(result.category),
+                color: AyurezeTheme.healingGreen100,
+                size: 22,
+              ),
             ),
-            child: HugeIcon(
-              icon: _iconFor(result.category),
-              color: AyurezeTheme.healingGreen100,
-              size: 22,
+            const SizedBox(width: AyurezeTheme.spaceMd),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(result.title,
+                      style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 2),
+                  Text(
+                    result.subtitle,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AyurezeTheme.textSecondary,
+                        ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: AyurezeTheme.spaceMd),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(result.title,
-                    style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: 2),
-                Text(
-                  result.subtitle,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AyurezeTheme.textSecondary,
-                      ),
-                ),
-              ],
+            const SizedBox(width: AyurezeTheme.spaceSm),
+            OslerTag(
+              label: '${result.matchPercent}% Match',
+              style: result.matchPercent >= 70
+                  ? OslerTagStyle.success
+                  : OslerTagStyle.secondary,
             ),
-          ),
-          const SizedBox(width: AyurezeTheme.spaceSm),
-          OslerTag(
-            label: '${result.matchPercent}% Match',
-            style: result.matchPercent >= 70
-                ? OslerTagStyle.success
-                : OslerTagStyle.secondary,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
