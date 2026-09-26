@@ -2,7 +2,6 @@
 // Not part of the app - boots straight into each screen in dark mode,
 // skipping sign-in/Firebase.
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/features/dashboard/login_home.dart';
 import 'package:doctro/features/appointments/cancel_appointment.dart';
@@ -19,7 +18,11 @@ import 'package:doctro/features/onboarding/health_assessment/health_assessment_s
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences.setMockInitialValues({});
+  // AyurezeTheme's dark-aware getters (canvas, surface, textPrimary, ...)
+  // are driven by this separate static flag, not by MaterialApp's
+  // themeMode/Theme.of(context).brightness - ThemeProvider keeps the two in
+  // sync in the real app, so this harness must do the same explicitly.
+  AyurezeTheme.updateThemeMode(true);
   runApp(const GalleryApp());
 }
 
