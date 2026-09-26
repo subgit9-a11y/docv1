@@ -8,6 +8,7 @@ import 'package:doctro/models/CancelAppointment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
+import 'package:doctro/widgets/osler_card.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:doctro/features/appointments/view_models/cancel_appointment_view_model.dart';
@@ -71,17 +72,18 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        child: Text(
-                                          getTranslated(
-                                                  context,
-                                                  AppString
-                                                      .cancel_appointment_heading)
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: width * 0.05,
-                                              color: AyurezeTheme.textPrimary),
-                                        ),
+                                      Text(
+                                        getTranslated(
+                                                context,
+                                                AppString
+                                                    .cancel_appointment_heading)
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium
+                                            ?.copyWith(
+                                                color:
+                                                    AyurezeTheme.textPrimary),
                                       ),
                                     ],
                                   ),
@@ -105,11 +107,12 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                         ),
                         Container(
                           margin: EdgeInsets.only(top: height * 0.01),
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(AyurezeTheme.spaceMd),
                           child: Card(
                             color: AyurezeTheme.surface,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius:
+                                  BorderRadius.circular(AyurezeTheme.radius2xl),
                             ),
                             child: Container(
                                 alignment: AlignmentDirectional.center,
@@ -132,11 +135,14 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                                   AppString
                                                       .search_cancel_appointment)
                                               .toString(),
-                                          hintStyle: TextStyle(
-                                            fontSize: width * 0.045,
-                                            color: AyurezeTheme.textSecondary
-                                                .withValues(alpha: 0.3),
-                                          ),
+                                          hintStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.copyWith(
+                                                color: AyurezeTheme
+                                                    .textSecondary
+                                                    .withValues(alpha: 0.5),
+                                              ),
                                         ),
                                         textAlign: TextAlign.left,
                                       ),
@@ -153,7 +159,9 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                         ),
                       ]))),
               body: viewModel.isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? Center(
+                      child: CircularProgressIndicator(
+                          color: AyurezeTheme.healingGreenFill))
                   : GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
@@ -176,7 +184,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                   : Container(
                                       color: AyurezeTheme.surfaceMuted,
                                       width: width * 1.0,
-                                      padding: EdgeInsets.all(15),
+                                      padding: const EdgeInsets.all(
+                                          AyurezeTheme.spaceLg),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -200,9 +209,12 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                                           ),
                                           Text(
                                             "${getTranslated(context, AppString.cancel_appointment_length)} ${viewModel.cancelAppointmentReq.length} ",
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                color: AyurezeTheme.forestDeep),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall
+                                                ?.copyWith(
+                                                    color: AyurezeTheme
+                                                        .forestDeep),
                                           ),
                                         ],
                                       ),
@@ -293,10 +305,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                   margin:
                       EdgeInsets.only(left: width * 0.02, right: width * 0.02),
                   height: 100,
-                  child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
+                  child: OslerCard(
+                      padding: EdgeInsets.zero,
                       child: Column(children: <Widget>[
                         Container(
                           child: ListTile(
@@ -305,7 +315,8 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
                               height: 70,
                               width: 60,
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(
+                                    AyurezeTheme.radiusMd),
                                 child: Container(
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
