@@ -56,7 +56,7 @@ import 'package:doctro/features/consultation/chat/providers/auth_provider.dart'
 import 'package:doctro/features/consultation/chat/providers/chat_provider.dart';
 import 'package:doctro/features/consultation/chat/providers/home_provider.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
-import 'package:doctro/features/dashboard/login_home.dart';
+import 'package:doctro/features/shell/app_shell.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/features/profile/profile.dart';
 import 'package:doctro/firebase_options.dart';
@@ -547,7 +547,7 @@ class _MyAppState extends State<MyApp> {
                           ForgotPasswordScreen(),
                       'phoneverification': (context) =>
                           PhoneVerificationScreen(),
-                      'loginHome': (context) => LoginHomeScreen(chat: ""),
+                      'loginHome': (context) => const AppShell(),
                       'patientInformation': (context) => patientDetailsScreen(),
                       'cancelAppoitmentRoutes': (context) =>
                           CancelAppointmentScreen(),
