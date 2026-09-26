@@ -435,6 +435,7 @@ class _PaymentScreen extends State<PaymentScreen> {
       _userPayment.clear();
       response =
           await RestClient(await RetroApi().dioData(context)).paymentRequest();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         paymentsRequest.addAll(response.paymentData!);
         _userPayment.addAll(response.paymentData!);
@@ -457,6 +458,7 @@ class _PaymentScreen extends State<PaymentScreen> {
       _userPayment.clear();
       response =
           await RestClient(await RetroApi().dioData(context)).paymentRequest();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         paymentsRequest.addAll(response.paymentData!);
         _userPayment.addAll(response.paymentData!);
@@ -533,6 +535,7 @@ class _PaymentScreen extends State<PaymentScreen> {
           SharedPreferenceHelper.getString(Preferences.doctorId);
       if (doctorId.isNotEmpty) {
         final stats = await AstraApiService().getDashboardStats(doctorId);
+        if (!mounted) return;
         setState(() {
           availableBalance =
               double.tryParse(stats['available_balance'].toString()) ?? 0.0;

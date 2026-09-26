@@ -215,6 +215,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
     try {
       response =
           await RestClient(await RetroApi().dioData(context)).doctorProfile();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         if (response.data!.education != null) {
           convertDegree = json.decode(response.data!.education!);

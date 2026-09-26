@@ -330,6 +330,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       patientNotification.clear();
       response =
           await RestClient(await RetroApi().dioData(context)).notifications();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         patientNotification.addAll(response.data!);
       });

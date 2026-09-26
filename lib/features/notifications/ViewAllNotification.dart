@@ -241,6 +241,7 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
       patientNotification.clear();
       response =
           await RestClient(await RetroApi().dioData(context)).notifications();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         patientNotification.addAll(response.data!);
       });

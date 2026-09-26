@@ -2065,6 +2065,7 @@ class _ProfileScreen extends State<ProfileScreen> {
     try {
       response =
           await RestClient(await RetroApi().dioData(context)).doctorProfile();
+      if (!mounted) return BaseModel()..data = response;
 
       var convertDegree;
       var eduCertificate;
@@ -2193,12 +2194,13 @@ class _ProfileScreen extends State<ProfileScreen> {
       hospitalReq.clear();
       response =
           await RestClient(await RetroApi().dioData(context)).hospitalRequest();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         for (int i = 0; i < response.data!.length; i++) {
           hospitalReq.add(response.data![i]);
         }
-        doctorProfile();
       });
+      doctorProfile();
     } catch (error) {
       // print("Exception occur: $error stackTrace: $stacktrace");
       return BaseModel()..setException(ServerError.withError(error: error));
@@ -2214,6 +2216,7 @@ class _ProfileScreen extends State<ProfileScreen> {
     try {
       response =
           await RestClient(await RetroApi().dioData(context)).uploadImage(body);
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         msg = response.data;
         SharedPreferenceHelper.setString(Preferences.image, response.data!);
@@ -2227,6 +2230,7 @@ class _ProfileScreen extends State<ProfileScreen> {
 
   void proImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (!mounted) return;
     setState(() {
       if (pickedFile != null) {
         SharedPreferenceHelper.setString(Preferences.image, pickedFile.path);
@@ -2242,6 +2246,7 @@ class _ProfileScreen extends State<ProfileScreen> {
 
   void proImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (!mounted) return;
     setState(() {
       if (pickedFile != null) {
         SharedPreferenceHelper.setString(Preferences.image, pickedFile.path);
@@ -2297,6 +2302,7 @@ class _ProfileScreen extends State<ProfileScreen> {
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .treatmentRequest();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         for (int i = 0; i < response.data!.length; i++) {
           treatmentReq.add(response.data![i]);
@@ -2315,6 +2321,7 @@ class _ProfileScreen extends State<ProfileScreen> {
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .categoryRequest(id);
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         for (int i = 0; i < response.categoriesData!.length; i++) {
           categoryReq.add(response.categoriesData![i]);
@@ -2341,6 +2348,7 @@ class _ProfileScreen extends State<ProfileScreen> {
     try {
       response = await RestClient(await RetroApi().dioData(context))
           .expertiseRequest(id);
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         for (int i = 0; i < response.expertiseData!.length; i++) {
           expertReq.add(response.expertiseData![i]);

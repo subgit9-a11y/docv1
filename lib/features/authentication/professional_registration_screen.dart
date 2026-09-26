@@ -134,6 +134,7 @@ class _ProfessionalRegistrationScreenState
       final response =
           await RestClient(await RetroApi().dioData(context)).doctorProfile();
       if (response.success == true && response.data != null) {
+        if (!mounted) return;
         final data = response.data!;
         setState(() {
           _nameController.text = data.name ?? "";
@@ -182,6 +183,7 @@ class _ProfessionalRegistrationScreenState
 
   Future<void> _pickImage(bool isCertificate) async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (!mounted) return;
     if (image != null) {
       setState(() {
         if (isCertificate) {

@@ -730,6 +730,7 @@ class ChatPageState extends State<ChatPage> {
 
     // pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
     pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (!mounted) return;
     if (pickedFile != null) {
       galleryImageFile = File(pickedFile.path);
       if (galleryImageFile != null) {
@@ -748,6 +749,7 @@ class ChatPageState extends State<ChatPage> {
     // pickedFileForCamera = await imagePicker.getImage(source: ImageSource.camera);
     pickedFileForCamera =
         await imagePicker.pickImage(source: ImageSource.camera);
+    if (!mounted) return;
     if (pickedFileForCamera != null) {
       cameraImageFile = File(pickedFileForCamera.path);
       if (cameraImageFile != null) {

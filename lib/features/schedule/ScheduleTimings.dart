@@ -737,6 +737,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
       workingReq.clear();
       response =
           await RestClient(await RetroApi().dioData(context)).workinghours();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         workingReq.addAll(response.data!);
       });

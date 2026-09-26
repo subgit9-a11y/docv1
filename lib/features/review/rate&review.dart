@@ -363,6 +363,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
       _userReview.clear();
       response =
           await RestClient(await RetroApi().dioData(context)).reviewRequest();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         reviewData.addAll(response.data!);
         _userReview.addAll(response.data!);
