@@ -178,7 +178,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           context: context,
           builder: (context) => AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
             ),
             content: Text(item.message!),
             actions: [
@@ -196,13 +196,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
         decoration: AyurezeTheme.panelDecoration(),
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
               child: Image.network(
                 item.user?.fullImage ?? "",
                 width: 58,
@@ -251,10 +251,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     item.message ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AyurezeTheme.textSecondary,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AyurezeTheme.textSecondary,
+                        ),
                   ),
                 ],
               ),
@@ -274,7 +273,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         Navigator.pushNamed(context, "ViewAllNotification");
       },
       child: GlassSurface(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
         child: Row(
           children: [
             Expanded(

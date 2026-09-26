@@ -74,15 +74,15 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
               children: [
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(22),
+                  padding: const EdgeInsets.all(AyurezeTheme.space2xl),
                   decoration: AyurezeTheme.heroDecoration(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
+                          horizontal: AyurezeTheme.spaceSm,
+                          vertical: AyurezeTheme.spaceSm,
                         ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.14),
@@ -124,7 +124,10 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                         const SizedBox(height: 10),
                         Text(
                           "No notifications yet.",
-                          style: TextStyle(color: AyurezeTheme.textSecondary),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: AyurezeTheme.textSecondary,
+                                  ),
                         ),
                       ],
                     ),
@@ -148,7 +151,7 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
           context: context,
           builder: (context) => AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
             ),
             content: Text(item.message!),
             actions: [
@@ -166,13 +169,13 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
         decoration: AyurezeTheme.panelDecoration(),
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
               child: Image.network(
                 item.user?.fullImage ?? "",
                 width: 58,
@@ -221,10 +224,9 @@ class _ViewAllAppointmentState extends State<ViewAllNotification> {
                     item.message ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AyurezeTheme.textSecondary,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AyurezeTheme.textSecondary,
+                        ),
                   ),
                 ],
               ),

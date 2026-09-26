@@ -54,13 +54,13 @@ class _VideoCallState extends State<VideoCall> {
         return Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            margin: const EdgeInsets.only(bottom: 30),
+            margin: const EdgeInsets.only(bottom: AyurezeTheme.space3xl),
             padding: const EdgeInsets.symmetric(
                 horizontal: AyurezeTheme.spaceXl,
                 vertical: AyurezeTheme.spaceMd),
             decoration: BoxDecoration(
               color: AyurezeTheme.surfaceDark.withValues(alpha: 0.72),
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radius2xl),
               border: Border.all(
                   color: AyurezeTheme.border.withValues(alpha: 0.35), width: 1),
             ),
@@ -218,10 +218,8 @@ class _VideoCallState extends State<VideoCall> {
                         ? getTranslated(context, AppString.ringing).toString()
                         : getTranslated(context, AppString.connect_call)
                             .toString(),
-                style: TextStyle(
-                    fontSize: 18,
-                    color: AyurezeTheme.textPrimary,
-                    fontWeight: FontWeight.w400,
+                style: AyurezeTheme.font(
+                    18, FontWeight.w500, AyurezeTheme.textPrimary,
                     letterSpacing: 0.5),
               ),
             ],
@@ -265,7 +263,8 @@ class _VideoCallState extends State<VideoCall> {
                             decoration: BoxDecoration(
                               color: AyurezeTheme.surfaceDark
                                   .withValues(alpha: 0.7),
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius:
+                                  BorderRadius.circular(AyurezeTheme.radiusLg),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -278,13 +277,16 @@ class _VideoCallState extends State<VideoCall> {
                                     shape: BoxShape.circle,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AyurezeTheme.spaceSm),
                                 Text(
                                   "Live Consultation",
-                                  style: TextStyle(
-                                      color: AyurezeTheme.textPrimary,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: AyurezeTheme.textPrimary,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                 ),
                               ],
                             ),
@@ -330,7 +332,8 @@ class _VideoCallState extends State<VideoCall> {
                               ],
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius:
+                                  BorderRadius.circular(AyurezeTheme.radiusLg),
                               child: viewModel.localUserJoined &&
                                       !viewModel.mutedVideo
                                   ? _localPreview(viewModel)

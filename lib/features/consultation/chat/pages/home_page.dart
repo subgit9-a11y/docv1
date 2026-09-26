@@ -134,7 +134,8 @@ class HomePageState extends State<HomePage> {
                         if (snapshot.hasData) {
                           if ((snapshot.data?.docs.length ?? 0) > 0) {
                             return ListView.builder(
-                              padding: const EdgeInsets.all(10),
+                              padding:
+                                  const EdgeInsets.all(AyurezeTheme.spaceMd),
                               itemBuilder: (context, index) => buildItem(
                                   context,
                                   snapshot.data?.docs[index],
@@ -261,7 +262,8 @@ class HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.fromLTRB(10, 0, 0, 5),
+                          margin: const EdgeInsets.fromLTRB(
+                              AyurezeTheme.spaceMd, 0, 0, AyurezeTheme.spaceXs),
                           child: Text(
                             userChat.nickname,
                             maxLines: 1,
@@ -270,7 +272,8 @@ class HomePageState extends State<HomePage> {
                         ),
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          margin: const EdgeInsets.fromLTRB(
+                              AyurezeTheme.spaceMd, 0, 0, 0),
                           child: Text(
                             userChat.content,
                             maxLines: 1,
