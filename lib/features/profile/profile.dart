@@ -176,10 +176,11 @@ class _ProfileScreen extends State<ProfileScreen> {
         child: SafeArea(
           top: true,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            padding: const EdgeInsets.fromLTRB(AyurezeTheme.spaceLg,
+                AyurezeTheme.spaceSm, AyurezeTheme.spaceLg, 0),
             child: Container(
               decoration: AyurezeTheme.heroDecoration(),
-              padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -200,8 +201,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
+                          horizontal: AyurezeTheme.spaceSm,
+                          vertical: AyurezeTheme.spaceXs,
                         ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.14),
@@ -240,7 +241,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                       ),
                                     ),
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
+                                      borderRadius: BorderRadius.circular(
+                                          AyurezeTheme.radiusPill),
                                       child: Image.file(
                                         proImage!,
                                         fit: BoxFit.cover,
@@ -858,7 +860,9 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                 builder: (context) {
                                                   return AlertDialog(
                                                     insetPadding:
-                                                        EdgeInsets.all(10),
+                                                        EdgeInsets.all(
+                                                            AyurezeTheme
+                                                                .spaceMd),
                                                     title: Text(getTranslated(
                                                             context,
                                                             AppString
@@ -1156,7 +1160,9 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                   builder: (context) {
                                                     return AlertDialog(
                                                       insetPadding:
-                                                          EdgeInsets.all(10),
+                                                          EdgeInsets.all(
+                                                              AyurezeTheme
+                                                                  .spaceMd),
                                                       title: Text(getTranslated(
                                                               context,
                                                               AppString
@@ -1918,7 +1924,8 @@ class _ProfileScreen extends State<ProfileScreen> {
           }),
       bottomNavigationBar: Container(
         color: AyurezeTheme.canvas,
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+        padding: const EdgeInsets.fromLTRB(AyurezeTheme.spaceLg,
+            AyurezeTheme.spaceSm, AyurezeTheme.spaceLg, AyurezeTheme.spaceLg),
         height: width! * 0.18,
         child: OslerButton(
           text: _currentStep < 2
