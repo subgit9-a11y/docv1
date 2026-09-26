@@ -214,11 +214,10 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                               children: [
                                                 Text(
                                                   startsTime[index],
-                                                  style: textTheme.bodyMedium
+                                                  style: textTheme.bodySmall
                                                       ?.copyWith(
                                                     color: AyurezeTheme
                                                         .textSecondary,
-                                                    fontSize: 13,
                                                   ),
                                                 ),
                                                 const SizedBox(width: 4),
@@ -235,11 +234,10 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                 const SizedBox(width: 4),
                                                 Text(
                                                   endsTime[index],
-                                                  style: textTheme.bodyMedium
+                                                  style: textTheme.bodySmall
                                                       ?.copyWith(
                                                     color: AyurezeTheme
                                                         .textSecondary,
-                                                    fontSize: 13,
                                                   ),
                                                 ),
                                               ],
@@ -440,7 +438,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                               padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceMd, vertical: AyurezeTheme.spaceSm),
                                                                               decoration: BoxDecoration(
                                                                                 color: AyurezeTheme.surface,
-                                                                                borderRadius: BorderRadius.circular(10),
+                                                                                borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
                                                                                 border: Border.all(color: AyurezeTheme.border),
                                                                               ),
                                                                               child: Text(
@@ -496,7 +494,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                                                               padding: const EdgeInsets.symmetric(horizontal: AyurezeTheme.spaceMd, vertical: AyurezeTheme.spaceSm),
                                                                               decoration: BoxDecoration(
                                                                                 color: AyurezeTheme.surface,
-                                                                                borderRadius: BorderRadius.circular(10),
+                                                                                borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
                                                                                 border: Border.all(color: AyurezeTheme.border),
                                                                               ),
                                                                               child: Text(
@@ -689,13 +687,15 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
     final textTheme = Theme.of(context).textTheme;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(AyurezeTheme.spaceXl),
       decoration: AyurezeTheme.heroDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AyurezeTheme.spaceSm,
+                vertical: AyurezeTheme.spaceXs),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),

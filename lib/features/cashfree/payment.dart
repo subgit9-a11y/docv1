@@ -228,14 +228,14 @@ class _PaymentScreen extends State<PaymentScreen> {
       children: [
         Text(
           getTranslated(context, AppString.payment_patient_list).toString(),
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
-            color: AyurezeTheme.textPrimary,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AyurezeTheme.textPrimary,
+              ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AyurezeTheme.spaceSm, vertical: AyurezeTheme.spaceXs),
           decoration: BoxDecoration(
             color: AyurezeTheme.lightGreenSoft,
             borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
@@ -277,7 +277,7 @@ class _PaymentScreen extends State<PaymentScreen> {
 
   Widget _buildPaymentRow(Payments payment) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
       padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
       decoration: AyurezeTheme.panelDecoration(),
       child: Row(
@@ -287,7 +287,7 @@ class _PaymentScreen extends State<PaymentScreen> {
             height: 44,
             decoration: BoxDecoration(
               color: AyurezeTheme.surfaceMuted,
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
             ),
             child: HugeIcon(
               icon: HugeIcons.strokeRoundedMoney03,
@@ -371,10 +371,11 @@ class _PaymentScreen extends State<PaymentScreen> {
   Widget _buildTotalBar() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceXl, vertical: AyurezeTheme.spaceXl),
       decoration: BoxDecoration(
         color: AyurezeTheme.forestDeep,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -388,11 +389,10 @@ class _PaymentScreen extends State<PaymentScreen> {
           ),
           Text(
             "${SharedPreferenceHelper.getString(Preferences.currency_symbol)}$sum",
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                ),
           ),
         ],
       ),
@@ -582,11 +582,8 @@ class _PaymentScreen extends State<PaymentScreen> {
           const SizedBox(height: 4),
           Text(
             "${SharedPreferenceHelper.getString(Preferences.currency_symbol)}${availableBalance.toStringAsFixed(2)}",
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w900,
-              color: AyurezeTheme.forestDeep,
-            ),
+            style:
+                AyurezeTheme.font(28, FontWeight.w800, AyurezeTheme.forestDeep),
           ),
           const SizedBox(height: 16),
           Row(
@@ -646,7 +643,7 @@ class _PaymentScreen extends State<PaymentScreen> {
             return AlertDialog(
               backgroundColor: AyurezeTheme.surface,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl)),
               title: Text(
                 "Request Payout",
                 style: TextStyle(
