@@ -204,7 +204,7 @@ class AstraActionChip extends StatelessWidget {
         return HugeIcons.strokeRoundedAlarmClock;
       case AstraActionType.openNotifications:
         return AppIcons.notifications;
-      case AstraActionType.openDoctorBooking:
+      case AstraActionType.openAppointmentBooking:
         return HugeIcons.strokeRoundedCalendar03;
       case AstraActionType.openChat:
         return AppIcons.chat;
@@ -241,7 +241,7 @@ class AstraActionChip extends StatelessWidget {
         return 'Manage Reminders';
       case AstraActionType.openNotifications:
         return 'View Notifications';
-      case AstraActionType.openDoctorBooking:
+      case AstraActionType.openAppointmentBooking:
         return 'Book Appointment';
       case AstraActionType.openChat:
         return 'Open Chat';

@@ -300,18 +300,20 @@ class AppRouter {
     }
   }
 
-  /// Open doctor booking
-  Future<ActionResult> openDoctorBooking({String? patientId}) async {
+  /// Open appointment booking
+  Future<ActionResult> openAppointmentBooking({String? patientId}) async {
     try {
-      AstraLogger.logNavigation('openDoctorBooking', {'patientId': patientId});
+      AstraLogger.logNavigation(
+          'openAppointmentBooking', {'patientId': patientId});
 
       // Navigate to login home for appointment booking
       navigatorKey.currentState?.pushNamed('loginHome');
 
       return ActionResult.success(data: {'patientId': patientId});
     } catch (e, st) {
-      AstraLogger.e('Failed to open doctor booking', error: e, stackTrace: st);
-      return ActionResult.failure('Failed to open doctor booking: $e');
+      AstraLogger.e('Failed to open appointment booking',
+          error: e, stackTrace: st);
+      return ActionResult.failure('Failed to open appointment booking: $e');
     }
   }
 

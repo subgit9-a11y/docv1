@@ -48,8 +48,8 @@ class ActionDispatcher {
         return _handleOpenReminders(action);
       case AstraActionType.openNotifications:
         return _handleOpenNotifications(action);
-      case AstraActionType.openDoctorBooking:
-        return _handleOpenDoctorBooking(action);
+      case AstraActionType.openAppointmentBooking:
+        return _handleOpenAppointmentBooking(action);
       case AstraActionType.openChat:
         return _handleOpenChat(action);
       case AstraActionType.openPayment:
@@ -170,9 +170,9 @@ class ActionDispatcher {
     return _router.openNotifications();
   }
 
-  Future<ActionResult> _handleOpenDoctorBooking(
+  Future<ActionResult> _handleOpenAppointmentBooking(
       AstraNavigationAction action) async {
-    return _router.openDoctorBooking(
+    return _router.openAppointmentBooking(
       patientId: action.patientId,
     );
   }

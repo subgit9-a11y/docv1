@@ -29,8 +29,8 @@ enum AstraActionType {
   /// Open notifications
   openNotifications,
 
-  /// Open doctor booking
-  openDoctorBooking,
+  /// Open appointment booking
+  openAppointmentBooking,
 
   /// Open chat screen
   openChat,
@@ -190,9 +190,9 @@ class AstraNavigationAction {
       'goback': AstraActionType.goBack,
       'back': AstraActionType.goBack,
       'navigateback': AstraActionType.goBack,
-      'doctorbooking': AstraActionType.openDoctorBooking,
-      'booking': AstraActionType.openDoctorBooking,
-      'schedule': AstraActionType.openDoctorBooking,
+      'doctorbooking': AstraActionType.openAppointmentBooking,
+      'booking': AstraActionType.openAppointmentBooking,
+      'schedule': AstraActionType.openAppointmentBooking,
     };
 
     return aliases[normalized] ?? AstraActionType.unknown;
@@ -236,7 +236,7 @@ class AstraNavigationAction {
         return 'Manage Reminders';
       case AstraActionType.openNotifications:
         return 'View Notifications';
-      case AstraActionType.openDoctorBooking:
+      case AstraActionType.openAppointmentBooking:
         return 'Book Appointment';
       case AstraActionType.openChat:
         return 'Open Chat';
