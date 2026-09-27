@@ -156,11 +156,14 @@ class _ProfileScreen extends State<ProfileScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      doctorLoader = treatment();
+      if (!mounted) return;
+      setState(() {
+        doctorLoader = treatment();
+        name = SharedPreferenceHelper.getString(Preferences.name);
+        isFilled = SharedPreferenceHelper.getInt(Preferences.is_filled);
+        image = SharedPreferenceHelper.getString(Preferences.image);
+      });
       hospital();
-      name = SharedPreferenceHelper.getString(Preferences.name);
-      isFilled = SharedPreferenceHelper.getInt(Preferences.is_filled);
-      image = SharedPreferenceHelper.getString(Preferences.image);
     });
   }
 
@@ -213,11 +216,16 @@ class _ProfileScreen extends State<ProfileScreen> {
                           steps: <Step>[
                             // Step 1 //
                             Step(
-                              title: Text(
-                                getTranslated(context,
-                                        AppString.profile_personal_information)
-                                    .toString(),
-                                style: Theme.of(context).textTheme.bodySmall,
+                              title: SizedBox(
+                                width: 64,
+                                child: Text(
+                                  getTranslated(
+                                          context,
+                                          AppString
+                                              .profile_personal_information)
+                                      .toString(),
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
                               ),
                               content: _ProfileStep1PersonalInfo(
                                 formKey: _step1,
@@ -238,12 +246,17 @@ class _ProfileScreen extends State<ProfileScreen> {
                             ),
                             // Step 2 //
                             Step(
-                              title: Text(
-                                getTranslated(context,
-                                        AppString.profile_education_information)
-                                    .toString(),
-                                style: Theme.of(context).textTheme.bodySmall,
-                                textAlign: TextAlign.start,
+                              title: SizedBox(
+                                width: 64,
+                                child: Text(
+                                  getTranslated(
+                                          context,
+                                          AppString
+                                              .profile_education_information)
+                                      .toString(),
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  textAlign: TextAlign.start,
+                                ),
                               ),
                               content: Form(
                                 key: _step2,
@@ -902,11 +915,14 @@ class _ProfileScreen extends State<ProfileScreen> {
                             ),
                             // Step 3 //
                             Step(
-                              title: Text(
-                                getTranslated(context,
-                                        AppString.profile_other_information)
-                                    .toString(),
-                                style: Theme.of(context).textTheme.bodySmall,
+                              title: SizedBox(
+                                width: 64,
+                                child: Text(
+                                  getTranslated(context,
+                                          AppString.profile_other_information)
+                                      .toString(),
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
                               ),
                               content: Form(
                                 key: _formkey,

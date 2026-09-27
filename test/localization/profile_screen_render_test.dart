@@ -7,22 +7,21 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Renders the profile screen's app bar, which was recently split out of
-/// the screen's single 2000+ line build method into its own widget
-/// ([_ProfileHeader], alongside [_ProfileStep1PersonalInfo] for Step 1's
-/// fields). This is a regression guard for that structural split: the
-/// header must render exactly as before, with no layout exceptions.
-///
-/// The Stepper body itself is not asserted on here: `doctorLoader` (the
-/// FutureBuilder's `future`) is assigned from a `Future.delayed` callback in
-/// `initState` with no `setState` to follow it, so the body never leaves
-/// its `ConnectionState.none` loading state without some other, unrelated
-/// rebuild - a pre-existing quirk, not something this split touched.
+/// Renders the profile screen's app bar and Step 1, which were split out of
+/// the screen's single 2000+ line build method into their own widgets
+/// ([_ProfileHeader] and [_ProfileStep1PersonalInfo]). This is a regression
+/// guard for that structural split, and for the `doctorLoader` fix
+/// alongside it: `initState` used to assign `doctorLoader` (the
+/// FutureBuilder's `future`) and the header's `name` from a `Future.delayed`
+/// callback with no `setState` to follow it, so the Stepper body never left
+/// its `ConnectionState.none` loading state and the header never picked up
+/// the loaded name - both now wrapped in `setState`.
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('shows the header and step 1 fields with no layout exceptions',
-      (tester) async {
+  testWidgets(
+      'shows the loaded name, then the header and step 1 fields with no '
+      'layout exceptions', (tester) async {
     tester.view.devicePixelRatio = 1.0;
     tester.view.physicalSize = const Size(412, 915);
     addTearDown(tester.view.resetPhysicalSize);
@@ -60,6 +59,10 @@ void main() {
 
     expect(find.text('Doctor profile'), findsOneWidget);
     expect(find.text('Profile workspace'), findsOneWidget);
+    expect(find.textContaining('Test Doctor'), findsWidgets);
+    // The Stepper body: Step 1's own fields, now reachable because
+    // doctorLoader's FutureBuilder actually settles.
+    expect(find.byType(TextFormField), findsWidgets);
     expect(tester.takeException(), isNull);
   });
 }
