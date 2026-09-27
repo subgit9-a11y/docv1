@@ -314,7 +314,7 @@ class _EmptyState extends StatelessWidget {
       tone: OslerStateTone.muted,
       title: query.isEmpty ? 'Start Searching' : 'Woops, Not Found',
       message: query.isEmpty
-          ? 'Search symptoms, medications, doctors and more.'
+          ? 'Search your profile, appointments, notifications and settings.'
           : 'Unfortunately, the key you entered cannot be found. '
               'Please try another keyword or check again.',
     );
