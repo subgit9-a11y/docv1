@@ -258,655 +258,17 @@ class _ProfileScreen extends State<ProfileScreen> {
                                   textAlign: TextAlign.start,
                                 ),
                               ),
-                              content: Form(
-                                key: _step2,
-                                child: SingleChildScrollView(
-                                  child: Container(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.01),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_degree)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              TextFormField(
-                                                controller: _pDegree,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textPrimary),
-                                                decoration: InputDecoration(
-                                                  hintText: getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_degree_hint)
-                                                      .toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                validator: (String? value) {
-                                                  if (value!.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_degree)
-                                                        .toString();
-                                                  } else if (value
-                                                      .trim()
-                                                      .isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_valid_degree)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (String? name) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.01),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_college)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              TextFormField(
-                                                controller: _pCollege,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textPrimary),
-                                                decoration: InputDecoration(
-                                                  hintText: getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_college_hint)
-                                                      .toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                validator: (String? value) {
-                                                  if (value!.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_college)
-                                                        .toString();
-                                                  } else if (value
-                                                      .trim()
-                                                      .isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_valid_college)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (String? name) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.01),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_year_of_completion)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              TextFormField(
-                                                controller: _pCollegeYear,
-                                                keyboardType: TextInputType
-                                                    .numberWithOptions(
-                                                        decimal: true),
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp("[0-9]"))
-                                                ],
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textPrimary),
-                                                decoration: InputDecoration(
-                                                  hintText: getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_year_hint)
-                                                      .toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                validator: (String? value) {
-                                                  if (value!.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_year_of_completion)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (String? name) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    insetPadding:
-                                                        EdgeInsets.all(
-                                                            AyurezeTheme
-                                                                .spaceMd),
-                                                    title: Text(getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .profile_education_certificate)
-                                                        .toString()),
-                                                    content: SizedBox(
-                                                      height: height * 0.3,
-                                                      width: width! * 1.0,
-                                                      child: Column(
-                                                        children: [
-                                                          TextField(
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                valueDegree =
-                                                                    value;
-                                                              });
-                                                            },
-                                                            controller: _degree,
-                                                            decoration: InputDecoration(
-                                                                hintText: getTranslated(
-                                                                        context,
-                                                                        AppString
-                                                                            .profile_dialog_degree_hint)
-                                                                    .toString()),
-                                                          ),
-                                                          TextField(
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                valueCollege =
-                                                                    value;
-                                                              });
-                                                            },
-                                                            controller:
-                                                                _college,
-                                                            decoration: InputDecoration(
-                                                                hintText: getTranslated(
-                                                                        context,
-                                                                        AppString
-                                                                            .profile_dialog_education)
-                                                                    .toString()),
-                                                          ),
-                                                          TextField(
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                valueYear =
-                                                                    value;
-                                                              });
-                                                            },
-                                                            controller:
-                                                                _completeYear,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .numberWithOptions(
-                                                                        decimal:
-                                                                            true),
-                                                            inputFormatters: [
-                                                              FilteringTextInputFormatter
-                                                                  .allow(RegExp(
-                                                                      "[0-9]"))
-                                                            ],
-                                                            decoration: InputDecoration(
-                                                                hintText: getTranslated(
-                                                                        context,
-                                                                        AppString
-                                                                            .profile_dialog_year_of_completion)
-                                                                    .toString()),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      OutlinedButton(
-                                                        child: Text(getTranslated(
-                                                                context,
-                                                                AppString
-                                                                    .profile_dialog_ok_button)
-                                                            .toString()),
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            if (_degree.text
-                                                                    .isNotEmpty &&
-                                                                _college.text
-                                                                    .isNotEmpty &&
-                                                                _completeYear
-                                                                    .text
-                                                                    .isNotEmpty) {
-                                                              String addDegree =
-                                                                  "";
-                                                              String
-                                                                  addCollege =
-                                                                  "";
-                                                              String addYear =
-                                                                  "";
-                                                              callDegree =
-                                                                  valueDegree;
-                                                              callCollege =
-                                                                  valueCollege;
-                                                              callYear =
-                                                                  valueYear;
-                                                              addDegree =
-                                                                  "${_pDegree.text},${_degree.text}";
-                                                              addCollege =
-                                                                  "${_pCollege.text},${_college.text}";
-                                                              addYear =
-                                                                  "${_pCollegeYear.text},${_completeYear.text}";
-
-                                                              _pDegree.text =
-                                                                  addDegree;
-                                                              _pCollege.text =
-                                                                  addCollege;
-                                                              _pCollegeYear
-                                                                      .text =
-                                                                  addYear;
-                                                              _degree.clear();
-                                                              _college.clear();
-                                                              _completeYear
-                                                                  .clear();
-                                                              Navigator.pop(
-                                                                  context);
-                                                            } else {
-                                                              Fluttertoast
-                                                                  .showToast(
-                                                                msg: getTranslated(
-                                                                        context,
-                                                                        AppString
-                                                                            .please_fill_data)
-                                                                    .toString(),
-                                                                toastLength: Toast
-                                                                    .LENGTH_SHORT,
-                                                                gravity:
-                                                                    ToastGravity
-                                                                        .BOTTOM,
-                                                              );
-                                                            }
-                                                          });
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                });
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                                top: height * 0.01),
-                                            height: width! * 0.10,
-                                            width: width! * 0.35,
-                                            child: Row(
-                                              children: [
-                                                Card(
-                                                  color: AyurezeTheme.border,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              45)),
-                                                  child: HugeIcon(
-                                                      icon: AppIcons.add,
-                                                      size: width! * 0.06,
-                                                      color: AyurezeTheme
-                                                          .actionButtonPrimary),
-                                                ),
-                                                Text(getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_add_more_button)
-                                                    .toString())
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.03),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_dialog_certificate)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        TextFormField(
-                                          controller: _pCertificate,
-                                          keyboardType: TextInputType.text,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.copyWith(
-                                                  color:
-                                                      AyurezeTheme.textPrimary),
-                                          decoration: InputDecoration(
-                                            hintText: getTranslated(
-                                                    context,
-                                                    AppString
-                                                        .profile_dialog_certificate_hint)
-                                                .toString(),
-                                            hintStyle: TextStyle(
-                                                fontSize: width! * 0.035,
-                                                color:
-                                                    AyurezeTheme.textSecondary),
-                                          ),
-                                          validator: (String? value) {
-                                            if (value!.isEmpty) {
-                                              return getTranslated(
-                                                      context,
-                                                      AppString
-                                                          .dialog_please_enter_certificate)
-                                                  .toString();
-                                            } else if (value.trim().isEmpty) {
-                                              return getTranslated(
-                                                      context,
-                                                      AppString
-                                                          .dialog_please_enter_valid_certificate)
-                                                  .toString();
-                                            }
-                                            return null;
-                                          },
-                                          onSaved: (String? name) {},
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.02),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_dialog_certificate_year)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        TextFormField(
-                                          controller: _pCertificateYear,
-                                          keyboardType:
-                                              TextInputType.numberWithOptions(
-                                                  decimal: true),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp("[0-9]"))
-                                          ],
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.copyWith(
-                                                  color:
-                                                      AyurezeTheme.textPrimary),
-                                          decoration: InputDecoration(
-                                            hintText: getTranslated(
-                                                    context,
-                                                    AppString
-                                                        .profile_dialog_certificate_year_hint)
-                                                .toString(),
-                                            hintStyle: TextStyle(
-                                                fontSize: width! * 0.035,
-                                                color:
-                                                    AyurezeTheme.textSecondary),
-                                          ),
-                                          validator: (String? value) {
-                                            if (value!.isEmpty) {
-                                              return getTranslated(
-                                                      context,
-                                                      AppString
-                                                          .dialog_please_enter_certificate_year)
-                                                  .toString();
-                                            }
-                                            return null;
-                                          },
-                                          onSaved: (String? name) {},
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              top: height * 0.02),
-                                          height: width! * 0.10,
-                                          width: width! * 0.35,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      insetPadding:
-                                                          EdgeInsets.all(
-                                                              AyurezeTheme
-                                                                  .spaceMd),
-                                                      title: Text(getTranslated(
-                                                              context,
-                                                              AppString
-                                                                  .profile_dialog_certificate)
-                                                          .toString()),
-                                                      content: SizedBox(
-                                                        height: height * 0.2,
-                                                        width: width! * 1.0,
-                                                        child: Column(
-                                                          children: [
-                                                            TextField(
-                                                              onChanged:
-                                                                  (value) {
-                                                                setState(() {
-                                                                  certificate =
-                                                                      value;
-                                                                });
-                                                              },
-                                                              controller:
-                                                                  _certificate,
-                                                              decoration: InputDecoration(
-                                                                  hintText: getTranslated(
-                                                                          context,
-                                                                          AppString
-                                                                              .profile_dialog_certificate)
-                                                                      .toString()),
-                                                            ),
-                                                            TextField(
-                                                              onChanged:
-                                                                  (value) {
-                                                                setState(() {
-                                                                  certificateYear =
-                                                                      value;
-                                                                });
-                                                              },
-                                                              controller: _year,
-                                                              keyboardType: TextInputType
-                                                                  .numberWithOptions(
-                                                                      decimal:
-                                                                          true),
-                                                              inputFormatters: [
-                                                                FilteringTextInputFormatter
-                                                                    .allow(RegExp(
-                                                                        "[0-9]"))
-                                                              ],
-                                                              decoration: InputDecoration(
-                                                                  hintText: getTranslated(
-                                                                          context,
-                                                                          AppString
-                                                                              .profile_dialog_year)
-                                                                      .toString()),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      actions: <Widget>[
-                                                        OutlinedButton(
-                                                          child: Text(getTranslated(
-                                                                  context,
-                                                                  AppString
-                                                                      .profile_dialog_ok_button)
-                                                              .toString()),
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              if (_certificate
-                                                                      .text
-                                                                      .isNotEmpty &&
-                                                                  _year.text
-                                                                      .isNotEmpty) {
-                                                                String
-                                                                    addCertificate =
-                                                                    "";
-                                                                String
-                                                                    addCertificateYear =
-                                                                    "";
-                                                                callCertificate =
-                                                                    certificate;
-                                                                callCertificateYear =
-                                                                    certificateYear;
-
-                                                                addCertificate =
-                                                                    "${_pCertificate.text},${_certificate.text}";
-                                                                addCertificateYear =
-                                                                    "${_pCertificateYear.text},${_year.text}";
-                                                                _pCertificate
-                                                                        .text =
-                                                                    addCertificate;
-                                                                _pCertificateYear
-                                                                        .text =
-                                                                    addCertificateYear;
-
-                                                                _certificate
-                                                                    .clear();
-                                                                _year.clear();
-                                                                Navigator.pop(
-                                                                    context);
-                                                              } else {
-                                                                Fluttertoast
-                                                                    .showToast(
-                                                                  msg: getTranslated(
-                                                                          context,
-                                                                          AppString
-                                                                              .please_fill_data)
-                                                                      .toString(),
-                                                                  toastLength: Toast
-                                                                      .LENGTH_SHORT,
-                                                                  gravity:
-                                                                      ToastGravity
-                                                                          .BOTTOM,
-                                                                );
-                                                              }
-                                                            });
-                                                          },
-                                                        ),
-                                                      ],
-                                                    );
-                                                  });
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Card(
-                                                  color: AyurezeTheme.border,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              45)),
-                                                  child: HugeIcon(
-                                                      icon: AppIcons.add,
-                                                      size: width! * 0.06,
-                                                      color: AyurezeTheme
-                                                          .actionButtonPrimary),
-                                                ),
-                                                Text(getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_add_more_button)
-                                                    .toString())
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                              content: _ProfileStep2Education(
+                                formKey: _step2,
+                                width: width!,
+                                height: height,
+                                degreeController: _pDegree,
+                                collegeController: _pCollege,
+                                collegeYearController: _pCollegeYear,
+                                certificateController: _pCertificate,
+                                certificateYearController: _pCertificateYear,
+                                onAddEducation: _showAddEducationDialog,
+                                onAddCertificate: _showAddCertificateDialog,
                               ),
                               isActive: _currentStep >= 0,
                               state: _currentStep >= 1
@@ -924,574 +286,22 @@ class _ProfileScreen extends State<ProfileScreen> {
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ),
-                              content: Form(
-                                key: _formkey,
-                                child: SingleChildScrollView(
-                                  child: Container(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.02),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_experience)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              TextFormField(
-                                                enableInteractiveSelection:
-                                                    false,
-                                                controller: _pExperience,
-                                                keyboardType: TextInputType
-                                                    .numberWithOptions(
-                                                        decimal: true),
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp("[0-9]")),
-                                                ],
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textPrimary),
-                                                decoration: InputDecoration(
-                                                  hintText: getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_experience_hint)
-                                                      .toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                validator: (String? value) {
-                                                  if (value!.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_experience)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (String? name) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.02),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Video call fee",
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              TextFormField(
-                                                enableInteractiveSelection:
-                                                    false,
-                                                controller: _vAppointmentFees,
-                                                keyboardType: TextInputType
-                                                    .numberWithOptions(
-                                                        decimal: true),
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp("[0-9]")),
-                                                ],
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textPrimary),
-                                                decoration: InputDecoration(
-                                                  hintText: getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_appointment_fees_hint)
-                                                      .toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                validator: (String? value) {
-                                                  if (value!.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_appointment_fees)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (String? name) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.02),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Audio call fee",
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              TextFormField(
-                                                enableInteractiveSelection:
-                                                    false,
-                                                controller: _aAppointmentFees,
-                                                keyboardType: TextInputType
-                                                    .numberWithOptions(
-                                                        decimal: true),
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp("[0-9]")),
-                                                ],
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textPrimary),
-                                                decoration: InputDecoration(
-                                                  hintText: getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_appointment_fees_hint)
-                                                      .toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                validator: (String? value) {
-                                                  if (value!.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_appointment_fees)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (String? name) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.02),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_time_slot)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              TextFormField(
-                                                enableInteractiveSelection:
-                                                    false,
-                                                controller: _pTimeSlot,
-                                                keyboardType: TextInputType
-                                                    .numberWithOptions(
-                                                        decimal: true),
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp("[0-9]")),
-                                                ],
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textPrimary),
-                                                decoration: InputDecoration(
-                                                  hintText: getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_time_slot_hint)
-                                                      .toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                validator: (String? value) {
-                                                  if (value!.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_time_slot)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (String? name) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.02),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                getTranslated(context,
-                                                        AppString.revenue_model)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              DropdownButtonFormField<String>(
-                                                initialValue: [
-                                                  "Commission"
-                                                ].contains(_pBasedOn.text)
-                                                    ? _pBasedOn.text
-                                                    : null,
-                                                hint: Text(getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .revenue_model_hint)
-                                                    .toString()),
-                                                items: ["Commission"]
-                                                    .map((String value) {
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (newValue) {
-                                                  setState(() {
-                                                    _pBasedOn.text = newValue!;
-                                                  });
-                                                },
-                                                validator: (value) {
-                                                  if (_pBasedOn.text.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_based_on)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                decoration: InputDecoration(
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.02),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_start_time)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              TextFormField(
-                                                enableInteractiveSelection:
-                                                    false,
-                                                controller: _pStartTime,
-                                                readOnly: true,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textPrimary),
-                                                decoration: InputDecoration(
-                                                  hintText: getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_start_time_hint)
-                                                      .toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                onTap: () async {
-                                                  final TimeOfDay? result =
-                                                      await showTimePicker(
-                                                          context: context,
-                                                          initialTime:
-                                                              TimeOfDay.now(),
-                                                          builder:
-                                                              (context, child) {
-                                                            return MediaQuery(
-                                                                data: MediaQuery.of(
-                                                                        context)
-                                                                    .copyWith(
-                                                                  // Using 12-Hour format
-                                                                  alwaysUse24HourFormat:
-                                                                      false,
-                                                                ),
-                                                                // If you want 24-Hour format, just change alwaysUse24HourFormat to true
-                                                                child: child!);
-                                                          });
-                                                  if (result != null) {
-                                                    setState(() {
-                                                      String data = result
-                                                          .format(context)
-                                                          .toLowerCase();
-                                                      String str;
-                                                      List<String> parts;
-                                                      String? startPart;
-
-                                                      int checkData;
-                                                      str = data;
-                                                      parts = str.split(":");
-                                                      startPart =
-                                                          parts[0].trim();
-                                                      checkData =
-                                                          int.parse(startPart);
-                                                      if (checkData > 9) {
-                                                        _pStartTime.text =
-                                                            result
-                                                                .format(context)
-                                                                .toLowerCase();
-                                                      } else {
-                                                        _pStartTime.text =
-                                                            "0${result.format(context).toLowerCase()}";
-                                                      }
-                                                    });
-                                                  }
-                                                },
-                                                validator: (String? value) {
-                                                  if (value!.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_start_time)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (String? name) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.02),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_end_time)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              TextFormField(
-                                                enableInteractiveSelection:
-                                                    false,
-                                                controller: _pEndTime,
-                                                readOnly: true,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AyurezeTheme
-                                                            .textPrimary),
-                                                decoration: InputDecoration(
-                                                  hintText: getTranslated(
-                                                          context,
-                                                          AppString
-                                                              .profile_end_time_hint)
-                                                      .toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: width! * 0.035,
-                                                      color: AyurezeTheme
-                                                          .textSecondary),
-                                                ),
-                                                onTap: () async {
-                                                  final TimeOfDay? result =
-                                                      await showTimePicker(
-                                                          context: context,
-                                                          initialTime:
-                                                              TimeOfDay.now(),
-                                                          builder:
-                                                              (context, child) {
-                                                            return MediaQuery(
-                                                                data: MediaQuery.of(
-                                                                        context)
-                                                                    .copyWith(
-                                                                        // Using 12-Hour format
-                                                                        alwaysUse24HourFormat:
-                                                                            false),
-                                                                // If you want 24-Hour format, just change alwaysUse24HourFormat to true
-                                                                child: child!);
-                                                          });
-                                                  if (result != null) {
-                                                    setState(() {
-                                                      String data = result
-                                                          .format(context)
-                                                          .toLowerCase();
-                                                      String str;
-                                                      List<String> parts;
-                                                      String? startPart;
-
-                                                      int checkData;
-                                                      str = data;
-                                                      parts = str.split(":");
-                                                      startPart =
-                                                          parts[0].trim();
-                                                      checkData =
-                                                          int.parse(startPart);
-                                                      if (checkData > 9) {
-                                                        _pEndTime.text = result
-                                                            .format(context)
-                                                            .toLowerCase();
-                                                      } else {
-                                                        _pEndTime.text =
-                                                            "0${result.format(context).toLowerCase()}";
-                                                      }
-                                                    });
-                                                  }
-                                                },
-                                                validator: (String? value) {
-                                                  if (value!.isEmpty) {
-                                                    return getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .please_enter_end_time)
-                                                        .toString();
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (String? name) {},
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(
-                                              top: width! * 0.02),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_popular)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: width! * 0.038,
-                                                    color: AyurezeTheme
-                                                        .textSecondary),
-                                              ),
-                                              DropdownButton(
-                                                hint: Text(getTranslated(
-                                                        context,
-                                                        AppString
-                                                            .profile_popular)
-                                                    .toString()),
-                                                value: _selectedPopular == '0'
-                                                    ? getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .popular_no)
-                                                        .toString()
-                                                    : getTranslated(
-                                                            context,
-                                                            AppString
-                                                                .popular_yes)
-                                                        .toString(),
-                                                isExpanded: true,
-                                                iconSize: 35,
-                                                onChanged: (dynamic newValue) {
-                                                  setState(() {
-                                                    _selectedPopular = newValue;
-                                                  });
-                                                },
-                                                items: popular.map((popular) {
-                                                  return DropdownMenuItem(
-                                                    value: popular,
-                                                    child: Text(popular),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                              content: _ProfileStep3ProfessionalDetails(
+                                formKey: _formkey,
+                                width: width!,
+                                experienceController: _pExperience,
+                                videoFeeController: _vAppointmentFees,
+                                audioFeeController: _aAppointmentFees,
+                                timeSlotController: _pTimeSlot,
+                                basedOnController: _pBasedOn,
+                                startTimeController: _pStartTime,
+                                endTimeController: _pEndTime,
+                                selectedPopular: _selectedPopular,
+                                popularOptions: popular,
+                                onBasedOnChanged: onBasedOnChanged,
+                                onPopularChanged: onPopularChanged,
+                                onPickStartTime: onPickStartTime,
+                                onPickEndTime: onPickEndTime,
                               ),
                               isActive: _currentStep >= 0,
                               state: _currentStep >= 2
@@ -2006,6 +816,271 @@ class _ProfileScreen extends State<ProfileScreen> {
       setState(() => _currentStep -= 1);
     }
   }
+
+  void _showAddEducationDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            insetPadding: EdgeInsets.all(AyurezeTheme.spaceMd),
+            title: Text(
+                getTranslated(context, AppString.profile_education_certificate)
+                    .toString()),
+            content: SizedBox(
+              height: height * 0.3,
+              width: width! * 1.0,
+              child: Column(
+                children: [
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        valueDegree = value;
+                      });
+                    },
+                    controller: _degree,
+                    decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_dialog_degree_hint)
+                            .toString()),
+                  ),
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        valueCollege = value;
+                      });
+                    },
+                    controller: _college,
+                    decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_dialog_education)
+                            .toString()),
+                  ),
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        valueYear = value;
+                      });
+                    },
+                    controller: _completeYear,
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                    ],
+                    decoration: InputDecoration(
+                        hintText: getTranslated(context,
+                                AppString.profile_dialog_year_of_completion)
+                            .toString()),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              OutlinedButton(
+                child: Text(
+                    getTranslated(context, AppString.profile_dialog_ok_button)
+                        .toString()),
+                onPressed: () {
+                  setState(() {
+                    if (_degree.text.isNotEmpty &&
+                        _college.text.isNotEmpty &&
+                        _completeYear.text.isNotEmpty) {
+                      String addDegree = "";
+                      String addCollege = "";
+                      String addYear = "";
+                      callDegree = valueDegree;
+                      callCollege = valueCollege;
+                      callYear = valueYear;
+                      addDegree = "${_pDegree.text},${_degree.text}";
+                      addCollege = "${_pCollege.text},${_college.text}";
+                      addYear = "${_pCollegeYear.text},${_completeYear.text}";
+
+                      _pDegree.text = addDegree;
+                      _pCollege.text = addCollege;
+                      _pCollegeYear.text = addYear;
+                      _degree.clear();
+                      _college.clear();
+                      _completeYear.clear();
+                      Navigator.pop(context);
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: getTranslated(context, AppString.please_fill_data)
+                            .toString(),
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                      );
+                    }
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void _showAddCertificateDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            insetPadding: EdgeInsets.all(AyurezeTheme.spaceMd),
+            title: Text(
+                getTranslated(context, AppString.profile_dialog_certificate)
+                    .toString()),
+            content: SizedBox(
+              height: height * 0.2,
+              width: width! * 1.0,
+              child: Column(
+                children: [
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        certificate = value;
+                      });
+                    },
+                    controller: _certificate,
+                    decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_dialog_certificate)
+                            .toString()),
+                  ),
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        certificateYear = value;
+                      });
+                    },
+                    controller: _year,
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                    ],
+                    decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_dialog_year)
+                            .toString()),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              OutlinedButton(
+                child: Text(
+                    getTranslated(context, AppString.profile_dialog_ok_button)
+                        .toString()),
+                onPressed: () {
+                  setState(() {
+                    if (_certificate.text.isNotEmpty && _year.text.isNotEmpty) {
+                      String addCertificate = "";
+                      String addCertificateYear = "";
+                      callCertificate = certificate;
+                      callCertificateYear = certificateYear;
+
+                      addCertificate =
+                          "${_pCertificate.text},${_certificate.text}";
+                      addCertificateYear =
+                          "${_pCertificateYear.text},${_year.text}";
+                      _pCertificate.text = addCertificate;
+                      _pCertificateYear.text = addCertificateYear;
+
+                      _certificate.clear();
+                      _year.clear();
+                      Navigator.pop(context);
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: getTranslated(context, AppString.please_fill_data)
+                            .toString(),
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                      );
+                    }
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void onBasedOnChanged(String? newValue) {
+    setState(() {
+      _pBasedOn.text = newValue!;
+    });
+  }
+
+  void onPopularChanged(dynamic newValue) {
+    setState(() {
+      _selectedPopular = newValue;
+    });
+  }
+
+  Future<void> onPickStartTime(BuildContext context) async {
+    final TimeOfDay? result = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (context, child) {
+          return MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                // Using 12-Hour format
+                alwaysUse24HourFormat: false,
+              ),
+              // If you want 24-Hour format, just change alwaysUse24HourFormat to true
+              child: child!);
+        });
+    if (result != null) {
+      setState(() {
+        String data = result.format(context).toLowerCase();
+        String str;
+        List<String> parts;
+        String? startPart;
+
+        int checkData;
+        str = data;
+        parts = str.split(":");
+        startPart = parts[0].trim();
+        checkData = int.parse(startPart);
+        if (checkData > 9) {
+          _pStartTime.text = result.format(context).toLowerCase();
+        } else {
+          _pStartTime.text = "0${result.format(context).toLowerCase()}";
+        }
+      });
+    }
+  }
+
+  Future<void> onPickEndTime(BuildContext context) async {
+    final TimeOfDay? result = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (context, child) {
+          return MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                  // Using 12-Hour format
+                  alwaysUse24HourFormat: false),
+              // If you want 24-Hour format, just change alwaysUse24HourFormat to true
+              child: child!);
+        });
+    if (result != null) {
+      setState(() {
+        String data = result.format(context).toLowerCase();
+        String str;
+        List<String> parts;
+        String? startPart;
+
+        int checkData;
+        str = data;
+        parts = str.split(":");
+        startPart = parts[0].trim();
+        checkData = int.parse(startPart);
+        if (checkData > 9) {
+          _pEndTime.text = result.format(context).toLowerCase();
+        } else {
+          _pEndTime.text = "0${result.format(context).toLowerCase()}";
+        }
+      });
+    }
+  }
 }
 
 /// Step 1 of the profile Stepper: name, date of birth, gender and
@@ -2247,6 +1322,737 @@ class _ProfileStep1PersonalInfoState extends State<_ProfileStep1PersonalInfo> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Step 2 of the profile Stepper: degree/college/year of completion, plus
+/// certificates - each with an "Add More" dialog that appends a
+/// comma-joined entry onto the corresponding controller's text. Extracted
+/// out of [_ProfileScreen]'s build method as a structural-only split - no
+/// behavior or styling changed. The two "Add" dialogs themselves stay as
+/// [_ProfileScreen] methods ([onAddEducation]/[onAddCertificate]) since
+/// they need that State's own setState and dialog-local controllers.
+class _ProfileStep2Education extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final double width;
+  final double height;
+  final TextEditingController degreeController;
+  final TextEditingController collegeController;
+  final TextEditingController collegeYearController;
+  final TextEditingController certificateController;
+  final TextEditingController certificateYearController;
+  final void Function(BuildContext) onAddEducation;
+  final void Function(BuildContext) onAddCertificate;
+
+  const _ProfileStep2Education({
+    required this.formKey,
+    required this.width,
+    required this.height,
+    required this.degreeController,
+    required this.collegeController,
+    required this.collegeYearController,
+    required this.certificateController,
+    required this.certificateYearController,
+    required this.onAddEducation,
+    required this.onAddCertificate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: formKey,
+      child: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.01),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslated(context, AppString.profile_degree)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    TextFormField(
+                      controller: degreeController,
+                      keyboardType: TextInputType.text,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.textPrimary),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_degree_hint)
+                            .toString(),
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return getTranslated(
+                                  context, AppString.please_enter_degree)
+                              .toString();
+                        } else if (value.trim().isEmpty) {
+                          return getTranslated(
+                                  context, AppString.please_enter_valid_degree)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      onSaved: (String? name) {},
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.01),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslated(context, AppString.profile_college)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    TextFormField(
+                      controller: collegeController,
+                      keyboardType: TextInputType.text,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.textPrimary),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_college_hint)
+                            .toString(),
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return getTranslated(
+                                  context, AppString.please_enter_college)
+                              .toString();
+                        } else if (value.trim().isEmpty) {
+                          return getTranslated(
+                                  context, AppString.please_enter_valid_college)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      onSaved: (String? name) {},
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.01),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslated(
+                              context, AppString.profile_year_of_completion)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    TextFormField(
+                      controller: collegeYearController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                      ],
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.textPrimary),
+                      decoration: InputDecoration(
+                        hintText:
+                            getTranslated(context, AppString.profile_year_hint)
+                                .toString(),
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return getTranslated(context,
+                                  AppString.please_enter_year_of_completion)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      onSaved: (String? name) {},
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  onAddEducation(context);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: height * 0.01),
+                  height: width * 0.10,
+                  width: width * 0.35,
+                  child: Row(
+                    children: [
+                      Card(
+                        color: AyurezeTheme.border,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(45)),
+                        child: HugeIcon(
+                            icon: AppIcons.add,
+                            size: width * 0.06,
+                            color: AyurezeTheme.actionButtonPrimary),
+                      ),
+                      Text(getTranslated(
+                              context, AppString.profile_add_more_button)
+                          .toString())
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.03),
+                child: Column(
+                  children: [
+                    Text(
+                      getTranslated(
+                              context, AppString.profile_dialog_certificate)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    )
+                  ],
+                ),
+              ),
+              TextFormField(
+                controller: certificateController,
+                keyboardType: TextInputType.text,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: AyurezeTheme.textPrimary),
+                decoration: InputDecoration(
+                  hintText: getTranslated(
+                          context, AppString.profile_dialog_certificate_hint)
+                      .toString(),
+                  hintStyle: TextStyle(
+                      fontSize: width * 0.035,
+                      color: AyurezeTheme.textSecondary),
+                ),
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return getTranslated(
+                            context, AppString.dialog_please_enter_certificate)
+                        .toString();
+                  } else if (value.trim().isEmpty) {
+                    return getTranslated(context,
+                            AppString.dialog_please_enter_valid_certificate)
+                        .toString();
+                  }
+                  return null;
+                },
+                onSaved: (String? name) {},
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.02),
+                child: Column(
+                  children: [
+                    Text(
+                      getTranslated(context,
+                              AppString.profile_dialog_certificate_year)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    )
+                  ],
+                ),
+              ),
+              TextFormField(
+                controller: certificateYearController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                ],
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: AyurezeTheme.textPrimary),
+                decoration: InputDecoration(
+                  hintText: getTranslated(context,
+                          AppString.profile_dialog_certificate_year_hint)
+                      .toString(),
+                  hintStyle: TextStyle(
+                      fontSize: width * 0.035,
+                      color: AyurezeTheme.textSecondary),
+                ),
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return getTranslated(context,
+                            AppString.dialog_please_enter_certificate_year)
+                        .toString();
+                  }
+                  return null;
+                },
+                onSaved: (String? name) {},
+              ),
+              Container(
+                margin: EdgeInsets.only(top: height * 0.02),
+                height: width * 0.10,
+                width: width * 0.35,
+                child: GestureDetector(
+                  onTap: () {
+                    onAddCertificate(context);
+                  },
+                  child: Row(
+                    children: [
+                      Card(
+                        color: AyurezeTheme.border,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(45)),
+                        child: HugeIcon(
+                            icon: AppIcons.add,
+                            size: width * 0.06,
+                            color: AyurezeTheme.actionButtonPrimary),
+                      ),
+                      Text(getTranslated(
+                              context, AppString.profile_add_more_button)
+                          .toString())
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Step 3 of the profile Stepper: experience, fees, time slot, revenue
+/// model, availability hours and the "popular" flag. Extracted out of
+/// [_ProfileScreen]'s build method as a structural-only split - no
+/// behavior or styling changed. The revenue-model/popular dropdowns and
+/// the two time pickers stay as [_ProfileScreen] methods since they call
+/// that State's own setState.
+class _ProfileStep3ProfessionalDetails extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final double width;
+  final TextEditingController experienceController;
+  final TextEditingController videoFeeController;
+  final TextEditingController audioFeeController;
+  final TextEditingController timeSlotController;
+  final TextEditingController basedOnController;
+  final TextEditingController startTimeController;
+  final TextEditingController endTimeController;
+  final String? selectedPopular;
+  final List<String> popularOptions;
+  final ValueChanged<String?> onBasedOnChanged;
+  final ValueChanged<dynamic> onPopularChanged;
+  final void Function(BuildContext) onPickStartTime;
+  final void Function(BuildContext) onPickEndTime;
+
+  const _ProfileStep3ProfessionalDetails({
+    required this.formKey,
+    required this.width,
+    required this.experienceController,
+    required this.videoFeeController,
+    required this.audioFeeController,
+    required this.timeSlotController,
+    required this.basedOnController,
+    required this.startTimeController,
+    required this.endTimeController,
+    required this.selectedPopular,
+    required this.popularOptions,
+    required this.onBasedOnChanged,
+    required this.onPopularChanged,
+    required this.onPickStartTime,
+    required this.onPickEndTime,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: formKey,
+      child: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslated(context, AppString.profile_experience)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    TextFormField(
+                      enableInteractiveSelection: false,
+                      controller: experienceController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                      ],
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.textPrimary),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_experience_hint)
+                            .toString(),
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return getTranslated(
+                                  context, AppString.please_enter_experience)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      onSaved: (String? name) {},
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Video call fee",
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    TextFormField(
+                      enableInteractiveSelection: false,
+                      controller: videoFeeController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                      ],
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.textPrimary),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(context,
+                                AppString.profile_appointment_fees_hint)
+                            .toString(),
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return getTranslated(context,
+                                  AppString.please_enter_appointment_fees)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      onSaved: (String? name) {},
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Audio call fee",
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    TextFormField(
+                      enableInteractiveSelection: false,
+                      controller: audioFeeController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                      ],
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.textPrimary),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(context,
+                                AppString.profile_appointment_fees_hint)
+                            .toString(),
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return getTranslated(context,
+                                  AppString.please_enter_appointment_fees)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      onSaved: (String? name) {},
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslated(context, AppString.profile_time_slot)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    TextFormField(
+                      enableInteractiveSelection: false,
+                      controller: timeSlotController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                      ],
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.textPrimary),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_time_slot_hint)
+                            .toString(),
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return getTranslated(
+                                  context, AppString.please_enter_time_slot)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      onSaved: (String? name) {},
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslated(context, AppString.revenue_model)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    DropdownButtonFormField<String>(
+                      initialValue:
+                          ["Commission"].contains(basedOnController.text)
+                              ? basedOnController.text
+                              : null,
+                      hint: Text(
+                          getTranslated(context, AppString.revenue_model_hint)
+                              .toString()),
+                      items: ["Commission"].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: onBasedOnChanged,
+                      validator: (value) {
+                        if (basedOnController.text.isEmpty) {
+                          return getTranslated(
+                                  context, AppString.please_enter_based_on)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslated(context, AppString.profile_start_time)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    TextFormField(
+                      enableInteractiveSelection: false,
+                      controller: startTimeController,
+                      readOnly: true,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.textPrimary),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_start_time_hint)
+                            .toString(),
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      onTap: () => onPickStartTime(context),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return getTranslated(
+                                  context, AppString.please_enter_start_time)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      onSaved: (String? name) {},
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslated(context, AppString.profile_end_time)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    TextFormField(
+                      enableInteractiveSelection: false,
+                      controller: endTimeController,
+                      readOnly: true,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.textPrimary),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(
+                                context, AppString.profile_end_time_hint)
+                            .toString(),
+                        hintStyle: TextStyle(
+                            fontSize: width * 0.035,
+                            color: AyurezeTheme.textSecondary),
+                      ),
+                      onTap: () => onPickEndTime(context),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return getTranslated(
+                                  context, AppString.please_enter_end_time)
+                              .toString();
+                        }
+                        return null;
+                      },
+                      onSaved: (String? name) {},
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslated(context, AppString.profile_popular)
+                          .toString(),
+                      style: TextStyle(
+                          fontSize: width * 0.038,
+                          color: AyurezeTheme.textSecondary),
+                    ),
+                    DropdownButton(
+                      hint: Text(
+                          getTranslated(context, AppString.profile_popular)
+                              .toString()),
+                      value: selectedPopular == '0'
+                          ? getTranslated(context, AppString.popular_no)
+                              .toString()
+                          : getTranslated(context, AppString.popular_yes)
+                              .toString(),
+                      isExpanded: true,
+                      iconSize: 35,
+                      onChanged: onPopularChanged,
+                      items: popularOptions.map((popular) {
+                        return DropdownMenuItem(
+                          value: popular,
+                          child: Text(popular),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
