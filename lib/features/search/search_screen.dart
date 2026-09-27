@@ -8,9 +8,9 @@ import 'package:doctro/features/search/models/search_result.dart';
 import 'package:doctro/features/search/search_filter.dart';
 
 /// The kit's global "Search Screen": a category-filterable search over the
-/// app's own real destinations (health tools, medications, the doctor's own
-/// profile, consultation history), each result opening the actual screen on
-/// tap - rather than a single-purpose in-page search box.
+/// app's own real destinations (the doctor's own profile, consultation and
+/// appointment history, notifications, settings), each result opening the
+/// actual screen on tap - rather than a single-purpose in-page search box.
 class SearchScreen extends StatefulWidget {
   /// Overridable for tests; defaults to the app's own feature index.
   final List<SearchResult> results;
@@ -19,46 +19,39 @@ class SearchScreen extends StatefulWidget {
 
   static const _defaultIndex = <SearchResult>[
     SearchResult(
-      title: 'Health Assessment',
-      subtitle: 'Run a guided health assessment',
-      category: SearchResultCategory.resources,
-      matchPercent: 99,
-      routeName: 'healthAssessment',
-    ),
-    SearchResult(
-      title: 'Health Records',
-      subtitle: 'Medications, history, appointments and documents',
-      category: SearchResultCategory.resources,
-      matchPercent: 88,
-      routeName: 'healthRecords',
-    ),
-    SearchResult(
-      title: 'Community & Resource',
-      subtitle: 'Posts and workshops from the health community',
-      category: SearchResultCategory.resources,
-      matchPercent: 70,
-      routeName: 'community',
-    ),
-    SearchResult(
-      title: 'My Medications',
-      subtitle: 'Manage dosage schedules and refills',
-      category: SearchResultCategory.medication,
-      matchPercent: 68,
-      routeName: 'medicationManagement',
-    ),
-    SearchResult(
       title: 'My Profile',
       subtitle: 'View and edit your professional profile',
       category: SearchResultCategory.doctor,
-      matchPercent: 54,
+      matchPercent: 92,
       routeName: 'profile',
     ),
     SearchResult(
       title: 'Consultation History',
       subtitle: 'Review past video consultations',
       category: SearchResultCategory.consultation,
-      matchPercent: 42,
+      matchPercent: 78,
       routeName: 'VideoCallHistory',
+    ),
+    SearchResult(
+      title: 'Appointment History',
+      subtitle: 'Browse your past appointments',
+      category: SearchResultCategory.consultation,
+      matchPercent: 68,
+      routeName: 'AppointmentHistoryScreen',
+    ),
+    SearchResult(
+      title: 'Notifications',
+      subtitle: 'Stay updated on appointment activity',
+      category: SearchResultCategory.resources,
+      matchPercent: 60,
+      routeName: 'notifications',
+    ),
+    SearchResult(
+      title: 'Settings',
+      subtitle: 'Language, password and app preferences',
+      category: SearchResultCategory.resources,
+      matchPercent: 50,
+      routeName: 'Settings',
     ),
   ];
 

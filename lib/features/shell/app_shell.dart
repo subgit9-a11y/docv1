@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/features/dashboard/login_home.dart';
-import 'package:doctro/features/health_records/health_records_screen.dart';
-import 'package:doctro/features/health_records/repository/health_records_repository.dart';
 import 'package:doctro/features/consultation/chat/pages/home_page.dart';
 import 'package:doctro/features/notifications/notifications.dart';
 import 'package:doctro/features/profile/profile.dart';
@@ -17,26 +15,23 @@ class _ShellDestination {
 
 const _destinations = <_ShellDestination>[
   _ShellDestination(icon: HugeIcons.strokeRoundedHome01, label: 'Home'),
-  _ShellDestination(
-      icon: HugeIcons.strokeRoundedFolderLibrary, label: 'Records'),
   _ShellDestination(icon: HugeIcons.strokeRoundedMessage01, label: 'Chat'),
   _ShellDestination(
       icon: HugeIcons.strokeRoundedNotification01, label: 'Alerts'),
   _ShellDestination(icon: HugeIcons.strokeRoundedUser, label: 'Profile'),
 ];
 
-/// The app's persistent bottom-tab shell around its top 5 destinations
-/// (Home, Health Records, Chat, Notifications, Profile). This is what the
-/// `'loginHome'` route now resolves to, so every existing
-/// `pushNamedAndRemoveUntil('loginHome', ...)` call site lands here without
-/// change.
+/// The app's persistent bottom-tab shell around its top destinations (Home,
+/// Chat, Notifications, Profile). This is what the `'loginHome'` route now
+/// resolves to, so every existing `pushNamedAndRemoveUntil('loginHome',
+/// ...)` call site lands here without change.
 ///
 /// Each tab keeps its own full `Scaffold` (app bar, drawer, etc.) - this
 /// widget only supplies the outer `Scaffold`'s `bottomNavigationBar` and an
 /// `IndexedStack` to keep a tab's state alive once visited. Tabs are built
-/// lazily on first visit rather than all five at once, so switching to
-/// Records or Chat doesn't fire off every tab's startup network calls
-/// before the user ever looks at them.
+/// lazily on first visit rather than all at once, so switching to Chat
+/// doesn't fire off every tab's startup network calls before the user ever
+/// looks at them.
 class AppShell extends StatefulWidget {
   final int initialIndex;
 
@@ -61,13 +56,10 @@ class _AppShellState extends State<AppShell> {
       case 0:
         return const LoginHomeScreen(chat: '');
       case 1:
-        return HealthRecordsScreen(
-            repository: InMemoryHealthRecordsRepository());
-      case 2:
         return const HomePage();
-      case 3:
+      case 2:
         return const NotificationsScreen();
-      case 4:
+      case 3:
         return const ProfileScreen();
       default:
         throw StateError('No tab at index $index');
