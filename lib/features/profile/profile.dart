@@ -2162,7 +2162,7 @@ class _ProfileHeader extends StatelessWidget {
                                       Preferences.image),
                                   imageBuilder: (context, imageProvider) =>
                                       CircleAvatar(
-                                    backgroundColor: Colors.white,
+                                    backgroundColor: AyurezeTheme.surface,
                                     child: CircleAvatar(
                                       radius: 36,
                                       backgroundImage: imageProvider,
