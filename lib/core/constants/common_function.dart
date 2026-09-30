@@ -30,7 +30,35 @@ class CommonFunction {
     );
   }
 
+  static String? _lastToastMessage;
+  static DateTime? _lastToastAt;
+
+  /// Suppresses an identical message re-fired within [_toastDedupeWindow] of
+  /// the last one. Several call sites construct a `ServerError` (which
+  /// toasts as a side effect) from independent, near-simultaneous failed
+  /// requests - e.g. two API calls timing out on the same screen load - so
+  /// without this the same "Connection failed" text stacked one toast per
+  /// failure instead of showing once.
+  static const _toastDedupeWindow = Duration(seconds: 3);
+
+  /// Clears the dedupe state between tests; each test otherwise inherits
+  /// whatever the previous one last "toasted", since the state is static.
+  @visibleForTesting
+  static void resetToastDedupeForTesting() {
+    _lastToastMessage = null;
+    _lastToastAt = null;
+  }
+
   static toastMessage(String msg) {
+    final now = DateTime.now();
+    if (_lastToastMessage == msg &&
+        _lastToastAt != null &&
+        now.difference(_lastToastAt!) < _toastDedupeWindow) {
+      return;
+    }
+    _lastToastMessage = msg;
+    _lastToastAt = now;
+
     Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
