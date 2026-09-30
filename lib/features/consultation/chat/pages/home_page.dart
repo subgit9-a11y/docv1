@@ -257,7 +257,7 @@ class HomePageState extends State<HomePage> {
                 ),
                 Flexible(
                   child: Container(
-                    margin: const EdgeInsets.only(left: 20),
+                    margin: const EdgeInsets.only(left: AyurezeTheme.spaceXl),
                     child: Column(
                       children: <Widget>[
                         Container(

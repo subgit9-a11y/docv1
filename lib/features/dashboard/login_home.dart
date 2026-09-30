@@ -768,7 +768,7 @@ class _LoginHomeViewState extends State<_LoginHomeView>
                     ),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(28),
+                    borderRadius: BorderRadius.circular(AyurezeTheme.radius2xl),
                     child: (imageUrl != null && imageUrl.isNotEmpty)
                         ? CachedNetworkImage(
                             imageUrl: imageUrl,

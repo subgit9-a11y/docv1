@@ -250,7 +250,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
         : "--";
 
     return OslerCard(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

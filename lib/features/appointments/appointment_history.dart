@@ -120,7 +120,8 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (ctx, i) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.only(
+                              bottom: AyurezeTheme.spaceMd),
                           child: OslerSkeleton(
                               width: double.infinity,
                               height: 100,
@@ -300,7 +301,7 @@ class _AppointmentCardState extends State<_AppointmentCard>
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOut,
-            margin: const EdgeInsets.only(bottom: 12),
+            margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
             padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
             decoration: AyurezeTheme.panelDecoration(),
             child: Row(
@@ -341,7 +342,7 @@ class _AppointmentCardState extends State<_AppointmentCard>
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
+                                horizontal: AyurezeTheme.spaceSm, vertical: 3),
                             decoration: BoxDecoration(
                               color: statusBg,
                               borderRadius: BorderRadius.circular(

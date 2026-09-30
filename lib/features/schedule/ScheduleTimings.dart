@@ -179,7 +179,8 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                               endsTime.add(parseData[i]['end_time']);
                             }
                             return Container(
-                              margin: const EdgeInsets.only(bottom: 12),
+                              margin: const EdgeInsets.only(
+                                  bottom: AyurezeTheme.spaceMd),
                               decoration: AyurezeTheme.panelDecoration(),
                               child: ListTile(
                                 contentPadding: const EdgeInsets.symmetric(
@@ -209,7 +210,7 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
                                         itemBuilder: (context, index) {
                                           return Padding(
                                             padding: const EdgeInsets.only(
-                                                bottom: 4),
+                                                bottom: AyurezeTheme.spaceXs),
                                             child: Row(
                                               children: [
                                                 Text(

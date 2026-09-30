@@ -371,7 +371,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     const SizedBox(height: 24),
                     GlassSurface(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 8),
+                          horizontal: AyurezeTheme.spaceXl,
+                          vertical: AyurezeTheme.spaceSm),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

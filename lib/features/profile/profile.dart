@@ -1519,7 +1519,8 @@ class _ProfileStep2Education extends StatelessWidget {
                       Card(
                         color: AyurezeTheme.border,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(45)),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radiusPill)),
                         child: HugeIcon(
                             icon: AppIcons.add,
                             size: width * 0.06,
@@ -1634,7 +1635,8 @@ class _ProfileStep2Education extends StatelessWidget {
                       Card(
                         color: AyurezeTheme.border,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(45)),
+                            borderRadius:
+                                BorderRadius.circular(AyurezeTheme.radiusPill)),
                         child: HugeIcon(
                             icon: AppIcons.add,
                             size: width * 0.06,

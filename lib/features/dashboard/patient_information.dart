@@ -165,8 +165,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 12,
+                                horizontal: AyurezeTheme.spaceXl,
+                                vertical: AyurezeTheme.spaceMd,
                               ),
                               child: Column(
                                 children: [
@@ -312,8 +312,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                                   // Appointment Overview Stats Panel
                                   GlassSurface(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 16,
-                                      horizontal: 12,
+                                      vertical: AyurezeTheme.spaceLg,
+                                      horizontal: AyurezeTheme.spaceMd,
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -372,7 +372,8 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
                         children: [
                           // Tab Bar
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: AyurezeTheme.spaceXl),
                             decoration: BoxDecoration(
                               color: AyurezeTheme.surfaceMuted,
                               borderRadius:
@@ -841,7 +842,7 @@ class _PatientDetailsScreenBodyState extends State<_PatientDetailsScreenBody>
       builder: (BuildContext bc) {
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: AyurezeTheme.spaceMd),
             child: Wrap(
               children: <Widget>[
                 ListTile(

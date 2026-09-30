@@ -93,11 +93,8 @@ class _LoadingViewState extends State<LoadingView>
                   const SizedBox(height: 16),
                   Text(
                     "Loading workspace...",
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AyurezeTheme.textPrimary,
-                    ),
+                    style: AyurezeTheme.font(
+                        13, FontWeight.w700, AyurezeTheme.textPrimary),
                   ),
                 ],
               ),

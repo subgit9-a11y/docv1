@@ -524,8 +524,8 @@ class _ProfessionalRegistrationScreenState
                   color: AyurezeTheme.healingGreen100))
           : SafeArea(
               child: SingleChildScrollView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AyurezeTheme.spaceXl, vertical: 25),
                 child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 750),
@@ -755,7 +755,8 @@ class _ProfessionalRegistrationScreenState
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8, left: 4),
+      padding: const EdgeInsets.only(
+          bottom: AyurezeTheme.spaceSm, left: AyurezeTheme.spaceXs),
       child: Text(label,
           style: textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w700, color: AyurezeTheme.textSecondary)),
@@ -767,8 +768,9 @@ class _ProfessionalRegistrationScreenState
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
-      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.symmetric(
+          horizontal: 18, vertical: AyurezeTheme.spaceXs),
+      margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceXl),
       decoration: BoxDecoration(
         color: AyurezeTheme.surface,
         borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
@@ -814,7 +816,7 @@ class _ProfessionalRegistrationScreenState
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: AyurezeTheme.spaceXl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -832,8 +834,8 @@ class _ProfessionalRegistrationScreenState
                   icon: icon, color: AyurezeTheme.textSecondary, size: 20),
               filled: true,
               fillColor: AyurezeTheme.surface,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+              contentPadding: const EdgeInsets.symmetric(
+                  vertical: 18, horizontal: AyurezeTheme.spaceXl),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
                   borderSide: BorderSide(

@@ -251,7 +251,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   Widget _fieldLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: AyurezeTheme.spaceSm),
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(

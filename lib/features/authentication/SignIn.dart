@@ -199,7 +199,7 @@ class _SignInViewState extends State<SignInView>
                                       child: Container(
                                         width: double.infinity,
                                         padding: const EdgeInsets.fromLTRB(
-                                            20, 22, 20, 20),
+                                            AyurezeTheme.spaceXl, 22, 20, 20),
                                         decoration:
                                             AyurezeTheme.glassDecoration(),
                                         child: Column(
