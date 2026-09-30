@@ -82,20 +82,6 @@ class AppRouter {
     }
   }
 
-  /// Open shopping cart
-  Future<ActionResult> openCart() async {
-    try {
-      AstraLogger.logNavigation('openCart', null);
-
-      navigatorKey.currentState?.pushNamed('payment');
-
-      return ActionResult.success();
-    } catch (e, st) {
-      AstraLogger.e('Failed to open cart', error: e, stackTrace: st);
-      return ActionResult.failure('Failed to open cart: $e');
-    }
-  }
-
   /// Open payment screen
   Future<ActionResult> openPayment({
     String? orderId,
@@ -279,27 +265,6 @@ class AppRouter {
     }
   }
 
-  /// Open product
-  Future<ActionResult> openProduct({
-    required String productId,
-    String? productName,
-  }) async {
-    try {
-      AstraLogger.logNavigation('openProduct', {
-        'productId': productId,
-        'productName': productName,
-      });
-
-      // Navigate to payment/cart where products are shown
-      navigatorKey.currentState?.pushNamed('payment');
-
-      return ActionResult.success(data: {'productId': productId});
-    } catch (e, st) {
-      AstraLogger.e('Failed to open product', error: e, stackTrace: st);
-      return ActionResult.failure('Failed to open product: $e');
-    }
-  }
-
   /// Open appointment booking
   Future<ActionResult> openAppointmentBooking({String? patientId}) async {
     try {
@@ -384,7 +349,7 @@ class AppRouter {
         case 'prescription':
           return await openPrescription(prescriptionId: id);
         case 'cart':
-          return await openCart();
+          return await openPayment();
         case 'appointment':
           return await openAppointment(appointmentId: id);
         case 'notification':

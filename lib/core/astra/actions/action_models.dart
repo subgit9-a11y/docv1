@@ -11,12 +11,6 @@ enum AstraActionType {
   /// Open prescription screen
   openPrescription,
 
-  /// Open shopping cart
-  openCart,
-
-  /// Open product details
-  openProduct,
-
   /// Open report/view documents
   openReport,
 
@@ -158,12 +152,17 @@ class AstraNavigationAction {
       'openprescription': AstraActionType.openPrescription,
       'prescription': AstraActionType.openPrescription,
       'viewprescription': AstraActionType.openPrescription,
-      'opencart': AstraActionType.openCart,
-      'cart': AstraActionType.openCart,
-      'shoppingcart': AstraActionType.openCart,
-      'openproduct': AstraActionType.openProduct,
-      'product': AstraActionType.openProduct,
-      'viewproduct': AstraActionType.openProduct,
+      // This app has no cart/product screens (it's doctor-facing, not a
+      // storefront) - these used to open dedicated openCart/openProduct
+      // actions that both just pushed the payment route anyway (openProduct
+      // silently dropped its productId in the process). Route the same
+      // aliases straight to the real action instead of a fake middleman.
+      'opencart': AstraActionType.openPayment,
+      'cart': AstraActionType.openPayment,
+      'shoppingcart': AstraActionType.openPayment,
+      'openproduct': AstraActionType.openPayment,
+      'product': AstraActionType.openPayment,
+      'viewproduct': AstraActionType.openPayment,
       'openreport': AstraActionType.openReport,
       'report': AstraActionType.openReport,
       'viewreport': AstraActionType.openReport,
@@ -224,10 +223,6 @@ class AstraNavigationAction {
         return 'Open Patient';
       case AstraActionType.openPrescription:
         return 'Open Prescription';
-      case AstraActionType.openCart:
-        return 'Open Cart';
-      case AstraActionType.openProduct:
-        return 'Open Product';
       case AstraActionType.openReport:
         return 'View Report';
       case AstraActionType.openStorage:

@@ -36,10 +36,6 @@ class ActionDispatcher {
         return _handleOpenPatient(action);
       case AstraActionType.openPrescription:
         return _handleOpenPrescription(action);
-      case AstraActionType.openCart:
-        return _handleOpenCart(action);
-      case AstraActionType.openProduct:
-        return _handleOpenProduct(action);
       case AstraActionType.openReport:
         return _handleOpenReport(action);
       case AstraActionType.openStorage:
@@ -118,24 +114,6 @@ class ActionDispatcher {
       patientName: action.params?['patient_name']?.toString(),
       patientPhone: action.params?['phone']?.toString(),
       astraFillData: action.params?['astra_fill_data'] as Map<String, dynamic>?,
-    );
-  }
-
-  Future<ActionResult> _handleOpenCart(AstraNavigationAction action) async {
-    return _router.openCart();
-  }
-
-  Future<ActionResult> _handleOpenProduct(AstraNavigationAction action) async {
-    final productId =
-        action.targetId ?? action.params?['product_id']?.toString();
-
-    if (productId == null || productId.isEmpty) {
-      return ActionResult.failure('Product ID is required');
-    }
-
-    return _router.openProduct(
-      productId: productId,
-      productName: action.params?['product_name']?.toString(),
     );
   }
 
