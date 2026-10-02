@@ -62,6 +62,7 @@ import 'package:doctro/features/profile/profile.dart';
 import 'package:doctro/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:doctro/features/dashboard/patient_information.dart';
+import 'package:doctro/features/cases/case_list_screen.dart';
 import 'package:doctro/features/notifications/notifications.dart';
 import 'package:doctro/features/review/rate&review.dart';
 import 'package:doctro/features/cashfree/payment.dart';
@@ -541,6 +542,7 @@ class _MyAppState extends State<MyApp> {
                           PhoneVerificationScreen(),
                       'loginHome': (context) => const AppShell(),
                       'patientInformation': (context) => patientDetailsScreen(),
+                      'caseList': (context) => const CaseListScreen(),
                       'cancelAppoitmentRoutes': (context) =>
                           CancelAppointmentScreen(),
                       'AppointmentHistoryScreen': (context) =>

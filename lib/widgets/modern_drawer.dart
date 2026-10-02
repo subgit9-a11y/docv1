@@ -148,6 +148,11 @@ class ModernDrawer extends StatelessWidget {
                     _sectionHeader(context, "Patient Care"),
                     _drawerItem(
                         context,
+                        HugeIcons.strokeRoundedFolder01,
+                        "My Cases",
+                        () => Navigator.popAndPushNamed(context, 'caseList')),
+                    _drawerItem(
+                        context,
                         AppIcons.star,
                         getTranslated(context, AppString.drawer_review)
                             .toString(),

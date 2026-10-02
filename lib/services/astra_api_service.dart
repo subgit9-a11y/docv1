@@ -785,10 +785,42 @@ class AstraApiService {
   /// Get the latest Astra Fill record for a patient
   Future<Map<String, dynamic>> getLatestAstraFill(String patientId) async {
     try {
-      final response = await _dio.get('/api/v1/astra-fill/latest/$patientId');
+      // Matches the backend route exactly: GET /api/v1/astra-fill/patient/{user_id}/latest
+      // (app/astra_fill/routes.py) - a previous version of this call used
+      // /api/v1/astra-fill/latest/$patientId, which doesn't exist on the
+      // backend and always 404'd.
+      final response =
+          await _dio.get('/api/v1/astra-fill/patient/$patientId/latest');
       return response.data ?? {};
     } catch (e) {
       return {};
+    }
+  }
+
+  // ============================================================
+  // CASE MANAGEMENT
+  // ============================================================
+
+  /// List companion cases assigned to this doctor.
+  /// Backend: GET /api/companion/case/by-doctor/{doctor_id}
+  Future<List<dynamic>> getCasesByDoctor(String doctorId) async {
+    try {
+      final response =
+          await _dio.get('/api/companion/case/by-doctor/$doctorId');
+      return response.data?['cases'] as List<dynamic>? ?? [];
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  /// Get a single companion case by id.
+  /// Backend: GET /api/companion/case/{case_id}
+  Future<Map<String, dynamic>> getCase(String caseId) async {
+    try {
+      final response = await _dio.get('/api/companion/case/$caseId');
+      return response.data ?? {};
+    } catch (e) {
+      throw _handleError(e);
     }
   }
 
