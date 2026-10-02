@@ -1,3 +1,4 @@
+import 'dart:async' show unawaited;
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -364,6 +365,12 @@ class SignInViewModel extends ChangeNotifier {
         Preferences.doctorId, response.data!.id.toString());
 
     Provider.of<chat.AuthProvider>(context, listen: false).handleSignIn();
+
+    // Best-effort: register this device for Astra gateway push notifications,
+    // mirroring the patient app's astra_chat_notifier.dart init(). Never
+    // blocks or surfaces an error on login - a missed FCM registration just
+    // means no push notifications this session, not a failed login.
+    unawaited(AstraApiService().registerFcmTokenBestEffort());
   }
 
   Future<BaseModel<LoginResponse>> callApiForLogin(BuildContext context) async {

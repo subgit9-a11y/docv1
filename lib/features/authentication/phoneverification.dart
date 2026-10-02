@@ -1,3 +1,4 @@
+import 'dart:async' show unawaited;
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
@@ -17,6 +18,7 @@ import 'package:doctro/features/consultation/chat/providers/auth_provider.dart';
 import 'package:doctro/features/authentication/professional_registration_screen.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
+import 'package:doctro/services/astra_api_service.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   final OtpData? data;
@@ -308,5 +310,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     } catch (_) {
       // Sign-in state sync is best-effort; navigator already moved on.
     }
+
+    // Best-effort: register this device for Astra gateway push
+    // notifications (see AstraApiService.registerFcmTokenBestEffort doc).
+    unawaited(AstraApiService().registerFcmTokenBestEffort());
   }
 }

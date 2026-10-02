@@ -973,15 +973,20 @@ class AstraApiService {
   // PUSH NOTIFICATIONS
   // ============================================================
 
-  /// Store FCM token for push notifications
+  /// Store FCM token for push notifications.
+  /// Backend: POST /api/v1/notifications/store-fcm-token expects
+  /// {"patient_id": ..., "fcm_token": ...} (app/notification_routes.py's
+  /// FCMTokenRequest) - "patient_id" is just the route's generic principal
+  /// key, used here with the doctor's own id. The previous body
+  /// ({token, user_id, user_type}) didn't match that schema at all and
+  /// would have 422'd on every call.
   Future<Map<String, dynamic>> storeFcmToken(
       String token, String userId) async {
     try {
       final response =
           await _dio.post('/api/v1/notifications/store-fcm-token', data: {
-        'token': token,
-        'user_id': userId,
-        'user_type': 'doctor',
+        'patient_id': userId,
+        'fcm_token': token,
       });
       return response.data;
     } catch (e) {
@@ -995,6 +1000,28 @@ class AstraApiService {
       await _dio.delete('/api/v1/notifications/remove-fcm-token/$patientId');
     } catch (e) {
       throw _handleError(e);
+    }
+  }
+
+  /// Register this device for Astra gateway push notifications, if a device
+  /// token is already cached (from the main Laravel backend's own FCM setup
+  /// - see SignInViewModel.getToken()) and the signed-in user has an Astra
+  /// doctor_id. Call this once after login succeeds; it never throws, since
+  /// a missed registration should never fail a login that already
+  /// succeeded (mirrors the patient app's astra_chat_notifier.dart init()).
+  Future<void> registerFcmTokenBestEffort() async {
+    try {
+      final fcmToken =
+          SharedPreferenceHelper.getStringOrNull(Preferences.messageToken);
+      if (fcmToken == null || fcmToken.isEmpty) return;
+
+      final userInfo = await getUserInfo();
+      final doctorId = userInfo['doctor_id'] as String?;
+      if (doctorId == null || doctorId.isEmpty) return;
+
+      await storeFcmToken(fcmToken, doctorId);
+    } catch (_) {
+      // Best-effort only; caller does not await this.
     }
   }
 
