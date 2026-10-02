@@ -1,3 +1,4 @@
+import 'package:doctro/features/cases/case_detail_screen.dart';
 import 'package:doctro/features/cases/view_models/case_list_view_model.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
@@ -172,72 +173,82 @@ class _CaseCard extends StatelessWidget {
       }
     }
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
-      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
-      decoration: AyurezeTheme.panelDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  diagnosis?.isNotEmpty == true ? diagnosis! : 'Untitled case',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontWeight: FontWeight.w700),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AyurezeTheme.spaceSm, vertical: 3),
-                decoration: BoxDecoration(
-                  color: statusBg,
-                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
-                ),
-                child: Text(
-                  statusLabel,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: statusColor,
-                      ),
-                ),
-              ),
-            ],
-          ),
-          if (createdLabel.isNotEmpty) ...[
-            const SizedBox(height: 6),
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CaseDetailScreen(initialCaseData: caseData),
+        ),
+      ),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
+        decoration: AyurezeTheme.panelDecoration(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Row(
               children: [
-                HugeIcon(
-                    icon: HugeIcons.strokeRoundedCalendar01,
-                    size: 14,
-                    color: AyurezeTheme.textSecondary),
-                const SizedBox(width: 4),
-                Text('Opened $createdLabel',
-                    style: Theme.of(context).textTheme.bodyMedium),
+                Expanded(
+                  child: Text(
+                    diagnosis?.isNotEmpty == true ? diagnosis! : 'Untitled case',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AyurezeTheme.spaceSm, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: statusBg,
+                    borderRadius:
+                        BorderRadius.circular(AyurezeTheme.radiusPill),
+                  ),
+                  child: Text(
+                    statusLabel,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: statusColor,
+                        ),
+                  ),
+                ),
               ],
             ),
-          ],
-          const SizedBox(height: 10),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
-            child: LinearProgressIndicator(
-              value: progress.clamp(0.0, 1.0),
-              minHeight: 6,
-              backgroundColor: AyurezeTheme.surfaceMuted,
-              valueColor: AlwaysStoppedAnimation(AyurezeTheme.healingGreen50),
+            if (createdLabel.isNotEmpty) ...[
+              const SizedBox(height: 6),
+              Row(
+                children: [
+                  HugeIcon(
+                      icon: HugeIcons.strokeRoundedCalendar01,
+                      size: 14,
+                      color: AyurezeTheme.textSecondary),
+                  const SizedBox(width: 4),
+                  Text('Opened $createdLabel',
+                      style: Theme.of(context).textTheme.bodyMedium),
+                ],
+              ),
+            ],
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AyurezeTheme.radiusPill),
+              child: LinearProgressIndicator(
+                value: progress.clamp(0.0, 1.0),
+                minHeight: 6,
+                backgroundColor: AyurezeTheme.surfaceMuted,
+                valueColor:
+                    AlwaysStoppedAnimation(AyurezeTheme.healingGreen50),
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${caseData['treatment_duration_days'] ?? 30}-day treatment plan',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              '${caseData['treatment_duration_days'] ?? 30}-day treatment plan',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
       ),
     );
   }
