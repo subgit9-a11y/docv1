@@ -39,7 +39,25 @@ Review and merge whichever of these apply to the canonical repo from step 0.
 The patient-app branch should merge regardless - it's the one that actually
 creates the case a doctor would need to see.
 
-## 2. Wire doctor-side case creation/receiving
+## 2. Wire doctor-side case creation/receiving - DONE
+
+Went with Option B below. Backend: added
+`GET /api/companion/case/by-doctor/{doctor_id}` (`app/companion_api.py`,
+`app/companion_system.py`), plus three real schema bugs found and fixed
+along the way that were silently dropping every case to the in-memory
+cache (never durably persisted): `journey_health_records.user_id`/
+`doctor_id`/`prescription_id` typed as `uuid` instead of `text`, a missing
+`record_type` column default, several missing columns on
+`companion_journeys`, and a missing `journey_id` FK column on that same
+table. All deployed and confirmed live with a real end-to-end test
+(journey → case → doctor listing all persisting to Supabase, not cache).
+
+Client: added `docv1`'s "My Cases" screen
+(`lib/features/cases/case_list_screen.dart` +
+`view_models/case_list_view_model.dart`), reachable from the drawer,
+listing diagnosis/status/progress for each case via the new endpoint.
+
+Original options considered below, kept for context.
 
 **The real gap, and it needs a backend decision first.** The patient app
 calls `POST /api/companion/case/create` and gets back a `case_id`. The only
@@ -78,48 +96,52 @@ through `AstraApiService`/`AstraGatewayClient` (already correctly
 authenticated per branch in step 1), showing the AI companion's
 journey/progress alongside the video-call entry point.
 
-## 3. Trace doctor assignment at booking time
+## 3. Trace doctor assignment at booking time - DONE
 
-Not fully traced during this audit. The patient app's booking screen
-(`lib/v2/ui/appointment/select_payment_methods.dart`) already has a real
-`doctor.id` by the time `linkAppointmentToAstra()` runs - it comes from
-whatever doctor-selection screen led to booking
-(`lib/v2/ui/appointment/make_appointment.dart` and upstream). That part is
-fine; what's unverified is whether the *doctor list the patient picks from*
-is guaranteed to be real, synced doctors (it should be, since that list
-comes from Laravel directly, not Astra's own seed-data doctor-search
-endpoint which we confirmed returns test data). Worth a quick confirmation
-pass, not a rebuild.
+Traced end-to-end: `doctors_list.dart` fetches `Doctor` objects via
+`RestClient(Apis.baseUrl).doctorList()`, and `Apis.baseUrl` is
+`https://ayureze.org/api/` - Laravel, not Astra's own seed-data doctor
+search. Tapping a card (`DoctorInfoCard_v2`) navigates to
+`MakeAppointment(doctor: doctor)` with that same real `Doctor` object, and
+`doctor.id` flows straight into `select_payment_methods.dart`
+(`"doctor_id": details.doctor.id`, 3 call sites). Confirmed real, not
+circumstantial: the doctor a patient books is always a genuine
+Laravel-synced doctor, never Astra's test data.
 
-## 4. Backend fix needed (not a client fix): `getLatestAstraFill` blocks doctors entirely
+## 4. Backend fix needed (not a client fix): `getLatestAstraFill` blocks doctors entirely - DONE
 
-`GET /api/v1/astra-fill/patient/{user_id}/latest` requires
-`Depends(require_patient())` - whose allowed roles are
-`["patient", "admin", "superadmin"]`. A doctor's own JWT (`role: "doctor"`)
-is not on that list, so **no doctor can ever call this successfully**,
-authenticated or not. This is in `app/astra_fill/routes.py` on the real
-backend. Fix is a one-line change: add `"doctor"` to whatever role list
-backs that route (check `require_patient()`'s definition in
-`app/security/auth/dependencies.py` and how the astra-fill routes use it -
-might need a new `require_patient_or_doctor()` helper rather than loosening
-`require_patient()` itself, to avoid accidentally widening other routes that
-reuse it).
+Fixed and deployed. Added `require_patient_or_doctor()` in
+`app/security/auth/dependencies.py` and switched
+`GET /api/v1/astra-fill/patient/{user_id}/latest` (`app/astra_fill/routes.py`)
+to use it instead of `require_patient()`. Live on `astra.ayureze.in`.
 
-## 5. Wire FCM push registration in `docv1`
+Also found and fixed while wiring the doctor app's case list screen:
+`astra_api_service.dart`'s `getLatestAstraFill()` was calling the wrong URL
+entirely (`/astra-fill/latest/$id` instead of
+`/astra-fill/patient/$id/latest`) - would have 404'd regardless of the
+backend role fix above.
 
-`AstraApiService.storeFcmToken()` exists (`lib/services/astra_api_service.dart`)
-but is never called anywhere in the app - confirmed via grep, zero call
-sites outside its own definition. Call it once, best-effort, right after
-login succeeds (mirror the patient app's pattern:
-`lib/features/astra/presentation/astra_chat_notifier.dart`'s `init()`,
-which calls `storeFcmTokenWithGateway()` in a `try/catch` that only logs on
-failure, never blocks). The doctor app's existing FCM token is likely
-already fetched somewhere for the main Laravel backend's own push
-notifications - reuse that same token value rather than requesting a new
-one.
+## 5. Wire FCM push registration in `docv1` - DONE
+
+Added `AstraApiService.registerFcmTokenBestEffort()`, wired into both
+doctor login completion paths (`SignInViewModel.saveUserData` and
+`PhoneVerificationScreen._saveUserData`) as a fire-and-forget call.
+Reuses the FCM token already cached for the main backend's push setup
+(`Preferences.messageToken`) and resolves the doctor's Astra-format
+`doctor_id` via `GET /api/v1/auth/user` rather than the Laravel numeric id.
+
+Also found and fixed: `storeFcmToken()`'s request body didn't match the
+backend's schema at all (`{token, user_id, user_type}` vs. the backend's
+actual `{patient_id, fcm_token}` - `app/notification_routes.py`'s
+`FCMTokenRequest`). Every call would have 422'd even before this was wired
+up anywhere.
 
 ---
 
 Suggested order: 0 → 1 → 4 (quick, backend-only, unblocks nothing else but
 is a one-line fix) → 2 (the real remaining feature work) → 3 (a confirmation
 pass, not a build) → 5 (small, independent, do whenever).
+
+**Status: 2, 3, 4, 5 done.** Only 0 (which repo is canonical) and 1 (merging
+the pending branches) remain, and both need a human decision - see each
+section above for what's still open.
