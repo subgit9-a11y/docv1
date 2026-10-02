@@ -3,12 +3,14 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/widgets/osler_tag.dart';
+import 'package:doctro/widgets/osler_state_view.dart';
 import 'package:doctro/features/search/models/search_result.dart';
 import 'package:doctro/features/search/search_filter.dart';
 
-/// The kit's global "Search Screen": a category-filterable, match-ranked
-/// search over the app's own features (symptom checker, medications,
-/// doctors, consultations) rather than a single-purpose in-page search box.
+/// The kit's global "Search Screen": a category-filterable search over the
+/// app's own real destinations (the doctor's own profile, consultation and
+/// appointment history, notifications, settings), each result opening the
+/// actual screen on tap - rather than a single-purpose in-page search box.
 class SearchScreen extends StatefulWidget {
   /// Overridable for tests; defaults to the app's own feature index.
   final List<SearchResult> results;
@@ -17,34 +19,39 @@ class SearchScreen extends StatefulWidget {
 
   static const _defaultIndex = <SearchResult>[
     SearchResult(
-      title: 'AI Symptom Checker',
-      subtitle: 'Analyze your symptoms with Osler AI',
-      category: SearchResultCategory.resources,
-      matchPercent: 99,
-    ),
-    SearchResult(
-      title: 'My Symptoms',
-      subtitle: 'Track symptoms you have logged',
-      category: SearchResultCategory.resources,
-      matchPercent: 76,
-    ),
-    SearchResult(
-      title: 'Medication Reminders',
-      subtitle: 'Manage dosage schedules and refills',
-      category: SearchResultCategory.medication,
-      matchPercent: 68,
-    ),
-    SearchResult(
-      title: 'Find a Doctor',
-      subtitle: 'Browse doctors by specialization',
+      title: 'My Profile',
+      subtitle: 'View and edit your professional profile',
       category: SearchResultCategory.doctor,
-      matchPercent: 54,
+      matchPercent: 92,
+      routeName: 'profile',
     ),
     SearchResult(
-      title: 'Book Consultation',
-      subtitle: 'Schedule a virtual appointment',
+      title: 'Consultation History',
+      subtitle: 'Review past video consultations',
       category: SearchResultCategory.consultation,
-      matchPercent: 42,
+      matchPercent: 78,
+      routeName: 'VideoCallHistory',
+    ),
+    SearchResult(
+      title: 'Appointment History',
+      subtitle: 'Browse your past appointments',
+      category: SearchResultCategory.consultation,
+      matchPercent: 68,
+      routeName: 'AppointmentHistoryScreen',
+    ),
+    SearchResult(
+      title: 'Notifications',
+      subtitle: 'Stay updated on appointment activity',
+      category: SearchResultCategory.resources,
+      matchPercent: 60,
+      routeName: 'notifications',
+    ),
+    SearchResult(
+      title: 'Settings',
+      subtitle: 'Language, password and app preferences',
+      category: SearchResultCategory.resources,
+      matchPercent: 50,
+      routeName: 'Settings',
     ),
   ];
 
@@ -224,53 +231,59 @@ class _ResultTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
-      decoration: BoxDecoration(
-        color: AyurezeTheme.surface,
-        borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
-        border: Border.all(color: AyurezeTheme.border),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AyurezeTheme.healingGreen10,
-              borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
+    return InkWell(
+      borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
+      onTap: result.routeName == null
+          ? null
+          : () => Navigator.of(context).pushNamed(result.routeName!),
+      child: Container(
+        padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
+        decoration: BoxDecoration(
+          color: AyurezeTheme.surface,
+          borderRadius: BorderRadius.circular(AyurezeTheme.radiusXl),
+          border: Border.all(color: AyurezeTheme.border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: AyurezeTheme.healingGreen10,
+                borderRadius: BorderRadius.circular(AyurezeTheme.radiusMd),
+              ),
+              child: HugeIcon(
+                icon: _iconFor(result.category),
+                color: AyurezeTheme.healingGreen100,
+                size: 22,
+              ),
             ),
-            child: HugeIcon(
-              icon: _iconFor(result.category),
-              color: AyurezeTheme.healingGreen100,
-              size: 22,
+            const SizedBox(width: AyurezeTheme.spaceMd),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(result.title,
+                      style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 2),
+                  Text(
+                    result.subtitle,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AyurezeTheme.textSecondary,
+                        ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: AyurezeTheme.spaceMd),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(result.title,
-                    style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: 2),
-                Text(
-                  result.subtitle,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AyurezeTheme.textSecondary,
-                      ),
-                ),
-              ],
+            const SizedBox(width: AyurezeTheme.spaceSm),
+            OslerTag(
+              label: '${result.matchPercent}% Match',
+              style: result.matchPercent >= 70
+                  ? OslerTagStyle.success
+                  : OslerTagStyle.secondary,
             ),
-          ),
-          const SizedBox(width: AyurezeTheme.spaceSm),
-          OslerTag(
-            label: '${result.matchPercent}% Match',
-            style: result.matchPercent >= 70
-                ? OslerTagStyle.success
-                : OslerTagStyle.secondary,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -296,44 +309,14 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AyurezeTheme.space3xl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 96,
-              height: 96,
-              decoration: const BoxDecoration(
-                color: AyurezeTheme.oslerGray10,
-                shape: BoxShape.circle,
-              ),
-              child: const HugeIcon(
-                icon: HugeIcons.strokeRoundedSearchRemove,
-                color: AyurezeTheme.oslerGray100,
-                size: 40,
-              ),
-            ),
-            const SizedBox(height: AyurezeTheme.spaceLg),
-            Text(
-              query.isEmpty ? 'Start Searching' : 'Woops, Not Found',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: AyurezeTheme.spaceSm),
-            Text(
-              query.isEmpty
-                  ? 'Search symptoms, medications, doctors and more.'
-                  : 'Unfortunately, the key you entered cannot be found. '
-                      'Please try another keyword or check again.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AyurezeTheme.textSecondary,
-                  ),
-            ),
-          ],
-        ),
-      ),
+    return OslerStateView(
+      icon: HugeIcons.strokeRoundedSearchRemove,
+      tone: OslerStateTone.muted,
+      title: query.isEmpty ? 'Start Searching' : 'Woops, Not Found',
+      message: query.isEmpty
+          ? 'Search your profile, appointments, notifications and settings.'
+          : 'Unfortunately, the key you entered cannot be found. '
+              'Please try another keyword or check again.',
     );
   }
 }

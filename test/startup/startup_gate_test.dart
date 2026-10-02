@@ -1,7 +1,7 @@
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/features/authentication/SignIn.dart';
-import 'package:doctro/features/dashboard/login_home.dart';
+import 'package:doctro/features/shell/app_shell.dart';
 import 'package:doctro/features/startup_gate.dart';
 import 'package:doctro/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +61,7 @@ void main() {
       // tree on the first frame, not only after some wait resolves it. The
       // intro animation drawn over it does not change this.
       expect(find.byType(SignIn), findsOneWidget);
-      expect(find.byType(LoginHomeScreen), findsNothing);
+      expect(find.byType(AppShell), findsNothing);
 
       // Drains the intro animation and the settings request SignInViewModel
       // issues on construction.
@@ -71,15 +71,15 @@ void main() {
     });
 
     testWidgets(
-        'a stored session mounts the dashboard on the very first frame, under the intro',
+        'a stored session mounts the dashboard shell on the very first frame, under the intro',
         (tester) async {
       await boot(tester, loggedIn: true);
 
-      expect(find.byType(LoginHomeScreen), findsOneWidget);
+      expect(find.byType(AppShell), findsOneWidget);
       expect(find.byType(SignIn), findsNothing);
 
       await tester.pumpAndSettle();
-      expect(find.byType(LoginHomeScreen), findsOneWidget);
+      expect(find.byType(AppShell), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -121,7 +121,7 @@ void main() {
       // past the intro's own fixed beat, must not move the tree anywhere.
       await tester.pump(const Duration(seconds: 5));
       expect(find.byType(SignIn), findsOneWidget);
-      expect(find.byType(LoginHomeScreen), findsNothing);
+      expect(find.byType(AppShell), findsNothing);
       expect(tester.takeException(), isNull);
     });
   });

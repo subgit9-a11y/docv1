@@ -71,4 +71,55 @@ void main() {
     expect(find.text('Find a Doctor'), findsOneWidget);
     expect(find.text('AI Symptom Checker'), findsNothing);
   });
+
+  testWidgets('tapping a result with a routeName navigates to it',
+      (WidgetTester tester) async {
+    const withRoute = [
+      SearchResult(
+        title: 'My Medications',
+        subtitle: 'Manage dosage schedules and refills',
+        category: SearchResultCategory.medication,
+        matchPercent: 68,
+        routeName: 'destination',
+      ),
+    ];
+
+    await tester.pumpWidget(
+      MaterialApp(
+        routes: {
+          '/': (context) => const SearchScreen(results: withRoute),
+          'destination': (context) =>
+              const Scaffold(body: Text('Destination Screen')),
+        },
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('My Medications'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Destination Screen'), findsOneWidget);
+  });
+
+  testWidgets('tapping a result without a routeName does nothing',
+      (WidgetTester tester) async {
+    const noRoute = [
+      SearchResult(
+        title: 'My Medications',
+        subtitle: 'Manage dosage schedules and refills',
+        category: SearchResultCategory.medication,
+        matchPercent: 68,
+      ),
+    ];
+
+    await tester.pumpWidget(
+      const MaterialApp(home: SearchScreen(results: noRoute)),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('My Medications'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('My Medications'), findsOneWidget);
+  });
 }

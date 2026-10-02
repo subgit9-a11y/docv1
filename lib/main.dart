@@ -56,7 +56,7 @@ import 'package:doctro/features/consultation/chat/providers/auth_provider.dart'
 import 'package:doctro/features/consultation/chat/providers/chat_provider.dart';
 import 'package:doctro/features/consultation/chat/providers/home_provider.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
-import 'package:doctro/features/dashboard/login_home.dart';
+import 'package:doctro/features/shell/app_shell.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/features/profile/profile.dart';
 import 'package:doctro/firebase_options.dart';
@@ -67,14 +67,6 @@ import 'package:doctro/features/review/rate&review.dart';
 import 'package:doctro/features/cashfree/payment.dart';
 import 'package:doctro/features/errors/error_utility_screen.dart';
 import 'package:doctro/features/search/search_screen.dart';
-import 'package:doctro/features/medications/medication_controller.dart';
-import 'package:doctro/features/medications/medication_management_screen.dart';
-import 'package:doctro/features/health_records/health_records_screen.dart';
-import 'package:doctro/features/health_records/repository/health_records_repository.dart';
-import 'package:doctro/features/community/community_controller.dart';
-import 'package:doctro/features/community/community_screen.dart';
-import 'package:doctro/features/onboarding/health_assessment/health_assessment_controller.dart';
-import 'package:doctro/features/onboarding/health_assessment/health_assessment_screen.dart';
 
 const MethodChannel _secureWindowChannel =
     MethodChannel('doctro/secure_window');
@@ -547,7 +539,7 @@ class _MyAppState extends State<MyApp> {
                           ForgotPasswordScreen(),
                       'phoneverification': (context) =>
                           PhoneVerificationScreen(),
-                      'loginHome': (context) => LoginHomeScreen(chat: ""),
+                      'loginHome': (context) => const AppShell(),
                       'patientInformation': (context) => patientDetailsScreen(),
                       'cancelAppoitmentRoutes': (context) =>
                           CancelAppointmentScreen(),
@@ -574,19 +566,6 @@ class _MyAppState extends State<MyApp> {
                       'notAllowed': (context) => const ErrorUtilityScreen(
                           kind: ErrorUtilityKind.notAllowed),
                       'search': (context) => const SearchScreen(),
-                      'medicationManagement': (context) =>
-                          MedicationManagementScreen(
-                              controller: MedicationController()),
-                      'healthRecords': (context) => HealthRecordsScreen(
-                          repository: InMemoryHealthRecordsRepository()),
-                      'community': (context) =>
-                          CommunityScreen(controller: CommunityController()),
-                      'healthAssessment': (context) => HealthAssessmentScreen(
-                            controller: HealthAssessmentController(),
-                            onFinish: () => Navigator.of(context)
-                                .pushNamedAndRemoveUntil(
-                                    'loginHome', (route) => false),
-                          ),
                     },
                     onUnknownRoute: (settings) => MaterialPageRoute(
                       builder: (context) => const ErrorUtilityScreen(

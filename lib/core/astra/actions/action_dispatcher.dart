@@ -36,10 +36,6 @@ class ActionDispatcher {
         return _handleOpenPatient(action);
       case AstraActionType.openPrescription:
         return _handleOpenPrescription(action);
-      case AstraActionType.openCart:
-        return _handleOpenCart(action);
-      case AstraActionType.openProduct:
-        return _handleOpenProduct(action);
       case AstraActionType.openReport:
         return _handleOpenReport(action);
       case AstraActionType.openStorage:
@@ -48,8 +44,8 @@ class ActionDispatcher {
         return _handleOpenReminders(action);
       case AstraActionType.openNotifications:
         return _handleOpenNotifications(action);
-      case AstraActionType.openDoctorBooking:
-        return _handleOpenDoctorBooking(action);
+      case AstraActionType.openAppointmentBooking:
+        return _handleOpenAppointmentBooking(action);
       case AstraActionType.openChat:
         return _handleOpenChat(action);
       case AstraActionType.openPayment:
@@ -121,24 +117,6 @@ class ActionDispatcher {
     );
   }
 
-  Future<ActionResult> _handleOpenCart(AstraNavigationAction action) async {
-    return _router.openCart();
-  }
-
-  Future<ActionResult> _handleOpenProduct(AstraNavigationAction action) async {
-    final productId =
-        action.targetId ?? action.params?['product_id']?.toString();
-
-    if (productId == null || productId.isEmpty) {
-      return ActionResult.failure('Product ID is required');
-    }
-
-    return _router.openProduct(
-      productId: productId,
-      productName: action.params?['product_name']?.toString(),
-    );
-  }
-
   Future<ActionResult> _handleOpenReport(AstraNavigationAction action) async {
     final reportId = action.targetId ?? action.params?['report_id']?.toString();
 
@@ -170,9 +148,9 @@ class ActionDispatcher {
     return _router.openNotifications();
   }
 
-  Future<ActionResult> _handleOpenDoctorBooking(
+  Future<ActionResult> _handleOpenAppointmentBooking(
       AstraNavigationAction action) async {
-    return _router.openDoctorBooking(
+    return _router.openAppointmentBooking(
       patientId: action.patientId,
     );
   }

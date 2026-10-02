@@ -286,7 +286,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(AyurezeTheme.space2xl),
       decoration: AyurezeTheme.heroDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -401,7 +401,8 @@ class _SettingScreenState extends State<SettingScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 10),
+          padding:
+              const EdgeInsets.only(left: AyurezeTheme.spaceXs, bottom: 10),
           child: Text(
             title.toUpperCase(),
             style: AyurezeTheme.font(
@@ -449,7 +450,8 @@ class _SettingScreenState extends State<SettingScreen> {
         HapticFeedback.selectionClick();
         onChanged(!value);
       },
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      contentPadding: const EdgeInsets.symmetric(
+          horizontal: AyurezeTheme.spaceLg, vertical: 6),
       leading: OslerTooltip(message: title, child: _iconBadge(icon, color)),
       title: Text(
         title,
@@ -457,7 +459,7 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
       subtitle: subtitle != null
           ? Padding(
-              padding: const EdgeInsets.only(top: 4),
+              padding: const EdgeInsets.only(top: AyurezeTheme.spaceXs),
               child: Text(
                 subtitle,
                 style: AyurezeTheme.font(
@@ -497,7 +499,8 @@ class _SettingScreenState extends State<SettingScreen> {
           HapticFeedback.selectionClick();
           onTap();
         },
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        contentPadding: const EdgeInsets.symmetric(
+            horizontal: AyurezeTheme.spaceLg, vertical: 6),
         leading: OslerTooltip(message: title, child: _iconBadge(icon, color)),
         title: Text(
           title,
@@ -522,7 +525,7 @@ class _SettingScreenState extends State<SettingScreen> {
       height: 42,
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.16),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
       ),
       child: HugeIcon(icon: icon, color: color, size: 22),
     );

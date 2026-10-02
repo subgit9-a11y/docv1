@@ -192,10 +192,6 @@ class AstraActionChip extends StatelessWidget {
         return HugeIcons.strokeRoundedUser;
       case AstraActionType.openPrescription:
         return HugeIcons.strokeRoundedFile01;
-      case AstraActionType.openCart:
-        return HugeIcons.strokeRoundedShoppingCart01;
-      case AstraActionType.openProduct:
-        return HugeIcons.strokeRoundedMedicine01;
       case AstraActionType.openReport:
         return HugeIcons.strokeRoundedChartLine;
       case AstraActionType.openStorage:
@@ -204,7 +200,7 @@ class AstraActionChip extends StatelessWidget {
         return HugeIcons.strokeRoundedAlarmClock;
       case AstraActionType.openNotifications:
         return AppIcons.notifications;
-      case AstraActionType.openDoctorBooking:
+      case AstraActionType.openAppointmentBooking:
         return HugeIcons.strokeRoundedCalendar03;
       case AstraActionType.openChat:
         return AppIcons.chat;
@@ -229,10 +225,6 @@ class AstraActionChip extends StatelessWidget {
         return 'View Patient';
       case AstraActionType.openPrescription:
         return 'Open Prescription';
-      case AstraActionType.openCart:
-        return 'View Cart';
-      case AstraActionType.openProduct:
-        return 'View Product';
       case AstraActionType.openReport:
         return 'View Report';
       case AstraActionType.openStorage:
@@ -241,7 +233,7 @@ class AstraActionChip extends StatelessWidget {
         return 'Manage Reminders';
       case AstraActionType.openNotifications:
         return 'View Notifications';
-      case AstraActionType.openDoctorBooking:
+      case AstraActionType.openAppointmentBooking:
         return 'Book Appointment';
       case AstraActionType.openChat:
         return 'Open Chat';

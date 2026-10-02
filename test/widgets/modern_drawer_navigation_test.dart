@@ -18,13 +18,6 @@ Widget _buildApp() {
     ),
     routes: {
       'search': (context) => const Scaffold(body: Text('Search screen')),
-      'medicationManagement': (context) =>
-          const Scaffold(body: Text('Medications screen')),
-      'healthRecords': (context) =>
-          const Scaffold(body: Text('Health Records screen')),
-      'community': (context) => const Scaffold(body: Text('Community screen')),
-      'healthAssessment': (context) =>
-          const Scaffold(body: Text('Health Assessment screen')),
       'loginHome': (context) => const Scaffold(body: Text('Home screen')),
       'AppointmentHistoryScreen': (context) => const Scaffold(),
       'cancelAppoitmentRoutes': (context) => const Scaffold(),
@@ -38,8 +31,8 @@ Widget _buildApp() {
 }
 
 Future<void> _openDrawer(WidgetTester tester) async {
-  // Tall enough that the whole "Health Tools" section is on-screen without
-  // scrolling the drawer's own ListView.
+  // Tall enough that the whole drawer is on-screen without scrolling its
+  // own ListView.
   await tester.binding.setSurfaceSize(const Size(420, 1400));
   addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -82,41 +75,5 @@ void main() {
     await tester.pumpAndSettle();
     _drainKnownInkAssertion(tester);
     expect(find.text('Search screen'), findsOneWidget);
-  });
-
-  testWidgets('My Medications routes to the medications screen',
-      (tester) async {
-    await _openDrawer(tester);
-    await tester.tap(find.text('My Medications'));
-    await tester.pumpAndSettle();
-    _drainKnownInkAssertion(tester);
-    expect(find.text('Medications screen'), findsOneWidget);
-  });
-
-  testWidgets('Health Records routes to the health records screen',
-      (tester) async {
-    await _openDrawer(tester);
-    await tester.tap(find.text('Health Records'));
-    await tester.pumpAndSettle();
-    _drainKnownInkAssertion(tester);
-    expect(find.text('Health Records screen'), findsOneWidget);
-  });
-
-  testWidgets('Community & Resource routes to the community screen',
-      (tester) async {
-    await _openDrawer(tester);
-    await tester.tap(find.text('Community & Resource'));
-    await tester.pumpAndSettle();
-    _drainKnownInkAssertion(tester);
-    expect(find.text('Community screen'), findsOneWidget);
-  });
-
-  testWidgets('Health Assessment routes to the health assessment screen',
-      (tester) async {
-    await _openDrawer(tester);
-    await tester.tap(find.text('Health Assessment'));
-    await tester.pumpAndSettle();
-    _drainKnownInkAssertion(tester);
-    expect(find.text('Health Assessment screen'), findsOneWidget);
   });
 }

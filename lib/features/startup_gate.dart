@@ -5,7 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/features/authentication/SignIn.dart';
-import 'package:doctro/features/dashboard/login_home.dart';
+import 'package:doctro/features/shell/app_shell.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 
 /// Picks the first screen the app shows: the dashboard when a session is
@@ -61,8 +61,7 @@ class _StartupGateState extends State<StartupGate> {
 
   @override
   Widget build(BuildContext context) {
-    final destination =
-        _isLoggedIn ? const LoginHomeScreen(chat: '') : const SignIn();
+    final destination = _isLoggedIn ? const AppShell() : const SignIn();
     if (!_showIntro) return destination;
     // The destination is mounted underneath from the first frame, so its own
     // startup work (view model init, API calls) runs during the intro

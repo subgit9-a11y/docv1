@@ -42,14 +42,14 @@ void main() {
     test('should extract actions from JSON - action object', () {
       final response = {
         'action': {
-          'type': 'openCart',
+          'type': 'openPayment',
         },
       };
 
       final actions = dispatcher.extractActions(response);
 
       expect(actions.length, 1);
-      expect(actions[0].type, AstraActionType.openCart);
+      expect(actions[0].type, AstraActionType.openPayment);
     });
 
     test('should extract actions from JSON - suggested_actions array', () {
@@ -98,14 +98,14 @@ void main() {
           priority: ActionPriority.high,
         ),
         AstraNavigationAction(
-          type: AstraActionType.openCart,
+          type: AstraActionType.openPayment,
           priority: ActionPriority.critical,
         ),
       ];
 
       final highest = dispatcher.getHighestPriorityAction(actions);
 
-      expect(highest?.type, AstraActionType.openCart);
+      expect(highest?.type, AstraActionType.openPayment);
       expect(highest?.priority, ActionPriority.critical);
     });
 
@@ -126,7 +126,7 @@ void main() {
           priority: ActionPriority.normal,
         ),
         AstraNavigationAction(
-          type: AstraActionType.openCart,
+          type: AstraActionType.openPayment,
           priority: ActionPriority.high,
         ),
       ];
@@ -134,7 +134,7 @@ void main() {
       final highest = dispatcher.getHighestPriorityAction(actions);
 
       // Priority order: critical > high > normal > low
-      expect(highest?.type, AstraActionType.openCart);
+      expect(highest?.type, AstraActionType.openPayment);
     });
   });
 

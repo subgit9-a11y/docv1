@@ -51,8 +51,8 @@ void main() {
 
     test('should convert to JSON and back', () {
       final original = AstraNavigationAction(
-        type: AstraActionType.openCart,
-        description: 'Open cart',
+        type: AstraActionType.openPayment,
+        description: 'Open payment',
         params: {'id': '123'},
         priority: ActionPriority.high,
       );
@@ -127,12 +127,11 @@ void main() {
 
   group('AstraActionType', () {
     test('should have all expected action types', () {
-      expect(AstraActionType.values.length, 16);
+      expect(AstraActionType.values.length, 14);
       expect(
           AstraActionType.values.contains(AstraActionType.openPatient), true);
       expect(AstraActionType.values.contains(AstraActionType.openPrescription),
           true);
-      expect(AstraActionType.values.contains(AstraActionType.openCart), true);
       expect(
           AstraActionType.values.contains(AstraActionType.openPayment), true);
       expect(AstraActionType.values.contains(AstraActionType.goBack), true);

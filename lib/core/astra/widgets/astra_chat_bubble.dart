@@ -306,8 +306,6 @@ class AstraChatBubble extends StatelessWidget {
         return HugeIcons.strokeRoundedUser;
       case 'openPrescription':
         return HugeIcons.strokeRoundedFile01;
-      case 'openCart':
-        return HugeIcons.strokeRoundedShoppingCart01;
       case 'openPayment':
         return AppIcons.payment;
       case 'openNotifications':
@@ -335,8 +333,6 @@ class AstraChatBubble extends StatelessWidget {
         return 'View Patient';
       case 'openPrescription':
         return 'View Prescription';
-      case 'openCart':
-        return 'Open Cart';
       case 'openPayment':
         return 'Make Payment';
       case 'openNotifications':

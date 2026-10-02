@@ -180,7 +180,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
     final textTheme = Theme.of(context).textTheme;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(AyurezeTheme.space2xl),
       decoration: AyurezeTheme.heroDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,7 +250,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
         : "--";
 
     return OslerCard(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -363,6 +363,7 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
       _userReview.clear();
       response =
           await RestClient(await RetroApi().dioData(context)).reviewRequest();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         reviewData.addAll(response.data!);
         _userReview.addAll(response.data!);

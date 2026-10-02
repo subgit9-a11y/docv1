@@ -120,7 +120,8 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (ctx, i) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.only(
+                              bottom: AyurezeTheme.spaceMd),
                           child: OslerSkeleton(
                               width: double.infinity,
                               height: 100,
@@ -136,7 +137,8 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
                   )
                 else
                   SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
+                    padding: const EdgeInsets.fromLTRB(AyurezeTheme.spaceXl, 0,
+                        AyurezeTheme.spaceXl, AyurezeTheme.space2xl),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (ctx, i) => _AppointmentCard(
@@ -158,7 +160,7 @@ class _AppointmentHistoryViewState extends State<_AppointmentHistoryView>
   Widget _buildHeroCard(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(AyurezeTheme.space2xl),
       decoration: AyurezeTheme.heroDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,13 +301,13 @@ class _AppointmentCardState extends State<_AppointmentCard>
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOut,
-            margin: const EdgeInsets.only(bottom: 12),
+            margin: const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
             padding: const EdgeInsets.all(AyurezeTheme.spaceLg),
             decoration: AyurezeTheme.panelDecoration(),
             child: Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(AyurezeTheme.radiusLg),
                   child: Image.network(
                     appt.user?.fullImage ?? '',
                     width: 58,
@@ -340,7 +342,7 @@ class _AppointmentCardState extends State<_AppointmentCard>
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
+                                horizontal: AyurezeTheme.spaceSm, vertical: 3),
                             decoration: BoxDecoration(
                               color: statusBg,
                               borderRadius: BorderRadius.circular(

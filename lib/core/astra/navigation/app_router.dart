@@ -82,20 +82,6 @@ class AppRouter {
     }
   }
 
-  /// Open shopping cart
-  Future<ActionResult> openCart() async {
-    try {
-      AstraLogger.logNavigation('openCart', null);
-
-      navigatorKey.currentState?.pushNamed('payment');
-
-      return ActionResult.success();
-    } catch (e, st) {
-      AstraLogger.e('Failed to open cart', error: e, stackTrace: st);
-      return ActionResult.failure('Failed to open cart: $e');
-    }
-  }
-
   /// Open payment screen
   Future<ActionResult> openPayment({
     String? orderId,
@@ -279,39 +265,20 @@ class AppRouter {
     }
   }
 
-  /// Open product
-  Future<ActionResult> openProduct({
-    required String productId,
-    String? productName,
-  }) async {
+  /// Open appointment booking
+  Future<ActionResult> openAppointmentBooking({String? patientId}) async {
     try {
-      AstraLogger.logNavigation('openProduct', {
-        'productId': productId,
-        'productName': productName,
-      });
-
-      // Navigate to payment/cart where products are shown
-      navigatorKey.currentState?.pushNamed('payment');
-
-      return ActionResult.success(data: {'productId': productId});
-    } catch (e, st) {
-      AstraLogger.e('Failed to open product', error: e, stackTrace: st);
-      return ActionResult.failure('Failed to open product: $e');
-    }
-  }
-
-  /// Open doctor booking
-  Future<ActionResult> openDoctorBooking({String? patientId}) async {
-    try {
-      AstraLogger.logNavigation('openDoctorBooking', {'patientId': patientId});
+      AstraLogger.logNavigation(
+          'openAppointmentBooking', {'patientId': patientId});
 
       // Navigate to login home for appointment booking
       navigatorKey.currentState?.pushNamed('loginHome');
 
       return ActionResult.success(data: {'patientId': patientId});
     } catch (e, st) {
-      AstraLogger.e('Failed to open doctor booking', error: e, stackTrace: st);
-      return ActionResult.failure('Failed to open doctor booking: $e');
+      AstraLogger.e('Failed to open appointment booking',
+          error: e, stackTrace: st);
+      return ActionResult.failure('Failed to open appointment booking: $e');
     }
   }
 
@@ -382,7 +349,7 @@ class AppRouter {
         case 'prescription':
           return await openPrescription(prescriptionId: id);
         case 'cart':
-          return await openCart();
+          return await openPayment();
         case 'appointment':
           return await openAppointment(appointmentId: id);
         case 'notification':

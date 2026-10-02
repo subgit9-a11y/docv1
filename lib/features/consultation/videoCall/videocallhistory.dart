@@ -46,10 +46,10 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
             backgroundColor: AyurezeTheme.canvas,
             title: Text(
               getTranslated(context, AppString.drawer_callHistory).toString(),
-              style: TextStyle(
-                  fontSize: 18,
-                  color: AyurezeTheme.textSecondary,
-                  fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: AyurezeTheme.textSecondary,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
           body: Consumer<VideoCallHistoryViewModel>(
@@ -158,15 +158,18 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
                                               child: Container(
                                                 margin:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 5),
+                                                        horizontal: AyurezeTheme
+                                                            .spaceSm,
+                                                        vertical: AyurezeTheme
+                                                            .spaceXs),
                                                 child: Column(
                                                   children: [
                                                     Container(
                                                       margin: const EdgeInsets
                                                           .symmetric(
                                                           horizontal: 0,
-                                                          vertical: 5),
+                                                          vertical: AyurezeTheme
+                                                              .spaceXs),
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -176,26 +179,27 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
                                                             callData.user
                                                                     ?.name ??
                                                                 "",
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    width *
-                                                                        0.04,
-                                                                color: AyurezeTheme
-                                                                    .textSecondary,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleMedium
+                                                                ?.copyWith(
+                                                                  color: AyurezeTheme
+                                                                      .textSecondary,
+                                                                ),
                                                           ),
                                                           Text(
                                                             (callData.startTime ??
                                                                     "")
                                                                 .toLowerCase(),
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  width * 0.03,
-                                                              color: AyurezeTheme
-                                                                  .textSecondary,
-                                                            ),
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodySmall
+                                                                ?.copyWith(
+                                                                  color: AyurezeTheme
+                                                                      .textSecondary,
+                                                                ),
                                                           ),
                                                         ],
                                                       ),
@@ -211,24 +215,28 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
                                                         children: [
                                                           Text(
                                                             duration,
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  width * 0.035,
-                                                              color: AyurezeTheme
-                                                                  .textSecondary,
-                                                            ),
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodySmall
+                                                                ?.copyWith(
+                                                                  color: AyurezeTheme
+                                                                      .textSecondary,
+                                                                ),
                                                           ),
                                                           Text(
                                                             DateUtil().formattedDate(
                                                                 DateTime.parse(
                                                                     callData.date ??
                                                                         "")),
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  width * 0.035,
-                                                              color: AyurezeTheme
-                                                                  .textSecondary,
-                                                            ),
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodySmall
+                                                                ?.copyWith(
+                                                                  color: AyurezeTheme
+                                                                      .textSecondary,
+                                                                ),
                                                           ),
                                                         ],
                                                       ),
@@ -242,7 +250,8 @@ class _VideoCallHistoryState extends State<VideoCallHistory> {
                                       ),
                                       Container(
                                         margin: const EdgeInsets.symmetric(
-                                            vertical: 5, horizontal: 10),
+                                            vertical: AyurezeTheme.spaceXs,
+                                            horizontal: AyurezeTheme.spaceSm),
                                         child: Column(
                                           children: [
                                             Container(

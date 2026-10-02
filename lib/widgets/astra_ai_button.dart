@@ -237,11 +237,11 @@ class _AstraAIStatusIndicatorState extends State<AstraAIStatusIndicator> {
       // Import and use AstraController to check health
       // For simplicity, we'll use a basic check
       await Future.delayed(const Duration(milliseconds: 500));
-      setState(() => _isHealthy = true);
+      if (mounted) setState(() => _isHealthy = true);
     } catch (e) {
-      setState(() => _isHealthy = false);
+      if (mounted) setState(() => _isHealthy = false);
     } finally {
-      setState(() => _isChecking = false);
+      if (mounted) setState(() => _isChecking = false);
     }
   }
 

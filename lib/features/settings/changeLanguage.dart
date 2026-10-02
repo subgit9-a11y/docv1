@@ -149,7 +149,8 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                     return ScreenEntrance(
                       index: index % 8,
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
+                        padding:
+                            const EdgeInsets.only(bottom: AyurezeTheme.spaceMd),
                         child: Container(
                           decoration: AyurezeTheme.panelDecoration(),
                           child: RadioGroup<int>(
@@ -215,6 +216,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
     try {
       response =
           await RestClient(await RetroApi().dioData(context)).doctorProfile();
+      if (!mounted) return BaseModel()..data = response;
       setState(() {
         if (response.data!.education != null) {
           convertDegree = json.decode(response.data!.education!);
