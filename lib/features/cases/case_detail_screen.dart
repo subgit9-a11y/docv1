@@ -1,4 +1,7 @@
+import 'package:doctro/core/constants/prefConstatnt.dart';
+import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/features/consultation/videoCall/video_Call.dart';
+import 'package:doctro/features/prescription/astra/prescription_screen.dart';
 import 'package:doctro/services/astra_api_service.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/osler_button.dart';
@@ -57,6 +60,29 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> {
       MaterialPageRoute(
         builder: (context) =>
             VideoCall(id: userId, callEnd: false, flag: "OutGoing"),
+      ),
+    );
+  }
+
+  void _writePrescription() {
+    final patientId = _caseData['user_id']?.toString();
+    if (patientId == null || patientId.isEmpty) {
+      OslerToast.error(context, "Can't open prescription: patient id missing.");
+      return;
+    }
+    final doctorId = SharedPreferenceHelper.getString(Preferences.doctorId);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PrescriptionScreen(
+          patientId: patientId,
+          // The case has no patient name on it - only a Laravel user_id.
+          // Matches the same "Patient" fallback used elsewhere
+          // (patient_information.dart) when a name isn't available.
+          patientName: "Patient",
+          doctorId: doctorId.isNotEmpty ? doctorId : null,
+          caseId: _caseId,
+        ),
       ),
     );
   }
@@ -195,6 +221,13 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> {
                     text: 'Start Video Call',
                     onPressed: _startVideoCall,
                     icon: Icons.videocam,
+                  ),
+                  const SizedBox(height: 10),
+                  OslerButton(
+                    text: 'Write Prescription',
+                    onPressed: _writePrescription,
+                    icon: Icons.description_outlined,
+                    style: OslerButtonStyle.secondary,
                   ),
                 ],
               ),

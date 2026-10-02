@@ -20,6 +20,10 @@ class PrescriptionScreen extends StatefulWidget {
   final String? patientPhone;
   final String? doctorId;
   final Map<String, dynamic>? astraFillData;
+  // The Astra companion case this prescription is for, if any - when set,
+  // the backend links the prescription straight back onto the case so it
+  // shows up automatically in that case's health-record timeline.
+  final String? caseId;
 
   const PrescriptionScreen({
     super.key,
@@ -28,6 +32,7 @@ class PrescriptionScreen extends StatefulWidget {
     this.patientPhone,
     this.doctorId,
     this.astraFillData,
+    this.caseId,
   });
 
   @override
@@ -276,6 +281,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
         "patient_id": widget.patientId,
         "patient_name": widget.patientName,
         "patient_phone": widget.patientPhone,
+        if (widget.caseId != null) "case_id": widget.caseId,
         "diagnosis": _diagnosisController.text,
         "medicines": _medicines,
         "lifestyle_advice": "Rest and hydration",
