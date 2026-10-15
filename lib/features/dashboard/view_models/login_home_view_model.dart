@@ -96,10 +96,9 @@ class LoginHomeViewModel extends ChangeNotifier {
             .catchError((_) => Review(success: false, data: [])),
       ]);
 
-      final appointments =
-          (results[0] as Map<String, dynamic>)['appointments']
-                  as List<dynamic>? ??
-              [];
+      final appointments = (results[0] as Map<String, dynamic>)['appointments']
+              as List<dynamic>? ??
+          [];
       final Payment payments = results[1] as Payment;
       final Review reviews = results[2] as Review;
 
