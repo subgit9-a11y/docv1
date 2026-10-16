@@ -26,6 +26,7 @@ class Preferences {
   static const String messageToken = "messageToken";
   static const String is_dark_mode = "isDarkMode";
   static const String is_notification_enabled = "isNotificationEnabled";
+  static const String is_patient_vcall_enabled = "isPatientVcallEnabled";
 
   //PaymentGateWay
   static const String COD = "COD";

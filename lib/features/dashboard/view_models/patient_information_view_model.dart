@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
 import 'package:doctro/network/network_api.dart';
-import 'package:doctro/network/server_error.dart';
 import 'package:doctro/models/appointment_details.dart';
 import 'package:doctro/models/DoctorStatusChange.dart';
-import 'package:doctro/models/AllMedicines.dart';
 import 'package:doctro/services/astra_service.dart';
+import 'package:doctro/widgets/osler_toast.dart';
 import 'package:intl/intl.dart';
 
 class DateUtil {
@@ -67,8 +66,6 @@ class PatientInformationViewModel extends ChangeNotifier {
 
   bool isLoading = true;
 
-  List<String> medicineReq = [];
-
   void init() {
     appointmentDetails();
   }
@@ -117,51 +114,23 @@ class PatientInformationViewModel extends ChangeNotifier {
     }
   }
 
+  // The legacy `status_change` REST endpoint (Apis.status_change) is
+  // permanently dead (404), and the real backend has no doctor-facing
+  // approve/complete/cancel-by-status route yet (appointments/{id}/cancel
+  // exists, but this view model is only ever given the legacy numeric
+  // `id`, not a real consultation_id, so it cannot be wired to that
+  // either). The three buttons that call this used to fail completely
+  // silently - at least surface that the action did not happen instead of
+  // looking like a dead button.
   Future<BaseModel<DoctorStatusChange>> statusChangeRequest(
       String status) async {
-    Map<String, dynamic> body = {"id": id, "status": status};
-
-    DoctorStatusChange response;
-
-    try {
-      response = await RestClient(await RetroApi().dioData(context))
-          .doctorStatusChangeRequest(body);
-
-      if (status == 'approve') {
-        appointmentStatus = 'approve';
-      } else if (status == 'complete') {
-        appointmentStatus = 'complete';
-      } else {
-        appointmentStatus = 'cancel';
-      }
-
-      hideButton = false;
-      notifyListeners();
-
-      return BaseModel()..data = response;
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
+    if (context.mounted) {
+      OslerToast.error(
+          context, "This action isn't available yet. Please try again later.");
     }
-  }
-
-  Future<BaseModel<AllMedicines>> allMedicinesRequest() async {
-    AllMedicines response;
-
-    try {
-      medicineReq.clear();
-
-      response =
-          await RestClient(await RetroApi().dioData(context)).allMedicines();
-
-      for (int i = 0; i < response.data!.length; i++) {
-        medicineReq.add(response.data![i].name.toString());
-      }
-      notifyListeners();
-
-      return BaseModel()..data = response;
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
-    }
+    // Nothing reads this BaseModel's exception (every caller is
+    // fire-and-forget), so there is no need to populate one.
+    return BaseModel();
   }
 
   Future<void> appointmentDetails() async {

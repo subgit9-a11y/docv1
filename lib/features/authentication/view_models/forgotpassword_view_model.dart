@@ -1,9 +1,7 @@
 import 'package:doctro/models/ForgotPassword.dart';
-import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
-import 'package:doctro/network/network_api.dart';
-import 'package:doctro/network/server_error.dart';
 import 'package:doctro/widgets/osler_toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordViewModel extends ChangeNotifier {
@@ -24,37 +22,48 @@ class ForgotPasswordViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // The legacy `forgot_password` REST endpoint is permanently dead (404).
+  // Auth now runs through Firebase, which has its own password-reset email
+  // flow - no custom backend route is needed for this at all.
   Future<BaseModel<ForgotPassword>> forgotPasswordScreenRequest(
       BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
-    ForgotPassword response;
     try {
-      Map<String, dynamic> body = {"email": _emailController.text.trim()};
-      response = await RestClient(await RetroApi().dioData(context))
-          .forgotPasswordScreen(body);
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
 
       _isLoading = false;
       notifyListeners();
 
       if (context.mounted) {
-        if (response.success == true) {
-          Navigator.pushReplacementNamed(context, "SignIn");
-          if (response.msg != null && response.msg!.isNotEmpty) {
-            OslerToast.success(context, response.msg!);
-          }
-        } else {
-          if (response.msg != null && response.msg!.isNotEmpty) {
-            OslerToast.error(context, response.msg!);
-          }
-        }
+        Navigator.pushReplacementNamed(context, "SignIn");
+        OslerToast.success(
+            context, "Password reset link sent. Please check your email.");
       }
-      return BaseModel()..data = response;
+      return BaseModel()
+        ..data = ForgotPassword(success: true, msg: "Reset email sent");
+    } on FirebaseAuthException catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      final message = switch (e.code) {
+        'user-not-found' => "No account found with this email.",
+        'invalid-email' => "Please enter a valid email address.",
+        _ => e.message ?? "Failed to send reset email.",
+      };
+      if (context.mounted) OslerToast.error(context, message);
+      // ServerError.withError() only handles DioException; a
+      // FirebaseAuthException would crash it via an unguarded downcast, and
+      // nothing reads this model's error on the caller side anyway.
+      return BaseModel()..data = ForgotPassword(success: false, msg: message);
     } catch (error) {
       _isLoading = false;
       notifyListeners();
-      return BaseModel()..setException(ServerError.withError(error: error));
+      if (context.mounted) {
+        OslerToast.error(context, "Failed to send reset email: $error");
+      }
+      return BaseModel()..data = ForgotPassword(success: false, msg: "$error");
     }
   }
 

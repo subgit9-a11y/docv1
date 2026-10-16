@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'package:doctro/models/appointment_history.dart';
-import 'package:doctro/network/api_header.dart';
-import 'package:doctro/network/network_api.dart';
-import 'package:doctro/network/server_error.dart';
+import 'package:doctro/services/astra_api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 class AppointmentHistoryViewModel extends ChangeNotifier {
   bool _isLoading = false;
@@ -13,62 +10,72 @@ class AppointmentHistoryViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  List<PastAppointment> _pastAppointments = [];
-  List<PastAppointment> get pastAppointments => _pastAppointments;
+  List<AppointmentHistoryItem> _pastAppointments = [];
+  List<AppointmentHistoryItem> get pastAppointments => _pastAppointments;
 
-  List<UpcomingAppointment> _upcomingAppointments = [];
-  List<UpcomingAppointment> get upcomingAppointments => _upcomingAppointments;
+  List<AppointmentHistoryItem> _upcomingAppointments = [];
+  List<AppointmentHistoryItem> get upcomingAppointments =>
+      _upcomingAppointments;
 
-  List<dynamic> get appointments =>
+  List<AppointmentHistoryItem> get appointments =>
       [..._upcomingAppointments, ..._pastAppointments];
 
   Future<void> fetchAppointments(BuildContext context) =>
       fetchAppointmentHistory(context);
 
+  // The legacy `appointment_history` REST endpoint is permanently dead
+  // (404). The real source is AstraApiService.getMyAppointments() (the
+  // same one the dashboard uses), split into past/upcoming by date here
+  // since the real endpoint returns one flat, unsorted list.
   Future<void> fetchAppointmentHistory(BuildContext context) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final box = Hive.box('offlineCache');
+      final result = await AstraApiService().getMyAppointments();
+      final appointments = (result['appointments'] as List<dynamic>?) ?? [];
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
 
-      // Load from cache first for fast offline capability
-      final cachedPast = box.get('pastAppointments');
-      final cachedUpcoming = box.get('upcomingAppointments');
+      final past = <(DateTime, AppointmentHistoryItem)>[];
+      final upcoming = <(DateTime, AppointmentHistoryItem)>[];
 
-      if (cachedPast != null) {
-        final parsed = jsonDecode(cachedPast) as List;
-        _pastAppointments =
-            parsed.map((e) => PastAppointment.fromJson(e)).toList();
+      for (final raw in appointments) {
+        final map = raw as Map<String, dynamic>;
+        final rawDate = map['appointment_date'] as String?;
+        if (rawDate == null) continue;
+        DateTime parsed;
+        try {
+          parsed = DateTime.parse(rawDate).toLocal();
+        } catch (_) {
+          continue;
+        }
+
+        final item = AppointmentHistoryItem(
+          consultationId: map['consultation_id']?.toString(),
+          status: map['status']?.toString(),
+          appointmentDate: DateFormat('dd MMM yyyy').format(parsed),
+          slotTime: DateFormat('h:mm a').format(parsed),
+          appointmentType: map['consultation_type']?.toString(),
+        );
+
+        final day = DateTime(parsed.year, parsed.month, parsed.day);
+        if (day.isBefore(today)) {
+          past.add((parsed, item));
+        } else {
+          upcoming.add((parsed, item));
+        }
       }
 
-      if (cachedUpcoming != null) {
-        final parsed = jsonDecode(cachedUpcoming) as List;
-        _upcomingAppointments =
-            parsed.map((e) => UpcomingAppointment.fromJson(e)).toList();
-      }
+      past.sort((a, b) => b.$1.compareTo(a.$1));
+      upcoming.sort((a, b) => a.$1.compareTo(b.$1));
 
-      // If we have cached data, update the UI immediately
-      if (_pastAppointments.isNotEmpty || _upcomingAppointments.isNotEmpty) {
-        notifyListeners();
-      }
-
-      final dio = await RetroApi().dioData(context);
-      final response = await RestClient(dio).appointmentHistoryScreenRequest();
-
-      _pastAppointments = response.data?.pastAppointment ?? [];
-      _upcomingAppointments = response.data?.upcomingAppointment ?? [];
-
-      // Save to cache
-      box.put('pastAppointments',
-          jsonEncode(_pastAppointments.map((e) => e.toJson()).toList()));
-      box.put('upcomingAppointments',
-          jsonEncode(_upcomingAppointments.map((e) => e.toJson()).toList()));
+      _pastAppointments = past.map((e) => e.$2).toList();
+      _upcomingAppointments = upcoming.map((e) => e.$2).toList();
     } catch (error) {
-      // If we failed and have no cache, show error
       if (_pastAppointments.isEmpty && _upcomingAppointments.isEmpty) {
-        _errorMessage = ServerError.withError(error: error).getErrorMessage();
+        _errorMessage = "Failed to load appointment history. Please try again.";
       }
     } finally {
       _isLoading = false;

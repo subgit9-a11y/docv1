@@ -1,8 +1,6 @@
 import 'package:doctro/core/constants/app_string.dart';
 import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
-import 'package:doctro/core/constants/prefConstatnt.dart';
-import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/CancelAppointment.dart';
 import 'package:flutter/material.dart';
@@ -269,115 +267,73 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
   }
 
   Widget _buildAppointmentCard(AppointmentCancel appointment, int index) {
+    final consultationId = appointment.consultationId;
     final card = Column(
       children: [
         Row(
           children: [
             Column(
               children: [
-                Container(
-                  margin:
-                      EdgeInsets.only(left: width * 0.06, right: width * 0.02),
-                  child: Text(
-                    DateUtil().formattedDate(DateTime.parse(appointment.date!)),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: AyurezeTheme.forestDeep),
+                if (appointment.date != null)
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: width * 0.06, right: width * 0.02),
+                    child: Text(
+                      DateUtil()
+                          .formattedDate(DateTime.parse(appointment.date!)),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.forestDeep),
+                    ),
                   ),
-                ),
-                Container(
-                  margin:
-                      EdgeInsets.only(left: width * 0.06, right: width * 0.02),
-                  child: Text(
-                    appointment.time!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: AyurezeTheme.forestDeep),
+                if (appointment.time != null)
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: width * 0.06, right: width * 0.02),
+                    child: Text(
+                      appointment.time!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AyurezeTheme.forestDeep),
+                    ),
                   ),
-                )
               ],
             ),
             Expanded(
               child: Container(
                   margin:
                       EdgeInsets.only(left: width * 0.02, right: width * 0.02),
-                  height: 100,
                   child: OslerCard(
                       padding: EdgeInsets.zero,
                       child: Column(children: <Widget>[
-                        Container(
-                          child: ListTile(
-                            isThreeLine: true,
-                            leading: SizedBox(
-                              height: 70,
-                              width: 60,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    AyurezeTheme.radiusMd),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            fit: BoxFit.fitHeight,
-                                            image: NetworkImage(appointment
-                                                .user!.fullImage!)))),
-                              ),
-                            ),
-                            title: Container(
-                              alignment: AlignmentDirectional.topStart,
-                              margin: EdgeInsets.only(
-                                top: height * 0.01,
-                              ),
-                              child: Text(
-                                appointment.patientName!,
-                                style: Theme.of(context).textTheme.titleMedium,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ),
-                            trailing: Container(
-                                child: Text(
-                              (SharedPreferenceHelper.getStringOrNull(
-                                          Preferences.currency_symbol) ??
-                                      '') +
-                                  appointment.amount.toString(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(color: AyurezeTheme.textSecondary),
-                            )),
-                            subtitle: Column(
-                              children: <Widget>[
-                                Container(
-                                    alignment: AlignmentDirectional.topStart,
-                                    child: Text(
-                                      "${getTranslated(context, AppString.home_age_data)}:${appointment.age}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                              color:
-                                                  AyurezeTheme.textSecondary),
-                                    )),
-                                Container(
-                                  width: width * 0.6,
-                                  alignment: AlignmentDirectional.topStart,
+                        ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: AyurezeTheme.surfaceMuted,
+                            child: Icon(Icons.person,
+                                color: AyurezeTheme.textSecondary),
+                          ),
+                          title: Text(
+                            appointment.patientAddress ?? "Consultation",
+                            style: Theme.of(context).textTheme.titleMedium,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                          trailing: consultationId == null
+                              ? null
+                              : TextButton(
+                                  onPressed: () =>
+                                      _confirmCancel(context, consultationId),
                                   child: Text(
-                                    appointment.patientAddress!,
+                                    "Cancel",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                            color: AyurezeTheme.textSecondary),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                                        .labelLarge
+                                        ?.copyWith(color: AyurezeTheme.danger),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        )
+                        ),
                       ]))),
             ),
           ],
@@ -386,6 +342,32 @@ class _CancelAppointmentScreen extends State<CancelAppointmentScreen> {
     );
 
     return ScreenEntrance(index: index, child: card);
+  }
+
+  Future<void> _confirmCancel(
+      BuildContext context, String consultationId) async {
+    final viewModel = context.read<CancelAppointmentViewModel>();
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text("Cancel appointment?"),
+        content: const Text(
+            "This will cancel the appointment for both you and the patient."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text("Yes, cancel"),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    if (!context.mounted) return;
+    await viewModel.cancelAppointment(context, consultationId);
   }
 }
 

@@ -76,6 +76,8 @@ class SharedPreferenceHelper {
   //gets
   static bool getBoolean(String key) => _preferences!.getBool(key) ?? false;
 
+  static bool? getBooleanOrNull(String key) => _preferences!.getBool(key);
+
   static double getDouble(String key) => _preferences!.getDouble(key) ?? 0.0;
 
   static int getInt(String key) => _preferences!.getInt(key) ?? 0;

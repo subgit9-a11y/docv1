@@ -7,10 +7,7 @@ import 'package:doctro/widgets/glass_surface.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/working_hours.dart';
 import 'package:doctro/models/UpdateTiming.dart';
-import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
-import 'package:doctro/network/network_api.dart';
-import 'package:doctro/network/server_error.dart';
 import 'package:doctro/widgets/osler_button.dart';
 import 'package:doctro/widgets/osler_toast.dart';
 import 'package:flutter/material.dart';
@@ -731,51 +728,33 @@ class _ScheduleTimingsState extends State<ScheduleTimings>
     );
   }
 
+  // The legacy `working_hours` REST endpoint (Apis.working_hours) is
+  // permanently dead (404), and the real backend has no schedule-
+  // management route yet - so this stops attempting it rather than making
+  // a pointless round trip to a guaranteed 404. The screen already
+  // renders an empty state correctly when workingReq stays empty.
   Future<BaseModel<Workinghours>> doctorWorkingHoursFunction() async {
-    Workinghours response;
-
-    try {
-      workingReq.clear();
-      response =
-          await RestClient(await RetroApi().dioData(context)).workinghours();
-      if (!mounted) return BaseModel()..data = response;
+    if (mounted) {
       setState(() {
-        workingReq.addAll(response.data!);
+        workingReq.clear();
       });
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
     }
-    return BaseModel()..data = response;
+    return BaseModel()..data = Workinghours(success: true, data: []);
   }
 
+  // The legacy `update_time` REST endpoint (Apis.update_time) is
+  // permanently dead (404) and has no real replacement, so a save here
+  // can never actually persist anywhere. The caller closes this screen's
+  // dialog unconditionally right after calling this, which would make a
+  // silent no-op look like a successful save - surface an honest error
+  // instead of pretending the schedule was saved.
   Future<BaseModel<UpdateTiming>> updateHours() async {
-    List hours = [];
-
-    for (int i = 0; i < listDynamic.length; i++) {
-      Map<String, dynamic> mapEducationData = {
-        "start_time": listDynamic[i]["start_time"].toString().toLowerCase(),
-        "end_time": listDynamic[i]["end_time"].toString().toLowerCase(),
-      };
-      hours.add(mapEducationData);
+    if (mounted) {
+      OslerToast.error(context,
+          "Schedule syncing isn't available yet. Your changes were not saved.");
     }
-
-    Map<String, dynamic> body = {
-      "id": id.toString(),
-      "period_list": hours,
-      "status": isSwitched == true ? 1 : 0
-    };
-    UpdateTiming response;
-    try {
-      response = await RestClient(await RetroApi().dioData(context))
-          .updateTimingRequest(body);
-      doctorWorkingHoursFunction();
-      if (mounted) {
-        OslerToast.success(context, response.msg!);
-      }
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
-    }
-    return BaseModel()..data = response;
+    return BaseModel()
+      ..data = UpdateTiming(success: false, msg: "Not available");
   }
 }
 
