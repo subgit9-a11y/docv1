@@ -29,14 +29,14 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class patientDetailsScreen extends StatelessWidget {
-  final int? id;
+  final String? consultationId;
 
-  const patientDetailsScreen({super.key, this.id});
+  const patientDetailsScreen({super.key, this.consultationId});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => PatientInformationViewModel(id, context),
+      create: (_) => PatientInformationViewModel(consultationId, context),
       child: const _PatientDetailsScreenBody(),
     );
   }

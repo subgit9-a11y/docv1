@@ -746,7 +746,8 @@ class _LoginHomeViewState extends State<_LoginHomeView>
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => patientDetailsScreen(id: item.id),
+                builder: (context) =>
+                    patientDetailsScreen(consultationId: item.consultationId),
               ),
             );
           },

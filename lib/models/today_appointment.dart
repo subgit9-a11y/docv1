@@ -67,6 +67,10 @@ class Data {
 
 class Today {
   int? id;
+  // The real consultation id (GET /api/v1/appointments/my) - a string,
+  // not the legacy numeric id - needed to look this appointment back up
+  // or cancel it for real.
+  String? consultationId;
   int? hospitalId;
   String? time;
   String? date;
@@ -82,6 +86,7 @@ class Today {
 
   Today(
       {this.id,
+      this.consultationId,
       this.hospitalId,
       this.time,
       this.date,
@@ -137,6 +142,7 @@ class Today {
 
 class Tomorrow {
   int? id;
+  String? consultationId;
   int? hospitalId;
   String? time;
   String? date;
@@ -152,6 +158,7 @@ class Tomorrow {
 
   Tomorrow(
       {this.id,
+      this.consultationId,
       this.hospitalId,
       this.time,
       this.date,
@@ -207,6 +214,7 @@ class Tomorrow {
 
 class Upcoming {
   int? id;
+  String? consultationId;
   int? hospitalId;
   String? time;
   String? date;
@@ -222,6 +230,7 @@ class Upcoming {
 
   Upcoming(
       {this.id,
+      this.consultationId,
       this.hospitalId,
       this.time,
       this.date,
