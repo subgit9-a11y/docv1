@@ -35,9 +35,6 @@ class _SettingScreenState extends State<SettingScreen> {
     super.initState();
     _viewModel = SettingsViewModel();
     _viewModel.loadSettings();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.fetchDoctorProfile(context);
-    });
   }
 
   @override

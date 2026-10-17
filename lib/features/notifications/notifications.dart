@@ -7,10 +7,7 @@ import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/Notification.dart';
-import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
-import 'package:doctro/network/network_api.dart';
-import 'package:doctro/network/server_error.dart';
 import 'package:doctro/theme/app_motion.dart';
 import 'package:doctro/theme/ayureze_theme.dart';
 import 'package:doctro/widgets/glass_surface.dart';
@@ -321,19 +318,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
+  // The legacy `notification` REST endpoint (Apis.notification) is
+  // permanently dead (404), and the real backend has no notification-feed
+  // route for a doctor to read yet (only FCM token store/remove) - so this
+  // stops attempting it rather than making a pointless round trip to a
+  // guaranteed 404. The screen already renders an empty state correctly
+  // when patientNotification stays empty.
   Future<BaseModel<Notifications>> bookNotifications() async {
-    Notifications response;
-    try {
-      patientNotification.clear();
-      response =
-          await RestClient(await RetroApi().dioData(context)).notifications();
-      if (!mounted) return BaseModel()..data = response;
+    if (mounted) {
       setState(() {
-        patientNotification.addAll(response.data!);
+        patientNotification.clear();
       });
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
     }
-    return BaseModel()..data = response;
+    return BaseModel()..data = Notifications(success: true, data: []);
   }
 }

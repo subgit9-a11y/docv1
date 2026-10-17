@@ -224,6 +224,27 @@ class User {
   }
 }
 
+// Real shape from AstraApiService.getMyAppointments() (GET
+// /api/v1/appointments/my): no patient name/photo, no hospital - `user`
+// stays null and the UI's existing `appt.user?.x ?? fallback` reads cover it.
+class AppointmentHistoryItem {
+  final String? consultationId;
+  final String? status;
+  final String? appointmentDate;
+  final String? slotTime;
+  final String? appointmentType;
+  final User? user;
+
+  AppointmentHistoryItem({
+    this.consultationId,
+    this.status,
+    this.appointmentDate,
+    this.slotTime,
+    this.appointmentType,
+    this.user,
+  });
+}
+
 class Hospital {
   int? id;
   String? name;

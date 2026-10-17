@@ -158,6 +158,7 @@ class LoginHomeViewModel extends ChangeNotifier {
 
       for (final (parsed, map) in todayRows) {
         todayAppointments.add(Today(
+          consultationId: map['consultation_id']?.toString(),
           time: DateFormat('h:mm a').format(parsed),
           date: DateFormat('yyyy-MM-dd').format(parsed),
           patientAddress: addressFor(map),
@@ -165,6 +166,7 @@ class LoginHomeViewModel extends ChangeNotifier {
       }
       for (final (parsed, map) in tomorrowRows) {
         tomorrowAppointments.add(Tomorrow(
+          consultationId: map['consultation_id']?.toString(),
           time: DateFormat('h:mm a').format(parsed),
           date: DateFormat('yyyy-MM-dd').format(parsed),
           patientAddress: addressFor(map),
@@ -172,6 +174,7 @@ class LoginHomeViewModel extends ChangeNotifier {
       }
       for (final (parsed, map) in upcomingRows) {
         upcomingAppointments.add(Upcoming(
+          consultationId: map['consultation_id']?.toString(),
           time: DateFormat('h:mm a').format(parsed),
           date: DateFormat('yyyy-MM-dd').format(parsed),
           patientAddress: addressFor(map),

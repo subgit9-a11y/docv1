@@ -531,6 +531,11 @@ class _ProfileScreen extends State<ProfileScreen> {
       setState(() {});
       return BaseModel()..data = DoctorProfile.fromJson(json);
     } catch (error) {
+      // ServerError.withError() only handles DioException and would crash
+      // via an unguarded downcast on the AstraApiException that
+      // getDoctorProfile() throws; nothing reads this BaseModel's
+      // exception (the only caller is fire-and-forget), so just skip it.
+      if (error is AstraApiException) return BaseModel();
       return BaseModel()..setException(ServerError.withError(error: error));
     }
   }

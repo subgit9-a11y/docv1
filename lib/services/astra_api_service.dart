@@ -252,6 +252,32 @@ class AstraApiService {
     }
   }
 
+  /// Cancels the consultation with [consultationId]. Confirmed-live:
+  /// `POST /api/v1/appointments/{consultation_id}/cancel`.
+  Future<Map<String, dynamic>> cancelAppointment(String consultationId) async {
+    try {
+      final response =
+          await _dio.post('/api/v1/appointments/$consultationId/cancel');
+      return response.data;
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  /// Toggles whether this doctor accepts patient-initiated video calls.
+  /// Confirmed-live: `POST /api/v1/video/update-patient-vcall`.
+  Future<Map<String, dynamic>> updatePatientVcall(bool enabled) async {
+    try {
+      final response = await _dio.post(
+        '/api/v1/video/update-patient-vcall',
+        data: {'patient_vcall': enabled ? 1 : 0},
+      );
+      return response.data;
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   /// Request withdrawal. `amount` is a query parameter on this endpoint,
   /// not a body field - confirmed against the live backend, which returns
   /// a 422 "amount: Field required" validation error if it's sent in the

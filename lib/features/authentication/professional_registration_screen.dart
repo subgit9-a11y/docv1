@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -16,7 +18,6 @@ import 'package:doctro/services/supabase_service.dart';
 import 'package:doctro/services/astra_api_service.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/constants/prefConstatnt.dart';
-import 'package:doctro/models/register.dart';
 import 'package:intl/intl.dart';
 
 class ProfessionalRegistrationScreen extends StatefulWidget {
@@ -128,58 +129,55 @@ class _ProfessionalRegistrationScreenState
     super.dispose();
   }
 
+  // The legacy `doctorProfile()` REST call (Apis.doctor_profile) is
+  // permanently dead (404). The real record (GET /api/v1/api/doctors/{id})
+  // only has name/email/phone/gender/dob/specialization/photo_url/
+  // certificate_url - none of the richer Laravel-era fields this screen
+  // also edits (education, experience, fees, timeslot, treatment,
+  // hospital), which are simply left at whatever the user already typed.
   Future<void> _fetchProfileDetails() async {
     setState(() => _isLoading = true);
     try {
-      final response =
-          await RestClient(await RetroApi().dioData(context)).doctorProfile();
-      if (response.success == true && response.data != null) {
-        if (!mounted) return;
-        final data = response.data!;
-        setState(() {
-          _nameController.text = data.name ?? "";
-          _emailController.text = data.email ?? "";
-          _phoneController.text = data.phone ?? "";
+      final doctorId = SharedPreferenceHelper.getString(Preferences.doctorId);
+      if (doctorId.isEmpty) return;
 
-          if (data.dob != null && data.dob!.contains("-")) {
-            try {
-              if (data.dob!.indexOf("-") == 4) {
-                _dobController.text = DateFormat('dd-MM-yyyy')
-                    .format(DateFormat('yyyy-MM-dd').parse(data.dob!));
-              } else {
-                _dobController.text = data.dob!;
-              }
-            } catch (e) {
-              _dobController.text = data.dob!;
+      final json = await _astraApiService.getDoctorProfile(doctorId);
+      final data =
+          json['data'] is Map ? Map<String, dynamic>.from(json['data']) : {};
+      if (!mounted) return;
+
+      setState(() {
+        _nameController.text = (data['name'] as String?) ?? "";
+        _emailController.text = (data['email'] as String?) ?? "";
+        _phoneController.text = (data['phone'] as String?) ?? "";
+
+        final rawDob = data['dob'] as String?;
+        if (rawDob != null && rawDob.contains("-")) {
+          try {
+            if (rawDob.indexOf("-") == 4) {
+              _dobController.text = DateFormat('dd-MM-yyyy')
+                  .format(DateFormat('yyyy-MM-dd').parse(rawDob));
+            } else {
+              _dobController.text = rawDob;
             }
-          } else {
-            _dobController.text = data.dob ?? "";
+          } catch (e) {
+            _dobController.text = rawDob;
           }
-          _genderSelect = data.gender;
-
-          _licenseController.text = data.hospitalId ?? "";
-          _educationController.text = data.education ?? "";
-          _experienceController.text = data.experience ?? "";
-          _feesController.text = data.appointmentFees ?? "";
-          _videoFeesController.text = data.videoAppointmentFees ?? "";
-          _descController.text = data.desc ?? "";
-          _languageController.text = data.language ?? "";
-          _selectedTreatmentId = data.treatmentId?.toString();
-          _selectedCategoryId = data.categoryId?.toString();
-          _existingCertificateUrl = data.certificate;
-        });
-
-        if (_selectedTreatmentId != null) {
-          _fetchCategories(_selectedTreatmentId!);
+        } else {
+          _dobController.text = rawDob ?? "";
         }
-      }
+        _genderSelect = data['gender'] as String?;
+        _existingCertificateUrl = data['certificate_url'] as String?;
+      });
+    } catch (_) {
+      // No real backend field to show here yet; leave the form as the
+      // user left it rather than surfacing a confusing load error.
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
   Future<void> _fetchTreatments() async {}
-  Future<void> _fetchCategories(String id) async {}
 
   Future<void> _pickImage(bool isCertificate) async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -263,6 +261,17 @@ class _ProfessionalRegistrationScreenState
     }
   }
 
+  // The legacy `registerRequest()` REST call (Apis.register) is
+  // permanently dead (404) - this used to gate the entire new-doctor
+  // signup on it, so every signup failed here. The real registration
+  // route (AstraApiService.registerDoctor -> POST
+  // /api/v1/api/doctors/register) requires a signed-in Firebase user
+  // (HTTPBearer), which this flow never established, so phone
+  // verification happens here first via Firebase itself - the same
+  // mechanism SignInViewModel.sendOtp()/verifyOtpCode() already use - then
+  // registerDoctor() + login() mirror the real sign-in flow
+  // (authenticateWithCredential in signin_view_model.dart) to end this
+  // screen with a real Astra session instead of the dead OTP roundtrip.
   Future<void> _finalizeRegistration(Map<String, dynamic> combinedData) async {
     setState(() => _isLoading = true);
     try {
@@ -280,114 +289,186 @@ class _ProfessionalRegistrationScreenState
             File(combinedData['id_proof_path']), "${uniqueId}_idproof");
       }
 
-      Map<String, dynamic> finalData = Map.from(combinedData);
-      finalData.addAll({
+      final phone =
+          '${combinedData['phone_code'] ?? ''}${combinedData['phone'] ?? ''}';
+
+      if (!mounted) return;
+      final authed = await _ensureFirebaseAuth(phone);
+      if (!authed) {
+        if (!mounted) return;
+        OslerToast.error(
+            context, "Phone verification failed. Please try again.");
+        return;
+      }
+
+      final certificate = certUrl ?? "";
+      final idProof = idUrl ?? "";
+
+      if (!mounted) return;
+      await _astraApiService.registerDoctor({
         "unique_id": uniqueId,
-        "is_face_verified": 1,
-        "certificate": certUrl ?? "",
-        "id_proof": idUrl ?? "",
-        "is_filled": 1,
+        "name": combinedData['name'] ?? '',
+        "email": combinedData['email'] ?? '',
+        "phone": phone,
+        "gender": combinedData['gender'] ?? '',
+        "dob": combinedData['dob'] ?? '',
+        "education": combinedData['education'] ?? '',
+        "experience": combinedData['experience'] ?? '',
+        "language": combinedData['language'] ?? '',
+        "desc": combinedData['desc'] ?? '',
+        "appointment_fees": combinedData['appointment_fees'] ?? '',
+        "video_appointment_fees": combinedData['video_appointment_fees'] ?? '',
+        "license_number": combinedData['license_number'] ?? '',
+        "certificate": certificate,
+        "id_proof": idProof,
       });
 
-      if (!mounted) return;
-      final response = await RestClient(await RetroApi().dioData(context))
-          .registerRequest(finalData);
-
-      if (!mounted) return;
-
-      if (response.success == true) {
-        try {
-          await _supabaseService.saveDoctorProfile(
-            doctorId: uniqueId,
-            name: combinedData['name'] ?? '',
-            email: combinedData['email'] ?? '',
-            phone: combinedData['phone'] ?? '',
-            gender: combinedData['gender'] ?? '',
-            dob: combinedData['dob'] ?? '',
-            photoUrl: "",
-            isFaceVerified: true,
-          );
-        } catch (_) {
-          // Supabase mirror is best-effort; the API registration already succeeded.
-        }
-
-        try {
-          await _astraApiService.registerDoctor({
-            "unique_id": uniqueId,
-            "name": combinedData['name'] ?? '',
-            "email": combinedData['email'] ?? '',
-            "phone": combinedData['phone'] ?? '',
-            "gender": combinedData['gender'] ?? '',
-            "dob": combinedData['dob'] ?? '',
-            "education": combinedData['education'] ?? '',
-            "experience": combinedData['experience'] ?? '',
-            "language": combinedData['language'] ?? '',
-            "desc": combinedData['desc'] ?? '',
-            "appointment_fees": combinedData['appointment_fees'] ?? '',
-            "video_appointment_fees":
-                combinedData['video_appointment_fees'] ?? '',
-            "license_number": combinedData['license_number'] ?? '',
-            "certificate": finalData['certificate'] ?? '',
-            "id_proof": finalData['id_proof'] ?? '',
-          });
-        } catch (_) {
-          // Astra directory sync is best-effort; the primary registration
-          // already succeeded and must not be blocked by it.
-        }
-
-        if (!mounted) return;
-        _savePreferences(response);
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RegistrationSuccessScreen(
-              doctorName: combinedData['name'] ?? '',
-              doctorId: response.data?.uniqueId ?? uniqueId,
-              email: combinedData['email'] ?? '',
-            ),
-          ),
-          (route) => false,
+      try {
+        await _supabaseService.saveDoctorProfile(
+          doctorId: uniqueId,
+          name: combinedData['name'] ?? '',
+          email: combinedData['email'] ?? '',
+          phone: phone,
+          gender: combinedData['gender'] ?? '',
+          dob: combinedData['dob'] ?? '',
+          photoUrl: "",
+          isFaceVerified: true,
         );
-      } else {
-        if (!mounted) return;
-        OslerToast.error(context, response.msg ?? "Registration failed");
+      } catch (_) {
+        // Supabase mirror is best-effort; the real registration already succeeded.
       }
+
+      if (!mounted) return;
+      final astraData = await _astraApiService.login();
+      _saveSessionFromAstraLogin(astraData, uniqueId);
+
+      if (!mounted) return;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RegistrationSuccessScreen(
+            doctorName: combinedData['name'] ?? '',
+            doctorId: uniqueId,
+            email: combinedData['email'] ?? '',
+          ),
+        ),
+        (route) => false,
+      );
+    } on AstraApiException catch (e) {
+      if (!mounted) return;
+      OslerToast.error(context, e.message);
     } catch (e) {
       if (!mounted) return;
-      if (e is DioException) {
-        String errorMsg = "Registration failed";
-        if (e.response?.data is Map) {
-          errorMsg = e.response?.data['msg'] ??
-              e.response?.data['message'] ??
-              errorMsg;
-        }
-        OslerToast.error(context, errorMsg);
-      } else {
-        OslerToast.error(context, "An unexpected error occurred: $e");
-      }
+      OslerToast.error(context, "An unexpected error occurred: $e");
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  void _savePreferences(Register response) {
-    if (response.data == null) return;
-    final data = response.data!;
+  /// Signs in with Firebase for [phoneNumber] if there is no Firebase
+  /// session yet (e.g. a Google sign-in already established one), sending
+  /// an SMS code and prompting for it via [_promptForOtp]. Returns whether
+  /// a Firebase session now exists.
+  Future<bool> _ensureFirebaseAuth(String phoneNumber) async {
+    if (FirebaseAuth.instance.currentUser != null) return true;
+
+    String? verificationId;
+    final completer = Completer<bool>();
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (credential) async {
+        try {
+          await FirebaseAuth.instance.signInWithCredential(credential);
+          if (!completer.isCompleted) completer.complete(true);
+        } catch (_) {
+          if (!completer.isCompleted) completer.complete(false);
+        }
+      },
+      verificationFailed: (e) {
+        if (!completer.isCompleted) completer.complete(false);
+      },
+      codeSent: (vId, resendToken) async {
+        verificationId = vId;
+        if (!mounted) {
+          if (!completer.isCompleted) completer.complete(false);
+          return;
+        }
+        final smsCode = await _promptForOtp();
+        if (smsCode == null || smsCode.isEmpty) {
+          if (!completer.isCompleted) completer.complete(false);
+          return;
+        }
+        try {
+          final credential = PhoneAuthProvider.credential(
+              verificationId: verificationId!, smsCode: smsCode);
+          await FirebaseAuth.instance.signInWithCredential(credential);
+          if (!completer.isCompleted) completer.complete(true);
+        } catch (_) {
+          if (!completer.isCompleted) completer.complete(false);
+        }
+      },
+      codeAutoRetrievalTimeout: (vId) {
+        verificationId = vId;
+      },
+    );
+
+    return completer.future;
+  }
+
+  Future<String?> _promptForOtp() {
+    final controller = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text("Verify your phone"),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          maxLength: 6,
+          decoration: const InputDecoration(hintText: "Enter the SMS code"),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, null),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.pop(dialogContext, controller.text.trim()),
+            child: const Text("Verify"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _saveSessionFromAstraLogin(
+      Map<String, dynamic> astraData, String fallbackDoctorId) {
+    final data = astraData['data'] is Map
+        ? Map<String, dynamic>.from(astraData['data'])
+        : <String, dynamic>{};
 
     SharedPreferenceHelper.setBoolean(Preferences.is_logged_in, true);
     SharedPreferenceHelper.setString(
-        Preferences.auth_token, response.token ?? "");
+        Preferences.name, data['name']?.toString() ?? '');
     SharedPreferenceHelper.setString(
-        Preferences.refresh_token, response.refreshToken ?? "");
-    SharedPreferenceHelper.setString(Preferences.name, data.name ?? "");
-    SharedPreferenceHelper.setString(Preferences.email, data.email ?? "");
-    SharedPreferenceHelper.setString(Preferences.phone_no, data.phone ?? "");
-    SharedPreferenceHelper.setString(Preferences.gender, data.gender ?? "");
-    SharedPreferenceHelper.setString(Preferences.dob, data.dob ?? "");
-    SharedPreferenceHelper.setString(Preferences.uniqueId, data.uniqueId ?? "");
-    SharedPreferenceHelper.setString(Preferences.image, data.image ?? "");
+        Preferences.email, data['email']?.toString() ?? '');
     SharedPreferenceHelper.setString(
-        Preferences.doctorId, data.id?.toString() ?? "");
+        Preferences.phone_no, data['phone']?.toString() ?? '');
+    SharedPreferenceHelper.setString(
+        Preferences.image, data['image']?.toString() ?? '');
+    SharedPreferenceHelper.setString(
+        Preferences.doctorId, data['id']?.toString() ?? fallbackDoctorId);
+    SharedPreferenceHelper.setInt(
+        Preferences.is_filled, (data['is_filled'] as int?) ?? 1);
+
+    final token = astraData['token'];
+    if (token != null) {
+      SharedPreferenceHelper.setString(Preferences.auth_token, '$token');
+    }
   }
 
   Future<void> _updateProfile(Map<String, dynamic> profileData) async {

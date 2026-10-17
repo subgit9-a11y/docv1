@@ -8,10 +8,7 @@ import 'package:doctro/core/constants/prefConstatnt.dart';
 import 'package:doctro/core/constants/preferences.dart';
 import 'package:doctro/core/localization/localization_constant.dart';
 import 'package:doctro/models/review.dart';
-import 'package:doctro/network/api_header.dart';
 import 'package:doctro/network/base_model.dart';
-import 'package:doctro/network/network_api.dart';
-import 'package:doctro/network/server_error.dart';
 import 'package:doctro/widgets/modern_drawer.dart';
 import 'package:doctro/widgets/osler_card.dart';
 import 'package:flutter/material.dart';
@@ -356,22 +353,20 @@ class _RateAndReviewRoutesScreenState extends State<RateAndReviewRoutesScreen>
     );
   }
 
+  // The legacy `doctor_review` REST endpoint (Apis.review) is permanently
+  // dead (404), and the real backend has no review-listing route at all
+  // yet (same situation as the removed payment-history-list call) - so
+  // this stops attempting it rather than making a pointless round trip to
+  // a guaranteed 404. The screen already renders an empty state correctly
+  // when reviewData stays empty.
   Future<BaseModel<Review>> reviewRequest() async {
-    Review response;
-    try {
-      reviewData.clear();
-      _userReview.clear();
-      response =
-          await RestClient(await RetroApi().dioData(context)).reviewRequest();
-      if (!mounted) return BaseModel()..data = response;
+    if (mounted) {
       setState(() {
-        reviewData.addAll(response.data!);
-        _userReview.addAll(response.data!);
+        reviewData.clear();
+        _userReview.clear();
       });
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
     }
-    return BaseModel()..data = response;
+    return BaseModel()..data = Review(success: true, data: []);
   }
 
   onSearchTextChanged(String text) async {

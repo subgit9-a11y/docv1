@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:doctro/network/api_header.dart';
-import 'package:doctro/network/base_model.dart';
-import 'package:doctro/network/network_api.dart';
-import 'package:doctro/network/server_error.dart';
-import 'package:doctro/models/appointment_details.dart';
 import 'package:doctro/models/DoctorStatusChange.dart';
-import 'package:doctro/models/AllMedicines.dart';
+import 'package:doctro/network/base_model.dart';
+import 'package:doctro/services/astra_api_service.dart';
 import 'package:doctro/services/astra_service.dart';
+import 'package:doctro/widgets/osler_toast.dart';
 import 'package:intl/intl.dart';
 
 class DateUtil {
@@ -18,10 +15,10 @@ class DateUtil {
 }
 
 class PatientInformationViewModel extends ChangeNotifier {
-  final int? id;
+  final String? consultationId;
   final BuildContext context;
 
-  PatientInformationViewModel(this.id, this.context) {
+  PatientInformationViewModel(this.consultationId, this.context) {
     init();
   }
 
@@ -66,8 +63,6 @@ class PatientInformationViewModel extends ChangeNotifier {
   String? astraCaseId;
 
   bool isLoading = true;
-
-  List<String> medicineReq = [];
 
   void init() {
     appointmentDetails();
@@ -117,93 +112,94 @@ class PatientInformationViewModel extends ChangeNotifier {
     }
   }
 
+  // The legacy `status_change` REST endpoint (Apis.status_change) is
+  // permanently dead (404), and the real backend has no doctor-facing
+  // approve/complete route yet. Cancel does have a real route
+  // (appointments/{consultation_id}/cancel) and this view model now
+  // carries the real consultation_id, so that one is wired for real;
+  // approve/complete still just surface an honest error instead of
+  // looking like a dead button.
   Future<BaseModel<DoctorStatusChange>> statusChangeRequest(
       String status) async {
-    Map<String, dynamic> body = {"id": id, "status": status};
-
-    DoctorStatusChange response;
-
-    try {
-      response = await RestClient(await RetroApi().dioData(context))
-          .doctorStatusChangeRequest(body);
-
-      if (status == 'approve') {
-        appointmentStatus = 'approve';
-      } else if (status == 'complete') {
-        appointmentStatus = 'complete';
-      } else {
+    if (status == 'cancel' && consultationId != null) {
+      try {
+        await AstraApiService().cancelAppointment(consultationId!);
         appointmentStatus = 'cancel';
+        hideButton = false;
+        notifyListeners();
+        if (context.mounted) {
+          OslerToast.success(context, "Appointment cancelled");
+        }
+      } catch (error) {
+        if (context.mounted) {
+          OslerToast.error(context, "Failed to cancel appointment: $error");
+        }
       }
-
-      hideButton = false;
-      notifyListeners();
-
-      return BaseModel()..data = response;
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
+      return BaseModel();
     }
+
+    if (context.mounted) {
+      OslerToast.error(
+          context, "This action isn't available yet. Please try again later.");
+    }
+    // Nothing reads this BaseModel's exception (every caller is
+    // fire-and-forget), so there is no need to populate one.
+    return BaseModel();
   }
 
-  Future<BaseModel<AllMedicines>> allMedicinesRequest() async {
-    AllMedicines response;
-
-    try {
-      medicineReq.clear();
-
-      response =
-          await RestClient(await RetroApi().dioData(context)).allMedicines();
-
-      for (int i = 0; i < response.data!.length; i++) {
-        medicineReq.add(response.data![i].name.toString());
-      }
-      notifyListeners();
-
-      return BaseModel()..data = response;
-    } catch (error) {
-      return BaseModel()..setException(ServerError.withError(error: error));
-    }
-  }
-
+  // The legacy `appointment_details/{id}` REST endpoint (Apis.
+  // appointment_details) is permanently dead (404), and the real backend
+  // has no single-appointment-detail route at all - only the flat list at
+  // GET /api/v1/appointments/my, which has no patient name/phone/
+  // illness/notes/images/insurance/PDF. This finds the matching entry in
+  // that list by consultation_id and populates only the fields it
+  // actually has; the rest are left at their default empty values until
+  // the backend adds a real detail endpoint.
   Future<void> appointmentDetails() async {
     isLoading = true;
     notifyListeners();
     try {
-      AppointmentDetails response =
-          await RestClient(await RetroApi().dioData(context))
-              .appointmentDetails(id);
+      if (consultationId == null) return;
 
-      name = response.data!.patientName;
-      age = response.data!.age;
-      amount = double.parse(response.data!.amount!);
-      date = DateUtil().formattedDate(DateTime.parse(response.data!.date!));
-      phoneNo = response.data!.phoneNo;
-      patientAddress = response.data!.patientAddress;
-      illness = response.data!.illnessInformation;
-      note = response.data!.note;
-      appointmentId = response.data!.appointmentId;
-      drugEffect = response.data!.drugEffect;
-      time = response.data!.time;
-      fullImage = response.data!.user!.fullImage;
-      appointment = response.data!.appointmentFor;
-      appointmentType = response.data!.appointmentType;
-      appointmentStatus = response.data!.appointmentStatus;
-      userId = response.data!.userId;
-      pdf = response.data!.pdf;
-      reportImages.addAll(response.data!.reportImage!);
-      isInsured = response.data!.isInsured!;
-      policyInsurerName = response.data!.policyInsurerName ?? "";
-      policyNumber = response.data!.policyNumber ?? "";
-      astraCaseId = response.data!.astraCaseId;
+      final result = await AstraApiService().getMyAppointments();
+      final appointments = (result['appointments'] as List<dynamic>?) ?? [];
+      Map<String, dynamic>? match;
+      for (final raw in appointments) {
+        final map = raw as Map<String, dynamic>;
+        if (map['consultation_id']?.toString() == consultationId) {
+          match = map;
+          break;
+        }
+      }
+      if (match == null) return;
+
+      appointmentId = consultationId;
+      final rawDate = match['appointment_date'] as String?;
+      if (rawDate != null) {
+        try {
+          final parsed = DateTime.parse(rawDate).toLocal();
+          date = DateUtil().formattedDate(parsed);
+          time = DateFormat('h:mm a').format(parsed);
+        } catch (_) {
+          // Leave date/time at their defaults if the server sends an
+          // unparsable value.
+        }
+      }
+      appointmentType = match['consultation_type'] as String?;
+      appointmentStatus = match['status'] as String?;
+      final patientId = match['patient_id']?.toString();
+      userId = int.tryParse(patientId ?? '');
 
       appointmentStatus == 'Approve' ? hideButton = false : hideButton = true;
       appointmentStatus == 'pending' ? hideButton = true : hideButton = false;
 
-      isLoading = false;
-      notifyListeners();
-
       // After loading appointment details, refresh Astra Fill data with resolved IDs
-      loadAstraFillData(patientId: userId.toString(), searchPhone: phoneNo);
-    } catch (error) {
+      if (patientId != null) {
+        loadAstraFillData(patientId: patientId, searchPhone: phoneNo);
+      }
+    } catch (_) {
+      // Leave fields at their defaults if the fetch fails.
+    } finally {
       isLoading = false;
       notifyListeners();
     }

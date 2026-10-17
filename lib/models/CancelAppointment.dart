@@ -26,6 +26,7 @@ class CancelAppointment {
 
 class AppointmentCancel {
   int? id;
+  String? consultationId;
   String? date;
   String? time;
   int? userId;
@@ -37,6 +38,7 @@ class AppointmentCancel {
 
   AppointmentCancel(
       {this.id,
+      this.consultationId,
       this.date,
       this.time,
       this.userId,
